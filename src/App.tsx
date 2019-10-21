@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import { MuiThemeProvider, CssBaseline, makeStyles, Theme, Container } from '@material-ui/core'
-import theme from 'lib/theme'
-import { AthenaAppBar } from 'components/AthenaAppBar'
-import { AthenaMenuDrawer } from 'components/AthenaMenuDrawer'
+import { useSelector } from 'react-redux'
+import theme from './lib/theme'
+import { AthenaAppBar } from './components/AthenaAppBar'
+import { AthenaMenuDrawer } from './components/AthenaMenuDrawer'
+import { AthenaRouter } from './components/AthenaRouter'
+import { IRootReducer } from './lib/redux'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -23,26 +27,39 @@ const useStyles = makeStyles((theme: Theme) => {
   }
 })
 
+// Make this it's own component so it wont re-render App on state change
+const BaseComponents: React.FC = () => {
+  const [menuOpen, setMenuOpen] = useState<boolean>(false)
+
+  const toggleMenuDrawer = () => setMenuOpen(!menuOpen)
+
+  return (
+    <>
+      <AthenaAppBar menuOpen={menuOpen} toggleMenuDrawer={toggleMenuDrawer} />
+      <AthenaMenuDrawer menuOpen={menuOpen} toggleMenuDrawer={toggleMenuDrawer} />
+    </>
+  )
+}
+
 const App: React.FC = () => {
   const classes = useStyles()
 
-  const [menuOpen, setMenuOpen] = useState<boolean>(false)
-
-  const toggleMenuDrawer = () => {
-    console.log(menuOpen)
-    setMenuOpen(!menuOpen)
-  }
+  const user = useSelector((state: IRootReducer) => state.user)
+  console.log(user)
 
   return (
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
-        <CssBaseline />
-        <AthenaAppBar menuOpen={menuOpen} toggleMenuDrawer={toggleMenuDrawer} />
-        <AthenaMenuDrawer menuOpen={menuOpen} toggleMenuDrawer={toggleMenuDrawer} />
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <Container maxWidth='xl'>dataa</Container>
-        </main>
+        <Router>
+          <CssBaseline />
+          <BaseComponents />
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            <Container maxWidth='xl'>
+              <AthenaRouter />
+            </Container>
+          </main>
+        </Router>
       </div>
     </MuiThemeProvider>
   )

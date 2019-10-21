@@ -14,6 +14,8 @@ import {
   ListItemText,
 } from '@material-ui/core'
 
+import { Link, LinkProps } from 'react-router-dom'
+
 import AccountBoxIcon from '@material-ui/icons/AccountBox'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
@@ -21,6 +23,17 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 export const AthenaMenuDrawer: React.FC<IAthenaMenuDrawer> = ({ menuOpen, toggleMenuDrawer }) => {
   const classes = useStyles()
   const theme = useTheme()
+
+  const routes = [
+    {
+      name: 'student dashboard',
+      link: '/student/dashboard',
+    },
+  ]
+
+  const AdapterLink = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
+    <Link innerRef={ref as any} {...props} />
+  ))
 
   return (
     <Drawer
@@ -44,12 +57,12 @@ export const AthenaMenuDrawer: React.FC<IAthenaMenuDrawer> = ({ menuOpen, toggle
       </div>
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
+        {routes.map((route: any, index) => (
+          <ListItem button key={route.link} component={AdapterLink} to={route.link}>
             <ListItemIcon className={classes.ListItemIcon}>
               {index % 2 === 0 ? <AccountBoxIcon /> : <AccountBoxIcon />}
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText primary={route.name} />
           </ListItem>
         ))}
       </List>

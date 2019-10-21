@@ -1,6 +1,6 @@
 import IGuid from '../IGuid'
-import { IAgreement } from '.'
 import { IUser } from '../user'
+import { IAgreement } from '.'
 
 export interface IFeedback extends IGuid {
   from: IUser
