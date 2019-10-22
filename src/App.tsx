@@ -5,8 +5,9 @@ import theme from './lib/theme'
 import { AthenaAppBar } from './components/AthenaAppBar'
 import { AthenaMenuDrawer } from './components/AthenaMenuDrawer'
 import { AthenaRouter } from './components/AthenaRouter'
-import { IRootReducer } from './lib/redux'
 import { BrowserRouter as Router } from 'react-router-dom'
+import { IRootReducer } from './lib/redux'
+import { AuthContext } from './lib/auth'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -42,24 +43,32 @@ const BaseComponents: React.FC = () => {
 }
 
 const App: React.FC = () => {
+  const [authTokens, setAuthTokens] = useState()
   const classes = useStyles()
 
-  const user = useSelector((state: IRootReducer) => state.user)
-  console.log(user)
+  const global = useSelector((state: IRootReducer) => state.global)
+  console.log(global)
+
+  const setTokens = (data: any) => {
+    localStorage.setItem('tokens', JSON.stringify(data))
+    setAuthTokens(data)
+  }
 
   return (
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
-        <Router>
-          <CssBaseline />
-          <BaseComponents />
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <Container maxWidth='xl'>
-              <AthenaRouter />
-            </Container>
-          </main>
-        </Router>
+        <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+          <Router>
+            <CssBaseline />
+            <BaseComponents />
+            <main className={classes.content}>
+              <div className={classes.toolbar} />
+              <Container maxWidth='xl'>
+                <AthenaRouter />
+              </Container>
+            </main>
+          </Router>
+        </AuthContext.Provider>
       </div>
     </MuiThemeProvider>
   )

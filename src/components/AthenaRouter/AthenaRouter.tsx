@@ -1,15 +1,14 @@
 import React from 'react'
 
-import { Route, Switch } from 'react-router-dom'
+import { Switch } from 'react-router-dom'
 import { StudentDashboard } from 'src/routes/student/dashboard/'
+import { PrivateRoute } from '../Routes/Private'
 
 export const AthenaRouter: React.FC = () => {
   return (
     <div>
       <Switch>
-        <Route path='/student/dashboard'>
-          <StudentDashboard />
-        </Route>
+        <PrivateRoute path='/student/dashboard' component={StudentDashboard}></PrivateRoute>
       </Switch>
     </div>
   )
