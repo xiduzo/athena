@@ -1,12 +1,13 @@
 import * as actions from './actions'
 import { IUserState } from './IUserState'
+import { UserActionTypes } from './types'
 
-const initial_state: IUserState = {
-  is_logged_in: false,
-  user: null,
-}
+const initial_state: IUserState = {}
 
-export const userReducer = (state: IUserState = initial_state, action: any): any => {
+export const userReducer = (
+  state: IUserState = initial_state,
+  action: UserActionTypes
+): IUserState => {
   switch (action.type) {
     case actions.USER_LOGIN:
       return state

@@ -1,0 +1,2 @@
+export const SELECT_TRIBE = 'SELECT_TRIBE'
+export const SELECT_SQUAD = 'SELECT_SQUAD'
