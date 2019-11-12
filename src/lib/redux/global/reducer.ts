@@ -3,7 +3,7 @@ import { IGlobalState } from './IGlobalState'
 import { GlobalActionTypes } from './types'
 
 const initial_state: IGlobalState = {
-  is_logged_in: false,
+  is_logged_in: true,
 }
 
 export const globalReducer = (

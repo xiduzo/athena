@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react'
 
 interface IAutContext {
-  authTokens?: string
-  setAuthTokens?: (data: any) => void
+  authToken?: string
+  setAuthToken?: (data: any) => void
 }
 
 export const AuthContext = createContext<IAutContext>({})

@@ -25,6 +25,6 @@
     "suppressImplicitAnyIndexErrors": true,
     "typeRoots": ["./node_modules/@types"]
   },
-  "exclude": ["./src/lib/types", "node_modules", "src/setupTests.ts"],
-  "include": ["src/**/*", "jest.config.js"]
+  "exclude": ["./src/lib/types", "node_modules"],
+  "include": ["src/**/*"]
 }

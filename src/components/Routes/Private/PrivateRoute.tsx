@@ -8,14 +8,13 @@ interface IPrivateRoute {
 }
 
 export const PrivateRoute: React.FC<IPrivateRoute> = ({ component: Component, ...rest }) => {
-  // export function PrivateRoute<IPrivateRoute>({ Component, ...rest }) {
-  const { authTokens } = useAuth()
+  const { authToken } = useAuth()
 
   return (
     <Route
       {...rest}
       render={props =>
-        authTokens ? (
+        authToken ? (
           <Component {...props} />
         ) : (
           <Redirect to={{ pathname: '/login', state: { referer: props.location } }} />

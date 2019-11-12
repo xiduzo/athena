@@ -29,6 +29,10 @@ export const AthenaMenuDrawer: React.FC<IAthenaMenuDrawer> = ({ menuOpen, toggle
       name: 'student dashboard',
       link: '/student/dashboard',
     },
+    {
+      name: 'Login',
+      link: '/login',
+    },
   ]
 
   const AdapterLink = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
