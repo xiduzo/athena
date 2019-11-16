@@ -30,14 +30,26 @@ export const useStyles = makeStyles((theme: Theme) => {
       },
     },
     toolbar: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
       padding: theme.spacing(0, 1),
       ...theme.mixins.toolbar,
     },
     ListItemIcon: {
-      paddingLeft: '8px',
+      paddingLeft: theme.spacing(1),
+    },
+    flex: {
+      flexGrow: 1,
+      overflow: 'hidden',
+    },
+    drawerToggleButton: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+    },
+    drawerToggleButtonIcon: {
+      minWidth: 0,
+      transform: 'rotate(-90deg)',
+    },
+    drawerToggleButtonOpen: {
+      justifyContent: 'flex-end',
     },
   }
 })

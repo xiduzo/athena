@@ -5,12 +5,12 @@ import { useHistory } from 'react-router-dom'
 
 export const LoginRoute: FC = () => {
   const { t } = useTranslation()
-  const { authToken } = useAuth()
+  const { token } = useAuth()
   const history = useHistory()
 
   useEffect(() => {
-    if (authToken) history.push('/student/dashboard')
-  }, [authToken])
+    if (token) history.push('/student/dashboard')
+  }, [token, history])
 
   return <div>login page {t('dashboard')}</div>
 }
