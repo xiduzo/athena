@@ -21,7 +21,7 @@ export const StudentDashboardRoute: FC = () => {
     <div>
       <Grid container spacing={4}>
         <Grid item xs={12}>
-          <Typography variant='h4' component='h2'>
+          <Typography variant='h5' component='h2'>
             Team name
           </Typography>
         </Grid>
@@ -42,7 +42,7 @@ export const StudentDashboardRoute: FC = () => {
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant='h5' component='h2'>
+          <Typography variant='h6' component='h2'>
             My feedback
           </Typography>
         </Grid>
@@ -53,7 +53,7 @@ export const StudentDashboardRoute: FC = () => {
           <Paper>feedback per category</Paper>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant='h5' component='h2'>
+          <Typography variant='h6' component='h2'>
             My cards
           </Typography>
         </Grid>

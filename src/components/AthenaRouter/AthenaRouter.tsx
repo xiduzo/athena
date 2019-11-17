@@ -8,15 +8,13 @@ import { CoordinatorAgreementsRoute } from 'src/routes/coordinator/agreements'
 
 export const AthenaRouter: FC = () => {
   return (
-    <div>
-      <Switch>
-        <Route path='/login' component={LoginRoute}></Route>
-        <PrivateRoute path='/student/dashboard' component={StudentDashboardRoute}></PrivateRoute>
-        <PrivateRoute
-          path='/coordinator/agreements'
-          component={CoordinatorAgreementsRoute}
-        ></PrivateRoute>
-      </Switch>
-    </div>
+    <Switch>
+      <Route path='/login' component={LoginRoute}></Route>
+      <PrivateRoute path='/student/dashboard' component={StudentDashboardRoute}></PrivateRoute>
+      <PrivateRoute
+        path='/coordinator/agreements'
+        component={CoordinatorAgreementsRoute}
+      ></PrivateRoute>
+    </Switch>
   )
 }

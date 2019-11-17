@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from 'react'
+import React, { Suspense } from 'react'
 import { MuiThemeProvider, CssBaseline, makeStyles, Theme } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import theme from './lib/theme'
@@ -20,9 +20,6 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'flex',
     },
     toolbar: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'flex-end',
       padding: theme.spacing(0, 1),
       ...theme.mixins.toolbar,
     },
@@ -45,6 +42,7 @@ const App: React.FC = () => {
             <AthenaMenuDrawer />
             <main className={classes.content}>
               <div className={classes.toolbar} />
+              {/* TODO: add breadcrumbs? */}
               <Suspense fallback={'loading'}>
                 <AthenaRouter />
               </Suspense>

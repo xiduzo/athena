@@ -16,5 +16,8 @@ export const useStyles = makeStyles((theme: Theme) => {
     title: {
       flexGrow: 1,
     },
+    icon: {
+      marginRight: theme.spacing(2),
+    },
   }
 })
