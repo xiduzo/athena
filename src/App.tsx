@@ -1,13 +1,13 @@
 import React, { Suspense } from 'react'
-import { MuiThemeProvider, CssBaseline, makeStyles, Theme } from '@material-ui/core'
+import { CssBaseline, makeStyles, Theme } from '@material-ui/core'
 import { useSelector } from 'react-redux'
-import theme from './lib/theme'
 import { AthenaAppBar } from './components/AthenaAppBar'
 import { AthenaMenuDrawer } from './components/AthenaMenuDrawer'
 import { AthenaRouter } from './components/AthenaRouter'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { IRootReducer } from './lib/redux'
-import { AuthProvider } from './lib/auth'
+import { AthenaAuthProvider } from './lib/auth'
+import { AthenaThemeProvider } from './lib/theme'
 
 import './i18n'
 
@@ -33,9 +33,9 @@ const App: React.FC = () => {
   console.log(global)
 
   return (
-    <MuiThemeProvider theme={theme}>
+    <AthenaThemeProvider>
       <div className={classes.root}>
-        <AuthProvider>
+        <AthenaAuthProvider>
           <Router>
             <CssBaseline />
             <AthenaAppBar />
@@ -48,9 +48,9 @@ const App: React.FC = () => {
               </Suspense>
             </main>
           </Router>
-        </AuthProvider>
+        </AthenaAuthProvider>
       </div>
-    </MuiThemeProvider>
+    </AthenaThemeProvider>
   )
 }
 

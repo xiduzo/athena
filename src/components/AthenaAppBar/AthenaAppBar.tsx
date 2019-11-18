@@ -16,8 +16,8 @@ export const AthenaAppBar: FC = () => {
   return (
     <AppBar position='fixed' className={classes.appBar}>
       <Toolbar>
-        <Icon component={AthenaIcon} className={classes.icon} />
-        <Typography variant='h6' className={classes.title}>
+        <Icon color='inherit' component={AthenaIcon} className={classes.icon} />
+        <Typography color='inherit' variant='h6' className={classes.title}>
           Athena
         </Typography>
         <Button onClick={setToken}>set token</Button>

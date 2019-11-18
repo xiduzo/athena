@@ -28,7 +28,7 @@ export const useAuth = () => useContext(AuthContext)
 
 const { Provider } = AuthContext
 
-export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const AthenaAuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { token, setAuthToken } = useAuthHandler()
 
   return <Provider value={{ token, setAuthToken }}> {children} </Provider>
