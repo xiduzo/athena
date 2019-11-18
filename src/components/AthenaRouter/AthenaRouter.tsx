@@ -1,20 +1,23 @@
 import React, { FC } from 'react'
 
 import { Switch, Route } from 'react-router-dom'
-import { StudentDashboardRoute } from 'src/routes/student/dashboard/'
 import { PrivateRoute } from '../Routes/Private'
-import { LoginRoute } from 'src/routes/account/login'
-import { CoordinatorAgreementsRoute } from 'src/routes/coordinator/agreements'
+import { IRoute, routes } from '../AthenaMenuDrawer/routes'
 
 export const AthenaRouter: FC = () => {
+  const renderRoute = (route: IRoute) => (
+    <Route key={route.path} path={route.path} component={route.component}></Route>
+  )
+
+  const renderPrivateRoute = (route: IRoute) => (
+    <PrivateRoute key={route.path} path={route.path} component={route.component}></PrivateRoute>
+  )
+
   return (
     <Switch>
-      <Route path='/login' component={LoginRoute}></Route>
-      <PrivateRoute path='/student/dashboard' component={StudentDashboardRoute}></PrivateRoute>
-      <PrivateRoute
-        path='/coordinator/agreements'
-        component={CoordinatorAgreementsRoute}
-      ></PrivateRoute>
+      {routes.map((route: IRoute) =>
+        route.private ? renderPrivateRoute(route) : renderRoute(route)
+      )}
     </Switch>
   )
 }

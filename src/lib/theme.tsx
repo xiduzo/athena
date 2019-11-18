@@ -10,11 +10,12 @@ interface IThemeContext {
   setTheme: (theme: ThemeOptions) => void
 }
 
+const localThemeStyle = localStorage.getItem('themeStyle') === 'dark' ? 'dark' : 'light'
 const initial_theme_options: ThemeOptions = {
   palette: {
     primary: amber,
     secondary: green,
-    type: 'dark',
+    type: localThemeStyle,
   },
 }
 
@@ -27,14 +28,11 @@ const useThemeHandler = () => {
   const [theme, setNewTheme] = useState<ThemeOptions>(initial_theme_options)
 
   const setTheme = (newTheme: ThemeOptions) => {
-    localStorage.setItem('themeOptions', JSON.stringify(newTheme))
+    newTheme.palette && localStorage.setItem('themeStyle', newTheme.palette.type as string)
     setNewTheme(newTheme)
   }
 
-  return {
-    theme,
-    setTheme,
-  }
+  return { theme, setTheme }
 }
 
 const { Provider } = AthenaThemeContext

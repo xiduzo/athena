@@ -17,7 +17,7 @@ export const PrivateRoute: React.FC<IPrivateRoute> = ({ component: Component, ..
         token || true ? (
           <Component {...props} />
         ) : (
-          <Redirect to={{ pathname: '/login', state: { referer: props.location } }} />
+          <Redirect to={{ pathname: '/account/login', state: { referer: props.location } }} />
         )
       }
     />
