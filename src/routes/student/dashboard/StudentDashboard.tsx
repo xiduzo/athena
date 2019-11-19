@@ -8,9 +8,13 @@ import {
   Typography,
   List,
   ListItem,
+  Container,
 } from '@material-ui/core'
+import { useStyles } from './style'
 
 export const StudentDashboardRoute: FC = () => {
+  const classes = useStyles()
+
   const getTribeById = () => {
     GetTribeById().then(tribe => {
       console.log(tribe)
@@ -18,8 +22,8 @@ export const StudentDashboardRoute: FC = () => {
   }
 
   return (
-    <div>
-      <Grid container spacing={4}>
+    <Container maxWidth='lg'>
+      <Grid container spacing={4} className={classes.mainGrid}>
         <Grid item xs={12}>
           <Typography variant='h5' component='h2'>
             Team name
@@ -65,6 +69,6 @@ export const StudentDashboardRoute: FC = () => {
       </Grid>
       student dashboard
       <Button onClick={getTribeById}>get tribe</Button>
-    </div>
+    </Container>
   )
 }

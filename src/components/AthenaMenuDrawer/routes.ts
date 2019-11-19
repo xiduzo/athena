@@ -1,11 +1,14 @@
 import DashboardIcon from '@material-ui/icons/Dashboard'
 import MenuBookIcon from '@material-ui/icons/MenuBook'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import PeopleIcon from '@material-ui/icons/People'
+import { SvgIconProps } from '@material-ui/core/SvgIcon'
+
 import { StudentDashboardRoute } from 'src/routes/student/dashboard'
 import { CoordinatorAgreementsRoute } from 'src/routes/coordinator/agreements'
 import { LoginRoute } from 'src/routes/account/login'
-import { SvgIconProps } from '@material-ui/core/SvgIcon'
 import { SettingsRoute } from 'src/routes/account/settings'
+import { CoordinatorUsersRoute } from 'src/routes/coordinator/users'
 
 export interface IRoute {
   name: string
@@ -17,16 +20,7 @@ export interface IRoute {
   showInMenu: boolean
 }
 
-export const routes: IRoute[] = [
-  {
-    name: 'Dashboard',
-    path: '/student/dashboard',
-    icon: DashboardIcon,
-    component: StudentDashboardRoute,
-    private: true,
-    exact: false,
-    showInMenu: true,
-  },
+const coordinatorRoutes: IRoute[] = [
   {
     name: 'Agreements',
     path: '/coordinator/agreements',
@@ -36,6 +30,18 @@ export const routes: IRoute[] = [
     exact: false,
     showInMenu: true,
   },
+  {
+    name: 'Users',
+    path: '/coordinator/users',
+    icon: PeopleIcon,
+    component: CoordinatorUsersRoute,
+    private: true,
+    exact: false,
+    showInMenu: true,
+  },
+]
+
+const accountRoutes: IRoute[] = [
   {
     name: 'Settings',
     path: '/account/settings',
@@ -55,3 +61,17 @@ export const routes: IRoute[] = [
     showInMenu: false,
   },
 ]
+
+const studentRoutes: IRoute[] = [
+  {
+    name: 'Dashboard',
+    path: '/student/dashboard',
+    icon: DashboardIcon,
+    component: StudentDashboardRoute,
+    private: true,
+    exact: false,
+    showInMenu: true,
+  },
+]
+
+export const routes: IRoute[] = [...coordinatorRoutes, ...accountRoutes, ...studentRoutes]
