@@ -1,11 +1,5 @@
 import IGuid from '../IGuid'
-
-export enum AgreementType {
-  ATTITUDE = 0,
-  FUNCTIONING_WITHING_TEAM = 1,
-  KNOWLEDGE_DEVELOPMENT = 2,
-  ACCOUNTABILITY = 3,
-}
+import { AgreementType } from 'src/lib/enums'
 
 export interface IAgreement extends IGuid {
   type: AgreementType

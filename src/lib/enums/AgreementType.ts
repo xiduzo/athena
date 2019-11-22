@@ -1,0 +1,6 @@
+export enum AgreementType {
+  ATTITUDE = 0,
+  FUNCTIONING_WITHING_TEAM = 1,
+  KNOWLEDGE_DEVELOPMENT = 2,
+  ACCOUNTABILITY = 3,
+}

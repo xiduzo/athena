@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useStyles } from './style'
 
 import {
@@ -12,36 +12,50 @@ import {
   CardHeader,
   Avatar,
   IconButton,
-  Icon,
+  TextField,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import GroupWorkIcon from '@material-ui/icons/GroupWork'
-import WorkIcon from '@material-ui/icons/Work'
-import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects'
-import DescriptionIcon from '@material-ui/icons/Description'
+import { IAgreement } from 'src/lib/types/agreement'
+import { AgreementIcon } from 'src/components/Atoms'
 
-const agreements = [
+import { GetAgreements, mapAgreement } from 'src/lib/api'
+
+const init: Partial<IAgreement>[] = [
   {
-    icon: WorkIcon,
+    type: 3,
     text: 'is communicating clear',
   },
   {
-    icon: GroupWorkIcon,
+    type: 0,
     text: 'gives feedback',
   },
   {
-    icon: EmojiObjectsIcon,
+    type: 1,
     text: 'is asking questions',
   },
   {
-    icon: DescriptionIcon,
+    type: 2,
     text: 'argues clearly',
   },
 ]
 
 export const CoordinatorAgreementsRoute: FC = () => {
   const classes = useStyles()
+  const [agreements, setAgreements] = useState(init)
+  const [agreementsFilter, setAgreementsFilter] = useState('')
+
+  const filterHandler = () => {
+    setAgreementsFilter('testing')
+  }
+
+  useEffect(() => {
+    setAgreements(init)
+    // console.log(setAgreements, agreements)
+    GetAgreements().then((result: any) => {
+      setAgreements(result.map((a: any) => mapAgreement(a)))
+    })
+  }, [])
 
   return (
     <section className={classes.main}>
@@ -55,19 +69,13 @@ export const CoordinatorAgreementsRoute: FC = () => {
               Agreements
             </Typography>
           </Grid>
-          {[
-            ...agreements.reverse(),
-            ...agreements.reverse(),
-            ...agreements.reverse(),
-            ...agreements.reverse(),
-            ...agreements.reverse(),
-          ].map((agreement: any, index) => (
+          {[...agreements].map((agreement: any, index) => (
             <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
               <Card>
                 <CardHeader
                   avatar={
                     <Avatar aria-label='recipe' className={classes.agreementAvatar}>
-                      <Icon component={agreement.icon} />
+                      <AgreementIcon type={agreement.type}></AgreementIcon>
                     </Avatar>
                   }
                   action={
@@ -99,6 +107,13 @@ export const CoordinatorAgreementsRoute: FC = () => {
         <Typography component='h2' variant='h5'>
           Filter
         </Typography>
+        <TextField
+          id='filter by name'
+          label='Name'
+          // className={classes.textField}
+          margin='normal'
+          onChange={filterHandler}
+        />
       </Drawer>
     </section>
   )
