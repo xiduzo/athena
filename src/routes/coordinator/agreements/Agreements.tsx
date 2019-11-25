@@ -19,7 +19,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { IAgreement } from 'src/lib/types/agreement'
 import { AgreementIcon } from 'src/components/Atoms'
 
-import { GetAgreements, mapAgreement } from 'src/lib/api'
+import { GetAgreements } from 'src/lib/api'
 
 const init: Partial<IAgreement>[] = [
   {
@@ -52,9 +52,11 @@ export const CoordinatorAgreementsRoute: FC = () => {
   useEffect(() => {
     setAgreements(init)
     // console.log(setAgreements, agreements)
-    GetAgreements().then((result: any) => {
-      setAgreements(result.map((a: any) => mapAgreement(a)))
-    })
+    GetAgreements()
+      .then((response: IAgreement[]) => setAgreements(response))
+      .catch((error: any) => {
+        console.log(error)
+      })
   }, [])
 
   return (

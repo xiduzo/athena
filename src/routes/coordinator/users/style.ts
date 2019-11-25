@@ -12,9 +12,8 @@ export const useStyles = makeStyles((theme: Theme) => {
     },
     main: {
       display: 'flex',
-    },
-    mainGrid: {
-      padding: theme.spacing(2),
+      flexDirection: 'column',
+      flexGrow: 1,
     },
   }
 })
