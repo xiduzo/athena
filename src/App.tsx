@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import { CssBaseline, makeStyles, Theme } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { AthenaAppBar } from './components/AthenaAppBar'
@@ -43,9 +43,9 @@ const App: React.FC = () => {
             <main className={classes.content}>
               <div className={classes.toolbar} />
               {/* TODO: add breadcrumbs? */}
-              <Suspense fallback={'loading'}>
-                <AthenaRouter />
-              </Suspense>
+              {/* <Suspense fallback={'loading'}> */}
+              <AthenaRouter />
+              {/* </Suspense> */}
             </main>
           </Router>
         </AthenaAuthProvider>

@@ -10,12 +10,12 @@ export interface IRule {
   points: number
 }
 
-export const mapAgreement = (item: IRule): IAgreement => {
+export const mapAgreement = (rule: IRule): IAgreement => {
   const agreement: IAgreement = {
-    type: item.rule_type - 1, // We start with 0 in new interface
-    text: item.rule_eng,
-    points: item.points,
-    guid: item.id,
+    type: rule.rule_type - 1, // We start with 0 in new interface
+    text: rule.rule_eng,
+    points: rule.points,
+    guid: rule.id,
   }
 
   return agreement

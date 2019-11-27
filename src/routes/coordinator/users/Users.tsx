@@ -1,18 +1,18 @@
-import React, { FC, useState, useEffect, useMemo, Suspense } from 'react'
+import React, { FC, useState, useEffect, useMemo } from 'react'
 import { useStyles } from './style'
-
 import { GetUsers, IUser } from 'src/lib/api'
 
 import AddIcon from '@material-ui/icons/Add'
 import {
-  Avatar,
   Fab,
   Container,
   Grid,
   Card,
   CardHeader,
   CardActionArea,
-  // CardContent,
+  CardContent,
+  Box,
+  Paper,
 } from '@material-ui/core'
 import { Avataaar } from 'src/components/Avataaar'
 import { Pager } from 'src/components/Pager'
@@ -25,7 +25,6 @@ export const CoordinatorUsersRoute: FC = () => {
   const [itemsPerPage, setItemsPerPage] = useState<number>(24)
 
   useEffect(() => {
-    console.log(true)
     GetUsers()
       .then((response: IUser[]) => {
         setUsers(response)
@@ -54,39 +53,33 @@ export const CoordinatorUsersRoute: FC = () => {
         <AddIcon />
       </Fab>
       <Container maxWidth='lg'>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Pager
-              onChange={(data: onChangeData) => handlePagerChange(data)}
-              numberOfItems={users.length}
-              pageSize={itemsPerPage}
-            />
-          </Grid>
-        </Grid>
-      </Container>
-      <Container maxWidth='lg'>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} className={classes.userGrid}>
           {displayedUsers.map((user: IUser) => (
             <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
               <Card>
                 <CardActionArea>
                   <CardHeader
-                    avatar={
-                      <Suspense
-                        fallback={<Avatar>{user.initials || user.first_name.charAt(0)}</Avatar>}
-                      >
-                        <Avataaar avatarStyle='Circle' />
-                      </Suspense>
-                    }
+                    avatar={<Avataaar avatarStyle='Circle' />}
                     title={`${user.first_name} ${user.surname_prefix || ''} ${user.surname}`}
                     subheader={`${user.is_superuser && 'admin'} ${user.is_staff &&
                       'lecturer'} ${!user.is_staff && 'student'}`}
                   />
-                  {/* <CardContent>general information</CardContent> */}
+                  <CardContent>general information</CardContent>
                 </CardActionArea>
               </Card>
             </Grid>
           ))}
+        </Grid>
+        <Grid item xs={12}>
+          <Box bottom={0} position={`fixed`} zIndex='card'>
+            <Paper className={classes.pagerBox}>
+              <Pager
+                onChange={(data: onChangeData) => handlePagerChange(data)}
+                numberOfItems={users.length}
+                pageSize={itemsPerPage}
+              />
+            </Paper>
+          </Box>
         </Grid>
       </Container>
     </section>

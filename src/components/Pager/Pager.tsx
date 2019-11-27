@@ -63,7 +63,7 @@ export const Pager: FC<IPager> = ({
       <Grid item xs={8}>
         <ReactPaginate
           pageCount={numberOfPages}
-          pageRangeDisplayed={3}
+          pageRangeDisplayed={1}
           marginPagesDisplayed={1}
           onPageChange={onChangeHandler}
           initialPage={currentPage}

@@ -1408,6 +1408,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-lazyload@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@types/react-lazyload/-/react-lazyload-2.6.0.tgz#41cd9cbb2c03dd810377518d4837794469a521d1"
+  integrity sha512-VAv6i5RA3O82Q8yuugTXsmGecFOf5GILeILeUdLUs+8PQW1Zg+bety3BfT6gXHdl/wb3PZujlM9rbRd3xab9Vw==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-paginate@^6.2.1":
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/@types/react-paginate/-/react-paginate-6.2.1.tgz#2329088d78010ea49661559c8467a24ecd942784"
@@ -8234,7 +8241,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.3"
 
-prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@>=15.5.10, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -8486,6 +8493,11 @@ react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.10.1.tgz#0612786bf19df406502d935494f0450b40b8294f"
   integrity sha512-BXUMf9sIOPXXZWqr7+c5SeOKJykyVr2u0UDzEf4LNGc6taGkQe1A9DFD07umCIXz45RLr9oAAwZbAJ0Pkknfaw==
 
+react-lazyload@^2.6.5:
+  version "2.6.5"
+  resolved "https://registry.yarnpkg.com/react-lazyload/-/react-lazyload-2.6.5.tgz#7a5ac001f0f8aeddc10c30e4ce318c10f13aa723"
+  integrity sha512-C/juO9l7dGS7jEARBLjM3oG7F1lL5bqajz/55sk3GFc0Ippd9vnSkdRxdiaE6gf5si3YxIow8dSJ+YuB2D/3vg==
+
 react-paginate@^6.3.2:
   version "6.3.2"
   resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-6.3.2.tgz#4e18cbdb2654d308566775fa14df11e820188391"
@@ -8594,6 +8606,13 @@ react-scripts@3.2.0:
     workbox-webpack-plugin "4.3.1"
   optionalDependencies:
     fsevents "2.0.7"
+
+react-sticky-el@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-sticky-el/-/react-sticky-el-1.1.0.tgz#641658f1fc038902862e3ee8c262e2dcdb902032"
+  integrity sha512-aDlz85yfyPtiE+Jlok+N109dnJ6VBhP4h3wkOFxT2tzauWoE8cMdTDB7pvQam4TIOXJtWKgilZA8q03G/PANmQ==
+  dependencies:
+    prop-types ">=15.5.10"
 
 react-transition-group@^4.3.0:
   version "4.3.0"

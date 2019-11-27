@@ -1,6 +1,6 @@
 export const LDAP_URL = 'https://oege.ie.hva.nl/~vddxx/ldapper/index.php'
 export const BACKEND_URL = 'https://back.beyond.jstur.org/api'
-export const TRIBE_ENDPOINT = 'guild/newGuild'
+export const TRIBE_ENDPOINT = 'world'
 export const SQUAD_ENDPOINT = 'class'
 export const ACCOUNT_ENDPOINT = 'user'
 export const AGREEMENTS_ENDPOINT = 'rules'

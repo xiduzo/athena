@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { IAvataaar } from './interface'
+import LazyLoad from 'react-lazyload'
 
 import Avatar from 'avataaars'
 import { TopType } from './enums/TopType'
@@ -69,5 +70,9 @@ export const Avataaar: FC<IAvataaar> = props => {
     ...props,
   }
 
-  return <Avatar {...avatar} />
+  return (
+    <LazyLoad height={60}>
+      <Avatar {...avatar} />
+    </LazyLoad>
+  )
 }
