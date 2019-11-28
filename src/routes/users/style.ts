@@ -22,5 +22,8 @@ export const useStyles = makeStyles((theme: Theme) => {
     pagerBox: {
       padding: theme.spacing(2),
     },
+    pagerDrawer: {
+      width: `50%`,
+    },
   }
 })

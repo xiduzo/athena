@@ -40,17 +40,11 @@ const init: Partial<IAgreement>[] = [
   },
 ]
 
-export const CoordinatorAgreementsRoute: FC = () => {
+export const AgreementsRoute: FC = () => {
   const classes = useStyles()
   const [agreements, setAgreements] = useState(init)
-  const [agreementsFilter, setAgreementsFilter] = useState('')
-
-  const filterHandler = () => {
-    setAgreementsFilter('testing')
-  }
 
   useEffect(() => {
-    setAgreements(init)
     // console.log(setAgreements, agreements)
     GetAgreements()
       .then((response: IAgreement[]) => setAgreements(response))
@@ -114,7 +108,7 @@ export const CoordinatorAgreementsRoute: FC = () => {
           label='Name'
           // className={classes.textField}
           margin='normal'
-          onChange={filterHandler}
+          // onChange={filterHandler}
         />
       </Drawer>
     </section>

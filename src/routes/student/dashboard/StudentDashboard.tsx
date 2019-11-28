@@ -1,7 +1,5 @@
 import React, { FC } from 'react'
-import { GetTribeById } from 'src/lib/api'
 import {
-  Button,
   Grid,
   Paper,
   CircularProgress,
@@ -14,12 +12,6 @@ import { useStyles } from './style'
 
 export const StudentDashboardRoute: FC = () => {
   const classes = useStyles()
-
-  const getTribeById = () => {
-    GetTribeById().then(tribe => {
-      console.log(tribe)
-    })
-  }
 
   return (
     <Container maxWidth='lg'>
@@ -68,7 +60,6 @@ export const StudentDashboardRoute: FC = () => {
         </List>
       </Grid>
       student dashboard
-      <Button onClick={getTribeById}>get tribe</Button>
     </Container>
   )
 }

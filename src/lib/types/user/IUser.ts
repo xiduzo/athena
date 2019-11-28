@@ -1,15 +1,18 @@
-import IGuid from '../IGuid'
+export enum Gender {
+  MALE = 0,
+  FEMALE = 1,
+}
 
-export interface IUser extends IGuid {
-  name: string
-  surname: string
+export interface IUser {
+  avatar_hash: string | null
+  email: string
+  first_name: string
+  gender: Gender
+  initials: string | null
   is_staff: boolean
-}
-
-export interface IStudent extends IUser {
-  studentNumber: number
-}
-
-export interface ILecturer extends IUser {
   is_superuser: boolean
+  student_number: number
+  surname: string
+  surname_prefix: string | null
+  id: string
 }

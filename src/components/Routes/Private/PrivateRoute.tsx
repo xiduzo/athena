@@ -5,10 +5,12 @@ import { useAuth } from 'src/lib/auth'
 interface IPrivateRoute {
   component: any
   path: string
+  exact: boolean
 }
 
 export const PrivateRoute: React.FC<IPrivateRoute> = ({ component: Component, ...rest }) => {
   const { token } = useAuth()
+  console.log(rest)
 
   return (
     <Route

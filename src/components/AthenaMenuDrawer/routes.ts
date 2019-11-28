@@ -3,19 +3,21 @@ import MenuBookIcon from '@material-ui/icons/MenuBook'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import PeopleIcon from '@material-ui/icons/People'
 import BubbleChartIcon from '@material-ui/icons/BubbleChart'
+import DialpadIcon from '@material-ui/icons/Dialpad'
 import { SvgIconProps } from '@material-ui/core/SvgIcon'
 
 import { StudentDashboardRoute } from 'src/routes/student/dashboard'
-import { CoordinatorAgreementsRoute } from 'src/routes/coordinator/agreements'
+import { AgreementsRoute } from 'src/routes/agreements'
 import { LoginRoute } from 'src/routes/account/login'
 import { SettingsRoute } from 'src/routes/account/settings'
-import { CoordinatorUsersRoute } from 'src/routes/coordinator/users'
-import { CoordinatorTribesRoute } from 'src/routes/coordinator/Tribes'
+import { UsersRoute } from 'src/routes/users'
+import { TribesRoute, TribeDetailRoute } from 'src/routes/tribes'
+import { SquadDetailRoute } from 'src/routes/squads/detail/Detail'
 
 export interface IRoute {
   name: string
   path: string
-  icon: (props: SvgIconProps) => JSX.Element
+  icon?: (props: SvgIconProps) => JSX.Element
   component: any
   private: boolean
   exact: boolean
@@ -25,30 +27,50 @@ export interface IRoute {
 const coordinatorRoutes: IRoute[] = [
   {
     name: 'Agreements',
-    path: '/coordinator/agreements',
+    path: '/agreements',
     icon: MenuBookIcon,
-    component: CoordinatorAgreementsRoute,
+    component: AgreementsRoute,
     private: true,
     exact: false,
     showInMenu: true,
   },
   {
     name: 'Users',
-    path: '/coordinator/users',
+    path: '/users',
     icon: PeopleIcon,
-    component: CoordinatorUsersRoute,
+    component: UsersRoute,
     private: true,
     exact: false,
     showInMenu: true,
   },
   {
     name: 'Tribes',
-    path: '/coordinator/tribes',
-    icon: BubbleChartIcon,
-    component: CoordinatorTribesRoute,
+    path: '/tribes',
+    icon: DialpadIcon,
+    component: TribesRoute,
     private: true,
-    exact: false,
+    exact: true,
     showInMenu: true,
+  },
+  {
+    name: 'Tribe detail',
+    path: '/tribes/:id',
+    component: TribeDetailRoute,
+    private: true,
+    exact: true,
+    showInMenu: false,
+  },
+]
+
+const lecturerRoutes: IRoute[] = [
+  {
+    name: 'Squad detail',
+    path: '/squads/:id',
+    icon: BubbleChartIcon,
+    component: SquadDetailRoute,
+    private: true,
+    exact: true,
+    showInMenu: false,
   },
 ]
 
@@ -85,4 +107,9 @@ const studentRoutes: IRoute[] = [
   },
 ]
 
-export const routes: IRoute[] = [...coordinatorRoutes, ...accountRoutes, ...studentRoutes]
+export const routes: IRoute[] = [
+  ...coordinatorRoutes,
+  ...lecturerRoutes,
+  ...studentRoutes,
+  ...accountRoutes,
+]

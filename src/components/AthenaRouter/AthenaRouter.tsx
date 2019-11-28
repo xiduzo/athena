@@ -6,11 +6,21 @@ import { IRoute, routes } from '../AthenaMenuDrawer/routes'
 
 export const AthenaRouter: FC = () => {
   const renderRoute = (route: IRoute) => (
-    <Route key={route.path} path={route.path} component={route.component}></Route>
+    <Route
+      key={route.path}
+      exact={route.exact}
+      path={route.path}
+      component={route.component}
+    ></Route>
   )
 
   const renderPrivateRoute = (route: IRoute) => (
-    <PrivateRoute key={route.path} path={route.path} component={route.component}></PrivateRoute>
+    <PrivateRoute
+      exact={route.exact}
+      key={route.path}
+      path={route.path}
+      component={route.component}
+    ></PrivateRoute>
   )
 
   return (

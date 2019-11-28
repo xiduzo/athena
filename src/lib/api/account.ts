@@ -1,26 +1,9 @@
 import * as request from 'superagent'
 
 import { BACKEND_URL, ACCOUNT_ENDPOINT, BEARER } from '../constants'
+import { IUser } from '../types/user'
 
-export enum Gender {
-  MALE = 0,
-  FEMALE = 1,
-}
-export interface IUser {
-  avatar_hash: string | null
-  email: string
-  first_name: string
-  gender: Gender
-  initials: string | null
-  is_staff: boolean
-  is_superuser: boolean
-  student_number: number
-  surname: string
-  surname_prefix: string | null
-  id: string
-}
-
-export const GetUsers = async (): Promise<any[]> => {
+export const GetUsers = async (): Promise<IUser[]> => {
   return request
     .get(`${BACKEND_URL}/${ACCOUNT_ENDPOINT}/users/`)
     .set('Authorization', BEARER)

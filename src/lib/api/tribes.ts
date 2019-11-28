@@ -1,8 +1,9 @@
 import * as request from 'superagent'
 import { BACKEND_URL, TRIBE_ENDPOINT, BEARER } from '../constants'
 import { ITribe } from '../types/tribe'
-
-const test_id = '25349a30-d90b-4453-8b74-8be7d132d3ae'
+import { IUser } from '../types/user'
+import { ISquad } from '../types/squad'
+import { ITeam, mapSquad } from './squads'
 
 export interface IWorld {
   course_duration: number
@@ -18,8 +19,8 @@ export interface IWorld {
 export const mapTribe = (world: IWorld): ITribe => {
   const tribe: ITribe = {
     guid: world.id,
-    leader: world.gamemasters,
-    squads: world.guilds,
+    leaders: world.gamemasters.map((gamemaster: any): IUser => gamemaster.user),
+    squads: world.guilds.map((team: ITeam): ISquad => mapSquad(team)),
     name: world.name,
   }
 
@@ -36,11 +37,11 @@ export const GetTribes = async (): Promise<ITribe[]> => {
     })
 }
 
-export const GetTribeById = async (): Promise<any> => {
+export const GetTribeById = async (id: string): Promise<ITribe> => {
   return request
-    .get(`${BACKEND_URL}/${TRIBE_ENDPOINT}/v2-worlds/${test_id}/`)
+    .get(`${BACKEND_URL}/${TRIBE_ENDPOINT}/v2-worlds/${id}/`)
     .set('Authorization', BEARER)
-    .then(response => response.body)
+    .then(response => mapTribe(response.body))
     .catch(error => {
       throw error
     })

@@ -1,9 +1,9 @@
-import { ILecturer } from '../user'
 import { ISquad } from '../squad'
+import { IUser } from '../user'
 
 export interface ITribe {
   guid: string
-  leader: ILecturer | ILecturer[]
+  leaders: IUser[]
   squads: ISquad[]
   name: string
 }
