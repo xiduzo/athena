@@ -3,21 +3,17 @@ import { useStyles } from './style'
 import { GetUsers } from 'src/lib/api'
 
 import AddIcon from '@material-ui/icons/Add'
-import {
-  Fab,
-  Container,
-  Grid,
-  Card,
-  CardHeader,
-  CardActionArea,
-  CardContent,
-} from '@material-ui/core'
-import { Avataaar } from 'src/components/Avataaar'
+import { Fab, Container, Grid } from '@material-ui/core'
 import { IUser } from 'src/lib/types/user'
+import { UserCard } from 'src/components/Molecules/UserCard'
+import { useHistory, useLocation } from 'react-router-dom'
 
 export const UsersRoute: FC = () => {
   const classes = useStyles()
   const [users, setUsers] = useState<any[]>([])
+
+  const location = useLocation()
+  const history = useHistory()
 
   useEffect(() => {
     GetUsers()
@@ -29,6 +25,10 @@ export const UsersRoute: FC = () => {
       })
   }, [])
 
+  const navigateToUser = (id: string) => {
+    history.push(`${location.pathname}/${id}`)
+  }
+
   return (
     <section className={classes.main}>
       <Fab color='primary' aria-label='New agreement' className={classes.fab}>
@@ -38,17 +38,7 @@ export const UsersRoute: FC = () => {
         <Grid container spacing={2} className={classes.userGrid}>
           {users.map((user: IUser) => (
             <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
-              <Card>
-                <CardActionArea>
-                  <CardHeader
-                    avatar={<Avataaar avatarStyle='Circle' />}
-                    title={`${user.first_name} ${user.surname_prefix || ''} ${user.surname}`}
-                    subheader={`${user.is_superuser && 'admin'} ${user.is_staff &&
-                      'lecturer'} ${!user.is_staff && 'student'}`}
-                  />
-                  <CardContent>general information</CardContent>
-                </CardActionArea>
-              </Card>
+              <UserCard user={user} onClick={() => navigateToUser(user.id)} />
             </Grid>
           ))}
         </Grid>

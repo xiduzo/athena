@@ -17,9 +17,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   main: {
     display: 'flex',
-  },
-  mainGrid: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(2, 0),
   },
   toolbar: {
     padding: theme.spacing(0, 1),

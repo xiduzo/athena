@@ -13,6 +13,8 @@ import { SettingsRoute } from 'src/routes/account/settings'
 import { UsersRoute } from 'src/routes/users'
 import { TribesRoute, TribeDetailRoute } from 'src/routes/tribes'
 import { SquadDetailRoute } from 'src/routes/squads/detail/Detail'
+import { SquadsRoute } from 'src/routes/squads'
+import { UserDetailRoute } from 'src/routes/users/detail/UserDetail'
 
 export interface IRoute {
   name: string
@@ -40,8 +42,17 @@ const coordinatorRoutes: IRoute[] = [
     icon: PeopleIcon,
     component: UsersRoute,
     private: true,
-    exact: false,
+    exact: true,
     showInMenu: true,
+  },
+  {
+    name: 'User detail',
+    path: '/users/:id',
+    icon: PeopleIcon,
+    component: UserDetailRoute,
+    private: true,
+    exact: true,
+    showInMenu: false,
   },
   {
     name: 'Tribes',
@@ -63,6 +74,15 @@ const coordinatorRoutes: IRoute[] = [
 ]
 
 const lecturerRoutes: IRoute[] = [
+  {
+    name: 'Squads',
+    path: '/squads',
+    icon: BubbleChartIcon,
+    component: SquadsRoute,
+    private: true,
+    exact: true,
+    showInMenu: true,
+  },
   {
     name: 'Squad detail',
     path: '/squads/:id',

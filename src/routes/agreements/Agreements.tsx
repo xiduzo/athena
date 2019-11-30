@@ -59,12 +59,7 @@ export const AgreementsRoute: FC = () => {
         <AddIcon />
       </Fab>
       <Container maxWidth='lg'>
-        <Grid container spacing={2} className={classes.mainGrid}>
-          <Grid item xs={12}>
-            <Typography component='h2' variant='h5'>
-              Agreements
-            </Typography>
-          </Grid>
+        <Grid container spacing={2}>
           {[...agreements].map((agreement: any, index) => (
             <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
               <Card>

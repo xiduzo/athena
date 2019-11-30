@@ -13,19 +13,12 @@ export const GetUsers = async (): Promise<IUser[]> => {
     })
 }
 
-// function getLecturers(world) {
-//   return $http({
-//     url: REST_API_URL + 'user/users/',
-//     method: 'GET',
-//     params: {
-//       is_staff: 1,
-//     },
-//   }).then(
-//     function(response) {
-//       return response.data
-//     },
-//     function(error) {
-//       return error
-//     }
-//   )
-// }
+export const GetUserById = async (id: string): Promise<IUser> => {
+  return request
+    .get(`${BACKEND_URL}/${ACCOUNT_ENDPOINT}/users/${id}/`)
+    .set('Authorization', BEARER)
+    .then(response => response.body)
+    .catch(error => {
+      throw error
+    })
+}

@@ -10,7 +10,6 @@ interface IPrivateRoute {
 
 export const PrivateRoute: React.FC<IPrivateRoute> = ({ component: Component, ...rest }) => {
   const { token } = useAuth()
-  console.log(rest)
 
   return (
     <Route
