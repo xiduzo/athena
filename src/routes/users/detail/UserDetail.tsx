@@ -57,7 +57,7 @@ export const UserDetailRoute: FC = () => {
               <Paper className={classes.userInfo}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <Typography variant="h5">
+                    <Typography variant="h4" align="center">
                       {`${user.first_name} ${user.surname_prefix || ''} ${user.surname}`}
                     </Typography>
                   </Grid>

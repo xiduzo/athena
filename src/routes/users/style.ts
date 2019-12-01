@@ -13,8 +13,8 @@ export const useStyles = makeStyles((theme: Theme) => {
     main: {
       padding: theme.spacing(2, 0, 12, 0),
     },
-    userGrid: {
-      // paddingBottom: theme.spacing(12),
+    avatar: {
+      background: theme.palette.grey[100],
     },
     pagerBox: {
       padding: theme.spacing(2),
