@@ -40,33 +40,8 @@ export const UsersRoute: FC = () => {
       <Container maxWidth="lg">
         <Grid container spacing={2}>
           {loading &&
-            [
-              1,
-              2,
-              3,
-              4,
-              5,
-              6,
-              7,
-              8,
-              9,
-              10,
-              11,
-              12,
-              13,
-              14,
-              15,
-              16,
-              17,
-              18,
-              19,
-              20,
-              21,
-              22,
-              23,
-              34,
-            ].map((item: number) => (
-              <Grid key={item} item xs={12} sm={6} md={4} lg={3}>
+            [ ...new Array(24) ].map((_, index: number) => (
+              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                 <UserCardMock />
               </Grid>
             ))}
