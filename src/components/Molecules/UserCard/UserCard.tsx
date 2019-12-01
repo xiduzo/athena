@@ -9,12 +9,11 @@ export const UserCard: FC<IUserCard> = ({ user, onClick }) => {
   }
   return (
     <Card>
-      <CardActionArea onClick={onClickHandler}>
+      <CardActionArea onClick={onClickHandler} disabled={onClick ? false : true}>
         <CardHeader
-          avatar={<Avataaar avatarStyle='Circle' />}
+          avatar={<Avataaar avatarStyle="Circle" />}
           title={`${user.first_name} ${user.surname_prefix || ''} ${user.surname}`}
-          subheader={`${user.is_superuser && 'admin'} ${user.is_staff &&
-            'lecturer'} ${!user.is_staff && 'student'}`}
+          subheader={`${user.is_superuser && 'admin'} ${user.is_staff && 'lecturer'} ${!user.is_staff && 'student'}`}
         />
         <CardContent>general information</CardContent>
       </CardActionArea>

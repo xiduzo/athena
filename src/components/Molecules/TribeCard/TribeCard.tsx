@@ -9,7 +9,7 @@ export const TribeCard: FC<ITribeCard> = ({ tribe, onClick }) => {
 
   return (
     <Card>
-      <CardActionArea onClick={onClickHandler}>
+      <CardActionArea onClick={onClickHandler} disabled={onClick ? false : true}>
         <CardHeader avatar={'K'} title={`${tribe.name}`} />
       </CardActionArea>
     </Card>

@@ -3,6 +3,7 @@ import { GetSquads } from 'src/lib/api'
 import { ISquad } from 'src/lib/types/squad'
 import { Container, Grid, makeStyles, Theme } from '@material-ui/core'
 import { SquadCard } from 'src/components/Molecules/SquadCard'
+import { useHistory, useLocation } from 'react-router-dom'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -20,7 +21,10 @@ const useStyles = makeStyles((theme: Theme) => {
 
 export const SquadsRoute: FC = () => {
   const classes = useStyles()
-  const [squads, setSquads] = useState<ISquad[]>([])
+  const [ squads, setSquads ] = useState<ISquad[]>([])
+
+  const location = useLocation()
+  const history = useHistory()
 
   useEffect(() => {
     GetSquads()
@@ -32,13 +36,17 @@ export const SquadsRoute: FC = () => {
       })
   }, [])
 
+  const navigateToSquad = (id: string) => {
+    history.push(`${location.pathname}/${id}`)
+  }
+
   return (
     <section className={classes.main}>
       <Container maxWidth={`lg`}>
         <Grid container spacing={2}>
           {squads.map((squad: ISquad) => (
             <Grid key={squad.guid} item xs={3}>
-              <SquadCard squad={squad} />
+              <SquadCard squad={squad} onClick={() => navigateToSquad(squad.guid)} />
             </Grid>
           ))}
         </Grid>
