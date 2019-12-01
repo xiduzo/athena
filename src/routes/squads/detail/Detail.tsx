@@ -11,22 +11,26 @@ interface ISquadDetailRouteParams {
 }
 
 export const SquadDetailRoute: FC = () => {
-  const [squad, setSquad] = useState<ISquad>()
+  const [ squad, setSquad ] = useState<ISquad>()
 
   const { id } = useParams<ISquadDetailRouteParams>()
 
-  useEffect(() => {
-    GetSquadById(id)
-      .then((response: ISquad) => {
-        setSquad(response)
-        console.log(response)
-      })
-      .catch((error: any) => {
-        console.log(error)
-      })
-  }, [id])
+  useEffect(
+    () => {
+      GetSquadById(id)
+        .then((response: ISquad) => {
+          setSquad(response)
+          console.log(response)
+        })
+        .catch((error: any) => {
+          console.log(error)
+        })
+    },
+    [ id ]
+  )
+
   return (
-    <Container maxWidth='lg'>
+    <Container maxWidth="lg">
       <h1>squad detail</h1>
       {squad && (
         <Grid container spacing={2}>
