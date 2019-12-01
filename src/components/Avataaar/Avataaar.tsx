@@ -2,6 +2,8 @@ import React, { FC } from 'react'
 import { IAvataaar } from './interface'
 import LazyLoad from 'react-lazyload'
 
+import { Avatar as ReactAvatar, makeStyles, Theme } from '@material-ui/core'
+
 import Avatar from 'avataaars'
 import { TopType } from './enums/TopType'
 import { AccessoriesType } from './enums/AccessoriesType'
@@ -15,11 +17,12 @@ import { EyeType } from './enums/EyeType'
 import { EyebrowType } from './enums/EyebrowType'
 import { MouthType } from './enums/MouthType'
 import { SkinColor } from './enums/SkinColor'
+import Skeleton from '@material-ui/lab/Skeleton'
 
 const getRandomAvatar = (): IAvataaar => {
   return {
     avatarStyle: 'Circle',
-    style: { width: '60px', height: '60px' },
+    style: { width: '45px', height: '45px' },
     topType: TopType[Object.keys(TopType)[Math.floor(Math.random() * Object.keys(TopType).length)]],
     accessoriesType:
       AccessoriesType[Object.keys(AccessoriesType)[Math.floor(Math.random() * Object.keys(AccessoriesType).length)]],
@@ -37,8 +40,17 @@ const getRandomAvatar = (): IAvataaar => {
     skinColor: SkinColor[Object.keys(SkinColor)[Math.floor(Math.random() * Object.keys(SkinColor).length)]],
   }
 }
+export const useStyles = makeStyles((theme: Theme) => {
+  return {
+    avatar: {
+      background: theme.palette.grey[100],
+    },
+  }
+})
 
 export const Avataaar: FC<IAvataaar> = (props) => {
+  const classes = useStyles()
+
   const randomAvatar = getRandomAvatar()
   const avatar: IAvataaar = {
     ...randomAvatar,
@@ -46,7 +58,14 @@ export const Avataaar: FC<IAvataaar> = (props) => {
   }
 
   return (
-    <LazyLoad height={60}>
+    <LazyLoad
+      height={60}
+      placeholder={
+        <ReactAvatar className={classes.avatar}>
+          <Skeleton variant="circle" />
+        </ReactAvatar>
+      }
+    >
       <Avatar {...avatar} />
     </LazyLoad>
   )

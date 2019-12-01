@@ -49,7 +49,7 @@ export const TribeDetailRoute: FC = () => {
               <Typography variant="h4">{tribe.name}</Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h5">Leader</Typography>
+              <Typography variant="h5">Leaders</Typography>
             </Grid>
             {tribe.leaders.map((user: IUser) => (
               <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
