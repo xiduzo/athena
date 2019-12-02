@@ -18,11 +18,12 @@ import { EyebrowType } from './enums/EyebrowType'
 import { MouthType } from './enums/MouthType'
 import { SkinColor } from './enums/SkinColor'
 import Skeleton from '@material-ui/lab/Skeleton'
+import { lightBlue } from '@material-ui/core/colors'
 
 const getRandomAvatar = (): IAvataaar => {
   return {
     avatarStyle: 'Circle',
-    style: { width: '45px', height: '45px' },
+    style: { width: '50px', height: '50px' },
     topType: TopType[Object.keys(TopType)[Math.floor(Math.random() * Object.keys(TopType).length)]],
     accessoriesType:
       AccessoriesType[Object.keys(AccessoriesType)[Math.floor(Math.random() * Object.keys(AccessoriesType).length)]],
@@ -40,14 +41,23 @@ const getRandomAvatar = (): IAvataaar => {
     skinColor: SkinColor[Object.keys(SkinColor)[Math.floor(Math.random() * Object.keys(SkinColor).length)]],
   }
 }
-export const useStyles = makeStyles((theme: Theme) => {
+const avatarCircleColor: string = lightBlue[100]
+export const useStyles = makeStyles((_: Theme) => {
   return {
+    avatarLazy: {
+      background: avatarCircleColor,
+      width: '50px',
+      height: '53px',
+    },
     avatar: {
-      background: theme.palette.grey[100],
+      '& #Circle': {
+        '& g': {
+          fill: avatarCircleColor,
+        },
+      },
     },
   }
 })
-
 export const Avataaar: FC<IAvataaar> = (props) => {
   const classes = useStyles()
 
@@ -61,12 +71,14 @@ export const Avataaar: FC<IAvataaar> = (props) => {
     <LazyLoad
       height={60}
       placeholder={
-        <ReactAvatar className={classes.avatar}>
+        <ReactAvatar className={classes.avatarLazy}>
           <Skeleton variant="circle" />
         </ReactAvatar>
       }
     >
-      <Avatar {...avatar} />
+      <div className={classes.avatar}>
+        <Avatar {...avatar} />
+      </div>
     </LazyLoad>
   )
 }

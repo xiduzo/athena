@@ -1,5 +1,4 @@
-import green from '@material-ui/core/colors/green'
-import amber from '@material-ui/core/colors/amber'
+import { yellow, grey } from '@material-ui/core/colors'
 import { createMuiTheme, Theme, ThemeProvider } from '@material-ui/core/styles'
 
 import React, { FC, useState, createContext, useContext, ReactNode } from 'react'
@@ -13,8 +12,8 @@ interface IThemeContext {
 const localThemeStyle = localStorage.getItem('themeStyle') === 'dark' ? 'dark' : 'light'
 const initial_theme_options: ThemeOptions = {
   palette: {
-    primary: amber,
-    secondary: green,
+    primary: yellow,
+    secondary: grey,
     type: localThemeStyle,
   },
 }
@@ -25,7 +24,7 @@ const AthenaThemeContext = createContext<IThemeContext>({
 })
 
 const useThemeHandler = () => {
-  const [theme, setNewTheme] = useState<ThemeOptions>(initial_theme_options)
+  const [ theme, setNewTheme ] = useState<ThemeOptions>(initial_theme_options)
 
   const setTheme = (newTheme: ThemeOptions) => {
     newTheme.palette && localStorage.setItem('themeStyle', newTheme.palette.type as string)
