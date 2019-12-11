@@ -17,7 +17,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   root: {
     display: 'flex',
-    padding: theme.spacing(2, 0),
+    padding: theme.spacing(2, 0, 12, 0),
   },
   toolbar: {
     ...theme.mixins.toolbar,
