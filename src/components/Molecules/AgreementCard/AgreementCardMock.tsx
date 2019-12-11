@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Card, CardHeader, Avatar, CardContent, Typography, makeStyles, Theme } from '@material-ui/core'
+import { Card, CardHeader, Avatar, CardContent, Typography } from '@material-ui/core'
 import Skeleton from '@material-ui/lab/Skeleton'
 import { AgreementCardClasses } from './AgreementCard'
 import Brightness1Icon from '@material-ui/icons/Brightness1'

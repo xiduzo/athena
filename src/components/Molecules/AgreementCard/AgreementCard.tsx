@@ -10,7 +10,10 @@ interface IAgreementCard {
 
 export const AgreementCardClasses = makeStyles((theme: Theme) => ({
   agreementAvatar: {
-    background: theme.palette.secondary.main,
+    background: 'none',
+    '& svg': {
+      fill: theme.palette.secondary.contrastText,
+    },
   },
   card: {
     display: 'flex',
@@ -35,6 +38,7 @@ export const AgreementCardClasses = makeStyles((theme: Theme) => ({
 
 export const AgreementCard: FC<IAgreementCard> = ({ agreement, onClick }) => {
   const classes = AgreementCardClasses()
+
   const onClickHandler = () => {
     onClick && onClick()
   }

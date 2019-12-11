@@ -1,4 +1,4 @@
-import { yellow, grey } from '@material-ui/core/colors'
+import { amber, grey } from '@material-ui/core/colors'
 import { createMuiTheme, Theme, ThemeProvider } from '@material-ui/core/styles'
 
 import React, { FC, useState, createContext, useContext, ReactNode } from 'react'
@@ -12,7 +12,7 @@ interface IThemeContext {
 const localThemeStyle = localStorage.getItem('themeStyle') === 'dark' ? 'dark' : 'light'
 const initial_theme_options: ThemeOptions = {
   palette: {
-    primary: yellow,
+    primary: amber,
     secondary: grey,
     type: localThemeStyle,
   },

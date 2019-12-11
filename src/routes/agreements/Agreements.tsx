@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState, ChangeEvent } from 'react'
 import { useStyles } from './style'
 
 import { Container, Grid, Typography, Drawer, Fab, TextField } from '@material-ui/core'
@@ -7,19 +7,30 @@ import { IAgreement } from 'src/lib/types/agreement'
 
 import { GetAgreements } from 'src/lib/api'
 import { AgreementCard, AgreementCardMock } from 'src/components/Molecules/AgreementCard'
+import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
+
+import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
 
 export const AgreementsRoute: FC = () => {
   const classes = useStyles()
   const [ agreements, setAgreements ] = useState<IAgreement[]>([])
+  const [ filteredAgreements, setFilteredAgreements ] = useState<IAgreement[]>([])
   const [ loading, setLoading ] = useState<boolean>(false)
+
+  const filterAgreements = (event: ChangeEvent<HTMLInputElement>) => {
+    const filter: string = event.target.value
+    const newAgreements = agreements.filter((agreement: IAgreement) => agreement.text.includes(filter))
+
+    setFilteredAgreements(newAgreements)
+  }
 
   useEffect(() => {
     setLoading(true)
-    // console.log(setAgreements, agreements)
     GetAgreements()
       .then((response: IAgreement[]) => {
         setLoading(false)
         setAgreements(response)
+        setFilteredAgreements(response)
       })
       .catch((error: any) => {
         console.log(error)
@@ -27,7 +38,7 @@ export const AgreementsRoute: FC = () => {
   }, [])
 
   return (
-    <section className={classes.main}>
+    <section className={classes.root}>
       <Fab color="primary" aria-label="New agreement" className={classes.fab}>
         <AddIcon />
       </Fab>
@@ -40,7 +51,17 @@ export const AgreementsRoute: FC = () => {
               </Grid>
             ))}
           {!loading &&
-            agreements.map((agreement: any, index) => (
+          !filteredAgreements.length && (
+            <Grid item={true} xs={12}>
+              <EmptyState
+                title={`Ooops...`}
+                subtitle={`No agreements found`}
+                image={<Illustration type={Illustrations.empty} />}
+              />
+            </Grid>
+          )}
+          {!loading &&
+            filteredAgreements.map((agreement: any, index) => (
               <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                 <AgreementCard agreement={agreement} />
               </Grid>
@@ -64,7 +85,7 @@ export const AgreementsRoute: FC = () => {
           label="Name"
           // className={classes.textField}
           margin="normal"
-          // onChange={filterHandler}
+          onChange={filterAgreements}
         />
       </Drawer>
     </section>
