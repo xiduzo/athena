@@ -1,6 +1,9 @@
 import * as request from 'superagent'
+import { Dispatch } from 'react'
 import { BACKEND_URL, AGREEMENTS_ENDPOINT, BEARER } from '../constants'
 import { IAgreement } from '../types/agreement'
+import { IAction } from '../redux'
+import { SET_AGREEMENTS } from '../redux/agreements/agreementsReducer'
 
 export interface IRule {
   rule_type: number
@@ -21,11 +24,16 @@ export const mapAgreement = (rule: IRule): IAgreement => {
   return agreement
 }
 
-export const GetAgreements = async (): Promise<IAgreement[]> => {
-  return request
+export const getAgreements = () => (dispatch: Dispatch<IAction>) => {
+  request
     .get(`${BACKEND_URL}/${AGREEMENTS_ENDPOINT}/rules/`)
     .set('Authorization', BEARER)
-    .then(response => response.body.map((rule: IRule) => mapAgreement(rule)))
+    .then(response =>
+      dispatch({
+        type: SET_AGREEMENTS,
+        payload: response.body.map((rule: IRule) => mapAgreement(rule)),
+      })
+    )
     .catch(error => {
       throw error
     })

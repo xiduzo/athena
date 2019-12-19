@@ -11,17 +11,17 @@ export const AgreementCardMock: FC = () => {
       <CardHeader
         className={classes.cardHeader}
         avatar={
-          <Avatar aria-label="agreement" className={classes.agreementAvatar}>
+          <Avatar aria-label='agreement' className={classes.agreementAvatar}>
             <Brightness1Icon />
           </Avatar>
         }
       />
       <CardContent className={classes.cardContent}>
-        <Typography variant="caption" color="textSecondary" gutterBottom>
-          <Skeleton variant="text" />
+        <Typography variant='caption' gutterBottom>
+          <Skeleton variant='text' />
         </Typography>
-        <Typography variant="subtitle1">
-          <Skeleton variant="text" />
+        <Typography variant='subtitle1'>
+          <Skeleton variant='text' />
         </Typography>
       </CardContent>
     </Card>

@@ -51,5 +51,12 @@ export const useStyles = makeStyles((theme: Theme) => {
     drawerToggleButtonOpen: {
       justifyContent: 'flex-end',
     },
+    navLink: {
+      '& .active': {
+        // TODO: add active state
+        background: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+      },
+    },
   }
 })

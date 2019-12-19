@@ -12,28 +12,28 @@ import {
   Tooltip,
 } from '@material-ui/core'
 
-import { Link, LinkProps } from 'react-router-dom'
+import { NavLink, LinkProps } from 'react-router-dom'
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import { routes, IRoute } from './routes'
 
-export const AthenaMenuDrawer: FC = () => {
-  const [menuOpen, setMenuOpen] = useState<boolean>(false)
+const AdapterLink = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
+  <NavLink innerRef={ref as any} {...props} />
+))
 
+export const AthenaMenuDrawer: FC = () => {
   const classes = useStyles()
+
+  const [menuOpen, setMenuOpen] = useState<boolean>(false)
 
   const toggleMenuDrawer = () => {
     localStorage.setItem('menuState', JSON.stringify(!menuOpen))
     setMenuOpen(!menuOpen)
   }
 
-  const AdapterLink = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
-    <Link innerRef={ref as any} {...props} />
-  ))
-
   useEffect(() => {
-    const localState = localStorage.getItem('menuState') === 'true' ? true : false
+    const localState = JSON.parse(localStorage.getItem('menuState') as string)
     setMenuOpen(localState)
   }, [setMenuOpen])
 
@@ -63,7 +63,13 @@ export const AthenaMenuDrawer: FC = () => {
                 placement='right'
                 enterDelay={!menuOpen ? 350 : 1000 * 60}
               >
-                <ListItem button key={route.path} component={AdapterLink} to={route.path}>
+                <ListItem
+                  button
+                  key={route.path}
+                  component={AdapterLink}
+                  to={route.path}
+                  className={classes.navLink}
+                >
                   <ListItemIcon className={classes.ListItemIcon}>
                     <Icon component={route.icon} />
                   </ListItemIcon>
