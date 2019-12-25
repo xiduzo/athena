@@ -43,18 +43,14 @@ export const AgreementsRoute: FC = () => {
       <Container maxWidth='lg'>
         <Grid container spacing={2}>
           {loading &&
-            [...new Array(24)].map((_, index: number) => (
+            [ ...new Array(48) ].map((_, index: number) => (
               <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                 <AgreementCardMock />
               </Grid>
             ))}
           {!loading && !agreements.length && (
             <Grid item={true} xs={12}>
-              <EmptyState
-                title={`Ooops...`}
-                subtitle={`No agreements found`}
-                image={<Illustration type={Illustrations.empty} />}
-              />
+              <EmptyState title={`No agreements found`} image={<Illustration type={Illustrations.empty} />} />
             </Grid>
           )}
           {!loading &&
