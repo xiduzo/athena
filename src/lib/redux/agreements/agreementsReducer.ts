@@ -1,30 +1,26 @@
 import { IAgreement } from 'src/lib/types/agreement'
+import { Status, IAction } from '../IRootReducer'
 
-export const SET_AGREEMENTS = 'SET_AGREEMENTS'
+export enum AgreementActions {
+  setAgreements = 'setAgreements',
+}
 
 export interface IAgreementsState {
-  status: string
+  status: Status
   items: IAgreement[]
 }
 
-export interface IAction {
-  type: string
-  payload: any
-}
-
 const initial_state: IAgreementsState = {
-  status: 'loading',
+  status: Status.loading,
   items: [],
 }
 
-export const agreementsReducer = (
-  state: IAgreementsState = initial_state,
-  action: IAction
-): IAgreementsState => {
+export const agreementsReducer = (state: IAgreementsState = initial_state, action: IAction): IAgreementsState => {
   switch (action.type) {
-    case SET_AGREEMENTS:
+    case AgreementActions.setAgreements:
       return {
         ...state,
+        status: Status.success,
         items: action.payload,
       }
     default:

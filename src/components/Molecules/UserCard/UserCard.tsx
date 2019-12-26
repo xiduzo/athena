@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { IUserCard } from './interface'
 import { Card, CardActionArea, CardHeader, CardContent } from '@material-ui/core'
-import { Avataaar } from '../../Avataaar'
+import { Avataaar } from 'src/components/Atoms/Avataaar'
 
 export const UserCard: FC<IUserCard> = ({ user, onClick }) => {
   const onClickHandler = () => {

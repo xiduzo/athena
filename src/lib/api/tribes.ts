@@ -4,6 +4,9 @@ import { ITribe } from '../types/tribe'
 import { IUser } from '../types/user'
 import { ISquad } from '../types/squad'
 import { ITeam, mapSquad } from './squads'
+import { Dispatch } from 'react'
+import { TribeActions } from '../redux/tribes/tribesReducer'
+import { IAction } from '../redux/IRootReducer'
 
 export interface IWorld {
   course_duration: number
@@ -27,12 +30,17 @@ export const mapTribe = (world: IWorld): ITribe => {
   return tribe
 }
 
-export const GetTribes = async (): Promise<ITribe[]> => {
-  return request
+export const getTribes = () => (dispatch: Dispatch<IAction>) => {
+  request
     .get(`${BACKEND_URL}/${TRIBE_ENDPOINT}/v2-worlds/`)
     .set('Authorization', BEARER)
-    .then(response => response.body.map((world: IWorld) => mapTribe(world)))
-    .catch(error => {
+    .then((response) =>
+      dispatch({
+        type: TribeActions.setTribes,
+        payload: response.body.map((world: IWorld) => mapTribe(world)),
+      })
+    )
+    .catch((error) => {
       throw error
     })
 }
@@ -41,8 +49,8 @@ export const GetTribeById = async (id: string): Promise<ITribe> => {
   return request
     .get(`${BACKEND_URL}/${TRIBE_ENDPOINT}/v2-worlds/${id}/`)
     .set('Authorization', BEARER)
-    .then(response => mapTribe(response.body))
-    .catch(error => {
+    .then((response) => mapTribe(response.body))
+    .catch((error) => {
       throw error
     })
 }

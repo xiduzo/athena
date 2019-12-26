@@ -3,7 +3,7 @@ import { IUser } from 'src/lib/types/user'
 import { useParams } from 'react-router'
 import { GetUserById } from 'src/lib/api'
 import { Container, Grid, Paper, makeStyles, Theme, Typography } from '@material-ui/core'
-import { Avataaar } from 'src/components/Avataaar'
+import { Avataaar } from 'src/components/Atoms/Avataaar'
 
 interface IUserDetailRouteParams {
   id: string

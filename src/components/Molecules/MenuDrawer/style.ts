@@ -52,7 +52,7 @@ export const useStyles = makeStyles((theme: Theme) => {
       justifyContent: 'flex-end',
     },
     navLink: {
-      '& .active': {
+      '&.active': {
         // TODO: add active state
         background: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,

@@ -22,4 +22,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   toolbar: {
     ...theme.mixins.toolbar,
   },
+  fieldset: {
+    marginBottom: theme.spacing(2),
+  },
 }))

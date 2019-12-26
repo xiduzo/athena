@@ -1,9 +1,9 @@
 import React from 'react'
 import { CssBaseline, makeStyles, Theme } from '@material-ui/core'
 import { useSelector } from 'react-redux'
-import { AthenaAppBar } from './components/AthenaAppBar'
-import { AthenaMenuDrawer } from './components/AthenaMenuDrawer'
-import { AthenaRouter } from './components/AthenaRouter'
+import { AppBar } from './components/Molecules/AppBar'
+import { MenuDrawer } from './components/Molecules/MenuDrawer'
+import { Routes } from './components/Routes'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { IRootReducer } from './lib/redux'
 import { AthenaAuthProvider } from './lib/auth'
@@ -38,13 +38,13 @@ const App: React.FC = () => {
         <AthenaAuthProvider>
           <Router>
             <CssBaseline />
-            <AthenaAppBar />
-            <AthenaMenuDrawer />
+            <AppBar />
+            <MenuDrawer />
             <main className={classes.content}>
               <div className={classes.toolbar} />
               {/* TODO: add breadcrumbs? */}
               {/* <Suspense fallback={'loading'}> */}
-              <AthenaRouter />
+              <Routes />
               {/* </Suspense> */}
             </main>
           </Router>

@@ -5,16 +5,16 @@ import PeopleIcon from '@material-ui/icons/People'
 import BubbleChartIcon from '@material-ui/icons/BubbleChart'
 import DialpadIcon from '@material-ui/icons/Dialpad'
 import { SvgIconProps } from '@material-ui/core/SvgIcon'
-
-import { StudentDashboardRoute } from 'src/routes/student/dashboard'
-import { AgreementsRoute } from 'src/routes/agreements'
-import { LoginRoute } from 'src/routes/account/login'
-import { SettingsRoute } from 'src/routes/account/settings'
-import { UsersRoute } from 'src/routes/users'
-import { TribesRoute, TribeDetailRoute } from 'src/routes/tribes'
-import { SquadDetailRoute } from 'src/routes/squads/detail/Detail'
-import { SquadsRoute } from 'src/routes/squads'
-import { UserDetailRoute } from 'src/routes/users/detail/UserDetail'
+import { AgreementsRoute } from 'src/modules/agreements/scenes/overview'
+import { UsersRoute } from 'src/modules/users'
+import { UserDetailRoute } from 'src/modules/users/detail/UserDetail'
+import { SquadsRoute } from 'src/modules/squads'
+import { SquadDetailRoute } from 'src/modules/squads/detail/Detail'
+import { SettingsRoute } from 'src/modules/account/settings'
+import { LoginRoute } from 'src/modules/account/login'
+import { StudentDashboardRoute } from 'src/modules/student/dashboard'
+import { TribesRoute } from 'src/modules/tribes/scenes/overview'
+import { TribeDetailRoute } from 'src/modules/tribes/scenes/detail'
 
 export interface IRoute {
   name: string
@@ -127,9 +127,4 @@ const studentRoutes: IRoute[] = [
   },
 ]
 
-export const routes: IRoute[] = [
-  ...coordinatorRoutes,
-  ...lecturerRoutes,
-  ...studentRoutes,
-  ...accountRoutes,
-]
+export const routes: IRoute[] = [ ...coordinatorRoutes, ...lecturerRoutes, ...studentRoutes, ...accountRoutes ]

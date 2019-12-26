@@ -1,8 +1,8 @@
-import * as actions from './actions'
+import { UserActions } from './actions'
 import { IUser } from 'src/lib/types/user'
 
 interface UserLoginAction {
-  type: typeof actions.USER_LOGIN
+  type: UserActions.userLogin
   payload: IUser
 }
 
