@@ -72,7 +72,7 @@ export const AgreementsRoute: FC = () => {
         <Grid container spacing={2}>
           {agreements.status === Status.loading &&
             [ ...new Array(48) ].map((_, index: number) => (
-              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+              <Grid key={index} item xs={12} md={6} lg={4} xl={3}>
                 <AgreementCardMock />
               </Grid>
             ))}
@@ -84,7 +84,7 @@ export const AgreementsRoute: FC = () => {
           )}
           {agreements.status !== Status.loading &&
             filteredAgreements.map((agreement: IAgreement) => (
-              <Grid key={agreement.guid} item xs={12} sm={6} md={4} lg={3}>
+              <Grid key={agreement.guid} item xs={12} md={6} lg={4} xl={3}>
                 <AgreementCard agreement={agreement} />
               </Grid>
             ))}

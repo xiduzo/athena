@@ -8,6 +8,7 @@ import { NavLink, LinkProps } from 'react-router-dom'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import { routes, IRoute } from '../../Routes/links'
+import { useWidth } from 'src/lib/hooks/useWidth'
 
 const AdapterLink = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
   <NavLink innerRef={ref as any} {...props} />
@@ -15,6 +16,8 @@ const AdapterLink = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
 
 export const MenuDrawer: FC = () => {
   const classes = useStyles()
+
+  const width = useWidth()
 
   const [ menuOpen, setMenuOpen ] = useState<boolean>(false)
 
@@ -33,7 +36,7 @@ export const MenuDrawer: FC = () => {
 
   return (
     <Drawer
-      variant="permanent"
+      variant={width !== 'xs' ? 'permanent' : 'temporary'}
       className={clsx(classes.drawer, {
         [classes.drawerOpen]: menuOpen,
         [classes.drawerClose]: !menuOpen,

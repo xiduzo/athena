@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { CssBaseline, makeStyles, Theme } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { AppBar } from './components/Molecules/AppBar'
@@ -20,8 +20,17 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'flex',
     },
     toolbar: {
-      padding: theme.spacing(0, 1),
+      [theme.breakpoints.up('sm')]: {
+        ...theme.mixins.toolbar,
+        padding: theme.spacing(0, 1),
+      },
+    },
+    toolbarBottom: {
       ...theme.mixins.toolbar,
+      [theme.breakpoints.down('xs')]: {
+        ...theme.mixins.toolbar,
+        padding: theme.spacing(0, 1),
+      },
     },
   }
 })
@@ -30,7 +39,6 @@ const App: React.FC = () => {
   const classes = useStyles()
 
   const global = useSelector((state: IRootReducer) => state.global)
-  console.log(global)
 
   return (
     <AthenaThemeProvider>
@@ -43,9 +51,10 @@ const App: React.FC = () => {
             <main className={classes.content}>
               <div className={classes.toolbar} />
               {/* TODO: add breadcrumbs? */}
-              {/* <Suspense fallback={'loading'}> */}
-              <Routes />
-              {/* </Suspense> */}
+              <Suspense fallback={'loading'}>
+                <Routes />
+              </Suspense>
+              <div className={classes.toolbarBottom} />
             </main>
           </Router>
         </AthenaAuthProvider>
