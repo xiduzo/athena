@@ -1,6 +1,8 @@
 import React, { FC } from 'react'
 import { useTheme } from 'src/lib/theme'
-import { Button } from '@material-ui/core'
+import { Button, Container, Paper, FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@material-ui/core'
+
+import i18n from 'i18next'
 
 export const SettingsRoute: FC = () => {
   const { theme, setTheme } = useTheme()
@@ -10,9 +12,24 @@ export const SettingsRoute: FC = () => {
     setTheme({ palette: { ...theme.palette, type: newThemeStyle } })
   }
 
+  const handleChange = (event: any) => i18n.changeLanguage(event.target.value)
+
   return (
-    <>
-      <Button onClick={toggleDarkMode}>Toggle dark mode</Button>
-    </>
+    <Container maxWidth="lg">
+      <Paper>
+        <FormControl>
+          <InputLabel id="language-select">Language</InputLabel>
+          <Select value={i18n.language || 'en'} onChange={handleChange}>
+            {i18n.languages &&
+              i18n.languages.map((language) => (
+                <MenuItem value={language} key={language}>
+                  {language}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+        <Button onClick={toggleDarkMode}>Toggle dark mode</Button>
+      </Paper>
+    </Container>
   )
 }
