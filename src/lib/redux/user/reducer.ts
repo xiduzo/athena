@@ -8,6 +8,7 @@ export const userReducer = (state: IUserState = initial_state, action: UserActio
   switch (action.type) {
     case UserActions.userLogin:
       const { payload } = action
+      console.log(payload)
       return state
     default:
       return state

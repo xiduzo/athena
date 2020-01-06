@@ -39,6 +39,7 @@ const App: React.FC = () => {
   const classes = useStyles()
 
   const global = useSelector((state: IRootReducer) => state.global)
+  console.log(global)
 
   return (
     <AthenaThemeProvider>

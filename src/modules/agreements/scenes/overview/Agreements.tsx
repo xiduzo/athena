@@ -13,6 +13,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Zoom,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import { IAgreement } from 'src/lib/types/agreement'
@@ -26,6 +27,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IRootReducer, Status, IAction } from 'src/lib/redux'
 import { IAgreementsState } from 'src/lib/redux/agreements/agreementsReducer'
 import { AgreementType } from 'src/lib/enums'
+import { NewAgreementModal } from './components/newAgreementModal'
 
 export const AgreementsRoute: FC = () => {
   const classes = useStyles()
@@ -35,6 +37,7 @@ export const AgreementsRoute: FC = () => {
   const [ filteredAgreements, setFilteredAgreements ] = useState<IAgreement[]>([])
   const [ filterByText, setFilterByText ] = useState('')
   const [ filterByType, setFilterByType ] = useState(`-1`)
+  const [ modalOpen, setModalOpen ] = useState(false)
 
   useEffect(
     () => {
@@ -63,11 +66,24 @@ export const AgreementsRoute: FC = () => {
     [ agreements.items ]
   )
 
+  const handleClose = () => {
+    console.log(true)
+    setModalOpen(!modalOpen)
+  }
+
   return (
     <section className={classes.root}>
-      <Fab color="primary" aria-label="New agreement" className={classes.fab}>
-        <AddIcon />
-      </Fab>
+      <Zoom in={!modalOpen} style={{ transitionDelay: '200ms' }}>
+        <Fab
+          color="primary"
+          aria-label="New agreement"
+          className={classes.fab}
+          onClick={() => setModalOpen(!modalOpen)}
+        >
+          <AddIcon />
+        </Fab>
+      </Zoom>
+      <NewAgreementModal isOpen={modalOpen} onClose={handleClose} />
       <Container maxWidth="lg">
         <Grid container spacing={2}>
           {agreements.status === Status.loading &&

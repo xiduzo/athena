@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/styles'
 
 import { Theme } from '@material-ui/core'
+import { fade } from '@material-ui/core/styles'
 
 const drawerWidth = 240
 
@@ -52,10 +53,22 @@ export const useStyles = makeStyles((theme: Theme) => {
       justifyContent: 'flex-end',
     },
     navLink: {
+      borderRight: '2px solid transparent',
+      transition: theme.transitions.create([ 'borderColor', 'background' ], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
       '&.active': {
         // TODO: add active state
-        background: theme.palette.primary.main,
+        borderColor: theme.palette.primary.main,
+        background: fade(theme.palette.primary.main, 0.25),
         color: theme.palette.primary.contrastText,
+      },
+      '&:not(.active):hover': {
+        borderColor: theme.palette.grey[300],
+      },
+      '&:not(.active):focus': {
+        borderColor: theme.palette.grey[400],
       },
     },
   }

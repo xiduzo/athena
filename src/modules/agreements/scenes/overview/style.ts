@@ -13,7 +13,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     bottom: 0,
     right: drawerWidth,
     margin: theme.spacing(2),
-    zIndex: theme.zIndex.tooltip,
+    zIndex: theme.zIndex.mobileStepper,
   },
   root: {
     display: 'flex',

@@ -13,6 +13,7 @@
     "i18next-xhr-backend": "^3.2.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
+    "react-hook-form": "^4.4.3",
     "react-hotkeys-hook": "^1.5.3",
     "react-i18next": "^11.1.0",
     "react-lazyload": "^2.6.5",

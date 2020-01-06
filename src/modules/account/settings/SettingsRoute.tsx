@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { useTheme } from 'src/lib/theme'
-import { Button, Container, Paper, FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@material-ui/core'
+import { Button, Container, Paper, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core'
 
 import i18n from 'i18next'
 
