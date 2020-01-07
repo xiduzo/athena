@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { IAgreement } from 'src/lib/types/agreement'
 import { Card, CardActionArea, CardHeader, Avatar, CardContent, Typography, makeStyles, Theme } from '@material-ui/core'
 import { AgreementIcon } from 'src/components/Atoms'
+import i18n from 'src/i18n'
 
 interface IAgreementCard {
   agreement: IAgreement
@@ -57,7 +58,13 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onClick }) => {
           <Typography variant="caption" color="textSecondary" gutterBottom>
             The student
           </Typography>
-          <Typography variant="subtitle1">{agreement.text}</Typography>
+          <Typography variant="subtitle1">
+            {
+              (agreement.translations.find((translation) => translation.language === i18n.language) || {
+                text: 'something went wrong',
+              }).text
+            }
+          </Typography>
         </CardContent>
       </CardActionArea>
     </Card>

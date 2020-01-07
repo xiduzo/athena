@@ -16,12 +16,14 @@ const initial_state: IAgreementsState = {
 }
 
 export const agreementsReducer = (state: IAgreementsState = initial_state, action: IAction): IAgreementsState => {
-  switch (action.type) {
+  const { type, payload } = action
+
+  switch (type) {
     case AgreementActions.setAgreements:
       return {
         ...state,
         status: Status.success,
-        items: action.payload,
+        items: payload,
       }
     default:
       return state

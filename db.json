@@ -1,0 +1,37 @@
+{
+	"agreements": [
+		{
+			"id": "abc-123",
+			"type": 1,
+			"translations": [
+				{
+					"language": "en",
+					"text": "Always is on time"
+				},
+				{
+					"language": "nl",
+					"text": "is altijd optijd"
+				}
+			],
+			"points": 8
+		},
+		{
+			"id": "abc-124",
+			"type": 1,
+			"translations": [
+				{
+					"language": "en",
+					"text": "pays attention"
+				},
+				{
+					"language": "nl",
+					"text": "let op"
+				}
+			],
+			"points": 13
+		}
+	],
+	"tribes": [],
+	"squads": [],
+	"users": []
+}

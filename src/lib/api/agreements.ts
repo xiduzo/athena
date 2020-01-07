@@ -15,34 +15,44 @@ export interface IRule {
 
 export const mapAgreement = (rule: IRule): IAgreement => {
   const agreement: IAgreement = {
-    type: rule.rule_type - 1, // We start with 0 in new interface
-    text: rule.rule,
-    text_eng: rule.rule_eng,
+    type: rule.rule_type,
+    translations: [
+      {
+        language: 'en',
+        text: rule.rule_eng,
+      },
+      {
+        language: 'nl',
+        text: rule.rule,
+      },
+    ],
     points: rule.points,
-    guid: rule.id || '',
+    id: rule.id || '',
   }
 
   return agreement
 }
 
 export const mapRule = (agreement: IAgreement): IRule => {
+  const eng = agreement.translations.find((translation) => translation.language === 'en')
+  const nl = agreement.translations.find((translation) => translation.language === 'nl')
   const rule: IRule = {
-    rule: agreement.text,
-    rule_eng: agreement.text_eng,
+    rule: nl ? nl.text : '',
+    rule_eng: eng ? eng.text : '',
     points: agreement.points,
-    rule_type: agreement.type + 1,
+    rule_type: agreement.type,
   }
   return rule
 }
 
 export const getAgreements = () => (dispatch: Dispatch<IAction>) => {
   request
-    .get(`${BACKEND_URL}/${AGREEMENTS_ENDPOINT}/rules/`)
+    .get(`${BACKEND_URL}/${AGREEMENTS_ENDPOINT}`)
     .set('Authorization', BEARER)
     .then((response) =>
       dispatch({
         type: AgreementActions.setAgreements,
-        payload: response.body.map((rule: IRule) => mapAgreement(rule)),
+        payload: response.body,
       })
     )
     .catch((error) => {

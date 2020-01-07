@@ -1,9 +1,13 @@
 import IGuid from '../IGuid'
 import { AgreementType } from 'src/lib/enums'
 
+interface ITranslation {
+  language: string
+  text: string
+}
+
 export interface IAgreement extends IGuid {
   type: AgreementType
-  text: string
-  text_eng: string
+  translations: ITranslation[]
   points: number
 }

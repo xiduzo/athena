@@ -7,6 +7,8 @@ export const setLanguage = (lang: string): void => {
   localStorage.setItem('i18nextLng', lang)
 }
 
+export const supportedLanguages = [ 'nl', 'en' ]
+
 const getLanguage = (): string => localStorage.getItem('i18nextLng') || 'en'
 
 i18n.use(LanguageDetector).use(backend).use(initReactI18next).init({

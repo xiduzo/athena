@@ -1,3 +1,3 @@
 export default interface IGuid {
-  guid: string
+  id: string
 }

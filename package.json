@@ -23,10 +23,10 @@
     "react-scripts": "3.2.0",
     "react-sticky-el": "^1.1.0",
     "redux-thunk": "^2.3.0",
-    "superagent": "^5.1.0",
-    "typescript": "^3.7.2"
+    "superagent": "^5.1.0"
   },
   "scripts": {
+    "start:mock": "json-server --port 4000 --watch db.json",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -57,6 +57,8 @@
     "@types/react-paginate": "^6.2.1",
     "@types/react-redux": "^7.1.5",
     "@types/react-router-dom": "^5.1.0",
-    "@types/superagent": "^4.1.4"
+    "@types/superagent": "^4.1.4",
+    "json-server": "^0.15.1",
+    "typescript": "^3.7.4"
   }
 }

@@ -3,6 +3,7 @@ import { useTheme } from 'src/lib/theme'
 import { Button, Container, Paper, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core'
 
 import i18n from 'i18next'
+import { supportedLanguages } from 'src/i18n'
 
 export const SettingsRoute: FC = () => {
   const { theme, setTheme } = useTheme()
@@ -20,8 +21,9 @@ export const SettingsRoute: FC = () => {
         <FormControl>
           <InputLabel id="language-select">Language</InputLabel>
           <Select value={i18n.language || 'en'} onChange={handleChange}>
-            {i18n.languages &&
-              i18n.languages.map((language) => (
+            {console.log(i18n.languages)}
+            {supportedLanguages &&
+              supportedLanguages.map((language) => (
                 <MenuItem value={language} key={language}>
                   {language}
                 </MenuItem>

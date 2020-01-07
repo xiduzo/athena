@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, ChangeEvent, Dispatch, useMemo } from 'react'
+import React, { FC, useEffect, useState, Dispatch, ChangeEvent } from 'react'
 import { useStyles } from './style'
 
 import {
@@ -28,29 +28,48 @@ import { IRootReducer, Status, IAction } from 'src/lib/redux'
 import { IAgreementsState } from 'src/lib/redux/agreements/agreementsReducer'
 import { AgreementType } from 'src/lib/enums'
 import { NewAgreementModal } from './components/newAgreementModal'
+import { useForm } from 'react-hook-form'
+import { createFilter } from 'src/common/utils/createFilter'
+
+const initFilters = [
+  {
+    property: 'filterByName',
+    value: '',
+  },
+  {
+    property: 'type',
+    value: '',
+  },
+]
 
 export const AgreementsRoute: FC = () => {
   const classes = useStyles()
 
   const dispatch = useDispatch<Dispatch<(dispatch: Dispatch<IAction>) => void>>()
   const agreements = useSelector<IRootReducer, IAgreementsState>((state) => state.agreements)
-  const [ filteredAgreements, setFilteredAgreements ] = useState<IAgreement[]>([])
-  const [ filterByText, setFilterByText ] = useState('')
-  const [ filterByType, setFilterByType ] = useState(`-1`)
   const [ modalOpen, setModalOpen ] = useState(false)
+  const { register, errors } = useForm()
+  const [ filters, setFilters ] = useState(initFilters)
 
-  useEffect(
-    () => {
-      let newAgreements = agreements.items.filter((agreement: IAgreement) => agreement.text.includes(filterByText))
+  const handleNameFilter = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value, event.target.id)
+    setFilters([
+      ...initFilters.map((filter) => {
+        if (filter.property === event.target.id) filter.value = event.target.value
 
-      if (filterByType !== `-1`) {
-        newAgreements = newAgreements.filter((agreement: IAgreement) => `${agreement.type.valueOf()}` === filterByType)
-      }
+        return filter
+      }),
+    ])
+  }
 
-      setFilteredAgreements(newAgreements)
-    },
-    [ filterByText, filterByType, agreements.items ]
-  )
+  const handleTypeFilter = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log(event)
+  }
+
+  const handleClose = () => {
+    console.log(true)
+    setModalOpen(!modalOpen)
+  }
 
   useEffect(
     () => {
@@ -58,18 +77,6 @@ export const AgreementsRoute: FC = () => {
     },
     [ dispatch ]
   )
-
-  useMemo(
-    () => {
-      setFilteredAgreements(agreements.items)
-    },
-    [ agreements.items ]
-  )
-
-  const handleClose = () => {
-    console.log(true)
-    setModalOpen(!modalOpen)
-  }
 
   return (
     <section className={classes.root}>
@@ -86,24 +93,23 @@ export const AgreementsRoute: FC = () => {
       <NewAgreementModal isOpen={modalOpen} onClose={handleClose} />
       <Container maxWidth="lg">
         <Grid container spacing={2}>
-          {agreements.status === Status.loading &&
-            [ ...new Array(48) ].map((_, index: number) => (
+          {agreements.status === Status.loading ? (
+            [ ...Array(48) ].map((_, index: number) => (
               <Grid key={index} item xs={12} md={6} lg={4} xl={3}>
                 <AgreementCardMock />
               </Grid>
-            ))}
-          {agreements.status !== Status.loading &&
-          !filteredAgreements.length && (
+            ))
+          ) : !agreements.items.length ? (
             <Grid item={true} xs={12}>
               <EmptyState title={`No agreements found`} image={<Illustration type={Illustrations.empty} />} />
             </Grid>
-          )}
-          {agreements.status !== Status.loading &&
-            filteredAgreements.map((agreement: IAgreement) => (
-              <Grid key={agreement.guid} item xs={12} md={6} lg={4} xl={3}>
+          ) : (
+            agreements.items.filter(createFilter(...filters)).map((agreement: IAgreement) => (
+              <Grid key={agreement.id} item xs={12} md={6} lg={4} xl={3}>
                 <AgreementCard agreement={agreement} />
               </Grid>
-            ))}
+            ))
+          )}
         </Grid>
       </Container>
       <Drawer
@@ -118,37 +124,44 @@ export const AgreementsRoute: FC = () => {
         <Typography component="h2" variant="h5">
           Filter
         </Typography>
-        <FormControl component="fieldset" className={classes.fieldset}>
-          <TextField
-            id="filter by name"
-            label="Name"
-            margin="normal"
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              setFilterByText(event.target.value)
-            }}
-          />
-        </FormControl>
-        <FormControl component="fieldset" className={classes.fieldset}>
-          <FormLabel component="legend">Type</FormLabel>
-          <RadioGroup
-            aria-label="type"
-            name="type"
-            value={filterByType}
-            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              setFilterByType(event.target.value)
-            }}
-          >
-            <FormControlLabel value={`-1`} control={<Radio />} label="All" />
-            <FormControlLabel value={`${AgreementType.ATTITUDE}`} control={<Radio />} label="Attitude" />
-            <FormControlLabel
-              value={`${AgreementType.FUNCTIONING_WITHING_TEAM}`}
-              control={<Radio />}
-              label="Functioning"
+        <form autoComplete="off">
+          <FormControl component="fieldset" className={classes.fieldset}>
+            <TextField
+              id="filterByName"
+              name="filterByName"
+              label="Name"
+              onChange={handleNameFilter}
+              inputRef={register}
+              error={errors.text ? true : false}
+              helperText={errors.text && (errors.text as any).message}
             />
-            <FormControlLabel value={`${AgreementType.KNOWLEDGE_DEVELOPMENT}`} control={<Radio />} label="Knowledge" />
-            <FormControlLabel value={`${AgreementType.ACCOUNTABILITY}`} control={<Radio />} label="Accountability" />
-          </RadioGroup>
-        </FormControl>
+          </FormControl>
+          <FormControl component="fieldset" className={classes.fieldset}>
+            <FormLabel component="legend">Type</FormLabel>
+            <RadioGroup aria-label="Filter by type" name="type" id="type" defaultValue="-1" onChange={handleTypeFilter}>
+              <FormControlLabel inputRef={register} value={`-1`} control={<Radio />} label="All" />
+              <FormControlLabel
+                inputRef={register}
+                value={`${AgreementType.ATTITUDE}`}
+                control={<Radio />}
+                label="Attitude"
+              />
+              <FormControlLabel
+                inputRef={register}
+                value={`${AgreementType.FUNCTIONING_WITHING_TEAM}`}
+                control={<Radio />}
+                label="Functioning"
+              />
+              <FormControlLabel
+                inputRef={register}
+                value={`${AgreementType.KNOWLEDGE_DEVELOPMENT}`}
+                control={<Radio />}
+                label="Knowledge"
+              />
+              <FormControlLabel value={`${AgreementType.ACCOUNTABILITY}`} control={<Radio />} label="Accountability" />
+            </RadioGroup>
+          </FormControl>
+        </form>
       </Drawer>
     </section>
   )
