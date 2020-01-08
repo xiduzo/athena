@@ -26,7 +26,7 @@ const useAuthHandler = () => {
 
 export const useAuth = () => useContext(AuthContext)
 
-export const AthenaAuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { Provider } = AuthContext
   const { token, setAuthToken } = useAuthHandler()
 

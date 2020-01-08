@@ -6,8 +6,8 @@ import { MenuDrawer } from './components/Molecules/MenuDrawer'
 import { Routes } from './components/Routes'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { IRootReducer } from './lib/redux'
-import { AthenaAuthProvider } from './lib/auth'
-import { AthenaThemeProvider } from './lib/theme'
+import { AuthProvider } from './lib/auth'
+import { ThemeProvider } from './lib/theme'
 
 import './i18n'
 
@@ -42,11 +42,11 @@ const App: React.FC = () => {
   console.log(global)
 
   return (
-    <AthenaThemeProvider>
+    <ThemeProvider>
       <div className={classes.root}>
-        <AthenaAuthProvider>
+        <AuthProvider>
+          <CssBaseline />
           <Router>
-            <CssBaseline />
             <AppBar />
             <MenuDrawer />
             <main className={classes.content}>
@@ -58,9 +58,9 @@ const App: React.FC = () => {
               <div className={classes.toolbarBottom} />
             </main>
           </Router>
-        </AthenaAuthProvider>
+        </AuthProvider>
       </div>
-    </AthenaThemeProvider>
+    </ThemeProvider>
   )
 }
 
