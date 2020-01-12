@@ -1,7 +1,7 @@
 import IGuid from '../IGuid'
 import { AgreementType } from 'src/lib/enums'
 
-interface ITranslation {
+export interface ITranslation {
   language: string
   text: string
 }

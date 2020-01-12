@@ -1,5 +1,5 @@
 import React, { FC, useState, Dispatch } from 'react'
-import { IAgreement } from 'src/lib/types/agreement'
+import { IAgreement, ITranslation } from 'src/lib/types/agreement'
 import {
   Card,
   CardActionArea,
@@ -72,7 +72,7 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onClick }) => {
     dispatch(removeAgreement(agreement.id))
   }
 
-  const handleContextMenuClick = (event: React.MouseEvent<any>) => {
+  const handleContextMenuClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault()
     setMousePos({
       mouseX: event.clientX - 2,
@@ -87,9 +87,21 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onClick }) => {
     })
   }
 
+  const getTranslation = (translations: ITranslation[]): string => {
+    const translation = translations.find((translation) => translation.language === i18n.language)
+
+    if (translation) return translation.text
+    return 'something went wrong'
+  }
+
   return (
     <Card className={classes.card}>
-      <CardActionArea className={classes.details} onClick={onClickHandler} onContextMenu={handleContextMenuClick}>
+      <CardActionArea
+        className={classes.details}
+        onClick={onClickHandler}
+        disabled={mousePos.mouseY !== null}
+        onContextMenu={handleContextMenuClick}
+      >
         <CardHeader
           className={classes.cardHeader}
           avatar={
@@ -113,19 +125,13 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onClick }) => {
             }
           >
             <MenuItem onClick={removeHandler}>
-              <Typography color="error">Remove</Typography>
+              <Typography color="error">Remove agreement</Typography>
             </MenuItem>
           </Menu>
           <Typography variant="caption" color="textSecondary" gutterBottom>
             The student
           </Typography>
-          <Typography variant="subtitle1">
-            {
-              (agreement.translations.find((translation) => translation.language === i18n.language) || {
-                text: 'something went wrong',
-              }).text
-            }
-          </Typography>
+          <Typography variant="subtitle1">{getTranslation(agreement.translations)}</Typography>
         </CardContent>
       </CardActionArea>
     </Card>
