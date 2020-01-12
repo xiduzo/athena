@@ -1,8 +1,22 @@
-import React, { FC } from 'react'
+import React, { FC, useState, Dispatch } from 'react'
 import { IAgreement } from 'src/lib/types/agreement'
-import { Card, CardActionArea, CardHeader, Avatar, CardContent, Typography, makeStyles, Theme } from '@material-ui/core'
+import {
+  Card,
+  CardActionArea,
+  CardHeader,
+  Avatar,
+  CardContent,
+  Typography,
+  makeStyles,
+  Theme,
+  Menu,
+  MenuItem,
+} from '@material-ui/core'
 import { AgreementIcon } from 'src/components/Atoms'
 import i18n from 'src/i18n'
+import { useDispatch } from 'react-redux'
+import { IAction } from 'src/lib/redux'
+import { removeAgreement } from 'src/lib/api'
 
 interface IAgreementCard {
   agreement: IAgreement
@@ -40,12 +54,42 @@ export const AgreementCardClasses = makeStyles((theme: Theme) => ({
 export const AgreementCard: FC<IAgreementCard> = ({ agreement, onClick }) => {
   const classes = AgreementCardClasses()
 
+  const dispatch = useDispatch<Dispatch<(dispatch: Dispatch<IAction>) => void>>()
+
+  const [ mousePos, setMousePos ] = useState<{
+    mouseX: number | null
+    mouseY: number | null
+  }>({
+    mouseX: null,
+    mouseY: null,
+  })
+
   const onClickHandler = () => {
     onClick && onClick()
   }
+
+  const removeHandler = () => {
+    dispatch(removeAgreement(agreement.id))
+  }
+
+  const handleContextMenuClick = (event: React.MouseEvent<any>) => {
+    event.preventDefault()
+    setMousePos({
+      mouseX: event.clientX - 2,
+      mouseY: event.clientY - 4,
+    })
+  }
+
+  const closeContextMenu = () => {
+    setMousePos({
+      mouseX: null,
+      mouseY: null,
+    })
+  }
+
   return (
     <Card className={classes.card}>
-      <CardActionArea className={classes.details} onClick={onClickHandler} disabled={onClick ? false : true}>
+      <CardActionArea className={classes.details} onClick={onClickHandler} onContextMenu={handleContextMenuClick}>
         <CardHeader
           className={classes.cardHeader}
           avatar={
@@ -55,6 +99,23 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onClick }) => {
           }
         />
         <CardContent className={classes.cardContent}>
+          <Menu
+            keepMounted
+            open={mousePos.mouseY !== null}
+            onClose={closeContextMenu}
+            anchorReference="anchorPosition"
+            anchorPosition={
+              mousePos.mouseY !== null && mousePos.mouseX !== null ? (
+                { top: mousePos.mouseY, left: mousePos.mouseX }
+              ) : (
+                undefined
+              )
+            }
+          >
+            <MenuItem onClick={removeHandler}>
+              <Typography color="error">Remove</Typography>
+            </MenuItem>
+          </Menu>
           <Typography variant="caption" color="textSecondary" gutterBottom>
             The student
           </Typography>

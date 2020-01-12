@@ -18,7 +18,7 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 import { IAgreement } from 'src/lib/types/agreement'
 
-import { getAgreements } from 'src/lib/api'
+import { getAgreements, addAgreement } from 'src/lib/api'
 import { AgreementCard, AgreementCardMock } from 'src/components/Molecules/AgreementCard'
 import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
 
@@ -66,8 +66,8 @@ export const AgreementsRoute: FC = () => {
     console.log(event)
   }
 
-  const handleClose = () => {
-    console.log(true)
+  const handleClose = (agreement?: IAgreement) => {
+    if (agreement) dispatch(addAgreement(agreement))
     setModalOpen(!modalOpen)
   }
 
