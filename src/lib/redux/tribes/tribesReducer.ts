@@ -3,6 +3,8 @@ import { IAction, Status } from '../IRootReducer'
 
 export enum TribeActions {
   setTribes = 'setTribes',
+  setTribe = 'setTribe',
+  updateTribe = 'updateTribe',
 }
 
 export interface ITribesState {
@@ -16,12 +18,25 @@ const initial_state: ITribesState = {
 }
 
 export const tribesReducer = (state: ITribesState = initial_state, action: IAction): ITribesState => {
-  switch (action.type) {
+  const { type, payload } = action
+  switch (type) {
     case TribeActions.setTribes:
       return {
         ...state,
         status: Status.success,
-        items: action.payload,
+        items: payload,
+      }
+    case TribeActions.setTribe:
+      return {
+        ...state,
+        status: Status.success,
+
+        items: state.items.length
+          ? state.items.map((item) => {
+              if (item.id === payload.id) return payload as ITribe
+              return item
+            })
+          : [ payload ],
       }
     default:
       return state

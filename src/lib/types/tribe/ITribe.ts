@@ -2,7 +2,7 @@ import { ISquad } from '../squad'
 import { IUser } from '../user'
 
 export interface ITribe {
-  guid: string
+  id: string
   leaders: IUser[]
   squads: ISquad[]
   name: string

@@ -45,8 +45,8 @@ export const TribesRoute: FC = () => {
             ))}
           {tribes.status !== Status.loading &&
             tribes.items.map((tribe: ITribe) => (
-              <Grid key={tribe.guid} item xs={12} sm={6} md={4} lg={3}>
-                <TribeCard tribe={tribe} onClick={() => navigateToTribe(tribe.guid)} />
+              <Grid key={tribe.id} item xs={12} sm={6} md={4} lg={3}>
+                <TribeCard tribe={tribe} onClick={() => navigateToTribe(tribe.id)} />
               </Grid>
             ))}
         </Grid>
