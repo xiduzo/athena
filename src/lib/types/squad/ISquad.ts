@@ -1,11 +1,15 @@
 import { IUser } from '../user'
 import { IAgreement } from '../agreement'
 
+interface ITrelloSettings {
+  board: string
+  doneList: string
+}
+
 export interface ISquad {
-  guid: string
+  id: string
   name: string
-  trello_board?: string
-  trello_done_list?: string
+  trello: ITrelloSettings
 
   agreements?: IAgreement[]
   members?: IUser[]
