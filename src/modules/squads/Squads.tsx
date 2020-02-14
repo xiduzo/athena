@@ -54,7 +54,7 @@ export const SquadsRoute: FC = () => {
           {squads.status !== Status.loading &&
             squads.items.map((squad) => (
               <Grid key={squad.id} item xs={12} sm={6} md={4} lg={3}>
-                <SquadCard squad={squad} onClick={() => navigateToSquad(squad.id)} />
+                <SquadCard squad={squad} onLeftClick={() => navigateToSquad(squad.id)} />
               </Grid>
             ))}
         </Grid>

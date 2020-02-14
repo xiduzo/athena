@@ -21,6 +21,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
+    "removeComments": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "typeRoots": ["./node_modules/@types"]

@@ -1,4 +1,4 @@
-import React, { FC, useState, Dispatch } from 'react'
+import React, { FC, useState } from 'react'
 import { IAgreement, ITranslation } from 'src/lib/types/agreement'
 import {
   Card,
@@ -10,17 +10,14 @@ import {
   makeStyles,
   Theme,
   Menu,
-  MenuItem,
 } from '@material-ui/core'
 import { AgreementIcon } from 'src/components/Atoms'
 import i18n from 'src/i18n'
-import { useDispatch } from 'react-redux'
-import { IAction } from 'src/lib/redux'
-import { removeAgreement } from 'src/lib/api'
 
 interface IAgreementCard {
   agreement: IAgreement
-  onClick?: () => void
+  onLeftClick?: () => void
+  onRightClickItems?: React.ReactElement
 }
 
 export const AgreementCardClasses = makeStyles((theme: Theme) => ({
@@ -51,40 +48,36 @@ export const AgreementCardClasses = makeStyles((theme: Theme) => ({
   },
 }))
 
-export const AgreementCard: FC<IAgreementCard> = ({ agreement, onClick }) => {
+type NumberOrNull = number | null
+
+export const AgreementCard: FC<IAgreementCard> = ({ agreement, onLeftClick, onRightClickItems }) => {
   const classes = AgreementCardClasses()
 
-  const dispatch = useDispatch<Dispatch<(dispatch: Dispatch<IAction>) => void>>()
-
   const [ mousePos, setMousePos ] = useState<{
-    mouseX: number | null
-    mouseY: number | null
+    mouseX: NumberOrNull
+    mouseY: NumberOrNull
   }>({
     mouseX: null,
     mouseY: null,
   })
 
-  const onClickHandler = () => {
-    onClick && onClick()
+  const onLeftClickHandler = () => {
+    onLeftClick && onLeftClick()
   }
 
-  const removeHandler = () => {
-    dispatch(removeAgreement(agreement.id))
+  const setMousePosValues = (mouseX: NumberOrNull, mouseY: NumberOrNull): void => {
+    setMousePos({ mouseX, mouseY })
   }
 
   const handleContextMenuClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault()
-    setMousePos({
-      mouseX: event.clientX - 2,
-      mouseY: event.clientY - 4,
-    })
+    const { clientX, clientY } = event
+
+    setMousePosValues(clientX, clientY)
   }
 
-  const closeContextMenu = () => {
-    setMousePos({
-      mouseX: null,
-      mouseY: null,
-    })
+  const onRightClickHandler = () => {
+    setMousePosValues(null, null)
   }
 
   const getTranslation = (translations: ITranslation[]): string => {
@@ -98,7 +91,7 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onClick }) => {
     <Card className={classes.card}>
       <CardActionArea
         className={classes.details}
-        onClick={onClickHandler}
+        onClick={onLeftClickHandler}
         disabled={mousePos.mouseY !== null}
         onContextMenu={handleContextMenuClick}
       >
@@ -114,7 +107,7 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onClick }) => {
           <Menu
             keepMounted
             open={mousePos.mouseY !== null}
-            onClose={closeContextMenu}
+            onClose={onRightClickHandler}
             anchorReference="anchorPosition"
             anchorPosition={
               mousePos.mouseY !== null && mousePos.mouseX !== null ? (
@@ -124,9 +117,7 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onClick }) => {
               )
             }
           >
-            <MenuItem onClick={removeHandler}>
-              <Typography color="error">Remove agreement</Typography>
-            </MenuItem>
+            {onRightClickItems}
           </Menu>
           <Typography variant="caption" color="textSecondary" gutterBottom>
             The student

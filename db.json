@@ -14,51 +14,6 @@
         }
       ],
       "points": 8
-    },
-    {
-      "id": "abc-124",
-      "type": 1,
-      "translations": [
-        {
-          "language": "en",
-          "text": "pays attention"
-        },
-        {
-          "language": "nl",
-          "text": "let op"
-        }
-      ],
-      "points": 13
-    },
-    {
-      "translations": [
-        {
-          "language": "nl",
-          "text": "testingggg"
-        },
-        {
-          "language": "en",
-          "text": "sdfasdf"
-        }
-      ],
-      "type": 2,
-      "points": 33,
-      "id": "HutcI6E"
-    },
-    {
-      "translations": [
-        {
-          "language": "nl",
-          "text": "nederlandse test"
-        },
-        {
-          "language": "en",
-          "text": "engelse test"
-        }
-      ],
-      "type": 2,
-      "points": 74,
-      "id": "w2-TeYj"
     }
   ],
   "tribes": [
@@ -68,10 +23,20 @@
       "leaders": [],
       "squads": [
         {
-          "id": "sdfdsaf43rDX#$",
+          "id": "sdfdsaf43rDX",
           "name": "squad 1",
           "trello": {
-            "board": "sfg%asfasd@556ASDFfds",
+            "board": "sfgasfasd556ASDFfds",
+            "doneList": "dasdf657sdf#RsadfhSDF"
+          },
+          "agreements": [],
+          "members": []
+        },
+        {
+          "id": "asdf67dfgsdfSDFG96",
+          "name": "squad 2",
+          "trello": {
+            "board": "sfgasfasd556ASDFfds",
             "doneList": "dasdf657sdf#RsadfhSDF"
           },
           "agreements": [],
@@ -85,10 +50,20 @@
       "leaders": [],
       "squads": [
         {
-          "id": "sdfdsaf43rDX#$",
+          "id": "sdfdsaf43rDX",
           "name": "squad 1",
           "trello": {
-            "board": "sfg%asfasd@556ASDFfds",
+            "board": "sfgasfasd556ASDFfds",
+            "doneList": "dasdf657sdf#RsadfhSDF"
+          },
+          "agreements": [],
+          "members": []
+        },
+        {
+          "id": "asdf67dfgsdfSDFG96",
+          "name": "squad 2",
+          "trello": {
+            "board": "sfgasfasd556ASDFfds",
             "doneList": "dasdf657sdf#RsadfhSDF"
           },
           "agreements": [],
@@ -99,20 +74,20 @@
   ],
   "squads": [
     {
-      "id": "sdfdsaf43rDX#$",
+      "id": "sdfdsaf43rDX",
       "name": "squad 1",
       "trello": {
-        "board": "sfg%asfasd@556ASDFfds",
+        "board": "sfgasfasd556ASDFfds",
         "doneList": "dasdf657sdf#RsadfhSDF"
       },
       "agreements": [],
       "members": []
     },
     {
-      "id": "asdf67#dfgsdfSDFG96",
+      "id": "asdf67dfgsdfSDFG96",
       "name": "squad 2",
       "trello": {
-        "board": "sfg%asfasd@556ASDFfds",
+        "board": "sfgasfasd556ASDFfds",
         "doneList": "dasdf657sdf#RsadfhSDF"
       },
       "agreements": [],

@@ -14,11 +14,13 @@ import {
   FormControlLabel,
   Radio,
   Zoom,
+  MenuItem,
+  Box,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import { IAgreement } from 'src/lib/types/agreement'
 
-import { getAgreements, addAgreement } from 'src/lib/api'
+import { getAgreements, addAgreement, removeAgreement } from 'src/lib/api'
 import { AgreementCard, AgreementCardMock } from 'src/components/Molecules/AgreementCard'
 import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
 
@@ -71,6 +73,10 @@ export const AgreementsRoute: FC = () => {
     setModalOpen(!modalOpen)
   }
 
+  const removeAgreementHandler = (agreementId: string) => {
+    dispatch(removeAgreement(agreementId))
+  }
+
   useEffect(
     () => {
       dispatch(getAgreements())
@@ -106,7 +112,16 @@ export const AgreementsRoute: FC = () => {
           ) : (
             agreements.items.filter(createFilter(...filters)).map((agreement: IAgreement) => (
               <Grid key={agreement.id} item xs={12} md={6} lg={4} xl={3}>
-                <AgreementCard agreement={agreement} />
+                <AgreementCard
+                  agreement={agreement}
+                  onRightClickItems={
+                    <Box>
+                      <MenuItem onClick={() => removeAgreementHandler(agreement.id)}>
+                        <Typography color="error">Remove agreement</Typography>
+                      </MenuItem>
+                    </Box>
+                  }
+                />
               </Grid>
             ))
           )}
