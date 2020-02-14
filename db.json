@@ -22,54 +22,15 @@
       "name": "Tribe 1",
       "leaders": [],
       "squads": [
-        {
-          "id": "sdfdsaf43rDX",
-          "name": "squad 1",
-          "trello": {
-            "board": "sfgasfasd556ASDFfds",
-            "doneList": "dasdf657sdf#RsadfhSDF"
-          },
-          "agreements": [],
-          "members": []
-        },
-        {
-          "id": "asdf67dfgsdfSDFG96",
-          "name": "squad 2",
-          "trello": {
-            "board": "sfgasfasd556ASDFfds",
-            "doneList": "dasdf657sdf#RsadfhSDF"
-          },
-          "agreements": [],
-          "members": []
-        }
+        "sdfdsaf43rDX",
+        "asdf67dfgsdfSDFG96"
       ]
     },
     {
       "id": "abc-124",
       "name": "Tribe 2",
       "leaders": [],
-      "squads": [
-        {
-          "id": "sdfdsaf43rDX",
-          "name": "squad 1",
-          "trello": {
-            "board": "sfgasfasd556ASDFfds",
-            "doneList": "dasdf657sdf#RsadfhSDF"
-          },
-          "agreements": [],
-          "members": []
-        },
-        {
-          "id": "asdf67dfgsdfSDFG96",
-          "name": "squad 2",
-          "trello": {
-            "board": "sfgasfasd556ASDFfds",
-            "doneList": "dasdf657sdf#RsadfhSDF"
-          },
-          "agreements": [],
-          "members": []
-        }
-      ]
+      "squads": []
     }
   ],
   "squads": [
@@ -94,5 +55,17 @@
       "members": []
     }
   ],
-  "users": []
+  "users": [
+    {
+      "id": "asdfa4wffasefdfe5yhs",
+      "avatarHash": "sadf5twe09fjsifaw",
+      "email": "mail@sanderboer.nl",
+      "first_name": "Sander",
+      "initials": null,
+      "surname": "Boer",
+      "surname_prefix": null,
+      "is_staff": true,
+      "is_superuser": true
+    }
+  ]
 }

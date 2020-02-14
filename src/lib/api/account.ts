@@ -5,7 +5,7 @@ import { IUser } from '../types/user'
 
 export const GetUsers = async (): Promise<IUser[]> => {
   return request
-    .get(`${BACKEND_URL}/${ACCOUNT_ENDPOINT}/users/`)
+    .get(`${BACKEND_URL}/${ACCOUNT_ENDPOINT}`)
     .set('Authorization', BEARER)
     .then(response => response.body)
     .catch(error => {
@@ -15,7 +15,7 @@ export const GetUsers = async (): Promise<IUser[]> => {
 
 export const GetUserById = async (id: string): Promise<IUser> => {
   return request
-    .get(`${BACKEND_URL}/${ACCOUNT_ENDPOINT}/users/${id}/`)
+    .get(`${BACKEND_URL}/${ACCOUNT_ENDPOINT}/${id}/`)
     .set('Authorization', BEARER)
     .then(response => response.body)
     .catch(error => {

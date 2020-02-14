@@ -27,7 +27,7 @@ export const getTribeById = (id: string) => (dispatch: Dispatch<IAction>) => {
     .then((response) =>
       dispatch({
         type: TribeActions.setTribe,
-        payload: response.body,
+        payload: response.body as ITribe,
       })
     )
     .catch((error) => {
@@ -35,11 +35,11 @@ export const getTribeById = (id: string) => (dispatch: Dispatch<IAction>) => {
     })
 }
 
-export const updateTribe = (tribe: ITribe, update: any) => (dispatch: Dispatch<IAction>) => {
+export const updateTribe = (tribe: ITribe, update: Partial<ITribe>) => (dispatch: Dispatch<IAction>) => {
   request
     .patch(`${BACKEND_URL}/${TRIBE_ENDPOINT}/${tribe.id}/`)
     .send(update)
-    .then((response) => {
+    .then(() => {
       dispatch({
         type: TribeActions.setTribe,
         payload: { ...tribe, ...update },

@@ -42,9 +42,9 @@ export const AppBar: FC = () => {
             <MenuIcon />
           </IconButton>
         ) : (
-          <Icon color="inherit" component={AthenaIcon} className={classes.icon} />
+          <Icon component={AthenaIcon} className={classes.icon} />
         )}
-        <Typography color="inherit" variant="h6" className={classes.title}>
+        <Typography variant="h6" className={classes.title}>
           Athena
         </Typography>
         <Button onClick={setToken}>set token</Button>

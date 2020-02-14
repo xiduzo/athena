@@ -4,6 +4,6 @@ import { IUser } from '../user'
 export interface ITribe {
   id: string
   leaders: IUser[]
-  squads: ISquad[]
+  squads: string[]
   name: string
 }
