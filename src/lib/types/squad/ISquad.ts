@@ -11,6 +11,6 @@ export interface ISquad {
   name: string
   trello: ITrelloSettings
 
-  agreements?: IAgreement[]
-  members?: IUser[]
+  agreements: string[]
+  members: string[]
 }

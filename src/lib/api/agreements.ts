@@ -5,6 +5,22 @@ import { IAgreement } from '../types/agreement'
 import { IAction } from '../redux'
 import { AgreementActions } from '../redux/agreements/agreementsReducer'
 
+export const getAgreement = (id: string) => (dispatch: Dispatch<IAction>) => {
+  console.log(id)
+  request
+    .get(`${BACKEND_URL}/${AGREEMENTS_ENDPOINT}/${id}`)
+    .set('Authorization', BEARER)
+    .then((response) =>
+      dispatch({
+        type: AgreementActions.addAgreement,
+        payload: response.body,
+      })
+    )
+    .catch((error) => {
+      throw error
+    })
+}
+
 export const getAgreements = () => (dispatch: Dispatch<IAction>) => {
   request
     .get(`${BACKEND_URL}/${AGREEMENTS_ENDPOINT}`)

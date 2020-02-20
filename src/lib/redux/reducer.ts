@@ -7,7 +7,7 @@ import { tribesReducer } from './tribes/tribesReducer'
 import { squadsReducer } from './squads/squadsReducer'
 
 const initial_state = {
-  user: userReducer,
+  users: userReducer,
   global: globalReducer,
   agreements: agreementsReducer,
   tribes: tribesReducer,

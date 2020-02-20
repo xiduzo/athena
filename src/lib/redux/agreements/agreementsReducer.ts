@@ -3,7 +3,7 @@ import { Status, IAction } from '../IRootReducer'
 
 export enum AgreementActions {
   setAgreements = 'setAgreements',
-  setAgreement = 'setAgreement',
+  patchAgreement = 'patchAgreement',
   addAgreement = 'addAgreement',
   removeAgreement = 'removeAgreement',
 }
@@ -28,19 +28,19 @@ export const agreementsReducer = (state: IAgreementsState = initial_state, actio
         status: Status.success,
         items: payload,
       }
-    case AgreementActions.setAgreement:
+    case AgreementActions.patchAgreement:
       return {
         ...state,
         items: state.items.map((item) => {
           console.log(item)
-          if (item.id === payload.id) return payload as IAgreement
+          if (item.id === payload.id) return payload
           return item
         }),
       }
     case AgreementActions.addAgreement:
       return {
         ...state,
-        items: [ ...state.items, payload as IAgreement ],
+        items: state.items.find((item) => item.id === payload.id) ? state.items : state.items.concat(payload), //state.items.concat(payload)
       }
     case AgreementActions.removeAgreement:
       return {

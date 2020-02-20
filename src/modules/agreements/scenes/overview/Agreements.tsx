@@ -54,7 +54,6 @@ export const AgreementsRoute: FC = () => {
   const [ filters, setFilters ] = useState(initFilters)
 
   const handleNameFilter = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value, event.target.id)
     setFilters([
       ...initFilters.map((filter) => {
         if (filter.property === event.target.id) filter.value = event.target.value

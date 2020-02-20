@@ -5,7 +5,7 @@ import { ITribesState } from './tribes/tribesReducer'
 import { ISquadsState } from './squads/squadsReducer'
 
 export interface IRootReducer {
-  user: IUserState
+  users: IUserState
   global: IGlobalState
   agreements: IAgreementsState
   tribes: ITribesState

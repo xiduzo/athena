@@ -1,7 +1,7 @@
 {
   "agreements": [
     {
-      "id": "abc-123",
+      "id": "abc123",
       "type": 1,
       "translations": [
         {
@@ -14,20 +14,47 @@
         }
       ],
       "points": 8
+    },
+    {
+      "translations": [
+        {
+          "language": "nl",
+          "text": "asdasdasd"
+        },
+        {
+          "language": "en",
+          "text": "asdsadd"
+        }
+      ],
+      "type": 1,
+      "points": 37,
+      "id": "LsWSqvp"
+    },
+    {
+      "translations": [
+        {
+          "language": "nl",
+          "text": "asdasd"
+        },
+        {
+          "language": "en",
+          "text": "asdasdasd"
+        }
+      ],
+      "type": 2,
+      "points": 78,
+      "id": "r6unC12"
     }
   ],
   "tribes": [
     {
-      "id": "abc-123",
+      "id": "abc123",
       "name": "Tribe 1",
       "leaders": [],
-      "squads": [
-        "sdfdsaf43rDX",
-        "asdf67dfgsdfSDFG96"
-      ]
+      "squads": []
     },
     {
-      "id": "abc-124",
+      "id": "abc124",
       "name": "Tribe 2",
       "leaders": [],
       "squads": []
@@ -41,8 +68,12 @@
         "board": "sfgasfasd556ASDFfds",
         "doneList": "dasdf657sdf#RsadfhSDF"
       },
-      "agreements": [],
-      "members": []
+      "agreements": [
+        "abc123"
+      ],
+      "members": [
+        "asdfa4wffasefdfe5yhs"
+      ]
     },
     {
       "id": "asdf67dfgsdfSDFG96",
