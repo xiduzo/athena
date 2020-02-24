@@ -9,7 +9,7 @@ import { ISquad } from 'src/lib/types/squad'
 import { SquadCard } from 'src/components/Molecules/SquadCard'
 
 import AddIcon from '@material-ui/icons/Add'
-import { SquadSelector } from './components/SquadSelector'
+import { SquadsSelector } from './components/SquadSelector'
 import { useSelector, useDispatch } from 'react-redux'
 import { IRootReducer, IAction } from 'src/lib/redux'
 import { useHistory } from 'react-router-dom'
@@ -95,7 +95,7 @@ export const TribeDetailRoute: FC = () => {
                   <SquadCard onLeftClick={() => gotoSquad(squad.id)} squad={squad} />
                 </Grid>
               ))}
-            <SquadSelector
+            <SquadsSelector
               title={`Select squads to add to ${tribe.name}`}
               without={tribeSquads || []}
               isOpen={squadModalOpen}

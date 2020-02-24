@@ -6,14 +6,14 @@ import { IRootReducer, IAction } from 'src/lib/redux'
 import { ISquad } from 'src/lib/types/squad'
 import { getSquads } from 'src/lib/api'
 import { useWidth } from 'src/lib/hooks/useWidth'
-interface IAddTribeModal {
+interface ISquadSelectorModal {
   title: string
   isOpen: boolean
   without: ISquad[]
   onClose: (squads?: ISquad[]) => void
 }
 
-export const SquadSelector: FC<IAddTribeModal> = ({ title, isOpen, onClose, without }) => {
+export const SquadsSelector: FC<ISquadSelectorModal> = ({ title, isOpen, onClose, without }) => {
   const width = useWidth()
   const [ squadsToAdd, setSquadsToAdd ] = useState<ISquad[]>([])
 
@@ -64,9 +64,7 @@ export const SquadSelector: FC<IAddTribeModal> = ({ title, isOpen, onClose, with
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>
-          Cancel
-        </Button>
+        <Button onClick={handleClose}>Cancel</Button>
         <Button onClick={handleSubmit} color="primary">
           Add
         </Button>
