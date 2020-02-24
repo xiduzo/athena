@@ -1,5 +1,5 @@
 import React, { FC, useState, Fragment } from 'react'
-import { IAgreement, ITranslation } from 'src/lib/types/agreement'
+import { IAgreement } from 'src/lib/types/agreement'
 import {
   Card,
   CardActionArea,
@@ -12,7 +12,7 @@ import {
   Menu,
 } from '@material-ui/core'
 import { AgreementIcon } from 'src/components/Atoms'
-import i18n from 'src/i18n'
+import { getTranslation } from 'src/common/utils/getTranslation'
 
 interface IAgreementCard {
   agreement: IAgreement
@@ -47,7 +47,6 @@ export const AgreementCardClasses = makeStyles((theme: Theme) => ({
     padding: theme.spacing(1),
     flexGrow: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
     '&:last-child': {
@@ -86,13 +85,6 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onLeftClick, onRi
 
   const onRightClickHandler = () => {
     setMousePosValues(null, null)
-  }
-
-  const getTranslation = (translations: ITranslation[]): string => {
-    const translation = translations.find((translation) => translation.language === i18n.language)
-
-    if (translation) return translation.text
-    return 'something went wrong'
   }
 
   const renderRightClick = () => {
