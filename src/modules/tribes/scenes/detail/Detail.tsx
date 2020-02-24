@@ -39,13 +39,7 @@ export const TribeDetailRoute: FC = () => {
 
     const squads = state.squads.items.filter((squad) => tribe.squads.includes(squad.id))
 
-    // Get missing squads
-    const missingSquads = tribe.squads.filter((squad) => !tribe.squads.includes(squad))
-    if (missingSquads.length) dispatch(getSquads()) // TODO: only get the squads we need
-
-    if (squads.length) return squads
-
-    return undefined
+    return squads
   })
 
   const dispatch = useDispatch<Dispatch<(dispatch: Dispatch<IAction>) => void>>()
@@ -57,6 +51,16 @@ export const TribeDetailRoute: FC = () => {
       if (id && !tribe) dispatch(getTribeById(id))
     },
     [ id, tribe, dispatch ]
+  )
+
+  useEffect(
+    () => {
+      if (!tribe || !tribeSquads) return
+      const missingSquads = tribe.squads.filter((squad) => !tribeSquads.map((ts) => ts.id).includes(squad))
+
+      if (missingSquads.length) dispatch(getSquads()) // TODO: only get the squads we need
+    },
+    [ tribe, tribeSquads, dispatch ]
   )
 
   const toggleSquadModal = () => setSquadModalOpen(!squadModalOpen)
