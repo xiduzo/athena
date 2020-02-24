@@ -51,7 +51,9 @@
       "id": "abc123",
       "name": "Tribe 1",
       "leaders": [],
-      "squads": []
+      "squads": [
+        "sdfdsaf43rDX"
+      ]
     },
     {
       "id": "abc124",

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, Fragment } from 'react'
 import { IAgreement, ITranslation } from 'src/lib/types/agreement'
 import {
   Card,
@@ -33,6 +33,7 @@ export const AgreementCardClasses = makeStyles((theme: Theme) => ({
   details: {
     display: 'flex',
     flexDirection: 'row',
+    flexGrow: 1,
   },
   cardHeader: {
     padding: theme.spacing(3.5, 1),
@@ -45,6 +46,13 @@ export const AgreementCardClasses = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     padding: theme.spacing(1),
     flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    '&:last-child': {
+      padding: theme.spacing(1),
+    },
   },
 }))
 
@@ -87,14 +95,46 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onLeftClick, onRi
     return 'something went wrong'
   }
 
-  return (
-    <Card className={classes.card}>
-      <CardActionArea
-        className={classes.details}
-        onClick={onLeftClickHandler}
-        disabled={mousePos.mouseY !== null}
-        onContextMenu={handleContextMenuClick}
-      >
+  const renderRightClick = () => {
+    return (
+      <Fragment>
+        <Menu
+          keepMounted
+          open={mousePos.mouseY !== null}
+          onClose={onRightClickHandler}
+          anchorReference="anchorPosition"
+          anchorPosition={
+            mousePos.mouseY !== null && mousePos.mouseX !== null ? (
+              { top: mousePos.mouseY, left: mousePos.mouseX }
+            ) : (
+              undefined
+            )
+          }
+        >
+          {onRightClickItems}
+        </Menu>
+      </Fragment>
+    )
+  }
+
+  const renderWithAction = () => {
+    return (
+      <Fragment>
+        <CardActionArea
+          onClick={onLeftClick && onLeftClickHandler}
+          disabled={mousePos.mouseY !== null}
+          onContextMenu={onRightClickItems && handleContextMenuClick}
+        >
+          {onRightClickItems && renderRightClick()}
+          {renderWithoutAnyAction()}
+        </CardActionArea>
+      </Fragment>
+    )
+  }
+
+  const renderWithoutAnyAction = () => {
+    return (
+      <section className={classes.details}>
         <CardHeader
           className={classes.cardHeader}
           avatar={
@@ -104,27 +144,18 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onLeftClick, onRi
           }
         />
         <CardContent className={classes.cardContent}>
-          <Menu
-            keepMounted
-            open={mousePos.mouseY !== null}
-            onClose={onRightClickHandler}
-            anchorReference="anchorPosition"
-            anchorPosition={
-              mousePos.mouseY !== null && mousePos.mouseX !== null ? (
-                { top: mousePos.mouseY, left: mousePos.mouseX }
-              ) : (
-                undefined
-              )
-            }
-          >
-            {onRightClickItems}
-          </Menu>
           <Typography variant="caption" color="textSecondary" gutterBottom>
             The student
           </Typography>
           <Typography variant="subtitle1">{getTranslation(agreement.translations)}</Typography>
         </CardContent>
-      </CardActionArea>
+      </section>
+    )
+  }
+
+  return (
+    <Card className={classes.card}>
+      {onLeftClick || onRightClickItems ? renderWithAction() : renderWithoutAnyAction()}
     </Card>
   )
 }
