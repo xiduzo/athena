@@ -1,7 +1,18 @@
 import React, { FC, useEffect, Dispatch, Suspense, useState } from 'react'
 import { useParams } from 'react-router'
-import { getSquadById } from 'src/lib/api/squads'
-import { Container, Grid, Typography, makeStyles, Theme, Card, CardActionArea, CardContent } from '@material-ui/core'
+import { getSquadById, updateSquad } from 'src/lib/api/squads'
+import {
+  Container,
+  Grid,
+  Typography,
+  makeStyles,
+  Theme,
+  Card,
+  CardActionArea,
+  CardContent,
+  Box,
+  MenuItem,
+} from '@material-ui/core'
 import { ISquad } from 'src/lib/types/squad'
 import { IUser } from 'src/lib/types/user'
 import { UserCard } from 'src/components/Molecules/UserCard'
@@ -52,7 +63,6 @@ export const SquadDetailRoute: FC = () => {
     if (!squad) return []
 
     const foundAgreements = state.agreements.items.filter((agreement) => squad.agreements.includes(agreement.id))
-    console.log(foundAgreements)
 
     return foundAgreements
   })
@@ -60,8 +70,15 @@ export const SquadDetailRoute: FC = () => {
   const toggleAgreementsModal = () => setAgreementsModalOpen(!agreementsModalOpen)
 
   const omAgreementsModalCloseHandler = (agreements?: IAgreement[]) => {
-    // if (tribe && squads) dispatch(updateTribe(tribe, { squads: [ ...tribe.squads, ...squads.map((s) => s.id) ] }))
+    if (squad && agreements)
+      dispatch(updateSquad(squad, { agreements: [ ...squad.agreements, ...agreements.map((a) => a.id) ] }))
+
     toggleAgreementsModal()
+  }
+
+  const removeAgreementHandler = (agreementId: string) => {
+    if (squad)
+      dispatch(updateSquad(squad, { agreements: squad.agreements.filter((agreement) => agreement !== agreementId) }))
   }
 
   useEffect(
@@ -76,7 +93,7 @@ export const SquadDetailRoute: FC = () => {
       if (!squad) return
 
       const missingMembers = squad.members.filter((user) => !squadMembers.map((sm) => sm.id).includes(user))
-      console.log(`missing members: ${missingMembers}`)
+      console.log(`missing members (${missingMembers.length}): ${missingMembers}`)
     },
     [ squadMembers, squad ]
   )
@@ -118,7 +135,16 @@ export const SquadDetailRoute: FC = () => {
               {squadAgreements &&
                 squadAgreements.map((agreement) => (
                   <Grid key={agreement.id} item xs={12} sm={6} md={4} lg={3}>
-                    <AgreementCard agreement={agreement} />
+                    <AgreementCard
+                      agreement={agreement}
+                      onRightClickItems={
+                        <Box>
+                          <MenuItem onClick={() => removeAgreementHandler(agreement.id)}>
+                            <Typography color="error">Remove agreement</Typography>
+                          </MenuItem>
+                        </Box>
+                      }
+                    />
                   </Grid>
                 ))}
               <AgreementsSelector

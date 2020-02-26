@@ -1,5 +1,16 @@
 import React, { FC, useState, useEffect, Dispatch } from 'react'
-import { Container, Grid, Typography, makeStyles, Theme, Card, CardActionArea, CardContent } from '@material-ui/core'
+import {
+  Container,
+  Grid,
+  Typography,
+  makeStyles,
+  Theme,
+  Card,
+  CardActionArea,
+  CardContent,
+  Box,
+  MenuItem,
+} from '@material-ui/core'
 import { ITribe } from 'src/lib/types/tribe'
 import { useParams } from 'react-router'
 import { getTribeById, updateTribe, getSquads } from 'src/lib/api'
@@ -74,6 +85,10 @@ export const TribeDetailRoute: FC = () => {
     history.push(`/squads/${squadId}`)
   }
 
+  const removeSquadHandler = (squadId: string) => {
+    if (tribe) dispatch(updateTribe(tribe, { squads: tribe.squads.filter((squad) => squad !== squadId) }))
+  }
+
   return (
     <section className={classes.main}>
       <Container maxWidth="lg">
@@ -96,7 +111,17 @@ export const TribeDetailRoute: FC = () => {
             {tribeSquads &&
               tribeSquads.map((squad: ISquad) => (
                 <Grid key={squad.id} item xs={12} sm={6} md={4} lg={3}>
-                  <SquadCard onLeftClick={() => gotoSquad(squad.id)} squad={squad} />
+                  <SquadCard
+                    onLeftClick={() => gotoSquad(squad.id)}
+                    squad={squad}
+                    onRightClickItems={
+                      <Box>
+                        <MenuItem onClick={() => removeSquadHandler(squad.id)}>
+                          <Typography color="error">Remove squad</Typography>
+                        </MenuItem>
+                      </Box>
+                    }
+                  />
                 </Grid>
               ))}
             <SquadsSelector

@@ -6,7 +6,6 @@ import { IAction } from '../redux'
 import { AgreementActions } from '../redux/agreements/agreementsReducer'
 
 export const getAgreement = (id: string) => (dispatch: Dispatch<IAction>) => {
-  console.log(id)
   request
     .get(`${BACKEND_URL}/${AGREEMENTS_ENDPOINT}/${id}`)
     .set('Authorization', BEARER)

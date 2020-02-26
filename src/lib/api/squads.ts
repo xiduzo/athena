@@ -3,6 +3,7 @@ import { BACKEND_URL, SQUAD_ENDPOINT, BEARER } from '../constants'
 import { SquadActions } from '../redux/squads/squadsReducer'
 import { Dispatch } from 'react'
 import { IAction } from '../redux'
+import { ISquad } from '../types/squad'
 
 // function typeGuard<T>(toBeDetermined: any): toBeDetermined is T {
 //   if((toBeDetermined as T).type){
@@ -41,4 +42,17 @@ export const getSquadById = (id: string) => (dispatch: Dispatch<IAction>) => {
     .catch((error) => {
       throw error
     })
+}
+
+export const updateSquad = (squad: ISquad, update: Partial<ISquad>) => (dispatch: Dispatch<IAction>) => {
+  request
+    .patch(`${BACKEND_URL}/${SQUAD_ENDPOINT}/${squad.id}/`)
+    .send(update)
+    .then(() => {
+      dispatch({
+        type: SquadActions.setSquad,
+        payload: { ...squad, ...update },
+      })
+    })
+    .catch((error) => console.error(error))
 }

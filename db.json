@@ -44,6 +44,21 @@
       "type": 2,
       "points": 78,
       "id": "r6unC12"
+    },
+    {
+      "translations": [
+        {
+          "language": "nl",
+          "text": "nederlandse vertaling"
+        },
+        {
+          "language": "en",
+          "text": "english transaltion"
+        }
+      ],
+      "type": 2,
+      "points": 45,
+      "id": "eUGFU4a"
     }
   ],
   "tribes": [
@@ -61,7 +76,6 @@
       "name": "Tribe 2",
       "leaders": [],
       "squads": [
-        "sdfdsaf43rDX",
         "asdf67dfgsdfSDFG96"
       ]
     }
@@ -75,7 +89,9 @@
         "doneList": "dasdf657sdf#RsadfhSDF"
       },
       "agreements": [
-        "abc123"
+        "abc123",
+        "LsWSqvp",
+        "r6unC12"
       ],
       "members": [
         "asdfa4wffasefdfe5yhs"
@@ -88,7 +104,12 @@
         "board": "sfgasfasd556ASDFfds",
         "doneList": "dasdf657sdf#RsadfhSDF"
       },
-      "agreements": [],
+      "agreements": [
+        "r6unC12",
+        "LsWSqvp",
+        "abc123",
+        "eUGFU4a"
+      ],
       "members": []
     }
   ],

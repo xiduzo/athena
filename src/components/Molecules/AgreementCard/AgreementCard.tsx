@@ -109,17 +109,38 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onLeftClick, onRi
     )
   }
 
+  const renderOnlyRightClick = () => {
+    return (
+      <CardActionArea disableRipple disableTouchRipple onContextMenu={onRightClickItems && handleContextMenuClick}>
+        {onRightClickItems && renderRightClick()}
+        {renderWithoutAnyAction()}
+      </CardActionArea>
+    )
+  }
+
+  const renderOnlyLeftClick = () => {
+    return <CardActionArea onClick={onLeftClick && onLeftClickHandler}>{renderWithoutAnyAction()}</CardActionArea>
+  }
+
+  const renderBothClicks = () => {
+    return (
+      <CardActionArea
+        onClick={onLeftClick && onLeftClickHandler}
+        disabled={mousePos.mouseY !== null}
+        onContextMenu={onRightClickItems && handleContextMenuClick}
+      >
+        {onRightClickItems && renderRightClick()}
+        {renderWithoutAnyAction()}
+      </CardActionArea>
+    )
+  }
+
   const renderWithAction = () => {
     return (
       <Fragment>
-        <CardActionArea
-          onClick={onLeftClick && onLeftClickHandler}
-          disabled={mousePos.mouseY !== null}
-          onContextMenu={onRightClickItems && handleContextMenuClick}
-        >
-          {onRightClickItems && renderRightClick()}
-          {renderWithoutAnyAction()}
-        </CardActionArea>
+        {onLeftClick && !onRightClickItems && renderOnlyLeftClick()}
+        {!onLeftClick && onRightClickItems && renderOnlyRightClick()}
+        {onLeftClick && onRightClickItems && renderBothClicks()}
       </Fragment>
     )
   }

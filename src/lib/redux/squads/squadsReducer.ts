@@ -3,6 +3,7 @@ import { ISquad } from 'src/lib/types/squad'
 
 export enum SquadActions {
   setSquads = 'setSquads',
+  setSquad = 'setSquad',
   addSquad = 'addSquad',
 }
 
@@ -53,6 +54,18 @@ export const squadsReducer = (state: ISquadsState = initial_state, action: IActi
         ...state,
         status: Status.success,
         items: state.items.find((item) => item.id === payload.id) ? state.items : state.items.concat(payload),
+      }
+    case SquadActions.setSquad:
+      return {
+        ...state,
+        status: Status.success,
+
+        items: state.items.length
+          ? state.items.map((item) => {
+              if (item.id === payload.id) return payload as ISquad
+              return item
+            })
+          : [ payload ],
       }
     default:
       return state
