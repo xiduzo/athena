@@ -52,6 +52,13 @@ export const TribeDetailRoute: FC = () => {
 
     return squads
   })
+  const tribeLeaders = useSelector<IRootReducer, IUser[]>((state) => {
+    if (!tribe) return []
+
+    const foundLeaders = state.users.items.filter((user) => tribe.leaders.includes(user.id))
+
+    return foundLeaders
+  })
 
   const dispatch = useDispatch<Dispatch<(dispatch: Dispatch<IAction>) => void>>()
 
@@ -89,6 +96,16 @@ export const TribeDetailRoute: FC = () => {
     if (tribe) dispatch(updateTribe(tribe, { squads: tribe.squads.filter((squad) => squad !== squadId) }))
   }
 
+  useEffect(
+    () => {
+      if (!tribe) return
+
+      const missingLeaders = tribe.leaders.filter((user) => !tribeLeaders.map((tl) => tl.id).includes(user))
+      console.log(`missing leaders (${missingLeaders.length}): ${missingLeaders}`)
+    },
+    [ tribeLeaders, tribe ]
+  )
+
   return (
     <section className={classes.main}>
       <Container maxWidth="lg">
@@ -100,7 +117,7 @@ export const TribeDetailRoute: FC = () => {
             <Grid item xs={12}>
               <Typography variant="h5">Leaders</Typography>
             </Grid>
-            {tribe.leaders.map((user: IUser) => (
+            {tribeLeaders.map((user: IUser) => (
               <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
                 <UserCard user={user} />
               </Grid>

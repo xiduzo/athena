@@ -80,6 +80,15 @@
       ]
     }
   ],
+  "feedback": [
+    {
+      "id": "abc124",
+      "from": "abc124",
+      "to": "abc124",
+      "rating": 5,
+      "agreement": "abc124"
+    }
+  ],
   "squads": [
     {
       "id": "sdfdsaf43rDX",
@@ -90,12 +99,12 @@
       },
       "agreements": [
         "abc123",
-        "LsWSqvp",
-        "r6unC12"
+        "LsWSqvp"
       ],
-      "members": [
-        "asdfa4wffasefdfe5yhs"
-      ]
+      "feedback": [
+        "abc124"
+      ],
+      "members": []
     },
     {
       "id": "asdf67dfgsdfSDFG96",
@@ -104,11 +113,12 @@
         "board": "sfgasfasd556ASDFfds",
         "doneList": "dasdf657sdf#RsadfhSDF"
       },
+      "feedback": [],
       "agreements": [
         "r6unC12",
         "LsWSqvp",
-        "abc123",
-        "eUGFU4a"
+        "eUGFU4a",
+        "abc123"
       ],
       "members": []
     }

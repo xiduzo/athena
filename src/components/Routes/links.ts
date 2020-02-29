@@ -15,6 +15,8 @@ import { LoginRoute } from 'src/modules/account/login'
 import { StudentDashboardRoute } from 'src/modules/student/dashboard'
 import { TribesRoute } from 'src/modules/tribes/scenes/overview'
 import { TribeDetailRoute } from 'src/modules/tribes/scenes/detail'
+import FeedbackIcon from '@material-ui/icons/Feedback'
+import { GiveFeedbackRoute } from 'src/modules/feedback/scenes/giveFeedback'
 
 export interface IRoute {
   name: string
@@ -123,6 +125,15 @@ const studentRoutes: IRoute[] = [
     component: StudentDashboardRoute,
     private: true,
     exact: false,
+    showInMenu: true,
+  },
+  {
+    name: 'Feedback',
+    path: '/student/feedback',
+    icon: FeedbackIcon,
+    component: GiveFeedbackRoute,
+    private: true,
+    exact: true,
     showInMenu: true,
   },
 ]

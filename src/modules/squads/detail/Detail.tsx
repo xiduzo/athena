@@ -164,6 +164,14 @@ export const SquadDetailRoute: FC = () => {
                   </CardActionArea>
                 </Card>
               </Grid>
+              <Grid item xs={12}>
+                <Typography variant={`h5`}>{`Feedback`}</Typography>
+              </Grid>
+              {squad.feedback.map((feedback) => (
+                <Grid item xs={12} sm={6} md={4} lg={3}>
+                  {feedback}
+                </Grid>
+              ))}
             </Grid>
           )}
         </Suspense>

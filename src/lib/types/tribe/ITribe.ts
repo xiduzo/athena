@@ -1,9 +1,7 @@
-import { ISquad } from '../squad'
-import { IUser } from '../user'
+import { IEntityBase } from '../IEntityBase'
 
-export interface ITribe {
-  id: string
-  leaders: IUser[]
+export interface ITribe extends IEntityBase {
+  leaders: string[]
   squads: string[]
   name: string
 }
