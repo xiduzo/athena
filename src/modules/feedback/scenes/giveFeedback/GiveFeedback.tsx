@@ -69,7 +69,9 @@ export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
                   <Grid container spacing={2}>
                     {[ 1, 2, 3, 4 ].map((user) => (
                       <Grid item xs={12} sm={6} md={4} lg={3} className={classes.center}>
-                        <Avataaar avatarStyle="Circle" />
+                        <Avataaar avatarStyle="Circle" style={{ width: '75px', height: '75px' }} />
+                        <Typography variant="subtitle1">user {user}</Typography>
+
                         <Rating max={4} name="pristine" size="large" value={null} />
                       </Grid>
                     ))}
