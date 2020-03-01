@@ -1,26 +1,59 @@
-import React, { FC } from 'react'
-import {
-  Grid,
-  Paper,
-  CircularProgress,
-  Typography,
-  List,
-  ListItem,
-  Container,
-  CardContent,
-  Tooltip,
-} from '@material-ui/core'
-import { useStyles } from './style'
+import React, { FC, useState } from 'react'
+import { Grid, Typography, List, ListItem, Container, CardContent, makeStyles, Theme, Tooltip } from '@material-ui/core'
 import { FeedbackPointsGraph, FeedbackSpiderGraph } from 'src/components/Atoms/graphs'
 import { useWidth } from 'src/lib/hooks/useWidth'
 import { ProgressCard } from 'src/components/Molecules/ProgressCard'
 
+const useStyles = makeStyles((theme: Theme) => ({
+  main: {
+    padding: theme.spacing(2, 3),
+  },
+  centered: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+}))
+
+interface IInfoCard {
+  value: number
+  max: number
+  text: string
+  inverse: boolean
+}
+
 export const StudentDashboardRoute: FC = () => {
   const classes = useStyles()
   const width = useWidth()
+  const [ infoCards, setInfoCards ] = useState<IInfoCard[]>([
+    {
+      value: 3,
+      max: 15,
+      text: 'Cards due this week',
+      inverse: true,
+    },
+    {
+      value: 34.7,
+      max: 120,
+      text: 'Days to go',
+      inverse: false,
+    },
+    {
+      value: 1.4,
+      max: 7,
+      text: 'Days to give feedback',
+      inverse: false,
+    },
+    {
+      value: 10,
+      max: 60,
+      text: 'Feedback to give',
+      inverse: true,
+    },
+  ])
 
-  const timeTillNextFeedback = Math.random() * 100
-  const timeTillEndOfProject = Math.random() * 100
+  console.log(setInfoCards)
 
   return (
     <Container maxWidth="lg" className={classes.main}>
@@ -30,39 +63,26 @@ export const StudentDashboardRoute: FC = () => {
             Team name
           </Typography>
         </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h6" component="h2">
-            My feedback
-          </Typography>
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <Tooltip title={`X days timeTillNextFeedback`}>
-            <ProgressCard progress={timeTillNextFeedback}>
-              <CardContent>
-                <Typography variant="h6" component="h2">
-                  timeTillNextFeedback
-                </Typography>
-              </CardContent>
-            </ProgressCard>
-          </Tooltip>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Paper>
-            <CircularProgress variant="static" value={75} size={48} thickness={6} />
-            <CircularProgress variant="static" value={75} size={48} thickness={6} />
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <Tooltip title={`X days timeTillEndOfProject`}>
-            <ProgressCard progress={timeTillEndOfProject}>
-              <CardContent>
-                <Typography variant="h6" component="h2">
-                  timeTillNextFeedback
-                </Typography>
-              </CardContent>
-            </ProgressCard>
-          </Tooltip>
-        </Grid>
+        {infoCards.map((item) => {
+          const { text, value, max, inverse } = item
+          const percentage = Math.round(Math.abs((inverse ? -100 : 0) + value * 100 / max))
+          return (
+            <Grid item key={item.text} xs={12} sm={6} lg={3}>
+              <ProgressCard progress={percentage <= 100 ? percentage : 100}>
+                <CardContent className={classes.centered}>
+                  <Tooltip title={`${value} of ${max}`}>
+                    <Typography variant="h3" component="h2">
+                      {Math.round(value)}
+                    </Typography>
+                  </Tooltip>
+                  <Typography variant="h6" component="h2">
+                    {text}
+                  </Typography>
+                </CardContent>
+              </ProgressCard>
+            </Grid>
+          )
+        })}
         <Grid item xs={12}>
           <Typography variant="h6" component="h2">
             My feedback
@@ -76,7 +96,7 @@ export const StudentDashboardRoute: FC = () => {
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h6" component="h2">
-            My cards
+            Cards due [select day / week / month]
           </Typography>
         </Grid>
         <List>
