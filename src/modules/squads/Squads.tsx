@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => {
       margin: theme.spacing(2),
     },
     main: {
-      padding: theme.spacing(2, 0),
+      padding: theme.spacing(2, 3),
     },
   }
 })
@@ -51,48 +51,46 @@ export const SquadsRoute: FC = () => {
   }
 
   return (
-    <section className={classes.main}>
-      <Container maxWidth={`lg`}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography variant="h4">Squads</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Paper>
-              <Box p={2}>
-                <form autoComplete="off">
-                  <FormControl component="fieldset">
-                    <Typography variant="h6">Filter</Typography>
-                    <TextField
-                      id="filterByName"
-                      name="filterByName"
-                      label="Name"
-                      placeholder="Filter by name"
-                      fullWidth
-                      onChange={handleFilter}
-                      inputRef={register}
-                      error={errors.text ? true : false}
-                      helperText={errors.text && (errors.text as any).message}
-                    />
-                  </FormControl>
-                </form>
-              </Box>
-            </Paper>
-          </Grid>
-          {squads.status === Status.loading &&
-            [ ...new Array(48) ].map((_, index: number) => (
-              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                <SquadCardMock />
-              </Grid>
-            ))}
-          {squads.status !== Status.loading &&
-            squads.items.filter(createFilter(...filters)).map((squad) => (
-              <Grid key={squad.id} item xs={12} sm={6} md={4} lg={3}>
-                <SquadCard squad={squad} onLeftClick={() => navigateToSquad(squad.id)} />
-              </Grid>
-            ))}
+    <Container maxWidth={`lg`} className={classes.main}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h4">Squads</Typography>
         </Grid>
-      </Container>
-    </section>
+        <Grid item xs={12}>
+          <Paper>
+            <Box p={2}>
+              <form autoComplete="off">
+                <FormControl component="fieldset">
+                  <Typography variant="h6">Filter</Typography>
+                  <TextField
+                    id="filterByName"
+                    name="filterByName"
+                    label="Name"
+                    placeholder="Filter by name"
+                    fullWidth
+                    onChange={handleFilter}
+                    inputRef={register}
+                    error={errors.text ? true : false}
+                    helperText={errors.text && (errors.text as any).message}
+                  />
+                </FormControl>
+              </form>
+            </Box>
+          </Paper>
+        </Grid>
+        {squads.status === Status.loading &&
+          [ ...new Array(48) ].map((_, index: number) => (
+            <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+              <SquadCardMock />
+            </Grid>
+          ))}
+        {squads.status !== Status.loading &&
+          squads.items.filter(createFilter(...filters)).map((squad) => (
+            <Grid key={squad.id} item xs={12} sm={6} md={4} lg={3}>
+              <SquadCard squad={squad} onLeftClick={() => navigateToSquad(squad.id)} />
+            </Grid>
+          ))}
+      </Grid>
+    </Container>
   )
 }

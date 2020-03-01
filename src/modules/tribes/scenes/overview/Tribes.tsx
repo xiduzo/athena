@@ -1,7 +1,7 @@
 import React, { FC, useEffect, Dispatch } from 'react'
 import { getTribes } from 'src/lib/api'
 import { useStyles } from './style'
-import { Fab, Container, Grid } from '@material-ui/core'
+import { Fab, Container, Grid, Typography } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import { ITribe } from 'src/lib/types/tribe'
 import { TribeCard, TribeCardMock } from 'src/components/Molecules/TribeCard'
@@ -31,26 +31,27 @@ export const TribesRoute: FC = () => {
   }
 
   return (
-    <section className={classes.main}>
+    <Container maxWidth="lg" className={classes.main}>
       <Fab color="primary" aria-label="New tribe" className={classes.fab}>
         <AddIcon />
       </Fab>
-      <Container maxWidth="lg">
-        <Grid container spacing={2} className={classes.userGrid}>
-          {tribes.status === Status.loading &&
-            [ ...new Array(48) ].map((_, index: number) => (
-              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                <TribeCardMock />
-              </Grid>
-            ))}
-          {tribes.status !== Status.loading &&
-            tribes.items.map((tribe: ITribe) => (
-              <Grid key={tribe.id} item xs={12} sm={6} md={4} lg={3}>
-                <TribeCard tribe={tribe} onClick={() => navigateToTribe(tribe.id)} />
-              </Grid>
-            ))}
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h4">Tribes</Typography>
         </Grid>
-      </Container>
-    </section>
+        {tribes.status === Status.loading &&
+          [ ...new Array(48) ].map((_, index: number) => (
+            <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+              <TribeCardMock />
+            </Grid>
+          ))}
+        {tribes.status !== Status.loading &&
+          tribes.items.map((tribe: ITribe) => (
+            <Grid key={tribe.id} item xs={12} sm={6} md={4} lg={3}>
+              <TribeCard tribe={tribe} onClick={() => navigateToTribe(tribe.id)} />
+            </Grid>
+          ))}
+      </Grid>
+    </Container>
   )
 }

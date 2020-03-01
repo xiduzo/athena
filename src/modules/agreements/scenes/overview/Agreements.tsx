@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, Dispatch, ChangeEvent } from 'react'
+import React, { FC, useEffect, useState, Dispatch, ChangeEvent, Fragment } from 'react'
 import { useStyles } from './style'
 
 import {
@@ -91,20 +91,23 @@ export const AgreementsRoute: FC = () => {
   )
 
   return (
-    <section className={classes.root}>
-      <Zoom in={!modalOpen} style={{ transitionDelay: '200ms' }}>
-        <Fab
-          color="primary"
-          aria-label="New agreement"
-          className={classes.fab}
-          onClick={() => setModalOpen(!modalOpen)}
-        >
-          <AddIcon />
-        </Fab>
-      </Zoom>
-      <NewAgreementModal isOpen={modalOpen} onClose={handleClose} />
-      <Container maxWidth="lg">
+    <Fragment>
+      <Container maxWidth="lg" className={classes.main}>
+        <Zoom in={!modalOpen} style={{ transitionDelay: '200ms' }}>
+          <Fab
+            color="primary"
+            aria-label="New agreement"
+            className={classes.fab}
+            onClick={() => setModalOpen(!modalOpen)}
+          >
+            <AddIcon />
+          </Fab>
+        </Zoom>
+        <NewAgreementModal isOpen={modalOpen} onClose={handleClose} />
         <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Typography variant="h4">Agreements</Typography>
+          </Grid>
           {agreements.status === Status.loading ? (
             [ ...Array(48) ].map((_, index: number) => (
               <Grid key={index} item xs={12} md={6} lg={4} xl={3}>
@@ -200,6 +203,6 @@ export const AgreementsRoute: FC = () => {
           </Grid>
         </form>
       </Drawer>
-    </section>
+    </Fragment>
   )
 }

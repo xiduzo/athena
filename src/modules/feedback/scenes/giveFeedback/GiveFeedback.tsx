@@ -19,7 +19,7 @@ import { green, orange, red } from '@material-ui/core/colors'
 
 interface IGiveFeedbackRoute {}
 
-export const useStyles = makeStyles((_: Theme) => ({
+export const useStyles = makeStyles((theme: Theme) => ({
   center: {
     display: 'flex',
     flexDirection: 'column',
@@ -34,13 +34,16 @@ export const useStyles = makeStyles((_: Theme) => ({
   error: {
     color: red[500],
   },
+  main: {
+    padding: theme.spacing(2, 3),
+  },
 }))
 
 export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
   const classes = useStyles()
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" className={classes.main}>
       <Grid container spacing={4}>
         <Grid item xs={12}>
           <Typography variant="h4">Feedback</Typography>

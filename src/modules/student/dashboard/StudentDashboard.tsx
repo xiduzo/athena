@@ -23,8 +23,8 @@ export const StudentDashboardRoute: FC = () => {
   const timeTillEndOfProject = Math.random() * 100
 
   return (
-    <Container maxWidth="lg">
-      <Grid container spacing={width === 'xs' ? 2 : 4} className={classes.mainGrid}>
+    <Container maxWidth="lg" className={classes.main}>
+      <Grid container spacing={width === 'xs' ? 2 : 4}>
         <Grid item xs={12}>
           <Typography variant="h4" component="h2">
             Team name

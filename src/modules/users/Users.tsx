@@ -3,7 +3,7 @@ import { useStyles } from './style'
 import { GetUsers } from 'src/lib/api'
 
 import AddIcon from '@material-ui/icons/Add'
-import { Fab, Container, Grid } from '@material-ui/core'
+import { Fab, Container, Grid, Typography } from '@material-ui/core'
 import { IUser } from 'src/lib/types/user'
 import { UserCard, UserCardMock } from 'src/components/Molecules/UserCard'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -33,26 +33,27 @@ export const UsersRoute: FC = () => {
   }
 
   return (
-    <section className={classes.main}>
+    <Container maxWidth="lg" className={classes.main}>
       <Fab color="primary" aria-label="New agreement" className={classes.fab}>
         <AddIcon />
       </Fab>
-      <Container maxWidth="lg">
-        <Grid container spacing={2}>
-          {loading &&
-            [ ...new Array(24) ].map((_, index: number) => (
-              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                <UserCardMock />
-              </Grid>
-            ))}
-          {!loading &&
-            users.map((user: IUser) => (
-              <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
-                <UserCard user={user} onClick={() => navigateToUser(user.id)} />
-              </Grid>
-            ))}
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h4">Users</Typography>
         </Grid>
-      </Container>
-    </section>
+        {loading &&
+          [ ...new Array(24) ].map((_, index: number) => (
+            <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+              <UserCardMock />
+            </Grid>
+          ))}
+        {!loading &&
+          users.map((user: IUser) => (
+            <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
+              <UserCard user={user} onClick={() => navigateToUser(user.id)} />
+            </Grid>
+          ))}
+      </Grid>
+    </Container>
   )
 }

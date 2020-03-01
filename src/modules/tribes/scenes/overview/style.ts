@@ -11,16 +11,7 @@ export const useStyles = makeStyles((theme: Theme) => {
       margin: theme.spacing(2),
     },
     main: {
-      // display: 'flex',
-      // flexDirection: 'column',
-      // flexGrow: 1,
-      padding: theme.spacing(2, 0),
-    },
-    userGrid: {
-      paddingBottom: theme.spacing(12),
-    },
-    pagerBox: {
-      padding: theme.spacing(2),
+      padding: theme.spacing(2, 3),
     },
   }
 })

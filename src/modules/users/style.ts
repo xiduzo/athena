@@ -11,16 +11,7 @@ export const useStyles = makeStyles((theme: Theme) => {
       margin: theme.spacing(2),
     },
     main: {
-      padding: theme.spacing(2, 0, 12, 0),
-    },
-    avatar: {
-      background: theme.palette.grey[100],
-    },
-    pagerBox: {
-      padding: theme.spacing(2),
-    },
-    pagerDrawer: {
-      width: `50%`,
+      padding: theme.spacing(2, 3),
     },
   }
 })
