@@ -7,33 +7,33 @@ import clsx from 'clsx'
 
 const useStyles = makeStyles((theme: Theme) => ({
   danger: {
-    background: red[500],
-    color: theme.palette.getContrastText(red[500]),
+    background: theme.palette.error.main,
+    color: theme.palette.error.contrastText,
   },
   dangerBar: {
-    background: red[200],
+    background: theme.palette.error.light,
     '& > div': {
-      background: red[800],
+      background: theme.palette.error.dark,
     },
   },
   warning: {
-    background: orange[500],
-    color: theme.palette.getContrastText(orange[500]),
+    background: theme.palette.warning.main,
+    color: theme.palette.warning.contrastText,
   },
   warningBar: {
-    background: orange[200],
+    background: theme.palette.warning.light,
     '& > div': {
-      background: orange[800],
+      background: theme.palette.warning.dark,
     },
   },
   success: {
-    background: green[500],
-    color: theme.palette.getContrastText(green[500]),
+    background: theme.palette.success.main,
+    color: theme.palette.success.contrastText,
   },
   successBar: {
-    background: green[200],
+    background: theme.palette.success.light,
     '& > div': {
-      background: green[800],
+      background: theme.palette.success.dark,
     },
   },
 }))
