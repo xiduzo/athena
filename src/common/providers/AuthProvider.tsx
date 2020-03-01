@@ -11,7 +11,7 @@ const AuthContext = createContext<IAuthContext>({
 })
 
 const useAuthHandler = () => {
-  const [token, setToken] = useState<string>('')
+  const [ token, setToken ] = useState<string>('')
 
   const setAuthToken = (newToken: string) => {
     localStorage.setItem('token', JSON.stringify(newToken))

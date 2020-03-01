@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import { useAuth } from 'src/lib/auth'
+import { useAuth } from 'src/common/providers/AuthProvider'
 
 interface IPrivateRoute {
   component: any
@@ -14,13 +14,12 @@ export const PrivateRoute: React.FC<IPrivateRoute> = ({ component: Component, ..
   return (
     <Route
       {...rest}
-      render={props =>
+      render={(props) =>
         token || true ? (
           <Component {...props} />
         ) : (
           <Redirect to={{ pathname: '/account/login', state: { referer: props.location } }} />
-        )
-      }
+        )}
     />
   )
 }

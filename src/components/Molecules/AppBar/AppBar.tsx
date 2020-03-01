@@ -4,11 +4,11 @@ import { AppBar as MuiAppBar, Toolbar, Typography, Button, Icon, Menu, MenuItem,
 import { useStyles } from './style'
 
 import AccountBoxIcon from '@material-ui/icons/AccountBox'
-import { useAuth } from 'src/lib/auth'
 import { AthenaIcon } from 'src/lib/icons'
 import { useHistory } from 'react-router-dom'
 import MenuIcon from '@material-ui/icons/Menu'
 import { useWidth } from 'src/lib/hooks/useWidth'
+import { useAuth } from 'src/common/providers/AuthProvider'
 
 export const AppBar: FC = () => {
   const classes = useStyles()
