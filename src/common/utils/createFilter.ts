@@ -13,6 +13,7 @@ interface IFilterArgument {
   value: string | RegExp
 }
 
+// const createFilter = (...filters: IFilterArgument[]) => (item: any) => filters.every((filter) => doFilter(item, filter))
 const createFilter = (...filters: IFilterArgument[]) => (item: any) => filters.every((filter) => doFilter(item, filter))
 
 export { createFilter }

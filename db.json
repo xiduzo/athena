@@ -59,6 +59,36 @@
       "type": 2,
       "points": 45,
       "id": "eUGFU4a"
+    },
+    {
+      "translations": [
+        {
+          "language": "nl",
+          "text": "houding"
+        },
+        {
+          "language": "en",
+          "text": "attitude"
+        }
+      ],
+      "type": 0,
+      "points": 0,
+      "id": "BGYVLOC"
+    },
+    {
+      "translations": [
+        {
+          "language": "nl",
+          "text": "verantwoordelijkheid"
+        },
+        {
+          "language": "en",
+          "text": "accountabiliy"
+        }
+      ],
+      "type": 3,
+      "points": 0,
+      "id": "ApXRIg7"
     }
   ],
   "tribes": [
