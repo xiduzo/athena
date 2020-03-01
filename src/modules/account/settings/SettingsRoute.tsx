@@ -4,6 +4,7 @@ import { Button, Container, Paper, FormControl, InputLabel, Select, MenuItem } f
 
 import i18n from 'i18next'
 import { supportedLanguages } from 'src/i18n'
+import { useTheme } from 'src/common/providers/ThemeProvider'
 
 export const SettingsRoute: FC = () => {
   const { theme, setTheme } = useTheme()
