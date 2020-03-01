@@ -1,17 +1,14 @@
 import React, { FC } from 'react'
 import { makeStyles } from '@material-ui/styles'
 
-import { Theme, Card, LinearProgress } from '@material-ui/core'
+import { Theme, Card, LinearProgress, Tooltip } from '@material-ui/core'
 import { red, orange, green } from '@material-ui/core/colors'
 import clsx from 'clsx'
 
-interface IProgressCard {
-  progress: number
-}
-
-export const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   danger: {
     background: red[500],
+    color: theme.palette.getContrastText(red[500]),
   },
   dangerBar: {
     background: red[200],
@@ -21,6 +18,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   warning: {
     background: orange[500],
+    color: theme.palette.getContrastText(orange[500]),
   },
   warningBar: {
     background: orange[200],
@@ -30,6 +28,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   success: {
     background: green[500],
+    color: theme.palette.getContrastText(green[500]),
   },
   successBar: {
     background: green[200],
@@ -39,8 +38,13 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
+interface IProgressCard {
+  progress: number
+  tooltip?: string
+}
+
 export const ProgressCard: FC<IProgressCard> = (props) => {
-  const { progress, children } = props
+  const { progress, tooltip, children } = props
 
   const classes = useStyles()
 
@@ -53,15 +57,17 @@ export const ProgressCard: FC<IProgressCard> = (props) => {
       })}
     >
       {children}
-      <LinearProgress
-        variant="determinate"
-        value={progress}
-        className={clsx({
-          [classes.dangerBar]: progress <= 25,
-          [classes.warningBar]: progress <= 50 && progress > 25,
-          [classes.successBar]: progress <= 100 && progress > 50,
-        })}
-      />
+      <Tooltip title={tooltip ? tooltip : `${progress}%`}>
+        <LinearProgress
+          variant="determinate"
+          value={progress}
+          className={clsx({
+            [classes.dangerBar]: progress <= 25,
+            [classes.warningBar]: progress <= 50 && progress > 25,
+            [classes.successBar]: progress <= 100 && progress > 50,
+          })}
+        />
+      </Tooltip>
     </Card>
   )
 }
