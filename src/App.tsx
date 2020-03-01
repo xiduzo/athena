@@ -6,10 +6,10 @@ import { MenuDrawer } from './components/Molecules/MenuDrawer'
 import { Routes } from './components/Routes'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { IRootReducer } from './lib/redux'
-import { AuthProvider } from './lib/auth'
-import { ThemeProvider } from './lib/theme'
 
 import './i18n'
+import { ThemeProvider } from './common/providers/ThemeProvider'
+import { AuthProvider } from './common/providers/AuthProvider'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
