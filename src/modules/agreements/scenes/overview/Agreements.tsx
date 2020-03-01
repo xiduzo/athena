@@ -34,10 +34,10 @@ import { useForm } from 'react-hook-form'
 import { createFilter } from 'src/common/utils/createFilter'
 
 const initFilters = [
-  {
-    property: 'filterByName',
-    value: '',
-  },
+  // {
+  //   property: 'translations',
+  //   value: '',
+  // },
   {
     property: 'type',
     value: '',
@@ -61,10 +61,17 @@ export const AgreementsRoute: FC = () => {
         return filter
       }),
     ])
+    console.log(filters)
   }
 
   const handleTypeFilter = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event)
+    setFilters((current) =>
+      current.map((item) => {
+        if (item.property === `type`) item.value = event.target.value !== '-1' ? event.target.value : ''
+
+        return item
+      })
+    )
   }
 
   const handleClose = (agreement?: IAgreement) => {
@@ -139,42 +146,58 @@ export const AgreementsRoute: FC = () => {
           Filter
         </Typography>
         <form autoComplete="off">
-          <FormControl component="fieldset" className={classes.fieldset}>
-            <TextField
-              id="filterByName"
-              name="filterByName"
-              label="Name"
-              onChange={handleNameFilter}
-              inputRef={register}
-              error={errors.text ? true : false}
-              helperText={errors.text && (errors.text as any).message}
-            />
-          </FormControl>
-          <FormControl component="fieldset" className={classes.fieldset}>
-            <FormLabel component="legend">Type</FormLabel>
-            <RadioGroup aria-label="Filter by type" name="type" id="type" defaultValue="-1" onChange={handleTypeFilter}>
-              <FormControlLabel inputRef={register} value={`-1`} control={<Radio />} label="All" />
-              <FormControlLabel
-                inputRef={register}
-                value={`${AgreementType.ATTITUDE}`}
-                control={<Radio />}
-                label="Attitude"
-              />
-              <FormControlLabel
-                inputRef={register}
-                value={`${AgreementType.FUNCTIONING_WITHING_TEAM}`}
-                control={<Radio />}
-                label="Functioning"
-              />
-              <FormControlLabel
-                inputRef={register}
-                value={`${AgreementType.KNOWLEDGE_DEVELOPMENT}`}
-                control={<Radio />}
-                label="Knowledge"
-              />
-              <FormControlLabel value={`${AgreementType.ACCOUNTABILITY}`} control={<Radio />} label="Accountability" />
-            </RadioGroup>
-          </FormControl>
+          <Grid container>
+            <Grid item xs={12}>
+              <FormControl component="fieldset" className={classes.fieldset}>
+                <TextField
+                  id="translations"
+                  name="translations"
+                  label="Name"
+                  onChange={handleNameFilter}
+                  inputRef={register}
+                  error={errors.text ? true : false}
+                  helperText={errors.text && (errors.text as any).message}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl component="fieldset" className={classes.fieldset}>
+                <FormLabel component="legend">Type</FormLabel>
+                <RadioGroup
+                  aria-label="Filter by type"
+                  name="type"
+                  id="type"
+                  defaultValue="-1"
+                  onChange={handleTypeFilter}
+                >
+                  <FormControlLabel inputRef={register} value={`-1`} control={<Radio />} label="All" />
+                  <FormControlLabel
+                    inputRef={register}
+                    value={`${AgreementType.ATTITUDE}`}
+                    control={<Radio />}
+                    label="Attitude"
+                  />
+                  <FormControlLabel
+                    inputRef={register}
+                    value={`${AgreementType.FUNCTIONING_WITHING_TEAM}`}
+                    control={<Radio />}
+                    label="Functioning"
+                  />
+                  <FormControlLabel
+                    inputRef={register}
+                    value={`${AgreementType.KNOWLEDGE_DEVELOPMENT}`}
+                    control={<Radio />}
+                    label="Knowledge"
+                  />
+                  <FormControlLabel
+                    value={`${AgreementType.ACCOUNTABILITY}`}
+                    control={<Radio />}
+                    label="Accountability"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+          </Grid>
         </form>
       </Drawer>
     </section>

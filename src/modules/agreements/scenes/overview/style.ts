@@ -24,5 +24,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   fieldset: {
     marginBottom: theme.spacing(2),
+    width: '100%',
   },
 }))
