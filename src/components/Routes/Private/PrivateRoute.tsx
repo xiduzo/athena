@@ -9,13 +9,15 @@ interface IPrivateRoute {
 }
 
 export const PrivateRoute: React.FC<IPrivateRoute> = ({ component: Component, ...rest }) => {
-  const { token } = useAuth()
+  const { userSession } = useAuth()
+
+  console.log(userSession)
 
   return (
     <Route
       {...rest}
       render={(props) =>
-        token || true ? (
+        userSession ? (
           <Component {...props} />
         ) : (
           <Redirect to={{ pathname: '/account/login', state: { referer: props.location } }} />

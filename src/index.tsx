@@ -3,13 +3,19 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
-import { Provider } from 'react-redux'
+import Amplify from 'aws-amplify'
+import { awsConfig } from './aws-exports'
+// import aws_exports from './aws-exports';
+
+import { Provider as StoreProvider } from 'react-redux'
 import { store } from './lib/redux'
 
+Amplify.configure(awsConfig)
+
 ReactDOM.render(
-  <Provider store={store}>
+  <StoreProvider store={store}>
     <App />
-  </Provider>,
+  </StoreProvider>,
   document.getElementById('root')
 )
 

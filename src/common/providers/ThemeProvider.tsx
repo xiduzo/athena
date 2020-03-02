@@ -1,5 +1,5 @@
-import { amber as primaryColor, grey, blue, grey as secondaryColor } from '@material-ui/core/colors'
-import { createMuiTheme, MuiThemeProvider, Theme, fade, lighten, darken, emphasize } from '@material-ui/core/styles'
+import { amber as primaryColor, grey as secondaryColor, deepPurple, teal, pink, lime } from '@material-ui/core/colors'
+import { createMuiTheme, MuiThemeProvider, Theme, fade, lighten, darken } from '@material-ui/core/styles'
 import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
 import React, { createContext, FC, ReactNode, useContext, useState } from 'react'
 import * as Highcharts from 'highcharts'
@@ -23,21 +23,34 @@ const ThemeContext = createContext<IThemeContext>({
   setTheme: (_: ThemeOptions) => {},
 })
 
-const getHighchartsDarkTheme = (theme: Theme): Highcharts.Options => {
+const generateHighchartsTheme = (theme: Theme): Highcharts.Options => {
+  const isDarkMode = theme.palette.type === 'dark' ? true : false
   const textColor = theme.palette.text.primary
-  const lineColor = lighten(theme.palette.background.paper, 0.3)
-  const strokeColor = darken(theme.palette.background.paper, 0.3)
-  const fillColor = darken(theme.palette.background.paper, 0.2)
+  const lineColor = isDarkMode
+    ? lighten(theme.palette.background.paper, 0.3)
+    : darken(theme.palette.background.paper, 0.3)
+  const strokeColor = isDarkMode
+    ? darken(theme.palette.background.paper, 0.3)
+    : lighten(theme.palette.background.paper, 0.3)
+  const fillColor = isDarkMode
+    ? darken(theme.palette.background.paper, 0.2)
+    : lighten(theme.palette.background.paper, 0.2)
   const highlightColor = theme.palette.primary.main
 
   return {
     colors: [
+      // Main
       theme.palette.primary.main,
-      // theme.palette.secondary.main,
+      theme.palette.secondary.main,
       theme.palette.info.main,
       theme.palette.error.main,
       theme.palette.warning.main,
       theme.palette.success.main,
+      // Others
+      deepPurple[500],
+      teal[500],
+      pink[500],
+      lime[500],
     ],
     chart: {
       backgroundColor: theme.palette.background.paper,
@@ -61,7 +74,7 @@ const getHighchartsDarkTheme = (theme: Theme): Highcharts.Options => {
         },
       },
       lineColor: lineColor,
-      minorGridLineColor: darken(lineColor, 0.2),
+      minorGridLineColor: isDarkMode ? darken(lineColor, 0.2) : lighten(lineColor, 0.2),
       tickColor: lineColor,
       title: {
         style: {
@@ -77,7 +90,7 @@ const getHighchartsDarkTheme = (theme: Theme): Highcharts.Options => {
         },
       },
       lineColor: lineColor,
-      minorGridLineColor: darken(lineColor, 0.2),
+      minorGridLineColor: isDarkMode ? darken(lineColor, 0.2) : lighten(lineColor, 0.2),
       tickColor: lineColor,
       title: {
         style: {
@@ -119,7 +132,7 @@ const getHighchartsDarkTheme = (theme: Theme): Highcharts.Options => {
         color: textColor,
       },
       itemHoverStyle: {
-        color: lighten(lineColor, 0.5),
+        color: isDarkMode ? lighten(lineColor, 0.5) : darken(lineColor, 0.5),
       },
       itemHiddenStyle: {
         color: fade(highlightColor, 0.2),
@@ -202,201 +215,10 @@ const getHighchartsDarkTheme = (theme: Theme): Highcharts.Options => {
     scrollbar: {
       barBackgroundColor: strokeColor,
       barBorderColor: strokeColor,
-      buttonArrowColor: lighten(lineColor, 0.5),
+      buttonArrowColor: isDarkMode ? lighten(lineColor, 0.5) : darken(lineColor, 0.5),
       buttonBackgroundColor: fillColor,
       buttonBorderColor: fade(highlightColor, 0.2),
-      rifleColor: lighten(lineColor, 0.5),
-      trackBackgroundColor: fillColor,
-      trackBorderColor: strokeColor,
-    },
-  }
-}
-
-const getHighchartsLightTheme = (theme: Theme) => {
-  console.log(Highcharts.defaultOptions)
-  // return Highcharts.defaultOptions
-  const textColor = theme.palette.text.primary
-  const lineColor = darken(theme.palette.background.paper, 0.3)
-  const strokeColor = lighten(theme.palette.background.paper, 0.3)
-  const fillColor = lighten(theme.palette.background.paper, 0.2)
-  const highlightColor = theme.palette.primary.main
-
-  return {
-    colors: [
-      theme.palette.primary.main,
-      // theme.palette.secondary.main,
-      theme.palette.info.main,
-      theme.palette.error.main,
-      theme.palette.warning.main,
-      theme.palette.success.main,
-    ],
-    chart: {
-      backgroundColor: theme.palette.background.paper,
-      plotBorderColor: theme.palette.info.light,
-    },
-    title: {
-      style: {
-        color: textColor,
-      },
-    },
-    subtitle: {
-      style: {
-        color: textColor,
-      },
-    },
-    xAxis: {
-      gridLineColor: lineColor,
-      labels: {
-        style: {
-          color: textColor,
-        },
-      },
-      lineColor: lineColor,
-      minorGridLineColor: lighten(lineColor, 0.2),
-      tickColor: lineColor,
-      title: {
-        style: {
-          color: textColor,
-        },
-      },
-    },
-    yAxis: {
-      gridLineColor: lineColor,
-      labels: {
-        style: {
-          color: textColor,
-        },
-      },
-      lineColor: lineColor,
-      minorGridLineColor: lighten(lineColor, 0.2),
-      tickColor: lineColor,
-      title: {
-        style: {
-          color: textColor,
-        },
-      },
-    },
-    tooltip: {
-      backgroundColor: fade(theme.palette.background.paper, 0.75),
-      style: {
-        color: textColor,
-      },
-    },
-    plotOptions: {
-      series: {
-        dataLabels: {
-          color: textColor,
-        },
-        marker: {
-          lineColor: lineColor,
-        },
-      },
-      boxplot: {
-        fillColor: fillColor,
-      },
-      candlestick: {
-        lineColor: lineColor,
-      },
-      errorbar: {
-        color: lineColor,
-      },
-      map: {
-        nullColor: fillColor,
-      },
-    },
-    legend: {
-      backgroundColor: 'transparent',
-      itemStyle: {
-        color: textColor,
-      },
-      itemHoverStyle: {
-        color: darken(lineColor, 0.5),
-      },
-      itemHiddenStyle: {
-        color: emphasize(highlightColor, 0.2),
-      },
-      title: {
-        style: {
-          color: textColor,
-        },
-      },
-    },
-    credits: {
-      style: {
-        color: textColor,
-      },
-    },
-    drilldown: {
-      activeAxisLabelStyle: {
-        color: textColor,
-      },
-      activeDataLabelStyle: {
-        color: textColor,
-      },
-    },
-    navigation: {
-      buttonOptions: {
-        symbolStroke: strokeColor,
-        theme: {
-          fill: fillColor,
-        },
-      },
-    },
-    rangeSelector: {
-      buttonTheme: {
-        fill: fillColor,
-        stroke: strokeColor,
-        style: {
-          color: textColor,
-        },
-        states: {
-          hover: {
-            fill: lineColor,
-            stroke: strokeColor,
-            style: {
-              color: textColor,
-            },
-          },
-          select: {
-            fill: fillColor,
-            stroke: strokeColor,
-            style: {
-              color: textColor,
-            },
-          },
-        },
-      },
-      inputBoxBorderColor: strokeColor,
-      inputStyle: {
-        backgroundColor: fillColor,
-        color: textColor,
-      },
-      labelStyle: {
-        color: textColor,
-      },
-    },
-    navigator: {
-      handles: {
-        backgroundColor: fillColor,
-        borderColor: strokeColor,
-      },
-      outlineColor: strokeColor,
-      maskFill: emphasize(highlightColor, 0.2),
-      series: {
-        color: highlightColor,
-        lineColor: emphasize(highlightColor, 0.2),
-      },
-      xAxis: {
-        gridLineColor: lineColor,
-      },
-    },
-    scrollbar: {
-      barBackgroundColor: strokeColor,
-      barBorderColor: strokeColor,
-      buttonArrowColor: darken(lineColor, 0.5),
-      buttonBackgroundColor: fillColor,
-      buttonBorderColor: emphasize(highlightColor, 0.2),
-      rifleColor: darken(lineColor, 0.5),
+      rifleColor: isDarkMode ? lighten(lineColor, 0.5) : darken(lineColor, 0.5),
       trackBackgroundColor: fillColor,
       trackBorderColor: strokeColor,
     },
@@ -417,11 +239,7 @@ const useThemeHandler = () => {
   }
 
   const setHighChart = (generatedTheme: Theme) => {
-    Highcharts.setOptions(
-      generatedTheme.palette.type === `dark`
-        ? getHighchartsDarkTheme(generatedTheme)
-        : getHighchartsLightTheme(generatedTheme)
-    )
+    Highcharts.setOptions(generateHighchartsTheme(generatedTheme))
   }
 
   return { theme, setTheme, setHighChart }

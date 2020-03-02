@@ -12,58 +12,6 @@ interface IFeedbackSpiderGraph {
 export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
   const { agreements } = props
 
-  const theme = useTheme()
-
-  //   const options = {
-  //     chart: { polar: true, type: 'spline' },
-  //     title: { text: 'Feedback focus ' },
-  //     xAxis: {
-  //       categories: [ 'Houding', 'Functioneren binnen de groep', 'Kennisontwikkeling', 'Verantwoording' ],
-  //       tickmarkPlacement: 'on',
-  //       lineWidth: 0,
-  //     },
-  //     yAxis: { gridLineInterpolation: 'polygon', visible: false, min: 0, max: 100 },
-  //     tooltip: {
-  //       shared: true,
-  //       pointFormat: '{series.name}: <strong>{point.y:,.0f}%</strong> <br>',
-  //     },
-  //     plotOptions: {
-  //       series: {
-  //         events: {
-  //           legendItemClick: function() {
-  //             return false
-  //           },
-  //         },
-  //       },
-  //       spline: { lineWidth: 4, marker: { enabled: false } },
-  //     },
-  //     series: [
-  //       {
-  //         type: 'spline',
-  //         name: `test`,
-  //         data: [
-  //           { type: 1, points: 0, max: 100, y: 50 },
-  //           { type: 2, points: 0, max: 100, y: 0 },
-  //           { type: 3, points: 0, max: 100, y: 0 },
-  //           { type: 4, points: 0, max: 100, y: 0 },
-  //         ],
-  //         color: theme.palette.primary.main,
-  //       },
-  //       {
-  //         type: 'spline',
-  //         name: `Average`,
-  //         data: [
-  //           { type: 1, points: 0, max: 0, y: 0 },
-  //           { type: 2, points: 0, max: 0, y: 0 },
-  //           { type: 3, points: 0, max: 0, y: 0 },
-  //           { type: 4, points: 0, max: 0, y: 0 },
-  //         ],
-  //         color: theme.palette.grey[200],
-  //       },
-  //     ],
-  //     exporting: { filename: '_exporting' },
-  //     credits: { href: null, text: `credits` },
-  //   }
   const options = {
     chart: {
       polar: true,

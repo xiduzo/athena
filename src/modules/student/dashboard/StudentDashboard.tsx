@@ -53,8 +53,6 @@ export const StudentDashboardRoute: FC = () => {
     },
   ])
 
-  console.log(setInfoCards)
-
   return (
     <Container maxWidth="lg" className={classes.main}>
       <Grid container spacing={width === 'xs' ? 2 : 4}>

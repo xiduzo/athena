@@ -9,7 +9,8 @@ import { IRootReducer } from './lib/redux'
 
 import './i18n'
 import { ThemeProvider } from './common/providers/ThemeProvider'
-import { AuthProvider } from './common/providers/AuthProvider'
+import { AuthProvider, useAuth } from './common/providers/AuthProvider'
+import { Auth } from 'aws-amplify'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -37,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) => {
 
 const App: React.FC = () => {
   const classes = useStyles()
+  const { userSession } = useAuth()
 
   const global = useSelector((state: IRootReducer) => state.global)
   console.log(global)
@@ -48,7 +50,7 @@ const App: React.FC = () => {
           <CssBaseline />
           <Router>
             <AppBar />
-            <MenuDrawer />
+            {userSession && <MenuDrawer />}
             <main className={classes.content}>
               <div className={classes.toolbar} />
               {/* TODO: add breadcrumbs? */}

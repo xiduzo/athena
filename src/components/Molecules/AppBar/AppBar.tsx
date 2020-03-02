@@ -8,13 +8,11 @@ import { AthenaIcon } from 'src/lib/icons'
 import { useHistory } from 'react-router-dom'
 import MenuIcon from '@material-ui/icons/Menu'
 import { useWidth } from 'src/lib/hooks/useWidth'
-import { useAuth } from 'src/common/providers/AuthProvider'
 
 export const AppBar: FC = () => {
   const classes = useStyles()
   const width = useWidth()
 
-  const { setAuthToken } = useAuth()
   const [ anchorEl, setAnchorEl ] = useState(null)
 
   const history = useHistory()
@@ -32,8 +30,6 @@ export const AppBar: FC = () => {
     history.push(route)
   }
 
-  const setToken = () => setAuthToken('1234')
-
   return (
     <MuiAppBar position="static" className={classes.appBar}>
       <Toolbar>
@@ -47,7 +43,6 @@ export const AppBar: FC = () => {
         <Typography variant="h6" className={classes.title}>
           Athena
         </Typography>
-        <Button onClick={setToken}>set token</Button>
 
         <Button onClick={handleMenu} startIcon={<AccountBoxIcon />}>
           Sander Boer
