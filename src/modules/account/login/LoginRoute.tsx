@@ -17,6 +17,7 @@ import {
   TextField,
   Avatar,
   Icon,
+  Tooltip,
 } from '@material-ui/core'
 import LanguageIcon from '@material-ui/icons/Language'
 import { useForm } from 'react-hook-form'
@@ -108,11 +109,21 @@ export const LoginRoute: FC = () => {
 
   const avatarToUse = Math.random() > 0.5 ? baseAvataaar : Math.random() > 0.5 ? fancyAvataaar : casualAvataaar
 
+  const handleOpen = () => {
+    console.log(`EASTER EGG FOUND, NOICEEEE`)
+  }
+
   return (
     <Container maxWidth="lg" className={classes.main}>
       <Card>
         <CardHeader
-          avatar={<Avataaar {...avatarToUse} />}
+          avatar={
+            <Tooltip title={`greeting`} enterDelay={5000} arrow placement="top" onOpen={handleOpen}>
+              <div>
+                <Avataaar {...avatarToUse} />
+              </div>
+            </Tooltip>
+          }
           title={<Typography variant="h4">Login to athena</Typography>}
           action={
             <Fragment>
