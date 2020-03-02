@@ -15,9 +15,25 @@ import {
   MenuItem,
   Menu,
   TextField,
+  Avatar,
+  Icon,
 } from '@material-ui/core'
 import LanguageIcon from '@material-ui/icons/Language'
 import { useForm } from 'react-hook-form'
+import { AthenaIcon } from 'src/lib/icons'
+import { Avataaar } from 'src/components/Atoms/Avataaar'
+import { IAvataaar } from 'src/components/Atoms/Avataaar/interface'
+import { TopType } from 'src/components/Atoms/Avataaar/enums/TopType'
+import { AccessoriesType } from 'src/components/Atoms/Avataaar/enums/AccessoriesType'
+import { HairColor } from 'src/components/Atoms/Avataaar/enums/HairColor'
+import { FacialHairType } from 'src/components/Atoms/Avataaar/enums/FacialHairType'
+import { FacialHairColor } from 'src/components/Atoms/Avataaar/enums/FacialHairColor'
+import { ClotheType } from 'src/components/Atoms/Avataaar/enums/ClotheType'
+import { ClotheColor } from 'src/components/Atoms/Avataaar/enums/ClotheColor'
+import { EyeType } from 'src/components/Atoms/Avataaar/enums/EyeType'
+import { EyebrowType } from 'src/components/Atoms/Avataaar/enums/EyebrowType'
+import { MouthType } from 'src/components/Atoms/Avataaar/enums/MouthType'
+import { SkinColor } from 'src/components/Atoms/Avataaar/enums/SkinColor'
 
 const useStyles = makeStyles((theme: Theme) => ({
   main: {
@@ -26,6 +42,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     height: `calc(90vh - ${theme.mixins.toolbar.height || 64}px)`,
+  },
+  avatar: {
+    backgroundColor: theme.palette.primary.main,
   },
 }))
 
@@ -58,19 +77,51 @@ export const LoginRoute: FC = () => {
     console.log(data)
   }
 
+  // https://getavataaars.com/?accessoriesType=Round&avatarStyle=Circle&clotheColor=Blue03&clotheType=Hoodie&eyeType=Default&eyebrowType=Default&facialHairColor=Auburn&facialHairType=BeardLight&hairColor=Brown&mouthType=Default&skinColor=Light&topType=ShortHairShortWaved
+  const baseAvataaar: IAvataaar = {
+    avatarStyle: 'Circle',
+    style: { width: '75px', height: '75px' },
+    topType: TopType.ShortHairShortWaved,
+    accessoriesType: AccessoriesType.Round,
+    hairColor: HairColor.Brown,
+    facialHairType: FacialHairType.BeardLight,
+    facialHairColor: FacialHairColor.Auburn,
+    clotheType: ClotheType.Hoodie,
+    clotheColor: ClotheColor.Blue03,
+    eyeType: EyeType.Default,
+    eyebrowType: EyebrowType.Default,
+    mouthType: MouthType.Default,
+    skinColor: SkinColor.Light,
+  }
+
+  const fancyAvataaar: IAvataaar = {
+    ...baseAvataaar,
+    clotheType: ClotheType.CollarSweater,
+    clotheColor: ClotheColor.Red,
+  }
+
+  const casualAvataaar: IAvataaar = {
+    ...baseAvataaar,
+    clotheType: ClotheType.ShirtCrewNeck,
+    clotheColor: ClotheColor.White,
+  }
+
+  const avatarToUse = Math.random() > 0.5 ? baseAvataaar : Math.random() > 0.5 ? fancyAvataaar : casualAvataaar
+
   return (
     <Container maxWidth="lg" className={classes.main}>
       <Card>
         <CardHeader
-          title={<Typography variant="h4">titleee</Typography>}
+          avatar={<Avataaar {...avatarToUse} />}
+          title={<Typography variant="h4">Login to athena</Typography>}
           action={
             <Fragment>
               <IconButton aria-label="settings" onClick={handleClick}>
                 <LanguageIcon />
               </IconButton>
               <Menu anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
-                {[ '123', '134' ].map((option) => (
-                  <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+                {[ 'NL', 'ENG' ].map((option) => (
+                  <MenuItem key={option} selected={option === 'ENG'} onClick={handleClose}>
                     {option}
                   </MenuItem>
                 ))}
