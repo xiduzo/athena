@@ -1,4 +1,4 @@
-import React, { FC, useEffect, Fragment } from 'react'
+import React, { FC, useEffect, Fragment, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAuth } from 'src/common/providers/AuthProvider'
 import {
@@ -15,6 +15,9 @@ import {
   Menu,
   TextField,
   Tooltip,
+  Button,
+  LinearProgress,
+  Box,
 } from '@material-ui/core'
 import LanguageIcon from '@material-ui/icons/Language'
 import { useForm } from 'react-hook-form'
@@ -31,6 +34,8 @@ import { EyeType } from 'src/components/Atoms/Avataaar/enums/EyeType'
 import { EyebrowType } from 'src/components/Atoms/Avataaar/enums/EyebrowType'
 import { MouthType } from 'src/components/Atoms/Avataaar/enums/MouthType'
 import { SkinColor } from 'src/components/Atoms/Avataaar/enums/SkinColor'
+import { Auth } from 'aws-amplify'
+import { snackbarWrapper } from 'src/lib/utils/snackbarWrapper'
 
 const useStyles = makeStyles((theme: Theme) => ({
   main: {
@@ -43,15 +48,19 @@ const useStyles = makeStyles((theme: Theme) => ({
   avatar: {
     backgroundColor: theme.palette.primary.main,
   },
+  linearProgress: {
+    minHeight: theme.spacing(4),
+  },
 }))
 
 export const LoginRoute: FC = () => {
   const classes = useStyles()
-  const { userSession } = useAuth()
+  const { userSession, setCredentials, setSession } = useAuth()
   const history = useHistory()
   const { register, handleSubmit, errors } = useForm()
 
-  const [ anchorEl, setAnchorEl ] = React.useState<null | HTMLElement>(null)
+  const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null)
+  const [ loginButtonEnabled, setLoginButtonEnabled ] = useState(true)
   const open = Boolean(anchorEl)
 
   useEffect(
@@ -69,8 +78,22 @@ export const LoginRoute: FC = () => {
     setAnchorEl(null)
   }
 
-  const onSubmit = (data: any) => {
-    console.log(data)
+  const onLoginSubmit = (data: any, event: React.BaseSyntheticEvent<object, any, any> | undefined) => {
+    if (event) event.preventDefault()
+    const { username, password } = data
+    setLoginButtonEnabled(false)
+    Auth.signIn(username, password)
+      .then(() => {
+        setLoginButtonEnabled(true)
+        snackbarWrapper.info(`Welcome back`)
+
+        Auth.currentCredentials().then(setCredentials)
+        Auth.currentSession().then(setSession)
+      })
+      .catch((error) => {
+        setLoginButtonEnabled(true)
+        snackbarWrapper.error(error.message)
+      })
   }
 
   // https://getavataaars.com/?accessoriesType=Round&avatarStyle=Circle&clotheColor=Blue03&clotheType=Hoodie&eyeType=Default&eyebrowType=Default&facialHairColor=Auburn&facialHairType=BeardLight&hairColor=Brown&mouthType=Default&skinColor=Light&topType=ShortHairShortWaved
@@ -109,74 +132,95 @@ export const LoginRoute: FC = () => {
   }
 
   return (
-    <Container maxWidth='lg' className={classes.main}>
-      <Card>
-        <CardHeader
-          avatar={
-            <Tooltip title={`greeting`} enterDelay={5000} arrow placement='top' onOpen={handleOpen}>
-              <div>
-                <Avataaar {...avatarToUse} />
-              </div>
-            </Tooltip>
-          }
-          title={<Typography variant='h4'>Login to athena</Typography>}
-          action={
-            <Fragment>
-              <IconButton aria-label='settings' onClick={handleClick}>
-                <LanguageIcon />
-              </IconButton>
-              <Menu anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
-                {[ 'NL', 'ENG' ].map((option) => (
-                  <MenuItem key={option} selected={option === 'ENG'} onClick={handleClose}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Fragment>
-          }
-        />
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
-            <Grid container spacing={4}>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  name={`hva-email`}
-                  label={`email`}
-                  inputRef={register({
-                    required: { value: true, message: 'Dit veld is verplicht' },
-                    // minLength: { value: 10, message: 'Minimaal 10 charaters' },
-                    // maxLength: { value: 20, message: 'Max 20 charaters' },
-                  })}
-                  error={errors[`hva-email`] ? true : false}
-                  helperText={errors[`hva-email`] && (errors[`hva-email`] as any).message}
-                  inputProps={{
-                    'aria-label': `hva-email`,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  name={`hva-password`}
-                  label={`password`}
-                  type='password'
-                  inputRef={register({
-                    required: { value: true, message: 'Dit veld is verplicht' },
-                    // minLength: { value: 10, message: 'Minimaal 10 charaters' },
-                    // maxLength: { value: 20, message: 'Max 20 charaters' },
-                  })}
-                  error={errors[`hva-password`] ? true : false}
-                  helperText={errors[`hva-password`] && (errors[`hva-password`] as any).message}
-                  inputProps={{
-                    'aria-label': `hva-password`,
-                  }}
-                />
-              </Grid>
-            </Grid>
-          </form>
-        </CardContent>
-      </Card>
+    <Container maxWidth='xl' className={classes.main}>
+      <Grid container justify='center' alignItems='center'>
+        <Grid item xs={12} sm={9} md={7} lg={5} xl={3}>
+          <Card>
+            <CardHeader
+              avatar={
+                <Tooltip title={`greeting`} enterDelay={5000} arrow placement='top' onOpen={handleOpen}>
+                  <div>
+                    <Avataaar {...avatarToUse} />
+                  </div>
+                </Tooltip>
+              }
+              title={<Typography variant='h4'>Login to athena</Typography>}
+              action={
+                <Fragment>
+                  <IconButton aria-label='settings' onClick={handleClick}>
+                    <LanguageIcon />
+                  </IconButton>
+                  <Menu anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
+                    {[ 'NL', 'ENG' ].map((option) => (
+                      <MenuItem key={option} selected={option === 'ENG'} onClick={handleClose}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </Fragment>
+              }
+            />
+            <CardContent>
+              <form onSubmit={handleSubmit(onLoginSubmit)} autoComplete='off'>
+                <Grid container spacing={4}>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      name={`username`}
+                      label={`hva-email`}
+                      inputRef={register({
+                        required: { value: true, message: 'Dit veld is verplicht' },
+                        // minLength: { value: 10, message: 'Minimaal 10 charaters' },
+                        // maxLength: { value: 20, message: 'Max 20 charaters' },
+                      })}
+                      // error={errors[`hva-email`] ? true : false}
+                      // helperText={errors[`hva-email`] && (errors[`hva-email`] as any).message}
+                      inputProps={{
+                        'aria-label': `hva-email`,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      name={`password`}
+                      label={`password`}
+                      type='password'
+                      inputRef={register({
+                        required: { value: true, message: 'Dit veld is verplicht' },
+                        // minLength: { value: 10, message: 'Minimaal 10 charaters' },
+                        // maxLength: { value: 20, message: 'Max 20 charaters' },
+                      })}
+                      error={errors[`hva-password`] ? true : false}
+                      helperText={errors[`hva-password`] && (errors[`hva-password`] as any).message}
+                      inputProps={{
+                        'aria-label': `hva-password`,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    {loginButtonEnabled ? (
+                      <Button
+                        disabled={!loginButtonEnabled}
+                        fullWidth
+                        variant='contained'
+                        color='primary'
+                        onClick={handleSubmit(onLoginSubmit)}
+                      >
+                        Login
+                      </Button>
+                    ) : (
+                      <Box my={2}>
+                        <LinearProgress />
+                      </Box>
+                    )}
+                  </Grid>
+                </Grid>
+              </form>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
     </Container>
   )
 }

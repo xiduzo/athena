@@ -89,6 +89,21 @@
       "type": 3,
       "points": 0,
       "id": "ApXRIg7"
+    },
+    {
+      "translations": [
+        {
+          "language": "nl",
+          "text": "asdasd"
+        },
+        {
+          "language": "en",
+          "text": "asdasdasddas"
+        }
+      ],
+      "type": 0,
+      "points": 0,
+      "id": "E1C7KJt"
     }
   ],
   "tribes": [

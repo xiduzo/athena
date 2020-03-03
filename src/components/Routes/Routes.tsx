@@ -17,7 +17,7 @@ export const Routes: FC = () => {
 
   return (
     <Switch>
-      <Route exact={true} path={'/'} component={HomeRoute} />
+      <PrivateRoute exact={true} path={'/'} component={HomeRoute} />
       {routes.map((route: IRoute) => (route.private ? renderPrivateRoute(route) : renderRoute(route)))}
       <Route path={'/'} component={NotFoundRoute} />
     </Switch>

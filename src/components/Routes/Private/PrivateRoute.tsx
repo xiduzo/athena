@@ -11,8 +11,6 @@ interface IPrivateRoute {
 export const PrivateRoute: React.FC<IPrivateRoute> = ({ component: Component, ...rest }) => {
   const { userSession } = useAuth()
 
-  console.log(userSession)
-
   return (
     <Route
       {...rest}

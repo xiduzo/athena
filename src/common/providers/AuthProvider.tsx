@@ -5,15 +5,15 @@ import { CognitoUserSession } from 'amazon-cognito-identity-js'
 import { Auth } from 'aws-amplify'
 
 interface IAuthContext {
-  setCredentials: (credentials: ICredentials) => void
-  setSession: (session: CognitoUserSession) => void
+  setCredentials: (credentials: ICredentials | null) => void
+  setSession: (session: CognitoUserSession | null) => void
   userCredentials: ICredentials | null
   userSession: CognitoUserSession | null
 }
 
 const AuthContext = createContext<IAuthContext>({
-  setCredentials: (_: ICredentials) => {},
-  setSession: (_: CognitoUserSession) => {},
+  setCredentials: (_: ICredentials | null) => {},
+  setSession: (_: CognitoUserSession | null) => {},
   userCredentials: null,
   userSession: null,
 })
@@ -22,11 +22,11 @@ const useAuthHandler = () => {
   const [ userCredentials, setUserCredentials ] = useState<ICredentials | null>(null)
   const [ userSession, setUserSession ] = useState<CognitoUserSession | null>(null)
 
-  const setCredentials = (credentials: ICredentials) => {
+  const setCredentials = (credentials: ICredentials | null) => {
     setUserCredentials(credentials)
   }
 
-  const setSession = (session: CognitoUserSession) => {
+  const setSession = (session: CognitoUserSession | null) => {
     setUserSession(session)
   }
 
@@ -41,7 +41,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(
     () => {
       if (userCredentials) return
-      Auth.currentCredentials().then(setCredentials)
+      Auth.currentCredentials().then(setCredentials).catch(console.log)
     },
     [ userCredentials, setCredentials ]
   )
@@ -49,9 +49,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(
     () => {
       if (userSession) return
-      Auth.currentSession().then(setSession).catch((error) => {
-        console.log(error)
-      })
+      Auth.currentSession().then(setSession).catch(console.log)
     },
     [ userSession, setSession ]
   )

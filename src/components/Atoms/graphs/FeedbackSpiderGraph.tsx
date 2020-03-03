@@ -24,11 +24,6 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
 
     title: {
       text: 'Budget vs spending',
-      x: -80,
-    },
-
-    pane: {
-      size: '80%',
     },
 
     xAxis: {
@@ -40,24 +35,15 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
         'Information Technology',
         'Administration',
       ],
-      tickmarkPlacement: 'on',
-      lineWidth: 0,
     },
 
     yAxis: {
       gridLineInterpolation: 'polygon',
-      lineWidth: 0,
-      min: 0,
     },
 
     tooltip: {
       shared: true,
       pointFormat: '<span style="color:{series.color}">{series.name}: <b>${point.y:,.0f}</b><br/>',
-    },
-
-    legend: {
-      align: 'right',
-      verticalAlign: 'middle',
     },
 
     series: [
@@ -72,25 +58,6 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
         pointPlacement: 'on',
       },
     ],
-
-    responsive: {
-      rules: [
-        {
-          condition: {
-            maxWidth: 500,
-          },
-          chartOptions: {
-            legend: {
-              align: 'center',
-              verticalAlign: 'bottom',
-            },
-            pane: {
-              size: '70%',
-            },
-          },
-        },
-      ],
-    },
   }
 
   return (

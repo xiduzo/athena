@@ -33,13 +33,13 @@ export const UsersRoute: FC = () => {
   }
 
   return (
-    <Container maxWidth="lg" className={classes.main}>
-      <Fab color="primary" aria-label="New agreement" className={classes.fab}>
+    <Container maxWidth='lg' className={classes.main}>
+      <Fab color='primary' aria-label='New agreement' className={classes.fab}>
         <AddIcon />
       </Fab>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h4">Users</Typography>
+          <Typography variant='h4'>Users</Typography>
         </Grid>
         {loading &&
           [ ...new Array(24) ].map((_, index: number) => (

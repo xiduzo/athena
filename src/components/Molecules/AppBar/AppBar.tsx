@@ -8,10 +8,13 @@ import { AthenaIcon } from 'src/lib/icons'
 import { useHistory } from 'react-router-dom'
 import MenuIcon from '@material-ui/icons/Menu'
 import { useWidth } from 'src/lib/hooks/useWidth'
+import { Auth } from 'aws-amplify'
+import { useAuth } from 'src/common/providers/AuthProvider'
 
 export const AppBar: FC = () => {
   const classes = useStyles()
   const width = useWidth()
+  const { setCredentials, setSession } = useAuth()
 
   const [ anchorEl, setAnchorEl ] = useState(null)
 
@@ -25,13 +28,21 @@ export const AppBar: FC = () => {
     setAnchorEl(null)
   }
 
+  const logout = async () => {
+    handleClose()
+    await Auth.signOut()
+    setCredentials(null)
+    setSession(null)
+    history.push('/')
+  }
+
   const gotoRoute = (route: string) => {
     handleClose()
     history.push(route)
   }
 
   return (
-    <MuiAppBar position="static" className={classes.appBar}>
+    <MuiAppBar position='static' className={classes.appBar}>
       <Toolbar>
         {width === 'xs' ? (
           <IconButton className={classes.icon}>
@@ -40,7 +51,7 @@ export const AppBar: FC = () => {
         ) : (
           <Icon component={AthenaIcon} className={classes.icon} />
         )}
-        <Typography variant="h6" className={classes.title}>
+        <Typography variant='h6' className={classes.title}>
           Athena
         </Typography>
 
@@ -51,8 +62,8 @@ export const AppBar: FC = () => {
         <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
           <MenuItem onClick={handleClose}>Profile</MenuItem>
           <MenuItem onClick={() => gotoRoute('/account/settings')}>Settings</MenuItem>
-          <MenuItem onClick={handleClose}>
-            <Typography color="error">Logout</Typography>
+          <MenuItem onClick={logout}>
+            <Typography color='error'>Logout</Typography>
           </MenuItem>
         </Menu>
       </Toolbar>

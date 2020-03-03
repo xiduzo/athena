@@ -54,10 +54,10 @@ export const StudentDashboardRoute: FC = () => {
   ])
 
   return (
-    <Container maxWidth="lg" className={classes.main}>
+    <Container maxWidth='lg' className={classes.main}>
       <Grid container spacing={width === 'xs' ? 2 : 4}>
         <Grid item xs={12}>
-          <Typography variant="h4" component="h2">
+          <Typography variant='h4' component='h2'>
             Team name
           </Typography>
         </Grid>
@@ -69,11 +69,11 @@ export const StudentDashboardRoute: FC = () => {
               <ProgressCard progress={percentage <= 100 ? percentage : 100}>
                 <CardContent className={classes.centered}>
                   <Tooltip title={`${value} of ${max}`}>
-                    <Typography variant="h3" component="h2">
+                    <Typography variant='h3' component='h2'>
                       {Math.round(value)}
                     </Typography>
                   </Tooltip>
-                  <Typography variant="h6" component="h2">
+                  <Typography variant='h6' component='h2'>
                     {text}
                   </Typography>
                 </CardContent>
@@ -82,7 +82,7 @@ export const StudentDashboardRoute: FC = () => {
           )
         })}
         <Grid item xs={12}>
-          <Typography variant="h6" component="h2">
+          <Typography variant='h6' component='h2'>
             My feedback
           </Typography>
         </Grid>
@@ -93,7 +93,7 @@ export const StudentDashboardRoute: FC = () => {
           <FeedbackSpiderGraph />
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="h6" component="h2">
+          <Typography variant='h6' component='h2'>
             Cards due [select day / week / month]
           </Typography>
         </Grid>
