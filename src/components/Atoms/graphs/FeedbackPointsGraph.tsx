@@ -10,7 +10,7 @@ interface IFeedbackPointsGraph {
 }
 
 export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
-  const { agreements } = props
+  // const { agreements } = props
 
   const theme = useTheme()
 

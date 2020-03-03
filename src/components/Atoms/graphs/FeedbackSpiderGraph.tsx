@@ -3,14 +3,13 @@ import { Paper } from '@material-ui/core'
 import * as Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { IAgreement } from 'src/lib/types/agreement'
-import { useTheme } from '@material-ui/core/styles'
 
 interface IFeedbackSpiderGraph {
   agreements?: IAgreement[]
 }
 
 export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
-  const { agreements } = props
+  // const { agreements } = props
 
   const options = {
     chart: {

@@ -10,7 +10,6 @@ import { IRootReducer } from './lib/redux'
 import './i18n'
 import { ThemeProvider } from './common/providers/ThemeProvider'
 import { AuthProvider, useAuth } from './common/providers/AuthProvider'
-import { Auth } from 'aws-amplify'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {

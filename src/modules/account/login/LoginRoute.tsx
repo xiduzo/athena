@@ -1,5 +1,4 @@
 import React, { FC, useEffect, Fragment } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { useAuth } from 'src/common/providers/AuthProvider'
 import {
@@ -15,13 +14,10 @@ import {
   MenuItem,
   Menu,
   TextField,
-  Avatar,
-  Icon,
   Tooltip,
 } from '@material-ui/core'
 import LanguageIcon from '@material-ui/icons/Language'
 import { useForm } from 'react-hook-form'
-import { AthenaIcon } from 'src/lib/icons'
 import { Avataaar } from 'src/components/Atoms/Avataaar'
 import { IAvataaar } from 'src/components/Atoms/Avataaar/interface'
 import { TopType } from 'src/components/Atoms/Avataaar/enums/TopType'
@@ -51,7 +47,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const LoginRoute: FC = () => {
   const classes = useStyles()
-  const { t } = useTranslation()
   const { userSession } = useAuth()
   const history = useHistory()
   const { register, handleSubmit, errors } = useForm()
@@ -114,20 +109,20 @@ export const LoginRoute: FC = () => {
   }
 
   return (
-    <Container maxWidth="lg" className={classes.main}>
+    <Container maxWidth='lg' className={classes.main}>
       <Card>
         <CardHeader
           avatar={
-            <Tooltip title={`greeting`} enterDelay={5000} arrow placement="top" onOpen={handleOpen}>
+            <Tooltip title={`greeting`} enterDelay={5000} arrow placement='top' onOpen={handleOpen}>
               <div>
                 <Avataaar {...avatarToUse} />
               </div>
             </Tooltip>
           }
-          title={<Typography variant="h4">Login to athena</Typography>}
+          title={<Typography variant='h4'>Login to athena</Typography>}
           action={
             <Fragment>
-              <IconButton aria-label="settings" onClick={handleClick}>
+              <IconButton aria-label='settings' onClick={handleClick}>
                 <LanguageIcon />
               </IconButton>
               <Menu anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
@@ -141,7 +136,7 @@ export const LoginRoute: FC = () => {
           }
         />
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+          <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
             <Grid container spacing={4}>
               <Grid item xs={12}>
                 <TextField
@@ -165,7 +160,7 @@ export const LoginRoute: FC = () => {
                   fullWidth
                   name={`hva-password`}
                   label={`password`}
-                  type="password"
+                  type='password'
                   inputRef={register({
                     required: { value: true, message: 'Dit veld is verplicht' },
                     // minLength: { value: 10, message: 'Minimaal 10 charaters' },
