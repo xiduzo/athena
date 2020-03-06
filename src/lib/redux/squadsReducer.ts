@@ -1,5 +1,12 @@
-import { IAction, Status } from '../IRootReducer'
 import { ISquad } from 'src/lib/types/squad'
+import { IAction } from './rootReducer'
+import { Status } from './status'
+import { getLocalItem, updateLocalItem } from '../utils/Managers/OfflineManager'
+
+export interface ISquadsState {
+  items: ISquad[]
+  status: Status
+}
 
 export enum SquadActions {
   setSquads = 'setSquads',
@@ -7,56 +14,37 @@ export enum SquadActions {
   addSquad = 'addSquad',
 }
 
-export interface ISquadsState {
-  status: Status
-  items: ISquad[]
-}
+const localStateName = 'ISquadsState'
 
 const initial_state: ISquadsState = {
   status: Status.loading,
   items: [],
+  ...getLocalItem<ISquadsState>(localStateName) as object,
 }
-
-// Object.defineProperty(Array.prototype, 'unique', {
-//   enumerable: false,
-//   configurable: false,
-//   writable: false,
-//   value: function() {
-//     var a = this.concat()
-//     for (var i = 0; i < a.length; ++i) {
-//       for (var j = i + 1; j < a.length; ++j) {
-//         if (a[i] === a[j]) a.splice(j--, 1)
-//       }
-//     }
-
-//     return a
-//   },
-// })
-
-// declare global {
-//   interface Array<T> {
-//     unique(): Array<T>
-//   }
-// }
-// state.items.concat(payload).unique()
 
 export const squadsReducer = (state: ISquadsState = initial_state, action: IAction): ISquadsState => {
   const { type, payload } = action
+
+  let newState: ISquadsState
   switch (type) {
     case SquadActions.setSquads:
-      return {
+      newState = {
         ...state,
         status: Status.success,
         items: payload,
       }
+
+      return updateLocalItem<ISquadsState>(localStateName, newState)
     case SquadActions.addSquad:
-      return {
+      newState = {
         ...state,
         status: Status.success,
         items: state.items.find((item) => item.id === payload.id) ? state.items : state.items.concat(payload),
       }
+
+      return updateLocalItem<ISquadsState>(localStateName, newState)
     case SquadActions.setSquad:
-      return {
+      newState = {
         ...state,
         status: Status.success,
 
@@ -67,6 +55,8 @@ export const squadsReducer = (state: ISquadsState = initial_state, action: IActi
             })
           : [ payload ],
       }
+
+      return updateLocalItem<ISquadsState>(localStateName, newState)
     default:
       return state
   }

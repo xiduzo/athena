@@ -65,7 +65,15 @@ export const LoginRoute: FC = () => {
 
   useEffect(
     () => {
-      if (userSession) history.push('/student/dashboard') // TODO goto dashboard route based on user group
+      if (userSession) {
+        const previousRoute = history.location.state
+        // history.goBack()
+        if (previousRoute && previousRoute.referer) {
+          return history.push(history.location.state.referer.pathname)
+        }
+
+        history.push('/student/dashboard')
+      } // TODO goto dashboard route based on user group
     },
     [ userSession, history ]
   )

@@ -7,10 +7,15 @@ import Amplify from 'aws-amplify'
 import { awsConfig } from './aws-exports'
 // import aws_exports from './aws-exports';
 
+import * as Highcharts from 'highcharts'
+import more from 'highcharts/highcharts-more'
+
 import { Provider as StoreProvider } from 'react-redux'
 import { store } from './lib/redux'
 
 Amplify.configure(awsConfig)
+
+more(Highcharts)
 
 ReactDOM.render(
   <StoreProvider store={store}>

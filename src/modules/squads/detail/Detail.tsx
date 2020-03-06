@@ -1,4 +1,4 @@
-import React, { FC, useEffect, Dispatch, Suspense, useState } from 'react'
+import React, { FC, useEffect, Suspense, useState } from 'react'
 import { useParams } from 'react-router'
 import { getSquadById, updateSquad } from 'src/lib/api/squads'
 import {
@@ -17,12 +17,12 @@ import { ISquad } from 'src/lib/types/squad'
 import { IUser } from 'src/lib/types/user'
 import { UserCard } from 'src/components/Molecules/UserCard'
 import { useDispatch, useSelector } from 'react-redux'
-import { IAction, IRootReducer } from 'src/lib/redux'
 import { IAgreement } from 'src/lib/types/agreement'
 import { getAgreement } from 'src/lib/api'
 import { AgreementCard } from 'src/components/Molecules/AgreementCard'
 import { AgreementsSelector } from './components/AgreementSelector'
 import AddIcon from '@material-ui/icons/Add'
+import { DispatchAction, IRootReducer } from 'src/lib/redux/rootReducer'
 
 interface ISquadDetailRouteParams {
   id: string
@@ -41,7 +41,7 @@ export const SquadDetailRoute: FC = () => {
 
   const { id } = useParams<ISquadDetailRouteParams>()
 
-  const dispatch = useDispatch<Dispatch<(dispatch: Dispatch<IAction>) => void>>()
+  const dispatch = useDispatch<DispatchAction>()
 
   const [ agreementsModalOpen, setAgreementsModalOpen ] = useState(false)
 
@@ -113,7 +113,7 @@ export const SquadDetailRoute: FC = () => {
 
   return (
     <section className={classes.main}>
-      <Container maxWidth="lg">
+      <Container maxWidth='lg'>
         <Suspense fallback={'getting there'}>
           {squad && (
             <Grid container spacing={2}>
@@ -140,7 +140,7 @@ export const SquadDetailRoute: FC = () => {
                       onRightClickItems={
                         <Box>
                           <MenuItem onClick={() => removeAgreementHandler(agreement.id)}>
-                            <Typography color="error">Remove agreement</Typography>
+                            <Typography color='error'>Remove agreement</Typography>
                           </MenuItem>
                         </Box>
                       }
@@ -157,7 +157,7 @@ export const SquadDetailRoute: FC = () => {
                 <Card>
                   <CardActionArea onClick={toggleAgreementsModal}>
                     <CardContent>
-                      <Grid container justify="center" alignItems="center">
+                      <Grid container justify='center' alignItems='center'>
                         <AddIcon />
                       </Grid>
                     </CardContent>
@@ -168,7 +168,7 @@ export const SquadDetailRoute: FC = () => {
                 <Typography variant={`h5`}>{`Feedback`}</Typography>
               </Grid>
               {squad.feedback.map((feedback) => (
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Grid key={feedback} item xs={12} sm={6} md={4} lg={3}>
                   {feedback}
                 </Grid>
               ))}

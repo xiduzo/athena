@@ -1,9 +1,9 @@
 import * as request from 'superagent'
 import { BACKEND_URL, SQUAD_ENDPOINT, BEARER } from '../constants'
-import { SquadActions } from '../redux/squads/squadsReducer'
+import { SquadActions } from '../redux/squadsReducer'
 import { Dispatch } from 'react'
-import { IAction } from '../redux'
 import { ISquad } from '../types/squad'
+import { IAction } from '../redux/rootReducer'
 
 // function typeGuard<T>(toBeDetermined: any): toBeDetermined is T {
 //   if((toBeDetermined as T).type){

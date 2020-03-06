@@ -9,5 +9,6 @@ export interface ITranslation {
 export interface IAgreement extends IEntityBase {
   type: AgreementType
   translations: ITranslation[]
+  isBase: boolean
   points: number
 }

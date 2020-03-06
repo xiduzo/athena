@@ -10,6 +10,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import { useWidth } from 'src/lib/hooks/useWidth'
 import { Auth } from 'aws-amplify'
 import { useAuth } from 'src/common/providers/AuthProvider'
+import { HotkeysIndicator } from 'src/components/Atoms/HotkeysIndicator'
 
 export const AppBar: FC = () => {
   const classes = useStyles()
@@ -54,6 +55,7 @@ export const AppBar: FC = () => {
         <Typography variant='h6' className={classes.title}>
           Athena
         </Typography>
+        <HotkeysIndicator />
 
         <Button onClick={handleMenu} startIcon={<AccountBoxIcon />}>
           Sander Boer

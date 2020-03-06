@@ -1,5 +1,7 @@
 import { IAgreement } from 'src/lib/types/agreement'
-import { Status, IAction } from '../IRootReducer'
+import { IAction } from './rootReducer'
+import { Status } from './status'
+import { getLocalItem, updateLocalItem } from '../utils/Managers/OfflineManager'
 
 export enum AgreementActions {
   setAgreements = 'setAgreements',
@@ -13,40 +15,51 @@ export interface IAgreementsState {
   items: IAgreement[]
 }
 
+const localStateName = 'IAgreementsState'
+
 const initial_state: IAgreementsState = {
   status: Status.loading,
   items: [],
+  ...getLocalItem<IAgreementsState>(localStateName) as object,
 }
 
 export const agreementsReducer = (state: IAgreementsState = initial_state, action: IAction): IAgreementsState => {
   const { type, payload } = action
 
+  let newState: IAgreementsState
   switch (type) {
     case AgreementActions.setAgreements:
-      return {
+      newState = {
         ...state,
         status: Status.success,
         items: payload,
       }
+
+      return updateLocalItem<IAgreementsState>(localStateName, newState)
     case AgreementActions.patchAgreement:
-      return {
+      newState = {
         ...state,
         items: state.items.map((item) => {
-          console.log(item)
           if (item.id === payload.id) return payload
           return item
         }),
       }
+
+      return updateLocalItem<IAgreementsState>(localStateName, newState)
     case AgreementActions.addAgreement:
-      return {
+      newState = {
         ...state,
         items: state.items.find((item) => item.id === payload.id) ? state.items : state.items.concat(payload), //state.items.concat(payload)
       }
+
+      return updateLocalItem<IAgreementsState>(localStateName, newState)
     case AgreementActions.removeAgreement:
-      return {
+      newState = {
         ...state,
         items: state.items.filter((item) => item.id !== payload),
       }
+
+      return updateLocalItem<IAgreementsState>(localStateName, newState)
     default:
       return state
   }

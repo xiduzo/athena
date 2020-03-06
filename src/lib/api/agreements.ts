@@ -2,8 +2,8 @@ import * as request from 'superagent'
 import { Dispatch } from 'react'
 import { BACKEND_URL, AGREEMENTS_ENDPOINT, BEARER } from '../constants'
 import { IAgreement } from '../types/agreement'
-import { IAction } from '../redux'
-import { AgreementActions } from '../redux/agreements/agreementsReducer'
+import { AgreementActions } from '../redux/agreementsReducer'
+import { IAction } from '../redux/rootReducer'
 
 export const getAgreement = (id: string) => (dispatch: Dispatch<IAction>) => {
   request

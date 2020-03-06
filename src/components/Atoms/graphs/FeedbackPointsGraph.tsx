@@ -15,35 +15,18 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
   const theme = useTheme()
 
   const options = {
-    chart: { type: 'spline' },
     title: { text: 'Feedback' },
     xAxis: { categories: [] },
     yAxis: [
       {
         title: { text: 'Punten percentage' },
-        minorGridLineWidth: 0,
-        gridLineWidth: 1,
-        alternateGridColor: null,
         min: 0,
         max: 100,
       },
-      //{ title: { text: 'Totaal aantal punten'}, minorGridLineWidth: 0, gridLineWidth: 1, alternateGridColor: null, opposite: true}
     ],
     tooltip: {
-      shared: true,
       pointFormat: '{series.name} <strong>{point.y:,.0f}%</strong><br>',
     },
-    plotOptions: {
-      spline: { lineWidth: 4, marker: { symbol: 'circle' } },
-      series: {
-        events: {
-          legendItemClick: function() {
-            return false
-          },
-        },
-      },
-    },
-    // series: data.graphs_data.line,
     series: [
       { name: `Average`, data: [ 45, 87, 34, 65, 43, 23, 56, 38 ], color: theme.palette.grey[400] },
       { name: `user 1`, data: [ 1, 2, 3, 4, 8, 3, 7, 4 ] },
@@ -57,8 +40,6 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
       { name: `user 9`, data: [ 12, 65, 44, 67, 23, 8, 53, 3 ] },
       { name: `user 10`, data: [ 43, 23, 87, 34, 87, 4, 8, 23 ] },
     ],
-    exporting: { filename: 'export' },
-    credits: { href: null, text: `[date]` },
   }
 
   return (

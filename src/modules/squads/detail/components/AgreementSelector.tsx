@@ -1,12 +1,12 @@
-import React, { FC, useState, useEffect, Dispatch } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import { useSelector, useDispatch } from 'react-redux'
-import { IRootReducer, IAction } from 'src/lib/redux'
 import { getAgreements } from 'src/lib/api'
 import { useWidth } from 'src/lib/hooks/useWidth'
 import { IAgreement } from 'src/lib/types/agreement'
 import { getTranslation } from 'src/common/utils/getTranslation'
+import { IRootReducer, DispatchAction } from 'src/lib/redux/rootReducer'
 interface IAgreementSelectorModal {
   title: string
   isOpen: boolean
@@ -19,7 +19,7 @@ export const AgreementsSelector: FC<IAgreementSelectorModal> = ({ title, isOpen,
   const [ agreementsToAdd, setAgreementsToAdd ] = useState<IAgreement[]>([])
 
   const agreements = useSelector<IRootReducer, IAgreement[]>((state) => state.agreements.items)
-  const dispatch = useDispatch<Dispatch<(dispatch: Dispatch<IAction>) => void>>()
+  const dispatch = useDispatch<DispatchAction>()
 
   useEffect(
     () => {
@@ -40,12 +40,12 @@ export const AgreementsSelector: FC<IAgreementSelectorModal> = ({ title, isOpen,
   }
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} aria-labelledby="agreements selector" fullScreen={width === 'xs'}>
-      <DialogTitle id="agreements selector">{title}</DialogTitle>
+    <Dialog open={isOpen} onClose={handleClose} aria-labelledby='agreements selector' fullScreen={width === 'xs'}>
+      <DialogTitle id='agreements selector'>{title}</DialogTitle>
       <DialogContent>
         {/* {subtitle && <DialogContentText>{subtitle}</DialogContentText>} */}
         <Autocomplete
-          id="disabled-options-demo"
+          id='disabled-options-demo'
           options={agreements.filter((agreements) => !without.map((a) => a.id).includes(agreements.id))}
           clearOnEscape
           multiple
@@ -56,18 +56,18 @@ export const AgreementsSelector: FC<IAgreementSelectorModal> = ({ title, isOpen,
           getOptionDisabled={(agreement: IAgreement) =>
             agreementsToAdd.find((a) => a.id === agreement.id) ? true : false}
           renderInput={(params) => (
-            <TextField label="Agreements to add" {...params} autoFocus id="agreement" name="agreement" fullWidth />
+            <TextField label='Agreements to add' {...params} autoFocus id='agreement' name='agreement' fullWidth />
           )}
-          clearText="[Clear text]"
-          closeText="[Close text]"
-          noOptionsText="[No options text]"
-          loadingText="[Loading text"
-          openText="[Open text]"
+          clearText='[Clear text]'
+          closeText='[Close text]'
+          noOptionsText='[No options text]'
+          loadingText='[Loading text'
+          openText='[Open text]'
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSubmit} color="primary">
+        <Button onClick={handleSubmit} color='primary'>
           Add
         </Button>
       </DialogActions>

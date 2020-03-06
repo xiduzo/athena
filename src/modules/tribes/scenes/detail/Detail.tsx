@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, Dispatch } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import {
   Container,
   Grid,
@@ -22,8 +22,8 @@ import { SquadCard } from 'src/components/Molecules/SquadCard'
 import AddIcon from '@material-ui/icons/Add'
 import { SquadsSelector } from './components/SquadSelector'
 import { useSelector, useDispatch } from 'react-redux'
-import { IRootReducer, IAction } from 'src/lib/redux'
 import { useHistory } from 'react-router-dom'
+import { IRootReducer, DispatchAction } from 'src/lib/redux/rootReducer'
 
 interface ITribeDetailRouteParams {
   id: string
@@ -60,7 +60,7 @@ export const TribeDetailRoute: FC = () => {
     return foundLeaders
   })
 
-  const dispatch = useDispatch<Dispatch<(dispatch: Dispatch<IAction>) => void>>()
+  const dispatch = useDispatch<DispatchAction>()
 
   const [ squadModalOpen, setSquadModalOpen ] = useState(false)
 
@@ -108,14 +108,14 @@ export const TribeDetailRoute: FC = () => {
 
   return (
     <section className={classes.main}>
-      <Container maxWidth="lg">
+      <Container maxWidth='lg'>
         {tribe && (
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="h3">{tribe.name}</Typography>
+              <Typography variant='h3'>{tribe.name}</Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h5">Leaders</Typography>
+              <Typography variant='h5'>Leaders</Typography>
             </Grid>
             {tribeLeaders.map((user: IUser) => (
               <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
@@ -123,7 +123,7 @@ export const TribeDetailRoute: FC = () => {
               </Grid>
             ))}
             <Grid item xs={12}>
-              <Typography variant="h5">Squads</Typography>
+              <Typography variant='h5'>Squads</Typography>
             </Grid>
             {tribeSquads &&
               tribeSquads.map((squad: ISquad) => (
@@ -134,7 +134,7 @@ export const TribeDetailRoute: FC = () => {
                     onRightClickItems={
                       <Box>
                         <MenuItem onClick={() => removeSquadHandler(squad.id)}>
-                          <Typography color="error">Remove squad</Typography>
+                          <Typography color='error'>Remove squad</Typography>
                         </MenuItem>
                       </Box>
                     }
@@ -151,7 +151,7 @@ export const TribeDetailRoute: FC = () => {
               <Card>
                 <CardActionArea onClick={toggleSquadModal}>
                   <CardContent>
-                    <Grid container justify="center" alignItems="center">
+                    <Grid container justify='center' alignItems='center'>
                       <AddIcon />
                     </Grid>
                   </CardContent>

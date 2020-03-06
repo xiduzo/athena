@@ -1,13 +1,14 @@
-import React, { FC, useEffect, Dispatch, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { getSquads } from 'src/lib/api'
 import { Container, Grid, makeStyles, Theme, Typography, FormControl, TextField, Paper, Box } from '@material-ui/core'
 import { SquadCard, SquadCardMock } from 'src/components/Molecules/SquadCard'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { IAction, Status, IRootReducer } from 'src/lib/redux'
-import { ISquadsState } from 'src/lib/redux/squads/squadsReducer'
+import { ISquadsState } from 'src/lib/redux/squadsReducer'
 import { useForm } from 'react-hook-form'
 import { createFilter } from 'src/common/utils/createFilter'
+import { IRootReducer, DispatchAction } from 'src/lib/redux/rootReducer'
+import { Status } from 'src/lib/redux/status'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -29,7 +30,7 @@ export const SquadsRoute: FC = () => {
 
   const [ filters, setFilters ] = useState([])
 
-  const dispatch = useDispatch<Dispatch<(dispatch: Dispatch<IAction>) => void>>()
+  const dispatch = useDispatch<DispatchAction>()
   const squads = useSelector<IRootReducer, ISquadsState>((state) => state.squads)
 
   const location = useLocation()
@@ -54,19 +55,19 @@ export const SquadsRoute: FC = () => {
     <Container maxWidth={`lg`} className={classes.main}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h4">Squads</Typography>
+          <Typography variant='h4'>Squads</Typography>
         </Grid>
         <Grid item xs={12}>
           <Paper>
             <Box p={2}>
-              <form autoComplete="off">
-                <FormControl component="fieldset">
-                  <Typography variant="h6">Filter</Typography>
+              <form autoComplete='off'>
+                <FormControl component='fieldset'>
+                  <Typography variant='h6'>Filter</Typography>
                   <TextField
-                    id="filterByName"
-                    name="filterByName"
-                    label="Name"
-                    placeholder="Filter by name"
+                    id='filterByName'
+                    name='filterByName'
+                    label='Name'
+                    placeholder='Filter by name'
                     fullWidth
                     onChange={handleFilter}
                     inputRef={register}

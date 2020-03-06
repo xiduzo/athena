@@ -1,5 +1,12 @@
 import { ITribe } from 'src/lib/types/tribe'
-import { IAction, Status } from '../IRootReducer'
+import { IAction } from './rootReducer'
+import { Status } from './status'
+import { getLocalItem, updateLocalItem } from '../utils/Managers/OfflineManager'
+
+export interface ITribesState {
+  status: Status
+  items: ITribe[]
+}
 
 export enum TribeActions {
   setTribes = 'setTribes',
@@ -7,27 +14,29 @@ export enum TribeActions {
   updateTribe = 'updateTribe',
 }
 
-export interface ITribesState {
-  status: Status
-  items: ITribe[]
-}
+const localStateName = 'ITribesState'
 
 const initial_state: ITribesState = {
   status: Status.loading,
   items: [],
+  ...getLocalItem<ITribesState>(localStateName) as object,
 }
 
 export const tribesReducer = (state: ITribesState = initial_state, action: IAction): ITribesState => {
   const { type, payload } = action
+
+  let newState: ITribesState
   switch (type) {
     case TribeActions.setTribes:
-      return {
+      newState = {
         ...state,
         status: Status.success,
         items: payload,
       }
+
+      return updateLocalItem<ITribesState>(localStateName, newState)
     case TribeActions.setTribe:
-      return {
+      newState = {
         ...state,
         status: Status.success,
 
@@ -38,6 +47,8 @@ export const tribesReducer = (state: ITribesState = initial_state, action: IActi
             })
           : [ payload ],
       }
+
+      return updateLocalItem<ITribesState>(localStateName, newState)
     default:
       return state
   }

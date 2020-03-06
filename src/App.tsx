@@ -1,17 +1,16 @@
 import React, { Suspense } from 'react'
 import { CssBaseline, makeStyles, Theme } from '@material-ui/core'
-import { useSelector } from 'react-redux'
 import { AppBar } from './components/Molecules/AppBar'
 import { MenuDrawer } from './components/Molecules/MenuDrawer'
 import { Routes } from './components/Routes'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { IRootReducer } from './lib/redux'
 
 import './i18n'
 import { ThemeProvider } from './common/providers/ThemeProvider'
 import { AuthProvider } from './common/providers/AuthProvider'
 import { SnackbarProvider } from 'notistack'
 import { SnackbarUtilsConfiguration } from './lib/utils/snackbarWrapper'
+import { HotkeysIndicator } from './components/Atoms/HotkeysIndicator'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -40,9 +39,6 @@ const useStyles = makeStyles((theme: Theme) => {
 const App: React.FC = () => {
   const classes = useStyles()
 
-  const global = useSelector((state: IRootReducer) => state.global)
-  console.log(global)
-
   return (
     <ThemeProvider>
       <SnackbarProvider
@@ -60,6 +56,7 @@ const App: React.FC = () => {
             <Router>
               <AppBar />
               <MenuDrawer />
+              {/* TODO wrap main in own component */}
               <main className={classes.content}>
                 <div className={classes.toolbar} />
                 {/* TODO: add breadcrumbs? */}

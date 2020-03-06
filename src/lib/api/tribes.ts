@@ -1,9 +1,9 @@
 import * as request from 'superagent'
 import { BACKEND_URL, TRIBE_ENDPOINT, BEARER } from '../constants'
 import { Dispatch } from 'react'
-import { TribeActions } from '../redux/tribes/tribesReducer'
-import { IAction } from '../redux/IRootReducer'
+import { TribeActions } from '../redux/tribesReducer'
 import { ITribe } from '../types/tribe'
+import { IAction } from '../redux/rootReducer'
 
 export const getTribes = () => (dispatch: Dispatch<IAction>) => {
   request

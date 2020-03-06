@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { Grid, Typography, List, ListItem, Container, CardContent, makeStyles, Theme, Tooltip } from '@material-ui/core'
 import { FeedbackPointsGraph, FeedbackSpiderGraph } from 'src/components/Atoms/graphs'
 import { useWidth } from 'src/lib/hooks/useWidth'
@@ -26,7 +26,7 @@ interface IInfoCard {
 export const StudentDashboardRoute: FC = () => {
   const classes = useStyles()
   const width = useWidth()
-  const [ infoCards, setInfoCards ] = useState<IInfoCard[]>([
+  const infoCards: IInfoCard[] = [
     {
       value: 3,
       max: 15,
@@ -51,7 +51,7 @@ export const StudentDashboardRoute: FC = () => {
       text: 'Feedback to give',
       inverse: true,
     },
-  ])
+  ]
 
   return (
     <Container maxWidth='lg' className={classes.main}>

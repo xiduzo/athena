@@ -44,17 +44,19 @@ const generateHighchartsTheme = (theme: Theme): Highcharts.Options => {
       theme.palette.secondary.main,
       theme.palette.info.main,
       theme.palette.error.main,
-      theme.palette.warning.main,
       theme.palette.success.main,
       // Others
       deepPurple[500],
       teal[500],
       pink[500],
       lime[500],
+      // too conflicting with main theme
+      theme.palette.warning.main,
     ],
     chart: {
       backgroundColor: theme.palette.background.paper,
       plotBorderColor: theme.palette.info.light,
+      type: 'spline',
     },
     title: {
       style: {
@@ -99,6 +101,7 @@ const generateHighchartsTheme = (theme: Theme): Highcharts.Options => {
       },
     },
     tooltip: {
+      shared: true,
       backgroundColor: fade(theme.palette.background.paper, 0.75),
       style: {
         color: textColor,
@@ -125,6 +128,7 @@ const generateHighchartsTheme = (theme: Theme): Highcharts.Options => {
       map: {
         nullColor: fillColor,
       },
+      spline: { lineWidth: 5, marker: { symbol: 'circle' } },
     },
     legend: {
       backgroundColor: 'transparent',
