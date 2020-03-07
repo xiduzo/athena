@@ -1,9 +1,9 @@
-import * as request from 'superagent'
-import { BACKEND_URL, SQUAD_ENDPOINT, BEARER } from '../constants'
+import { BACKEND_URL, SQUAD_ENDPOINT } from '../constants'
 import { SquadActions } from '../redux/squadsReducer'
 import { Dispatch } from 'react'
 import { ISquad } from '../types/squad'
 import { IAction } from '../redux/rootReducer'
+import superagent from 'src/common/utils/superagentWrapper'
 
 // function typeGuard<T>(toBeDetermined: any): toBeDetermined is T {
 //   if((toBeDetermined as T).type){
@@ -13,9 +13,8 @@ import { IAction } from '../redux/rootReducer'
 // }
 
 export const getSquads = () => (dispatch: Dispatch<IAction>) => {
-  request
+  superagent
     .get(`${BACKEND_URL}/${SQUAD_ENDPOINT}`)
-    .set('Authorization', BEARER)
     .then((response) => {
       // TODO: check if body = ISquad[]
       dispatch({
@@ -24,14 +23,13 @@ export const getSquads = () => (dispatch: Dispatch<IAction>) => {
       })
     })
     .catch((error) => {
-      throw error
+      console.log(error)
     })
 }
 
 export const getSquadById = (id: string) => (dispatch: Dispatch<IAction>) => {
-  request
+  superagent
     .get(`${BACKEND_URL}/${SQUAD_ENDPOINT}/${id}`)
-    .set('Authorization', BEARER)
     .then((response) =>
       // TODO: check if body = ISquad
       dispatch({
@@ -40,19 +38,20 @@ export const getSquadById = (id: string) => (dispatch: Dispatch<IAction>) => {
       })
     )
     .catch((error) => {
-      throw error
+      console.log(error)
     })
 }
 
 export const updateSquad = (squad: ISquad, update: Partial<ISquad>) => (dispatch: Dispatch<IAction>) => {
-  request
-    .patch(`${BACKEND_URL}/${SQUAD_ENDPOINT}/${squad.id}/`)
-    .send(update)
+  superagent
+    .patch(`${BACKEND_URL}/${SQUAD_ENDPOINT}/${squad.id}/`, update)
     .then(() => {
       dispatch({
         type: SquadActions.setSquad,
         payload: { ...squad, ...update },
       })
     })
-    .catch((error) => console.error(error))
+    .catch((error) => {
+      console.log(error)
+    })
 }

@@ -1,14 +1,14 @@
 import * as request from 'superagent'
 import { Dispatch } from 'react'
-import { BACKEND_URL, AGREEMENTS_ENDPOINT, BEARER } from '../constants'
+import { BACKEND_URL, AGREEMENTS_ENDPOINT } from '../constants'
 import { IAgreement } from '../types/agreement'
 import { AgreementActions } from '../redux/agreementsReducer'
 import { IAction } from '../redux/rootReducer'
+import superagent from '../../common/utils/superagentWrapper'
 
 export const getAgreement = (id: string) => (dispatch: Dispatch<IAction>) => {
-  request
+  superagent
     .get(`${BACKEND_URL}/${AGREEMENTS_ENDPOINT}/${id}`)
-    .set('Authorization', BEARER)
     .then((response) =>
       dispatch({
         type: AgreementActions.addAgreement,
@@ -16,14 +16,13 @@ export const getAgreement = (id: string) => (dispatch: Dispatch<IAction>) => {
       })
     )
     .catch((error) => {
-      throw error
+      console.log(error)
     })
 }
 
 export const getAgreements = () => (dispatch: Dispatch<IAction>) => {
-  request
+  superagent
     .get(`${BACKEND_URL}/${AGREEMENTS_ENDPOINT}`)
-    .set('Authorization', BEARER)
     .then((response) =>
       dispatch({
         type: AgreementActions.setAgreements,
@@ -31,7 +30,7 @@ export const getAgreements = () => (dispatch: Dispatch<IAction>) => {
       })
     )
     .catch((error) => {
-      throw error
+      console.log(error)
     })
 }
 
@@ -39,7 +38,6 @@ export const addAgreement = (agreement: IAgreement) => (dispatch: Dispatch<IActi
   request
     .post(`${BACKEND_URL}/${AGREEMENTS_ENDPOINT}`)
     .send(agreement)
-    .set('Authorization', BEARER)
     .then((response) =>
       dispatch({
         type: AgreementActions.addAgreement,
@@ -47,14 +45,13 @@ export const addAgreement = (agreement: IAgreement) => (dispatch: Dispatch<IActi
       })
     )
     .catch((error) => {
-      throw error
+      console.log(error)
     })
 }
 
 export const removeAgreement = (id: string) => (dispatch: Dispatch<IAction>) => {
   request
     .del(`${BACKEND_URL}/${AGREEMENTS_ENDPOINT}/${id}`)
-    .set('Authorization', BEARER)
     .then(() =>
       dispatch({
         type: AgreementActions.removeAgreement,
@@ -62,6 +59,6 @@ export const removeAgreement = (id: string) => (dispatch: Dispatch<IAction>) => 
       })
     )
     .catch((error) => {
-      throw error
+      console.log(error)
     })
 }

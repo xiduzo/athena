@@ -1,14 +1,13 @@
-import * as request from 'superagent'
-import { BACKEND_URL, TRIBE_ENDPOINT, BEARER } from '../constants'
+import { BACKEND_URL, TRIBE_ENDPOINT } from '../constants'
 import { Dispatch } from 'react'
 import { TribeActions } from '../redux/tribesReducer'
 import { ITribe } from '../types/tribe'
 import { IAction } from '../redux/rootReducer'
+import superagent from 'src/common/utils/superagentWrapper'
 
 export const getTribes = () => (dispatch: Dispatch<IAction>) => {
-  request
+  superagent
     .get(`${BACKEND_URL}/${TRIBE_ENDPOINT}`)
-    .set('Authorization', BEARER)
     .then((response) =>
       dispatch({
         type: TribeActions.setTribes,
@@ -16,14 +15,13 @@ export const getTribes = () => (dispatch: Dispatch<IAction>) => {
       })
     )
     .catch((error) => {
-      throw error
+      console.log(error)
     })
 }
 
 export const getTribeById = (id: string) => (dispatch: Dispatch<IAction>) => {
-  request
+  superagent
     .get(`${BACKEND_URL}/${TRIBE_ENDPOINT}/${id}/`)
-    .set('Authorization', BEARER)
     .then((response) =>
       dispatch({
         type: TribeActions.setTribe,
@@ -31,19 +29,20 @@ export const getTribeById = (id: string) => (dispatch: Dispatch<IAction>) => {
       })
     )
     .catch((error) => {
-      throw error
+      console.log(error)
     })
 }
 
 export const updateTribe = (tribe: ITribe, update: Partial<ITribe>) => (dispatch: Dispatch<IAction>) => {
-  request
-    .patch(`${BACKEND_URL}/${TRIBE_ENDPOINT}/${tribe.id}/`)
-    .send(update)
+  superagent
+    .put(`${BACKEND_URL}/${TRIBE_ENDPOINT}/${tribe.id}/`)
     .then(() => {
       dispatch({
         type: TribeActions.setTribe,
         payload: { ...tribe, ...update },
       })
     })
-    .catch((error) => console.error(error))
+    .catch((error) => {
+      console.log(error)
+    })
 }
