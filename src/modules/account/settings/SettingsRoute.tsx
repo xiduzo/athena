@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Button, Container, Paper, FormControl, InputLabel, Select, MenuItem, Grid, Switch } from '@material-ui/core'
+import React, { FC, useState, useEffect } from 'react'
+import { Container, Paper, FormControl, InputLabel, Select, MenuItem, Grid, Switch } from '@material-ui/core'
 
 import i18n from 'i18next'
 import { supportedLanguages } from 'src/i18n'
@@ -19,6 +19,8 @@ export const SettingsRoute: FC = () => {
   const globalState = useSelector((state: IRootReducer) => state.global)
   const dispatch = useDispatch<DispatchAction>()
 
+  const [ selectedLanguage, setSelectedLanguage ] = useState<string>(i18n.language)
+
   const toggleDarkMode = (): void => {
     const newThemeStyle = globalState.themeMode === 'dark' ? 'light' : 'dark'
     dispatch({
@@ -35,7 +37,28 @@ export const SettingsRoute: FC = () => {
     })
   }
 
-  const changeLanguage = (event: any) => i18n.changeLanguage(event.target.value)
+  const changeLanguage = (event: any) => {
+    const { target } = event
+    const { value } = target
+
+    console.log(value)
+    dispatch({
+      type: GlobalActions.setLanguage,
+      payload: value,
+    })
+
+    setSelectedLanguage(value)
+    i18n.changeLanguage(value)
+  }
+
+  useEffect(
+    () => {
+      if (!i18n.language && selectedLanguage) return
+
+      setSelectedLanguage(i18n.language)
+    },
+    [ selectedLanguage ]
+  )
 
   return (
     <Container maxWidth='lg'>
@@ -44,7 +67,7 @@ export const SettingsRoute: FC = () => {
           <Paper>
             <FormControl>
               <InputLabel id='language-select'>Language</InputLabel>
-              <Select value={i18n.language || 'en'} onChange={changeLanguage}>
+              <Select value={selectedLanguage || 'en'} onChange={changeLanguage}>
                 {supportedLanguages &&
                   supportedLanguages.map((language) => (
                     <MenuItem value={language} key={language}>

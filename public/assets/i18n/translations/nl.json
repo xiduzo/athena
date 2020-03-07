@@ -1,4 +1,9 @@
 {
+  "agreements": "afspraken",
   "dashboard": "dashboard",
-  "language": "taal"
+  "language": "taal",
+  "squads": "groepen",
+  "tribes": "projecten",
+  "users": "gebruikers",
+  "_": ""
 }

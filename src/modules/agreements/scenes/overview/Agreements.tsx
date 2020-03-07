@@ -19,6 +19,7 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { createFilter } from 'src/common/utils/createFilter'
 import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
@@ -26,13 +27,13 @@ import { AgreementCard, AgreementCardMock } from 'src/components/Molecules/Agree
 import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
 import { addAgreement, getAgreements, removeAgreement } from 'src/lib/api'
 import { AgreementType } from 'src/lib/enums'
+import { Key } from 'src/lib/enums/keys'
+import { useHotkeys } from 'src/lib/hooks/useHotkeys'
 import { IAgreementsState } from 'src/lib/redux/agreementsReducer'
+import { DispatchAction, IRootReducer } from 'src/lib/redux/rootReducer'
+import { Status } from 'src/lib/redux/status'
 import { IAgreement } from 'src/lib/types/agreement'
 import { NewAgreementModal } from './components/newAgreementModal'
-import { DispatchAction, IRootReducer } from 'src/lib/redux/rootReducer'
-import { useHotkeys } from 'src/lib/hooks/useHotkeys'
-import { Key } from 'src/lib/enums/keys'
-import { Status } from 'src/lib/redux/status'
 
 const drawerWidth = '20vw'
 export const useStyles = makeStyles((theme: Theme) => ({
@@ -84,6 +85,7 @@ const initFilters = [
 
 export const AgreementsRoute: FC = () => {
   const classes = useStyles()
+  const { t } = useTranslation()
 
   const dispatch = useDispatch<DispatchAction>()
 
@@ -160,16 +162,16 @@ export const AgreementsRoute: FC = () => {
       <Container maxWidth='lg' className={classes.main}>
         <Fab
           color='primary'
-          aria-label='New agreement'
+          aria-label={t('agreementNew')}
           className={classes.fab}
           onClick={() => setModalOpen(!modalOpen)}
         >
           <AddIcon />
+          <NewAgreementModal isOpen={modalOpen} onClose={handleClose} />
         </Fab>
-        <NewAgreementModal isOpen={modalOpen} onClose={handleClose} />
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography variant='h4'>Agreements</Typography>
+            <Typography variant='h4'>{t('agreements')}</Typography>
           </Grid>
           {agreements.status === Status.loading ? (
             [ ...Array(48) ].map((_, index: number) => (
@@ -179,7 +181,7 @@ export const AgreementsRoute: FC = () => {
             ))
           ) : !agreements.items.length ? (
             <Grid item={true} xs={12}>
-              <EmptyState title={`No agreements found`} image={<Illustration type={Illustrations.empty} />} />
+              <EmptyState title={t('agreementsNotFound')} image={<Illustration type={Illustrations.empty} />} />
             </Grid>
           ) : (
             agreements.items.filter(createFilter(...filters)).map((agreement: IAgreement) => (
@@ -219,7 +221,7 @@ export const AgreementsRoute: FC = () => {
                   <TextField
                     id='translations'
                     name='translations'
-                    label='Name'
+                    label={t('agreement')}
                     onFocus={toggleFocus}
                     onBlur={toggleFocus}
                     onChange={handleNameFilter}

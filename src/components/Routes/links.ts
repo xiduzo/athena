@@ -30,7 +30,7 @@ export interface IRoute {
 
 const coordinatorRoutes: IRoute[] = [
   {
-    name: 'Agreements',
+    name: 'agreements',
     path: '/agreements',
     icon: MenuBookIcon,
     component: AgreementsRoute,
@@ -39,7 +39,7 @@ const coordinatorRoutes: IRoute[] = [
     showInMenu: true,
   },
   {
-    name: 'Users',
+    name: 'users',
     path: '/users',
     icon: PeopleIcon,
     component: UsersRoute,
@@ -48,7 +48,7 @@ const coordinatorRoutes: IRoute[] = [
     showInMenu: true,
   },
   {
-    name: 'User detail',
+    name: 'userDetail',
     path: '/users/:id',
     icon: PeopleIcon,
     component: UserDetailRoute,
@@ -57,7 +57,7 @@ const coordinatorRoutes: IRoute[] = [
     showInMenu: false,
   },
   {
-    name: 'Tribes',
+    name: 'tribes',
     path: '/tribes',
     icon: DialpadIcon,
     component: TribesRoute,
@@ -66,7 +66,7 @@ const coordinatorRoutes: IRoute[] = [
     showInMenu: true,
   },
   {
-    name: 'Tribe detail',
+    name: 'tribeDetail',
     path: '/tribes/:id',
     component: TribeDetailRoute,
     private: true,
@@ -77,7 +77,7 @@ const coordinatorRoutes: IRoute[] = [
 
 const lecturerRoutes: IRoute[] = [
   {
-    name: 'Squads',
+    name: 'squads',
     path: '/squads',
     icon: BubbleChartIcon,
     component: SquadsRoute,
@@ -86,7 +86,7 @@ const lecturerRoutes: IRoute[] = [
     showInMenu: true,
   },
   {
-    name: 'Squad detail',
+    name: 'squadDetail',
     path: '/squads/:id',
     icon: BubbleChartIcon,
     component: SquadDetailRoute,
@@ -98,7 +98,7 @@ const lecturerRoutes: IRoute[] = [
 
 const accountRoutes: IRoute[] = [
   {
-    name: 'Settings',
+    name: 'settings',
     path: '/account/settings',
     icon: ExitToAppIcon,
     component: SettingsRoute,
@@ -107,7 +107,7 @@ const accountRoutes: IRoute[] = [
     showInMenu: false,
   },
   {
-    name: 'Login',
+    name: 'login',
     path: '/account/login',
     icon: ExitToAppIcon,
     component: LoginRoute,
@@ -119,7 +119,7 @@ const accountRoutes: IRoute[] = [
 
 const studentRoutes: IRoute[] = [
   {
-    name: 'Dashboard',
+    name: 'dashboard',
     path: '/student/dashboard',
     icon: DashboardIcon,
     component: StudentDashboardRoute,
@@ -128,7 +128,7 @@ const studentRoutes: IRoute[] = [
     showInMenu: true,
   },
   {
-    name: 'Feedback',
+    name: 'feedback',
     path: '/student/feedback',
     icon: FeedbackIcon,
     component: GiveFeedbackRoute,

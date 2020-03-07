@@ -5,12 +5,10 @@ import { MenuDrawer } from './components/Molecules/MenuDrawer'
 import { Routes } from './components/Routes'
 import { BrowserRouter as Router } from 'react-router-dom'
 
-import './i18n'
 import { ThemeProvider } from './common/providers/ThemeProvider'
 import { AuthProvider } from './common/providers/AuthProvider'
 import { SnackbarProvider } from 'notistack'
 import { SnackbarUtilsConfiguration } from './lib/utils/snackbarWrapper'
-import { HotkeysIndicator } from './components/Atoms/HotkeysIndicator'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -53,19 +51,19 @@ const App: React.FC = () => {
         <div className={classes.root}>
           <AuthProvider>
             <CssBaseline />
-            <Router>
-              <AppBar />
-              <MenuDrawer />
-              {/* TODO wrap main in own component */}
-              <main className={classes.content}>
-                <div className={classes.toolbar} />
-                {/* TODO: add breadcrumbs? */}
-                <Suspense fallback={'loading'}>
+            <Suspense fallback={'loading'}>
+              <Router>
+                <AppBar />
+                <MenuDrawer />
+                {/* TODO wrap main in own component */}
+                <main className={classes.content}>
+                  <div className={classes.toolbar} />
+                  {/* TODO: add breadcrumbs? */}
                   <Routes />
-                </Suspense>
-                <div className={classes.toolbarBottom} />
-              </main>
-            </Router>
+                  <div className={classes.toolbarBottom} />
+                </main>
+              </Router>
+            </Suspense>
           </AuthProvider>
         </div>
       </SnackbarProvider>
