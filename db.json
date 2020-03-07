@@ -20,108 +20,51 @@
       "translations": [
         {
           "language": "nl",
-          "text": "asdasdasd"
+          "text": "testing"
         },
         {
           "language": "en",
-          "text": "asdsadd"
+          "text": "testing"
+        }
+      ],
+      "type": 0,
+      "points": 61,
+      "id": "LZlrrrf"
+    },
+    {
+      "translations": [
+        {
+          "language": "nl",
+          "text": "asd"
+        },
+        {
+          "language": "en",
+          "text": "asd"
+        }
+      ],
+      "type": 2,
+      "points": 0,
+      "id": "Ahw2wYf"
+    },
+    {
+      "translations": [
+        {
+          "language": "nl",
+          "text": "asdfas"
+        },
+        {
+          "language": "en",
+          "text": "asdfasdf"
         }
       ],
       "type": 1,
-      "points": 37,
-      "isBase": true,
-      "id": "LsWSqvp"
-    },
-    {
-      "translations": [
-        {
-          "language": "nl",
-          "text": "asdasd"
-        },
-        {
-          "language": "en",
-          "text": "asdasdasd"
-        }
-      ],
-      "type": 2,
-      "points": 78,
-      "isBase": true,
-      "id": "r6unC12"
-    },
-    {
-      "translations": [
-        {
-          "language": "nl",
-          "text": "nederlandse vertaling"
-        },
-        {
-          "language": "en",
-          "text": "english transaltion"
-        }
-      ],
-      "type": 2,
-      "points": 45,
-      "isBase": true,
-      "id": "eUGFU4a"
-    },
-    {
-      "translations": [
-        {
-          "language": "nl",
-          "text": "houding"
-        },
-        {
-          "language": "en",
-          "text": "attitude"
-        }
-      ],
-      "type": 0,
-      "points": 0,
-      "isBase": true,
-      "id": "BGYVLOC"
-    },
-    {
-      "translations": [
-        {
-          "language": "nl",
-          "text": "verantwoordelijkheid"
-        },
-        {
-          "language": "en",
-          "text": "accountabiliy"
-        }
-      ],
-      "type": 3,
-      "points": 0,
-      "isBase": true,
-      "id": "ApXRIg7"
-    },
-    {
-      "translations": [
-        {
-          "language": "nl",
-          "text": "asdasd"
-        },
-        {
-          "language": "en",
-          "text": "asdasdasddas"
-        }
-      ],
-      "type": 0,
-      "points": 0,
-      "isBase": true,
-      "id": "E1C7KJt"
+      "points": 31,
+      "id": "DfwV283"
     }
   ],
   "tribes": [
     {
-      "id": "abc123",
-      "name": "Tribe 1",
-      "leaders": [],
-      "squads": [
-        "sdfdsaf43rDX",
-        "asdf67dfgsdfSDFG96"
-      ]
+      "id": "abc123"
     },
     {
       "id": "abc124",
@@ -150,8 +93,7 @@
         "doneList": "dasdf657sdf#RsadfhSDF"
       },
       "agreements": [
-        "abc123",
-        "LsWSqvp"
+        "testinggg"
       ],
       "feedback": [
         "abc124"
@@ -166,12 +108,7 @@
         "doneList": "dasdf657sdf#RsadfhSDF"
       },
       "feedback": [],
-      "agreements": [
-        "r6unC12",
-        "LsWSqvp",
-        "eUGFU4a",
-        "abc123"
-      ],
+      "agreements": [],
       "members": []
     }
   ],

@@ -73,7 +73,9 @@ export const TribeDetailRoute: FC = () => {
 
   useEffect(
     () => {
-      if (!tribe || !tribeSquads) return
+      if (!tribe || !tribe.squads.length) return
+      if (!tribeSquads) return
+
       const missingSquads = tribe.squads.filter((squad) => !tribeSquads.map((ts) => ts.id).includes(squad))
 
       if (missingSquads.length) dispatch(getSquads()) // TODO: only get the squads we need

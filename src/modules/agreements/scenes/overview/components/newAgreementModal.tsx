@@ -50,6 +50,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
   const [ sliderValue, setSliderValue ] = useState(0)
 
   const handleClose = () => {
+    console.log(true)
     onClose && onClose()
   }
 

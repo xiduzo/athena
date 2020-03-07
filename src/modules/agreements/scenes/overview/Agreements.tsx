@@ -120,7 +120,6 @@ export const AgreementsRoute: FC = () => {
     setFilters((current) =>
       current.map((item) => {
         if (item.property === `type`) item.value = event.target.value !== '-1' ? event.target.value : ''
-
         return item
       })
     )
@@ -167,8 +166,8 @@ export const AgreementsRoute: FC = () => {
           onClick={() => setModalOpen(!modalOpen)}
         >
           <AddIcon />
-          <NewAgreementModal isOpen={modalOpen} onClose={handleClose} />
         </Fab>
+        <NewAgreementModal isOpen={modalOpen} onClose={handleClose} />
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant='h4'>{t('agreements')}</Typography>

@@ -43,17 +43,17 @@ export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
   const classes = useStyles()
 
   return (
-    <Container maxWidth="lg" className={classes.main}>
+    <Container maxWidth='lg' className={classes.main}>
       <Grid container spacing={4}>
         <Grid item xs={12}>
-          <Typography variant="h4">Feedback</Typography>
+          <Typography variant='h4'>Feedback</Typography>
         </Grid>
         <Grid item xs={12}>
           {[ 1, 2, 3, 4, 5, 6 ].map((item) => (
             <ExpansionPanel key={item}>
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Grid container alignItems="center" justify="space-between">
-                  <Typography variant="h6">agreement {item}</Typography>
+                <Grid container alignItems='center' justify='space-between'>
+                  <Typography variant='h6'>agreement {item}</Typography>
                   {Math.random() > 0.5 ? (
                     <CheckCircleIcon className={classes.success} />
                   ) : Math.random() > 0.5 ? (
@@ -66,11 +66,11 @@ export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
               <ExpansionPanelDetails>
                 <Grid container spacing={2}>
                   {[ 1, 2, 3, 4 ].map((user) => (
-                    <Grid key={user} item xs={12} sm={6} md={4} lg={3} className={classes.center}>
-                      <Avataaar avatarStyle="Circle" style={{ width: '75px', height: '75px' }} />
-                      <Typography variant="subtitle1">user {user}</Typography>
+                    <Grid key={`${item}${user}`} item xs={12} sm={6} md={4} lg={3} className={classes.center}>
+                      <Avataaar avatarStyle='Circle' style={{ width: '75px', height: '75px' }} />
+                      <Typography variant='subtitle1'>user {user}</Typography>
 
-                      <Rating max={4} name="pristine" size="large" value={null} />
+                      <Rating max={4} name='pristine' size='large' value={null} />
                     </Grid>
                   ))}
                 </Grid>

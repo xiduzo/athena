@@ -49,7 +49,7 @@ export const agreementsReducer = (state: IAgreementsState = initial_state, actio
     case AgreementActions.addAgreement:
       newState = {
         ...state,
-        items: state.items.find((item) => item.id === payload.id) ? state.items : state.items.concat(payload), //state.items.concat(payload)
+        items: state.items.find((item) => item.id === payload.id) ? state.items : state.items.concat(payload),
       }
 
       return updateLocalItem<IAgreementsState>(localStateName, newState)

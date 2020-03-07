@@ -18,7 +18,9 @@ export const AgreementsSelector: FC<IAgreementSelectorModal> = ({ title, isOpen,
   const width = useWidth()
   const [ agreementsToAdd, setAgreementsToAdd ] = useState<IAgreement[]>([])
 
-  const agreements = useSelector<IRootReducer, IAgreement[]>((state) => state.agreements.items)
+  const agreements = useSelector<IRootReducer, IAgreement[]>((state) => {
+    return state.agreements.items.filter((agreement) => agreement.isBase)
+  })
   const dispatch = useDispatch<DispatchAction>()
 
   useEffect(
