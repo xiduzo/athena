@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { Grid, Typography, List, ListItem, Container, CardContent, makeStyles, Theme, Tooltip } from '@material-ui/core'
 import { FeedbackPointsGraph, FeedbackSpiderGraph } from 'src/components/Atoms/graphs'
 import { useWidth } from 'src/lib/hooks/useWidth'
@@ -26,7 +26,7 @@ interface IInfoCard {
 export const StudentDashboardRoute: FC = () => {
   const classes = useStyles()
   const width = useWidth()
-  const [ infoCards, setInfoCards ] = useState<IInfoCard[]>([
+  const infoCards: IInfoCard[] = [
     {
       value: 3,
       max: 15,
@@ -51,15 +51,13 @@ export const StudentDashboardRoute: FC = () => {
       text: 'Feedback to give',
       inverse: true,
     },
-  ])
-
-  console.log(setInfoCards)
+  ]
 
   return (
-    <Container maxWidth="lg" className={classes.main}>
+    <Container maxWidth='lg' className={classes.main}>
       <Grid container spacing={width === 'xs' ? 2 : 4}>
         <Grid item xs={12}>
-          <Typography variant="h4" component="h2">
+          <Typography variant='h4' component='h2'>
             Team name
           </Typography>
         </Grid>
@@ -71,11 +69,11 @@ export const StudentDashboardRoute: FC = () => {
               <ProgressCard progress={percentage <= 100 ? percentage : 100}>
                 <CardContent className={classes.centered}>
                   <Tooltip title={`${value} of ${max}`}>
-                    <Typography variant="h3" component="h2">
+                    <Typography variant='h3' component='h2'>
                       {Math.round(value)}
                     </Typography>
                   </Tooltip>
-                  <Typography variant="h6" component="h2">
+                  <Typography variant='h6' component='h2'>
                     {text}
                   </Typography>
                 </CardContent>
@@ -84,7 +82,7 @@ export const StudentDashboardRoute: FC = () => {
           )
         })}
         <Grid item xs={12}>
-          <Typography variant="h6" component="h2">
+          <Typography variant='h6' component='h2'>
             My feedback
           </Typography>
         </Grid>
@@ -95,7 +93,7 @@ export const StudentDashboardRoute: FC = () => {
           <FeedbackSpiderGraph />
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="h6" component="h2">
+          <Typography variant='h6' component='h2'>
             Cards due [select day / week / month]
           </Typography>
         </Grid>

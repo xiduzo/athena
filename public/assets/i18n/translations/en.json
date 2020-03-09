@@ -1,4 +1,12 @@
 {
+  "agreements": "agreements",
   "dashboard": "dashboard",
-  "language": "language"
+  "language": "language",
+  "squads": "groups",
+  "tribes": "projects",
+  "users": "users",
+  "agreementNew": "New agreement",
+  "agreementsNotFound": "No agreements found",
+  "agreement": "agreement",
+  "_": ""
 }

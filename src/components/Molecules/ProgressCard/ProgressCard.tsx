@@ -2,7 +2,6 @@ import React, { FC } from 'react'
 import { makeStyles } from '@material-ui/styles'
 
 import { Theme, Card, LinearProgress, Tooltip } from '@material-ui/core'
-import { red, orange, green } from '@material-ui/core/colors'
 import clsx from 'clsx'
 
 const useStyles = makeStyles((theme: Theme) => ({

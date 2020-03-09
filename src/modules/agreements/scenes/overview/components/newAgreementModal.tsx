@@ -26,7 +26,7 @@ import { AgreementType } from 'src/lib/enums'
 import { IAgreement } from 'src/lib/types/agreement'
 import { supportedLanguages } from 'src/i18n'
 
-const Transition = forwardRef<unknown, TransitionProps>((props, ref) => <Slide direction="up" ref={ref} {...props} />)
+const Transition = forwardRef<unknown, TransitionProps>((props, ref) => <Slide direction='up' ref={ref} {...props} />)
 
 interface INewAgreementModal {
   isOpen: boolean
@@ -50,6 +50,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
   const [ sliderValue, setSliderValue ] = useState(0)
 
   const handleClose = () => {
+    console.log(true)
     onClose && onClose()
   }
 
@@ -71,22 +72,22 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
     <Dialog fullScreen open={isOpen} onClose={handleClose} TransitionComponent={Transition}>
       <AppBar className={classes.appBar}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+          <IconButton edge='start' color='inherit' onClick={handleClose} aria-label='close'>
             <CloseIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant='h6' className={classes.title}>
             New agreement
           </Typography>
-          <Button autoFocus color="inherit" onClick={handleSubmit(onSubmit)}>
+          <Button autoFocus color='inherit' onClick={handleSubmit(onSubmit)}>
             save
           </Button>
         </Toolbar>
       </AppBar>
-      <Container maxWidth="lg">
-        <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      <Container maxWidth='lg'>
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <Grid container direction="column" justify="center" alignItems="center">
+              <Grid container direction='column' justify='center' alignItems='center'>
                 {supportedLanguages.map((language) => (
                   <Grid item xs={12} key={language}>
                     <TextField
@@ -97,7 +98,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
                         // minLength: { value: 10, message: 'Minimaal 10 charaters' },
                         // maxLength: { value: 20, message: 'Max 20 charaters' },
                       })}
-                      placeholder="komt altijd optijd"
+                      placeholder='komt altijd optijd'
                       error={errors[`translations`] && errors[`translations`][language] ? true : false}
                       helperText={
                         errors[`translations`] &&
@@ -113,47 +114,47 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
               </Grid>
             </Grid>
             <Grid item xs={6}>
-              <Grid container direction="column">
+              <Grid container direction='column'>
                 <Grid item xs={12}>
-                  <FormControl component="fieldset">
-                    <FormLabel component="legend">Type</FormLabel>
-                    <RadioGroup aria-label="Filter by type" name="type" id="type" defaultValue="0">
+                  <FormControl component='fieldset'>
+                    <FormLabel component='legend'>Type</FormLabel>
+                    <RadioGroup aria-label='Filter by type' name='type' id='type' defaultValue='0'>
                       <FormControlLabel
                         inputRef={register}
                         value={`${AgreementType.ATTITUDE}`}
                         control={<Radio />}
-                        label="Attitude"
+                        label='Attitude'
                       />
                       <FormControlLabel
                         inputRef={register}
                         value={`${AgreementType.FUNCTIONING_WITHING_TEAM}`}
                         control={<Radio />}
-                        label="Functioning"
+                        label='Functioning'
                       />
                       <FormControlLabel
                         inputRef={register}
                         value={`${AgreementType.KNOWLEDGE_DEVELOPMENT}`}
                         control={<Radio />}
-                        label="Knowledge"
+                        label='Knowledge'
                       />
                       <FormControlLabel
                         inputRef={register}
                         value={`${AgreementType.ACCOUNTABILITY}`}
                         control={<Radio />}
-                        label="Accountability"
+                        label='Accountability'
                       />
                     </RadioGroup>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
                   <Slider
-                    name="points"
+                    name='points'
                     value={sliderValue}
                     onChange={(_: any, value: any) => setSliderValue(value)}
                     min={0}
                     max={100}
                     step={1}
-                    aria-labelledby="points-slider"
+                    aria-labelledby='points-slider'
                   />
                 </Grid>
               </Grid>
@@ -188,7 +189,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
               />
             </Grid> */}
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary">
+              <Button type='submit' variant='contained' color='primary'>
                 submit
               </Button>
             </Grid>

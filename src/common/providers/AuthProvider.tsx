@@ -1,34 +1,60 @@
-import React, { FC, useState, createContext, useContext, ReactNode } from 'react'
+import React, { createContext, FC, ReactNode, useContext, useState, useEffect } from 'react'
+
+import { ICredentials } from '@aws-amplify/core'
+import { CognitoUserSession } from 'amazon-cognito-identity-js'
+import { Auth } from 'aws-amplify'
 
 interface IAuthContext {
-  token: string
-  setAuthToken: (token: string) => void
+  setCredentials: (credentials: ICredentials | null) => void
+  setSession: (session: CognitoUserSession | null) => void
+  userCredentials: ICredentials | null
+  userSession: CognitoUserSession | null
 }
 
 const AuthContext = createContext<IAuthContext>({
-  token: '',
-  setAuthToken: (_: string) => {},
+  setCredentials: (_: ICredentials | null) => {},
+  setSession: (_: CognitoUserSession | null) => {},
+  userCredentials: null,
+  userSession: null,
 })
 
 const useAuthHandler = () => {
-  const [ token, setToken ] = useState<string>('')
+  const [ userCredentials, setUserCredentials ] = useState<ICredentials | null>(null)
+  const [ userSession, setUserSession ] = useState<CognitoUserSession | null>(null)
 
-  const setAuthToken = (newToken: string) => {
-    localStorage.setItem('token', JSON.stringify(newToken))
-    setToken(newToken)
+  const setCredentials = (credentials: ICredentials | null) => {
+    setUserCredentials(credentials)
   }
 
-  return {
-    token,
-    setAuthToken,
+  const setSession = (session: CognitoUserSession | null) => {
+    setUserSession(session)
   }
+
+  return { userCredentials, setCredentials, userSession, setSession }
+}
+
+const { Provider } = AuthContext
+
+export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const { userCredentials, setCredentials, userSession, setSession } = useAuthHandler()
+
+  useEffect(
+    () => {
+      if (userCredentials) return
+      Auth.currentCredentials().then(setCredentials).catch(console.log)
+    },
+    [ userCredentials, setCredentials ]
+  )
+
+  useEffect(
+    () => {
+      if (userSession) return
+      Auth.currentSession().then(setSession).catch(console.log)
+    },
+    [ userSession, setSession ]
+  )
+
+  return <Provider value={{ userCredentials, setCredentials, userSession, setSession }}>{children}</Provider>
 }
 
 export const useAuth = () => useContext(AuthContext)
-
-export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const { Provider } = AuthContext
-  const { token, setAuthToken } = useAuthHandler()
-
-  return <Provider value={{ token, setAuthToken }}> {children} </Provider>
-}

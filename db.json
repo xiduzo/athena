@@ -3,6 +3,7 @@
     {
       "id": "abc123",
       "type": 1,
+      "isBase": false,
       "translations": [
         {
           "language": "en",
@@ -19,87 +20,51 @@
       "translations": [
         {
           "language": "nl",
-          "text": "asdasdasd"
+          "text": "testing"
         },
         {
           "language": "en",
-          "text": "asdsadd"
-        }
-      ],
-      "type": 1,
-      "points": 37,
-      "id": "LsWSqvp"
-    },
-    {
-      "translations": [
-        {
-          "language": "nl",
-          "text": "asdasd"
-        },
-        {
-          "language": "en",
-          "text": "asdasdasd"
-        }
-      ],
-      "type": 2,
-      "points": 78,
-      "id": "r6unC12"
-    },
-    {
-      "translations": [
-        {
-          "language": "nl",
-          "text": "nederlandse vertaling"
-        },
-        {
-          "language": "en",
-          "text": "english transaltion"
-        }
-      ],
-      "type": 2,
-      "points": 45,
-      "id": "eUGFU4a"
-    },
-    {
-      "translations": [
-        {
-          "language": "nl",
-          "text": "houding"
-        },
-        {
-          "language": "en",
-          "text": "attitude"
+          "text": "testing"
         }
       ],
       "type": 0,
-      "points": 0,
-      "id": "BGYVLOC"
+      "points": 61,
+      "id": "LZlrrrf"
     },
     {
       "translations": [
         {
           "language": "nl",
-          "text": "verantwoordelijkheid"
+          "text": "asd"
         },
         {
           "language": "en",
-          "text": "accountabiliy"
+          "text": "asd"
         }
       ],
-      "type": 3,
+      "type": 2,
       "points": 0,
-      "id": "ApXRIg7"
+      "id": "Ahw2wYf"
+    },
+    {
+      "translations": [
+        {
+          "language": "nl",
+          "text": "asdfas"
+        },
+        {
+          "language": "en",
+          "text": "asdfasdf"
+        }
+      ],
+      "type": 1,
+      "points": 31,
+      "id": "DfwV283"
     }
   ],
   "tribes": [
     {
-      "id": "abc123",
-      "name": "Tribe 1",
-      "leaders": [],
-      "squads": [
-        "sdfdsaf43rDX",
-        "asdf67dfgsdfSDFG96"
-      ]
+      "id": "abc123"
     },
     {
       "id": "abc124",
@@ -128,8 +93,7 @@
         "doneList": "dasdf657sdf#RsadfhSDF"
       },
       "agreements": [
-        "abc123",
-        "LsWSqvp"
+        "testinggg"
       ],
       "feedback": [
         "abc124"
@@ -144,12 +108,7 @@
         "doneList": "dasdf657sdf#RsadfhSDF"
       },
       "feedback": [],
-      "agreements": [
-        "r6unC12",
-        "LsWSqvp",
-        "eUGFU4a",
-        "abc123"
-      ],
+      "agreements": [],
       "members": []
     }
   ],

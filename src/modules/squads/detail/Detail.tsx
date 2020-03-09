@@ -1,4 +1,4 @@
-import React, { FC, useEffect, Dispatch, Suspense, useState } from 'react'
+import React, { FC, useEffect, Suspense, useState } from 'react'
 import { useParams } from 'react-router'
 import { getSquadById, updateSquad } from 'src/lib/api/squads'
 import {
@@ -17,12 +17,13 @@ import { ISquad } from 'src/lib/types/squad'
 import { IUser } from 'src/lib/types/user'
 import { UserCard } from 'src/components/Molecules/UserCard'
 import { useDispatch, useSelector } from 'react-redux'
-import { IAction, IRootReducer } from 'src/lib/redux'
 import { IAgreement } from 'src/lib/types/agreement'
-import { getAgreement } from 'src/lib/api'
+import { getAgreement, addSquadAgreement } from 'src/lib/api'
 import { AgreementCard } from 'src/components/Molecules/AgreementCard'
 import { AgreementsSelector } from './components/AgreementSelector'
 import AddIcon from '@material-ui/icons/Add'
+import { DispatchAction, IRootReducer } from 'src/lib/redux/rootReducer'
+import { logPerformance } from 'src/common/utils/performanceHelper'
 
 interface ISquadDetailRouteParams {
   id: string
@@ -41,37 +42,64 @@ export const SquadDetailRoute: FC = () => {
 
   const { id } = useParams<ISquadDetailRouteParams>()
 
-  const dispatch = useDispatch<Dispatch<(dispatch: Dispatch<IAction>) => void>>()
+  const dispatch = useDispatch<DispatchAction>()
 
   const [ agreementsModalOpen, setAgreementsModalOpen ] = useState(false)
+  const [ triedAgreements, setTriedAgreements ] = useState<string[]>([])
 
   const squad = useSelector<IRootReducer, ISquad | undefined>((state) => {
     const squad = state.squads.items.find((item) => item.id === id)
-
     return squad
   })
+
+  useEffect(
+    () => {
+      logPerformance('dispatch getSquadById')
+      dispatch(getSquadById(id))
+    },
+    [ id, squad, dispatch ]
+  )
 
   const squadMembers = useSelector<IRootReducer, IUser[]>((state) => {
     if (!squad) return []
 
-    const foundMembers = state.users.items.filter((user) => squad.members.includes(user.id))
+    const foundMembers = state.users.items.filter(
+      (user) => squad.members.includes(user.id) && !triedAgreements.includes(user.id)
+    )
 
     return foundMembers
   })
 
   const squadAgreements = useSelector<IRootReducer, IAgreement[]>((state) => {
+    logPerformance('squadAgreements')
+    console.log(state)
     if (!squad) return []
 
-    const foundAgreements = state.agreements.items.filter((agreement) => squad.agreements.includes(agreement.id))
+    const foundAgreements = state.agreements.items.filter(
+      (agreement) => squad.agreements.includes(agreement.id) && !triedAgreements.includes(agreement.id)
+    )
 
     return foundAgreements
   })
 
+  useEffect(
+    () => {
+      // console.log(`members`)
+      logPerformance('squad trigger')
+
+      // if (!squad || !squad.members.length) return
+      // const missingMembers = squad.members.filter((user) => !squadMembers.map((sm) => sm.id).includes(user))
+      // console.log(`missing members (${missingMembers.length}): ${missingMembers}`)
+      // setTriedAgreements([ ...triedAgreements, ...missingMembers ])
+    },
+    [ squad, dispatch ]
+    //   [ squadAgreements, squad, dispatch, triedAgreements ]
+  )
+
   const toggleAgreementsModal = () => setAgreementsModalOpen(!agreementsModalOpen)
 
-  const omAgreementsModalCloseHandler = (agreements?: IAgreement[]) => {
-    if (squad && agreements)
-      dispatch(updateSquad(squad, { agreements: [ ...squad.agreements, ...agreements.map((a) => a.id) ] }))
+  const onAgreementsModalCloseHandler = (agreements?: IAgreement[]) => {
+    if (squad && agreements) agreements.map((agreement) => dispatch(addSquadAgreement(agreement, squad)))
 
     toggleAgreementsModal()
   }
@@ -81,39 +109,38 @@ export const SquadDetailRoute: FC = () => {
       dispatch(updateSquad(squad, { agreements: squad.agreements.filter((agreement) => agreement !== agreementId) }))
   }
 
-  useEffect(
-    () => {
-      if (!squad) dispatch(getSquadById(id))
-    },
-    [ id, squad, dispatch ]
-  )
+  // useEffect(
+  //   () => {
+  //     console.log(`members`)
 
-  useEffect(
-    () => {
-      if (!squad) return
+  //     if (!squad || !squad.members.length) return
+  //     const missingMembers = squad.members.filter((user) => !squadMembers.map((sm) => sm.id).includes(user))
+  //     console.log(`missing members (${missingMembers.length}): ${missingMembers}`)
+  //     setTriedAgreements([ ...triedAgreements, ...missingMembers ])
+  //   },
+  //   [ squadMembers, squad, triedAgreements ]
+  // )
 
-      const missingMembers = squad.members.filter((user) => !squadMembers.map((sm) => sm.id).includes(user))
-      console.log(`missing members (${missingMembers.length}): ${missingMembers}`)
-    },
-    [ squadMembers, squad ]
-  )
+  // useEffect(
+  //   () => {
+  //     console.log(triedAgreements)
 
-  useEffect(
-    () => {
-      if (!squad) return
+  //     if (!squad || !squad.agreements.length) return
 
-      const missingAgreements = squad.agreements.filter(
-        (agreement) => !squadAgreements.map((sa) => sa.id).includes(agreement)
-      )
+  //     const missingAgreements = squad.agreements.filter(
+  //       (agreement) => !squadAgreements.map((sa) => sa.id).includes(agreement)
+  //     )
 
-      missingAgreements.forEach((agreement) => dispatch(getAgreement(agreement)))
-    },
-    [ squadAgreements, squad, dispatch ]
-  )
+  //     missingAgreements.forEach((agreement) => dispatch(getAgreement(agreement)))
+  //     console.log(`missing missingAgreements (${missingAgreements.length}): ${missingAgreements}`)
+  //     // setTriedAgreements([ ...triedAgreements, ...missingAgreements ])
+  //   },
+  //   [ squadAgreements, squad, dispatch, triedAgreements ]
+  // )
 
   return (
     <section className={classes.main}>
-      <Container maxWidth="lg">
+      <Container maxWidth='lg'>
         <Suspense fallback={'getting there'}>
           {squad && (
             <Grid container spacing={2}>
@@ -140,7 +167,7 @@ export const SquadDetailRoute: FC = () => {
                       onRightClickItems={
                         <Box>
                           <MenuItem onClick={() => removeAgreementHandler(agreement.id)}>
-                            <Typography color="error">Remove agreement</Typography>
+                            <Typography color='error'>Remove agreement</Typography>
                           </MenuItem>
                         </Box>
                       }
@@ -151,13 +178,13 @@ export const SquadDetailRoute: FC = () => {
                 title={`Select agreements to add to ${squad.name}`}
                 without={squadAgreements || []}
                 isOpen={agreementsModalOpen}
-                onClose={omAgreementsModalCloseHandler}
+                onClose={onAgreementsModalCloseHandler}
               />
               <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Card>
                   <CardActionArea onClick={toggleAgreementsModal}>
                     <CardContent>
-                      <Grid container justify="center" alignItems="center">
+                      <Grid container justify='center' alignItems='center'>
                         <AddIcon />
                       </Grid>
                     </CardContent>
@@ -168,7 +195,7 @@ export const SquadDetailRoute: FC = () => {
                 <Typography variant={`h5`}>{`Feedback`}</Typography>
               </Grid>
               {squad.feedback.map((feedback) => (
-                <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Grid key={feedback} item xs={12} sm={6} md={4} lg={3}>
                   {feedback}
                 </Grid>
               ))}

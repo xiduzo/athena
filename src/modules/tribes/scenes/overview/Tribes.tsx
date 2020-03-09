@@ -1,4 +1,4 @@
-import React, { FC, useEffect, Dispatch } from 'react'
+import React, { FC, useEffect } from 'react'
 import { getTribes } from 'src/lib/api'
 import { useStyles } from './style'
 import { Fab, Container, Grid, Typography } from '@material-ui/core'
@@ -7,13 +7,14 @@ import { ITribe } from 'src/lib/types/tribe'
 import { TribeCard, TribeCardMock } from 'src/components/Molecules/TribeCard'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { IRootReducer, Status, IAction } from 'src/lib/redux'
-import { ITribesState } from 'src/lib/redux/tribes/tribesReducer'
+import { ITribesState } from 'src/lib/redux/tribesReducer'
+import { IRootReducer, DispatchAction } from 'src/lib/redux/rootReducer'
+import { Status } from 'src/lib/redux/status'
 
 export const TribesRoute: FC = () => {
   const classes = useStyles()
 
-  const dispatch = useDispatch<Dispatch<(dispatch: Dispatch<IAction>) => void>>()
+  const dispatch = useDispatch<DispatchAction>()
   const tribes = useSelector<IRootReducer, ITribesState>((state) => state.tribes)
 
   const location = useLocation()
@@ -31,13 +32,13 @@ export const TribesRoute: FC = () => {
   }
 
   return (
-    <Container maxWidth="lg" className={classes.main}>
-      <Fab color="primary" aria-label="New tribe" className={classes.fab}>
+    <Container maxWidth='lg' className={classes.main}>
+      <Fab color='primary' aria-label='New tribe' className={classes.fab}>
         <AddIcon />
       </Fab>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h4">Tribes</Typography>
+          <Typography variant='h4'>Tribes</Typography>
         </Grid>
         {tribes.status === Status.loading &&
           [ ...new Array(48) ].map((_, index: number) => (

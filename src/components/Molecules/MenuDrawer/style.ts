@@ -62,7 +62,7 @@ export const useStyles = makeStyles((theme: Theme) => {
         // TODO: add active state
         borderColor: theme.palette.primary.main,
         background: fade(theme.palette.primary.main, 0.25),
-        color: theme.palette.primary.contrastText,
+        // color: theme.palette.primary.contrastText,
       },
       '&:not(.active):hover': {
         borderColor: theme.palette.grey[300],

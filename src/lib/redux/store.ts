@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux'
 // import { logger } from './middleware'
-import { rootReducer } from './reducer'
+import { rootReducer } from './rootReducer'
 import thunk from 'redux-thunk'
 
 // @ts-ignore

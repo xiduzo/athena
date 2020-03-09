@@ -1,11 +1,14 @@
 import React, { FC } from 'react'
-import { Card, CardHeader, CardContent, makeStyles, Theme, Avatar } from '@material-ui/core'
+import { Card, CardHeader, makeStyles, Theme, Avatar } from '@material-ui/core'
 import Skeleton from '@material-ui/lab/Skeleton'
+import { userCardAvatarSize } from './UserCard'
 
 export const useStyles = makeStyles((theme: Theme) => {
   return {
     avatar: {
       background: theme.palette.grey[100],
+      width: userCardAvatarSize,
+      height: userCardAvatarSize,
     },
   }
 })
@@ -18,15 +21,12 @@ export const UserCardMock: FC = () => {
       <CardHeader
         avatar={
           <Avatar className={classes.avatar}>
-            <Skeleton variant="circle" />
+            <Skeleton variant='circle' />
           </Avatar>
         }
-        title={<Skeleton variant="text" />}
-        subheader={<Skeleton variant="text" />}
+        title={<Skeleton variant='text' />}
+        subheader={<Skeleton variant='text' />}
       />
-      <CardContent>
-        <Skeleton variant="text" />
-      </CardContent>
     </Card>
   )
 }

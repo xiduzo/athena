@@ -9,6 +9,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import { routes, IRoute } from '../../Routes/links'
 import { useWidth } from 'src/lib/hooks/useWidth'
+import { useAuth } from 'src/common/providers/AuthProvider'
+import { useTranslation } from 'react-i18next'
 
 const AdapterLink = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
   <NavLink innerRef={ref as any} {...props} />
@@ -16,8 +18,10 @@ const AdapterLink = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
 
 export const MenuDrawer: FC = () => {
   const classes = useStyles()
+  const { t } = useTranslation()
 
   const width = useWidth()
+  const { userSession } = useAuth()
 
   const [ menuOpen, setMenuOpen ] = useState<boolean>(false)
 
@@ -34,6 +38,7 @@ export const MenuDrawer: FC = () => {
     [ setMenuOpen ]
   )
 
+  if (!userSession) return null
   return (
     <Drawer
       variant={width !== 'xs' ? 'permanent' : 'temporary'}
@@ -52,12 +57,12 @@ export const MenuDrawer: FC = () => {
       <section className={classes.flex}>
         <List>
           {routes.filter((route: IRoute) => route.showInMenu).map((route: IRoute) => (
-            <Tooltip title={route.name} key={route.path} placement="right" enterDelay={!menuOpen ? 350 : 1000 * 60}>
+            <Tooltip title={t(route.name)} key={route.path} placement='right' enterDelay={!menuOpen ? 350 : 1000 * 60}>
               <ListItem button key={route.path} component={AdapterLink} to={route.path} className={classes.navLink}>
                 <ListItemIcon className={classes.ListItemIcon}>
                   <Icon component={route.icon} />
                 </ListItemIcon>
-                <ListItemText primary={route.name} />
+                <ListItemText primary={t(route.name)} />
               </ListItem>
             </Tooltip>
           ))}

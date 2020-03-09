@@ -3,8 +3,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 import backend from 'i18next-xhr-backend'
 import { initReactI18next } from 'react-i18next'
 
-const locales = [ 'nl', 'en' ]
-export const supportedLanguages = locales
+export const supportedLanguages = [ 'nl', 'en' ]
 
 const getLanguage = (): string => localStorage.getItem('i18nextLng') || 'en'
 
