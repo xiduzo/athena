@@ -5,27 +5,13 @@
       "type": 1,
       "isBase": false,
       "translations": [
-        {
-          "language": "en",
-          "text": "Always is on time"
-        },
-        {
-          "language": "nl",
-          "text": "is altijd optijd"
-        }
+        "abc123"
       ],
       "points": 8
     },
     {
       "translations": [
-        {
-          "language": "nl",
-          "text": "testing"
-        },
-        {
-          "language": "en",
-          "text": "testing"
-        }
+        "abc123"
       ],
       "type": 0,
       "points": 61,
@@ -33,14 +19,7 @@
     },
     {
       "translations": [
-        {
-          "language": "nl",
-          "text": "asd"
-        },
-        {
-          "language": "en",
-          "text": "asd"
-        }
+        "abc123"
       ],
       "type": 2,
       "points": 0,
@@ -48,14 +27,7 @@
     },
     {
       "translations": [
-        {
-          "language": "nl",
-          "text": "asdfas"
-        },
-        {
-          "language": "en",
-          "text": "asdfasdf"
-        }
+        "abc123"
       ],
       "type": 1,
       "points": 31,
@@ -63,14 +35,7 @@
     },
     {
       "translations": [
-        {
-          "language": "nl",
-          "text": "asdasd"
-        },
-        {
-          "language": "en",
-          "text": "sadfasdfsadf"
-        }
+        "abc123"
       ],
       "type": 0,
       "points": 0,
@@ -79,19 +44,24 @@
     },
     {
       "translations": [
-        {
-          "language": "nl",
-          "text": "asdfasdf"
-        },
-        {
-          "language": "en",
-          "text": "asfasdfasdf"
-        }
+        "abc123"
       ],
       "type": 2,
       "points": 0,
       "isBase": true,
       "id": "kwqefYZ"
+    }
+  ],
+  "translations": [
+    {
+      "id": "abc123",
+      "language": "en",
+      "text": "Always is on time"
+    },
+    {
+      "id": "asf543",
+      "language": "nl",
+      "text": "is altijd optijd"
     }
   ],
   "tribes": [

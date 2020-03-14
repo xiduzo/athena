@@ -29,14 +29,14 @@ import { addAgreement, getAgreements, removeAgreement } from 'src/lib/api'
 import { AgreementType } from 'src/lib/enums'
 import { Key } from 'src/lib/enums/keys'
 import { useHotkeys } from 'src/lib/hooks/useHotkeys'
-import { IAgreementsState } from 'src/lib/redux/agreementsReducer'
 import { DispatchAction, IRootReducer } from 'src/lib/redux/rootReducer'
-import { Status } from 'src/lib/redux/status'
 import { IAgreement } from 'src/lib/types/agreement'
 import { NewAgreementModal } from './components/newAgreementModal'
+import { useQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 
 const drawerWidth = '20vw'
-export const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   drawer: {
     width: drawerWidth,
     padding: theme.spacing(2),
@@ -83,20 +83,32 @@ const initFilters = [
   },
 ]
 
+const GET_AGREEMENTS = gql`
+  {
+    Agreement(filter: { isBase: true }) {
+      id
+      points
+      isBase
+      type
+      translations {
+        language
+        text
+      }
+    }
+  }
+`
+
 export const AgreementsRoute: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 
   const dispatch = useDispatch<DispatchAction>()
+  const { loading, error, data } = useQuery(GET_AGREEMENTS)
+  console.log(error)
 
   const hotkeysEnabled = useSelector((state: IRootReducer) => state.global.hotkeysEnabled)
 
-  const agreements = useSelector<IRootReducer, IAgreementsState>((state) => {
-    return {
-      ...state.agreements,
-      items: state.agreements.items.filter((agreement) => agreement.isBase),
-    }
-  })
+  const [ agreements, setAgreements ] = useState<IAgreement[]>([])
   const [ modalOpen, setModalOpen ] = useState(false)
   const [ filters, setFilters ] = useState(initFilters)
   const [ elementHasFocus, setElementHasFocus ] = useState(false)
@@ -140,9 +152,10 @@ export const AgreementsRoute: FC = () => {
 
   useEffect(
     () => {
-      dispatch(getAgreements())
+      if (!data) return
+      setAgreements(data.Agreement)
     },
-    [ dispatch ]
+    [ data ]
   )
 
   useEffect(
@@ -172,7 +185,7 @@ export const AgreementsRoute: FC = () => {
           <Grid item xs={12}>
             <Typography variant='h4'>{t('agreements')}</Typography>
           </Grid>
-          {agreements.status === Status.loading ? (
+          {/* {agreements.status === Status.loading ? (
             [ ...Array(48) ].map((_, index: number) => (
               <Grid key={index} item xs={12} sm={6} lg={4}>
                 <AgreementCardMock />
@@ -182,8 +195,19 @@ export const AgreementsRoute: FC = () => {
             <Grid item={true} xs={12}>
               <EmptyState title={t('agreementsNotFound')} image={<Illustration type={Illustrations.empty} />} />
             </Grid>
+          ) : ( */}
+          {loading ? (
+            [ ...Array(48) ].map((_, index: number) => (
+              <Grid key={index} item xs={12} sm={6} lg={4}>
+                <AgreementCardMock />
+              </Grid>
+            ))
+          ) : error ? (
+            <div>error</div>
+          ) : !agreements.length ? (
+            <div>no agreements</div>
           ) : (
-            agreements.items.filter(createFilter(...filters)).map((agreement: IAgreement) => (
+            agreements.filter(createFilter(...filters)).map((agreement: IAgreement) => (
               <Grid key={agreement.id} item xs={12} sm={6} lg={4}>
                 <AgreementCard
                   agreement={agreement}
@@ -198,6 +222,8 @@ export const AgreementsRoute: FC = () => {
               </Grid>
             ))
           )}
+          {/* )) */}
+          {/* )} */}
         </Grid>
       </Container>
       <Hidden smDown={true}>

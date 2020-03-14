@@ -26,7 +26,8 @@ export const generalCatchHandler = (error: IErrorResponse) => {
   const { message, response } = error
 
   // TODO: add logging to cloud watch
-  if (response.status === 404) return
+  console.log(response)
+  // if (response.status === 404) return
 
   console.log(message, response)
   snackbarWrapper.error(message)
