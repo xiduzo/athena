@@ -17,8 +17,8 @@ enum Role {
   }
 
   type Agreement @isAuthenticated{
-    id: String! @hasRole(roles:[user])
-    type: Int
+    id: String! 
+    type: Int @hasRole(roles:[user, admin])
     isBase: Boolean
     points: Int
     translations: [Translation] @relation(name: "HAS_TRANSLATION", direction: "OUT")

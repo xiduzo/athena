@@ -35,7 +35,7 @@ export const ApolloProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const authLink = setContext(async (_, { headers }) => {
     const user = await Auth.currentSession()
     const token = user.getAccessToken().getJwtToken()
-    console.log(token)
+
     return {
       headers: {
         ...headers,
@@ -43,7 +43,6 @@ export const ApolloProvider: FC<{ children: ReactNode }> = ({ children }) => {
       },
     }
   })
-  console.log(authLink, authLink.concat(httpLink))
 
   const client = new ApolloClient({
     link: authLink.concat(httpLink),
@@ -51,7 +50,6 @@ export const ApolloProvider: FC<{ children: ReactNode }> = ({ children }) => {
       resultCaching: true,
     }),
   })
-  console.log(authLink, client)
 
   return (
     <Provider value={{}}>

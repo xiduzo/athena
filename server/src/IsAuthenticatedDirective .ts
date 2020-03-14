@@ -1,7 +1,10 @@
 import { AuthorizationError } from './errors'
-import { IncomingMessage } from 'http'
 import * as jwt from 'jsonwebtoken'
 import { SchemaDirectiveVisitor } from 'graphql-tools'
+import * as dotenv from 'dotenv'
+
+dotenv.config()
+
 import {
   DirectiveLocation,
   GraphQLDirective,
@@ -26,10 +29,7 @@ const verifyAndDecodeToken = ({ context }: { context: any }) => {
     const id_token = token.replace('Bearer ', '')
     const { JWT_SECRET, JWT_NO_VERIFY } = process.env
 
-    return jwt.decode(id_token)
-
     if (!JWT_SECRET && JWT_NO_VERIFY) {
-      console.log(id_token)
       return jwt.decode(id_token)
     } else {
       return jwt.verify(id_token, JWT_SECRET || '', {
