@@ -8,6 +8,7 @@ export enum AgreementActions {
   patchAgreement = 'patchAgreement',
   addAgreement = 'addAgreement',
   removeAgreement = 'removeAgreement',
+  loadAgreements = 'loadAgreements',
 }
 
 export interface IAgreementsState {
@@ -28,6 +29,13 @@ export const agreementsReducer = (state: IAgreementsState = initial_state, actio
 
   let newState: IAgreementsState
   switch (type) {
+    case AgreementActions.loadAgreements:
+      newState = {
+        ...state,
+        status: Status.loading,
+      }
+      return updateLocalItem<IAgreementsState>(localStateName, newState)
+
     case AgreementActions.setAgreements:
       newState = {
         ...state,
@@ -49,6 +57,7 @@ export const agreementsReducer = (state: IAgreementsState = initial_state, actio
     case AgreementActions.addAgreement:
       newState = {
         ...state,
+        status: Status.success,
         items: state.items.find((item) => item.id === payload.id) ? state.items : state.items.concat(payload),
       }
 

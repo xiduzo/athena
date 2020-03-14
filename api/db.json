@@ -60,12 +60,41 @@
       "type": 1,
       "points": 31,
       "id": "DfwV283"
+    },
+    {
+      "translations": [
+        {
+          "language": "nl",
+          "text": "asdasd"
+        },
+        {
+          "language": "en",
+          "text": "sadfasdfsadf"
+        }
+      ],
+      "type": 0,
+      "points": 0,
+      "isBase": true,
+      "id": "_OmVhDG"
+    },
+    {
+      "translations": [
+        {
+          "language": "nl",
+          "text": "asdfasdf"
+        },
+        {
+          "language": "en",
+          "text": "asfasdfasdf"
+        }
+      ],
+      "type": 2,
+      "points": 0,
+      "isBase": true,
+      "id": "kwqefYZ"
     }
   ],
   "tribes": [
-    {
-      "id": "abc123"
-    },
     {
       "id": "abc124",
       "name": "Tribe 2",

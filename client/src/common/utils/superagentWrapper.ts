@@ -1,6 +1,7 @@
 import * as request from 'superagent'
 import { Auth } from 'aws-amplify'
 import { Response } from 'superagent'
+import { snackbarWrapper } from 'src/lib/utils/snackbarWrapper'
 
 interface ISuperAgentWrapper {
   delete: (url: string) => Promise<Response>
@@ -10,10 +11,25 @@ interface ISuperAgentWrapper {
   patch: (url: string, update: any) => Promise<Response>
 }
 
+export interface IErrorResponse {
+  response: Response
+  message: string
+}
+
 const getToken = async (): Promise<string> => {
   const user = await Auth.currentSession()
   const token = user.getAccessToken().getJwtToken()
   return token || ''
+}
+
+export const generalCatchHandler = (error: IErrorResponse) => {
+  const { message, response } = error
+
+  // TODO: add logging to cloud watch
+  if (response.status === 404) return
+
+  console.log(message, response)
+  snackbarWrapper.error(message)
 }
 
 // const getToken = (): string => {

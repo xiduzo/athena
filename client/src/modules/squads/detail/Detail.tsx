@@ -1,6 +1,6 @@
 import React, { FC, useEffect, Suspense, useState } from 'react'
 import { useParams } from 'react-router'
-import { getSquadById, updateSquad } from 'src/lib/api/squads'
+import { updateSquad, getSquads } from 'src/lib/api/squads'
 import {
   Container,
   Grid,
@@ -18,7 +18,7 @@ import { IUser } from 'src/lib/types/user'
 import { UserCard } from 'src/components/Molecules/UserCard'
 import { useDispatch, useSelector } from 'react-redux'
 import { IAgreement } from 'src/lib/types/agreement'
-import { getAgreement, addSquadAgreement } from 'src/lib/api'
+import { addSquadAgreement, getAgreements } from 'src/lib/api'
 import { AgreementCard } from 'src/components/Molecules/AgreementCard'
 import { AgreementsSelector } from './components/AgreementSelector'
 import AddIcon from '@material-ui/icons/Add'
@@ -45,56 +45,25 @@ export const SquadDetailRoute: FC = () => {
   const dispatch = useDispatch<DispatchAction>()
 
   const [ agreementsModalOpen, setAgreementsModalOpen ] = useState(false)
-  const [ triedAgreements, setTriedAgreements ] = useState<string[]>([])
 
   const squad = useSelector<IRootReducer, ISquad | undefined>((state) => {
     const squad = state.squads.items.find((item) => item.id === id)
     return squad
   })
 
-  useEffect(
-    () => {
-      logPerformance('dispatch getSquadById')
-      dispatch(getSquadById(id))
-    },
-    [ id, squad, dispatch ]
-  )
-
   const squadMembers = useSelector<IRootReducer, IUser[]>((state) => {
     if (!squad) return []
 
-    const foundMembers = state.users.items.filter(
-      (user) => squad.members.includes(user.id) && !triedAgreements.includes(user.id)
-    )
-
+    const foundMembers = state.users.items.filter((user) => squad.members.includes(user.id))
     return foundMembers
   })
-
   const squadAgreements = useSelector<IRootReducer, IAgreement[]>((state) => {
-    logPerformance('squadAgreements')
-    console.log(state)
     if (!squad) return []
 
-    const foundAgreements = state.agreements.items.filter(
-      (agreement) => squad.agreements.includes(agreement.id) && !triedAgreements.includes(agreement.id)
-    )
+    const foundAgreements = state.agreements.items.filter((agreement) => squad.agreements.includes(agreement.id))
 
     return foundAgreements
   })
-
-  useEffect(
-    () => {
-      // console.log(`members`)
-      logPerformance('squad trigger')
-
-      // if (!squad || !squad.members.length) return
-      // const missingMembers = squad.members.filter((user) => !squadMembers.map((sm) => sm.id).includes(user))
-      // console.log(`missing members (${missingMembers.length}): ${missingMembers}`)
-      // setTriedAgreements([ ...triedAgreements, ...missingMembers ])
-    },
-    [ squad, dispatch ]
-    //   [ squadAgreements, squad, dispatch, triedAgreements ]
-  )
 
   const toggleAgreementsModal = () => setAgreementsModalOpen(!agreementsModalOpen)
 
@@ -109,34 +78,35 @@ export const SquadDetailRoute: FC = () => {
       dispatch(updateSquad(squad, { agreements: squad.agreements.filter((agreement) => agreement !== agreementId) }))
   }
 
+  useEffect(
+    () => {
+      if (squad) return
+      dispatch(getSquads([ id ]))
+    },
+    [ id, squad, dispatch ]
+  )
+
   // useEffect(
   //   () => {
-  //     console.log(`members`)
-
   //     if (!squad || !squad.members.length) return
   //     const missingMembers = squad.members.filter((user) => !squadMembers.map((sm) => sm.id).includes(user))
   //     console.log(`missing members (${missingMembers.length}): ${missingMembers}`)
-  //     setTriedAgreements([ ...triedAgreements, ...missingMembers ])
   //   },
-  //   [ squadMembers, squad, triedAgreements ]
+  //   [ squadMembers, squad ]
   // )
 
-  // useEffect(
-  //   () => {
-  //     console.log(triedAgreements)
+  useEffect(
+    () => {
+      if (!squad || !squad.agreements.length) return
 
-  //     if (!squad || !squad.agreements.length) return
+      const missingAgreements = squad.agreements.filter(
+        (agreement) => !squadAgreements.map((sa) => sa.id).includes(agreement)
+      )
 
-  //     const missingAgreements = squad.agreements.filter(
-  //       (agreement) => !squadAgreements.map((sa) => sa.id).includes(agreement)
-  //     )
-
-  //     missingAgreements.forEach((agreement) => dispatch(getAgreement(agreement)))
-  //     console.log(`missing missingAgreements (${missingAgreements.length}): ${missingAgreements}`)
-  //     // setTriedAgreements([ ...triedAgreements, ...missingAgreements ])
-  //   },
-  //   [ squadAgreements, squad, dispatch, triedAgreements ]
-  // )
+      dispatch(getAgreements(missingAgreements))
+    },
+    [ squadAgreements, squad, dispatch ]
+  )
 
   return (
     <section className={classes.main}>

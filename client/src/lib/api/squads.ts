@@ -3,7 +3,7 @@ import { SquadActions } from '../redux/squadsReducer'
 import { Dispatch } from 'react'
 import { ISquad } from '../types/squad'
 import { IAction } from '../redux/rootReducer'
-import superagent from 'src/common/utils/superagentWrapper'
+import superagent, { generalCatchHandler } from 'src/common/utils/superagentWrapper'
 
 // function typeGuard<T>(toBeDetermined: any): toBeDetermined is T {
 //   if((toBeDetermined as T).type){
@@ -12,9 +12,11 @@ import superagent from 'src/common/utils/superagentWrapper'
 //   return false
 // }
 
-export const getSquads = () => (dispatch: Dispatch<IAction>) => {
+export const getSquads = (ids?: string[]) => (dispatch: Dispatch<IAction>) => {
+  const suffix = !ids ? '' : `${`${ids.join('&')}`}`
+
   superagent
-    .get(`${BACKEND_URL}/${SQUAD_ENDPOINT}`)
+    .get(`${BACKEND_URL}/${SQUAD_ENDPOINT}/${suffix}`)
     .then((response) => {
       // TODO: check if body = ISquad[]
       dispatch({
@@ -22,24 +24,7 @@ export const getSquads = () => (dispatch: Dispatch<IAction>) => {
         payload: response.body,
       })
     })
-    .catch((error) => {
-      console.log(error)
-    })
-}
-
-export const getSquadById = (id: string) => (dispatch: Dispatch<IAction>) => {
-  superagent
-    .get(`${BACKEND_URL}/${SQUAD_ENDPOINT}/${id}`)
-    .then((response) =>
-      // TODO: check if body = ISquad
-      dispatch({
-        type: SquadActions.addSquad,
-        payload: response.body,
-      })
-    )
-    .catch((error) => {
-      console.log(error)
-    })
+    .catch(generalCatchHandler)
 }
 
 export const updateSquad = (squad: ISquad, update: Partial<ISquad>) => (dispatch: Dispatch<IAction>) => {
@@ -51,7 +36,5 @@ export const updateSquad = (squad: ISquad, update: Partial<ISquad>) => (dispatch
         payload: { ...squad, ...update },
       })
     })
-    .catch((error) => {
-      console.log(error)
-    })
+    .catch(generalCatchHandler)
 }

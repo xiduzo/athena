@@ -4,32 +4,14 @@ import { BACKEND_URL, AGREEMENTS_ENDPOINT } from '../constants'
 import { IAgreement } from '../types/agreement'
 import { AgreementActions } from '../redux/agreementsReducer'
 import { IAction } from '../redux/rootReducer'
-import superagent from '../../common/utils/superagentWrapper'
+import superagent, { generalCatchHandler } from '../../common/utils/superagentWrapper'
 import { updateSquad } from './squads'
 import { ISquad } from '../types/squad'
-import { snackbarWrapper } from '../utils/snackbarWrapper'
-import { Response } from 'superagent'
 
-export const getAgreement = (id: string) => (dispatch: Dispatch<IAction>) => {
+export const getAgreements = (ids?: string[]) => (dispatch: Dispatch<IAction>) => {
+  const suffix = !ids ? '' : `${`${ids.join('&')}`}`
   superagent
-    .get(`${BACKEND_URL}/${AGREEMENTS_ENDPOINT}/${id}`)
-    .then((response) =>
-      dispatch({
-        type: AgreementActions.addAgreement,
-        payload: response.body,
-      })
-    )
-    .catch((error) => {
-      const { message, response } = error
-      snackbarWrapper.error(message)
-      // response.status
-      console.log(error.message, response.status)
-    })
-}
-
-export const getAgreements = () => (dispatch: Dispatch<IAction>) => {
-  superagent
-    .get(`${BACKEND_URL}/${AGREEMENTS_ENDPOINT}`)
+    .get(`${BACKEND_URL}/${AGREEMENTS_ENDPOINT}/${suffix}`)
     .then(
       (response) => {
         // console.log(response)
@@ -39,9 +21,7 @@ export const getAgreements = () => (dispatch: Dispatch<IAction>) => {
       //   payload: response.body,
       // })
     )
-    .catch((error) => {
-      console.log(error)
-    })
+    .catch(generalCatchHandler)
 }
 
 export const addAgreement = (agreement: IAgreement) => (dispatch: Dispatch<IAction>) => {
@@ -58,9 +38,7 @@ export const addAgreement = (agreement: IAgreement) => (dispatch: Dispatch<IActi
         payload: response.body,
       })
     )
-    .catch((error) => {
-      console.log(error)
-    })
+    .catch(generalCatchHandler)
 }
 
 export const addSquadAgreement = (agreement: IAgreement, squad: ISquad) => (dispatch: Dispatch<IAction>) => {
@@ -78,9 +56,7 @@ export const addSquadAgreement = (agreement: IAgreement, squad: ISquad) => (disp
       })
       updateSquad(squad, { agreements: [ ...squad.agreements, response.body.id ] })
     })
-    .catch((error) => {
-      console.log(error)
-    })
+    .catch(generalCatchHandler)
 }
 
 export const removeAgreement = (id: string) => (dispatch: Dispatch<IAction>) => {
@@ -92,7 +68,5 @@ export const removeAgreement = (id: string) => (dispatch: Dispatch<IAction>) => 
         payload: id,
       })
     )
-    .catch((error) => {
-      console.log(error)
-    })
+    .catch(generalCatchHandler)
 }

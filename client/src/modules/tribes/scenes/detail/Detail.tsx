@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, Suspense } from 'react'
 import {
   Container,
   Grid,
@@ -42,11 +42,13 @@ export const TribeDetailRoute: FC = () => {
   const { id } = useParams<ITribeDetailRouteParams>()
   const history = useHistory()
 
-  const tribe = useSelector<IRootReducer, ITribe | undefined>((state) =>
-    state.tribes.items.find((item) => item.id === id)
-  )
-  const tribeSquads = useSelector<IRootReducer, ISquad[] | undefined>((state) => {
-    if (!tribe) return undefined
+  const tribe = useSelector<IRootReducer, ITribe | undefined>((state) => {
+    console.log(state.tribes.items)
+    return state.tribes.items.find((item) => item.id === id)
+  })
+  const tribeSquads = useSelector<IRootReducer, ISquad[]>((state) => {
+    if (!tribe) return []
+    console.log(tribe)
 
     const squads = state.squads.items.filter((squad) => tribe.squads.includes(squad.id))
 
@@ -74,7 +76,7 @@ export const TribeDetailRoute: FC = () => {
   useEffect(
     () => {
       if (!tribe || !tribe.squads.length) return
-      if (!tribeSquads) return
+      if (!tribeSquads.length) return
 
       const missingSquads = tribe.squads.filter((squad) => !tribeSquads.map((ts) => ts.id).includes(squad))
 
@@ -108,6 +110,7 @@ export const TribeDetailRoute: FC = () => {
     [ tribeLeaders, tribe ]
   )
 
+  console.log(tribe)
   return (
     <section className={classes.main}>
       <Container maxWidth='lg'>

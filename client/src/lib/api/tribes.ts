@@ -3,7 +3,7 @@ import { Dispatch } from 'react'
 import { TribeActions } from '../redux/tribesReducer'
 import { ITribe } from '../types/tribe'
 import { IAction } from '../redux/rootReducer'
-import superagent from 'src/common/utils/superagentWrapper'
+import superagent, { generalCatchHandler } from 'src/common/utils/superagentWrapper'
 
 export const getTribes = () => (dispatch: Dispatch<IAction>) => {
   superagent
@@ -14,9 +14,7 @@ export const getTribes = () => (dispatch: Dispatch<IAction>) => {
         payload: response.body,
       })
     )
-    .catch((error) => {
-      console.log(error)
-    })
+    .catch(generalCatchHandler)
 }
 
 export const getTribeById = (id: string) => (dispatch: Dispatch<IAction>) => {
@@ -28,9 +26,7 @@ export const getTribeById = (id: string) => (dispatch: Dispatch<IAction>) => {
         payload: response.body as ITribe,
       })
     )
-    .catch((error) => {
-      console.log(error)
-    })
+    .catch(generalCatchHandler)
 }
 
 export const updateTribe = (tribe: ITribe, update: Partial<ITribe>) => (dispatch: Dispatch<IAction>) => {
@@ -42,7 +38,5 @@ export const updateTribe = (tribe: ITribe, update: Partial<ITribe>) => (dispatch
         payload: { ...tribe, ...update },
       })
     })
-    .catch((error) => {
-      console.log(error)
-    })
+    .catch(generalCatchHandler)
 }
