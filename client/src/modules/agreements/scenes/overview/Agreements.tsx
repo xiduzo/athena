@@ -104,7 +104,6 @@ export const AgreementsRoute: FC = () => {
 
   const dispatch = useDispatch<DispatchAction>()
   const { loading, error, data } = useQuery(GET_AGREEMENTS)
-  console.log(error)
 
   const hotkeysEnabled = useSelector((state: IRootReducer) => state.global.hotkeysEnabled)
 
@@ -203,7 +202,7 @@ export const AgreementsRoute: FC = () => {
               </Grid>
             ))
           ) : error ? (
-            <div>error</div>
+            <div>{error.message}</div>
           ) : !agreements.length ? (
             <div>no agreements</div>
           ) : (

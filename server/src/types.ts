@@ -1,16 +1,26 @@
-const typeDefs = `
-type Movie {
-    title: String
-    year: Int
-    imdbRating: Float
-    genres: [Genre] @relation(name: "IN_GENRE", direction: "OUT")
-}
-type Genre {
-    name: String
-    movies: [Movie] @relation(name: "IN_GENRE", direction: "IN")
-}
-`
+export const typeDefs = `
+  
+directive @hasScope(scopes: [String]) on OBJECT | FIELD_DEFINITION
+directive @hasRole(roles: [Role]) on OBJECT | FIELD_DEFINITION
+directive @isAuthenticated on OBJECT | FIELD_DEFINITION
 
-module.export = {
-  typeDefs,
+enum Role {
+  reader
+  user
+  admin
 }
+
+  type Translation {
+    id: String!
+    language: String!
+    text: String!
+  }
+
+  type Agreement @isAuthenticated{
+    id: String! @hasRole(roles:[user])
+    type: Int
+    isBase: Boolean
+    points: Int
+    translations: [Translation] @relation(name: "HAS_TRANSLATION", direction: "OUT")
+  }
+`

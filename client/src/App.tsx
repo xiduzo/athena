@@ -9,34 +9,7 @@ import { ThemeProvider } from './common/providers/ThemeProvider'
 import { AuthProvider } from './common/providers/AuthProvider'
 import { SnackbarProvider } from 'notistack'
 import { SnackbarUtilsConfiguration } from './lib/utils/snackbarWrapper'
-import { ApolloProvider } from '@apollo/react-hooks'
-import { ApolloClient } from 'apollo-client'
-import { createHttpLink } from 'apollo-link-http'
-import { setContext } from 'apollo-link-context'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { Auth } from 'aws-amplify'
-
-const httpLink = createHttpLink({
-  uri: 'http://localhost:5000/graphql',
-})
-
-const authLink = setContext(async (_, { headers }) => {
-  const user = await Auth.currentSession()
-  const token = user.getAccessToken().getJwtToken()
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : '',
-    },
-  }
-})
-
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache({
-    resultCaching: true,
-  }),
-})
+import { ApolloProvider } from './common/providers/ApolloProvider'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -78,7 +51,7 @@ const App: React.FC = () => {
         <SnackbarUtilsConfiguration />
         <div className={classes.root}>
           <AuthProvider>
-            <ApolloProvider client={client}>
+            <ApolloProvider>
               <CssBaseline />
               <Suspense fallback={'loading'}>
                 <Router>

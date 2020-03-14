@@ -3,33 +3,19 @@ import { ApolloServer } from 'apollo-server-express'
 // @ts-ignore
 import { makeAugmentedSchema } from 'neo4j-graphql-js'
 import neo4j from 'neo4j-driver'
-import { AuthDirective } from 'graphql-directive-auth'
-import { IsAuthenticatedDirective } from './IsAuthenticatedDirective '
+import { typeDefs } from './types'
+import { IsAuthenticatedDirective, HasRoleDirective, HasScopeDirective } from './IsAuthenticatedDirective '
+// @ts-ignore
+// import { HasRoleDirective, HasScopeDirective, IsAuthenticatedDirective } from 'graphql-auth-directives'
 
 const driver = neo4j.driver('bolt://localhost:7687', neo4j.auth.basic('athena', 'bierislekker'))
-
-const typeDefs = `
-  directive @isAuthenticated on FIELD_DEFINITION | OBJECT
-
-  type Translation {
-    id: String!
-    language: String!
-    text: String!
-  }
-
-  type Agreement @isAuthenticated {
-    id: String!
-    type: Int
-    isBase: Boolean
-    points: Int
-    translations: [Translation] @relation(name: "HAS_TRANSLATION", direction: "OUT")
-  }
-`
 
 const schema = makeAugmentedSchema({
   typeDefs,
   schemaDirectives: {
     isAuthenticated: IsAuthenticatedDirective,
+    hasRole: HasRoleDirective,
+    hasScope: HasScopeDirective,
   },
 })
 

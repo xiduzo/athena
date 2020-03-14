@@ -49,14 +49,6 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@babel/polyfill@^7.0.0":
-  version "7.8.7"
-  resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.8.7.tgz#151ec24c7135481336168c3bd8b8bf0cf91c032f"
-  integrity sha512-LeSfP9bNZH2UOZgcGcZ0PIHUt1ZuHub1L3CVmEyqLxCeDLm4C5Gi8jRH8ZX2PNpDhQCo0z6y/+DIs2JlliXW8w==
-  dependencies:
-    core-js "^2.6.5"
-    regenerator-runtime "^0.13.4"
-
 "@babel/runtime-corejs2@^7.5.5":
   version "7.8.7"
   resolved "https://registry.yarnpkg.com/@babel/runtime-corejs2/-/runtime-corejs2-7.8.7.tgz#5c6afcb33ef12fa1f8db6b915ff6b5ecaf6afb11"
@@ -1509,14 +1501,6 @@ graphql-auth-directives@^2.2.0:
     graphql-tools "^4.0.4"
     jsonwebtoken "^8.3.0"
 
-graphql-directive-auth@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/graphql-directive-auth/-/graphql-directive-auth-0.3.2.tgz#60fceebc6742a576b01dcd20df4e54089cd8c2a5"
-  integrity sha512-mPxCazp54weJFUmfPgkMmQHDgNCVjob2l9vPrQjIFq5aaD9rvV5AvV2qxDxhbPbJakYqDkxrWC+LQ5bEG6hWVA==
-  dependencies:
-    "@babel/polyfill" "^7.0.0"
-    jsonwebtoken "^8.4.0"
-
 graphql-extensions@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/graphql-extensions/-/graphql-extensions-0.11.0.tgz#2923b06f7452dad186d835327974b6c3ebb9c58f"
@@ -1860,7 +1844,7 @@ json-stable-stringify-without-jsonify@^1.0.1:
   resolved "https://registry.yarnpkg.com/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
   integrity sha1-nbe1lJatPzz+8wp1FC0tkwrXJlE=
 
-jsonwebtoken@^8.3.0, jsonwebtoken@^8.4.0, jsonwebtoken@^8.5.1:
+jsonwebtoken@^8.3.0, jsonwebtoken@^8.5.1:
   version "8.5.1"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.5.1.tgz#00e71e0b8df54c2121a1f26137df2280673bcc0d"
   integrity sha512-XjwVfRS6jTMsqYs0EsuJ4LGxXV14zQybNd4L2r0UvbVnSF9Af8x7p5MzbJ90Ioz/9TI41/hTCvznF/loiSzn8w==
