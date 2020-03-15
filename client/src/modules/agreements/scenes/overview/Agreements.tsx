@@ -19,7 +19,7 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
+import { useTranslation, Translation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { createFilter } from 'src/common/utils/createFilter'
 import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
@@ -30,7 +30,7 @@ import { AgreementType } from 'src/lib/enums'
 import { Key } from 'src/lib/enums/keys'
 import { useHotkeys } from 'src/lib/hooks/useHotkeys'
 import { DispatchAction, IRootReducer } from 'src/lib/redux/rootReducer'
-import { IAgreement } from 'src/lib/types/agreement'
+import { IAgreement, ITranslation } from 'src/lib/types/agreement'
 import { NewAgreementModal } from './components/newAgreementModal'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
@@ -99,38 +99,57 @@ const GET_AGREEMENTS = gql`
   }
 `
 
-const ADD_AGREEMENT = gql`
-  {
-    Agreement(filter: { isBase: true }) {
+const CREATE_AGREEMENT = gql`
+  mutation CreateAgreement($id: String!, $type: Int!, $isBase: Boolean!, $points: Int!) {
+    CreateAgreement(id: $id, type: $type, isBase: $isBase, points: $points) {
       id
-      points
-      isBase
-      type
-      translations {
-        language
-        text
+    }
+  }
+`
+
+const CREATE_TRANSLATION = gql`
+  mutation CreateTranslation($id: String!, $language: String!, $text: String!) {
+    CreateTranslation(id: $id, language: $language, text: $text) {
+      id
+    }
+  }
+`
+
+const ADD_AGREEMENT_TRANSLATION = gql`
+  mutation AddAgreementTranslations($from: _AgreementInput!, $to: _TranslationInput!) {
+    AddAgreementTranslations(from: $from, to: $to) {
+      from {
+        id
+      }
+      to {
+        id
       }
     }
   }
 `
-const ADD_TODO = gql`
-  mutation CreateAgreement($id: String!, $type: Int!, $isBase: Boolean!, $points: Int!) {
-    CreateAgreement(id: $id, type: $type, isBase: $isBase, points: $points) {
-      id
-      type
-      isBase
-      points
-    }
+
+async function asyncForEach(array: any[], callback: any) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array)
   }
-`
+}
 
 export const AgreementsRoute: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 
   const dispatch = useDispatch<DispatchAction>()
-  const { loading, error, data } = useQuery(GET_AGREEMENTS)
-  const [ CreateAgreement ] = useMutation(ADD_TODO)
+  const { loading, error, data, refetch } = useQuery(GET_AGREEMENTS)
+  const [ CreateTranslation ] = useMutation(CREATE_TRANSLATION)
+  const [ AddAgreementTranslations ] = useMutation(ADD_AGREEMENT_TRANSLATION)
+
+  const [ CreateAgreement ] = useMutation(CREATE_AGREEMENT, {
+    // update: (cache: DataProxy, mutationResult: FetchResult) => {
+    update: (cache: any, mutationResult: any) => {
+      // console.log(cache, mutationResult)
+    },
+    onCompleted: (_: any) => {},
+  })
 
   const hotkeysEnabled = useSelector((state: IRootReducer) => state.global.hotkeysEnabled)
 
@@ -163,22 +182,39 @@ export const AgreementsRoute: FC = () => {
     )
   }
 
-  const handleClose = (agreement?: IAgreement) => {
-    if (agreement)
-      console.log(agreement, {
+  const handleClose = async (agreement?: IAgreement) => {
+    if (agreement) {
+      const agreementId = uuid()
+
+      await CreateAgreement({
         variables: {
-          id: uuid(),
+          id: agreementId,
+          isBase: true,
           ...agreement,
         },
       })
-    CreateAgreement({
-      variables: {
-        id: uuid(),
-        isBase: true,
-        ...agreement,
-      },
-    })
-    // if (agreement) dispatch(addAgreement(agreement))
+
+      await asyncForEach(agreement.translations, async (translation: ITranslation) => {
+        const translationId = uuid()
+
+        await CreateTranslation({
+          variables: {
+            id: translationId,
+            ...translation,
+          },
+        })
+
+        await AddAgreementTranslations({
+          variables: {
+            id: uuid(),
+            from: { id: agreementId },
+            to: { id: translationId },
+          },
+        })
+      })
+
+      refetch()
+    }
     setModalOpen(!modalOpen)
   }
 

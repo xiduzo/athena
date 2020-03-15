@@ -23,7 +23,6 @@ export const typeDefs = `
     id: String!
     language: String!
     text: String!
-    created: String
   }
 
   type Feedback {
@@ -36,9 +35,9 @@ export const typeDefs = `
 
   type Agreement {
     id: String!
-    type: Int
-    isBase: Boolean
-    points: Int
+    type: Int!
+    isBase: Boolean!
+    points: Int!
     translations: [Translation] @relation(name: "HAS_TRANSLATION", direction: "OUT")
     feedback: [Feedback] @relation(name: "ON", direction: "IN")
   }
