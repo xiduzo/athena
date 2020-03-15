@@ -54,7 +54,7 @@ export const AgreementsSelector: FC<IAgreementSelectorModal> = ({ title, isOpen,
           onChange={(_: any, agreements: IAgreement[] | null) => {
             if (agreements) setAgreementsToAdd(agreements)
           }}
-          getOptionLabel={(agreement: IAgreement) => getTranslation(agreement.translations)}
+          // getOptionLabel={(agreement: IAgreement) => getTranslation(agreement.translations)}
           getOptionDisabled={(agreement: IAgreement) =>
             agreementsToAdd.find((a) => a.id === agreement.id) ? true : false}
           renderInput={(params) => (

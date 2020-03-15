@@ -94,7 +94,7 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onLeftClick, onRi
           keepMounted
           open={mousePos.mouseY !== null}
           onClose={onRightClickHandler}
-          anchorReference="anchorPosition"
+          anchorReference='anchorPosition'
           anchorPosition={
             mousePos.mouseY !== null && mousePos.mouseX !== null ? (
               { top: mousePos.mouseY, left: mousePos.mouseX }
@@ -151,16 +151,16 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onLeftClick, onRi
         <CardHeader
           className={classes.cardHeader}
           avatar={
-            <Avatar aria-label="recipe" className={classes.agreementAvatar}>
+            <Avatar aria-label='recipe' className={classes.agreementAvatar}>
               <AgreementIcon type={agreement.type} />
             </Avatar>
           }
         />
         <CardContent className={classes.cardContent}>
-          <Typography variant="caption" color="textSecondary" gutterBottom>
+          <Typography variant='caption' color='textSecondary' gutterBottom>
             The student
           </Typography>
-          <Typography variant="subtitle1">{getTranslation(agreement.translations)}</Typography>
+          <Typography variant='subtitle1'>{getTranslation(agreement.translations)}</Typography>
         </CardContent>
       </section>
     )

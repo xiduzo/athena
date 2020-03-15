@@ -32,8 +32,9 @@ import { useHotkeys } from 'src/lib/hooks/useHotkeys'
 import { DispatchAction, IRootReducer } from 'src/lib/redux/rootReducer'
 import { IAgreement } from 'src/lib/types/agreement'
 import { NewAgreementModal } from './components/newAgreementModal'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
+import { v4 as uuid } from 'uuid'
 
 const drawerWidth = '20vw'
 const useStyles = makeStyles((theme: Theme) => ({
@@ -98,12 +99,38 @@ const GET_AGREEMENTS = gql`
   }
 `
 
+const ADD_AGREEMENT = gql`
+  {
+    Agreement(filter: { isBase: true }) {
+      id
+      points
+      isBase
+      type
+      translations {
+        language
+        text
+      }
+    }
+  }
+`
+const ADD_TODO = gql`
+  mutation CreateAgreement($id: String!, $type: Int!, $isBase: Boolean!, $points: Int!) {
+    CreateAgreement(id: $id, type: $type, isBase: $isBase, points: $points) {
+      id
+      type
+      isBase
+      points
+    }
+  }
+`
+
 export const AgreementsRoute: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 
   const dispatch = useDispatch<DispatchAction>()
   const { loading, error, data } = useQuery(GET_AGREEMENTS)
+  const [ CreateAgreement ] = useMutation(ADD_TODO)
 
   const hotkeysEnabled = useSelector((state: IRootReducer) => state.global.hotkeysEnabled)
 
@@ -137,7 +164,21 @@ export const AgreementsRoute: FC = () => {
   }
 
   const handleClose = (agreement?: IAgreement) => {
-    if (agreement) dispatch(addAgreement(agreement))
+    if (agreement)
+      console.log(agreement, {
+        variables: {
+          id: uuid(),
+          ...agreement,
+        },
+      })
+    CreateAgreement({
+      variables: {
+        id: uuid(),
+        isBase: true,
+        ...agreement,
+      },
+    })
+    // if (agreement) dispatch(addAgreement(agreement))
     setModalOpen(!modalOpen)
   }
 

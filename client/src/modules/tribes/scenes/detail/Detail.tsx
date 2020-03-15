@@ -50,9 +50,9 @@ export const TribeDetailRoute: FC = () => {
     if (!tribe) return []
     console.log(tribe)
 
-    const squads = state.squads.items.filter((squad) => tribe.squads.includes(squad.id))
+    // const squads = state.squads.items.filter((squad) => tribe.squads.includes(squad.id))
 
-    return squads
+    return state.squads.items
   })
   const tribeLeaders = useSelector<IRootReducer, IUser[]>((state) => {
     if (!tribe) return []
@@ -76,11 +76,11 @@ export const TribeDetailRoute: FC = () => {
   useEffect(
     () => {
       if (!tribe || !tribe.squads.length) return
-      if (!tribeSquads.length) return
+      // if (!tribeSquads.length) return
 
-      const missingSquads = tribe.squads.filter((squad) => !tribeSquads.map((ts) => ts.id).includes(squad))
+      // const missingSquads = tribe.squads.filter((squad) => !tribeSquads.map((ts) => ts.id).includes(squad))
 
-      if (missingSquads.length) dispatch(getSquads()) // TODO: only get the squads we need
+      // if (missingSquads.length) dispatch(getSquads()) // TODO: only get the squads we need
     },
     [ tribe, tribeSquads, dispatch ]
   )
@@ -88,7 +88,7 @@ export const TribeDetailRoute: FC = () => {
   const toggleSquadModal = () => setSquadModalOpen(!squadModalOpen)
 
   const onSquadModalCloseHandler = (squads?: ISquad[]) => {
-    if (tribe && squads) dispatch(updateTribe(tribe, { squads: [ ...tribe.squads, ...squads.map((s) => s.id) ] }))
+    // if (tribe && squads) dispatch(updateTribe(tribe, { squads: [ ...tribe.squads, ...squads.map((s) => s.id) ] }))
     toggleSquadModal()
   }
 
@@ -97,7 +97,7 @@ export const TribeDetailRoute: FC = () => {
   }
 
   const removeSquadHandler = (squadId: string) => {
-    if (tribe) dispatch(updateTribe(tribe, { squads: tribe.squads.filter((squad) => squad !== squadId) }))
+    // if (tribe) dispatch(updateTribe(tribe, { squads: tribe.squads.filter((squad) => squad !== squadId) }))
   }
 
   useEffect(

@@ -1,5 +1,12 @@
 import { SchemaDirectiveVisitor } from 'apollo-server-express'
-import { DirectiveLocation, GraphQLDirective, GraphQLField, GraphQLList, GraphQLObjectType } from 'graphql'
+import {
+  DirectiveLocation,
+  GraphQLDirective,
+  GraphQLField,
+  GraphQLList,
+  GraphQLObjectType,
+  GraphQLResolveInfo,
+} from 'graphql'
 import { AuthorizationError } from '../errors/AuthorizationError'
 import { INameToValueMap } from '../interfaces/INameToValueMap'
 import { arrayHasMatchesWith } from '../utils/arrayHasMatchesWith'
@@ -23,7 +30,7 @@ export class HasRoleDirective extends SchemaDirectiveVisitor {
     const expectedRoles = this.args.roles
     const next = field.resolve
 
-    field.resolve = (result: any, args: any, context: any, info: any) => {
+    field.resolve = (result: any, args: any, context: any, info: GraphQLResolveInfo) => {
       const decoded = verifyAndDecodeToken({ context }) as INameToValueMap
 
       const { AUTH_DIRECTIVES_ROLE_KEY } = process.env
@@ -51,7 +58,8 @@ export class HasRoleDirective extends SchemaDirectiveVisitor {
     Object.keys(fields).forEach((fieldName) => {
       const field = fields[fieldName]
       const next = field.resolve
-      field.resolve = (result: any, args: any, context: any, info: any) => {
+
+      field.resolve = (result: any, args: any, context: any, info: GraphQLResolveInfo) => {
         const decoded = verifyAndDecodeToken({ context }) as INameToValueMap
 
         const { AUTH_DIRECTIVES_ROLE_KEY } = process.env

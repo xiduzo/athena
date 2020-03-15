@@ -6,6 +6,7 @@ import {
   GraphQLString,
   GraphQLField,
   GraphQLObjectType,
+  GraphQLResolveInfo,
 } from 'graphql'
 import { verifyAndDecodeToken } from '../utils/verifyAndDecodeToken'
 import { arrayHasMatchesWith } from '../utils/arrayHasMatchesWith'
@@ -32,8 +33,9 @@ export class HasScopeDirective extends SchemaDirectiveVisitor {
     const next = field.resolve
 
     // wrap resolver with auth check
-    field.resolve = (result: any, args: any, context: any, info: any) => {
+    field.resolve = (result: any, args: any, context: any, info: GraphQLResolveInfo) => {
       const decoded = verifyAndDecodeToken({ context }) as INameToValueMap
+      console.log(field)
 
       // FIXME: override with env var
       const keysToCheck = [ 'Scopes', 'scopes', 'Scope', 'scope' ]
@@ -56,7 +58,7 @@ export class HasScopeDirective extends SchemaDirectiveVisitor {
     Object.keys(fields).forEach((fieldName) => {
       const field = fields[fieldName]
       const next = field.resolve
-      field.resolve = (result: any, args: any, context: any, info: any) => {
+      field.resolve = (result: any, args: any, context: any, info: GraphQLResolveInfo) => {
         const decoded = verifyAndDecodeToken({ context }) as INameToValueMap
 
         // FIXME: override w/ env var

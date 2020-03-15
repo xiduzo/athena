@@ -60,9 +60,9 @@ export const SquadDetailRoute: FC = () => {
   const squadAgreements = useSelector<IRootReducer, IAgreement[]>((state) => {
     if (!squad) return []
 
-    const foundAgreements = state.agreements.items.filter((agreement) => squad.agreements.includes(agreement.id))
+    // const foundAgreements = state.agreements.items.filter((agreement) => squad.agreements.includes(agreement.id))
 
-    return foundAgreements
+    return state.agreements.items
   })
 
   const toggleAgreementsModal = () => setAgreementsModalOpen(!agreementsModalOpen)
@@ -74,8 +74,8 @@ export const SquadDetailRoute: FC = () => {
   }
 
   const removeAgreementHandler = (agreementId: string) => {
-    if (squad)
-      dispatch(updateSquad(squad, { agreements: squad.agreements.filter((agreement) => agreement !== agreementId) }))
+    // if (squad)
+    // dispatch(updateSquad(squad, { agreements: squad.agreements.filter((agreement) => agreement !== agreementId) }))
   }
 
   useEffect(
@@ -99,11 +99,11 @@ export const SquadDetailRoute: FC = () => {
     () => {
       if (!squad || !squad.agreements.length) return
 
-      const missingAgreements = squad.agreements.filter(
-        (agreement) => !squadAgreements.map((sa) => sa.id).includes(agreement)
-      )
+      // const missingAgreements = squad.agreements.filter(
+      //   (agreement) => !squadAgreements.map((sa) => sa.id).includes(agreement)
+      // )
 
-      dispatch(getAgreements(missingAgreements))
+      // dispatch(getAgreements(missingAgreements))
     },
     [ squadAgreements, squad, dispatch ]
   )
@@ -164,11 +164,11 @@ export const SquadDetailRoute: FC = () => {
               <Grid item xs={12}>
                 <Typography variant={`h5`}>{`Feedback`}</Typography>
               </Grid>
-              {squad.feedback.map((feedback) => (
+              {/* {squad.feedback.map((feedback) => (
                 <Grid key={feedback} item xs={12} sm={6} md={4} lg={3}>
                   {feedback}
                 </Grid>
-              ))}
+              ))} */}
             </Grid>
           )}
         </Suspense>
