@@ -3,6 +3,7 @@ import { createMuiTheme, MuiThemeProvider, Theme, fade, lighten, darken } from '
 import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
 import React, { createContext, FC, ReactNode, useContext, useState } from 'react'
 import * as Highcharts from 'highcharts'
+import { useMediaQuery } from '@material-ui/core'
 
 interface IThemeContext {
   theme: ThemeOptions
@@ -231,6 +232,7 @@ const generateHighchartsTheme = (theme: Theme): Highcharts.Options => {
 
 const useThemeHandler = () => {
   const [ theme, setNewTheme ] = useState<ThemeOptions>(initialTheme)
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
   const setTheme = (newTheme: ThemeOptions) => {
     if (newTheme.palette && newTheme.palette.type) localStorage.setItem('themeStyle', newTheme.palette.type as string)
@@ -251,7 +253,7 @@ const useThemeHandler = () => {
 
 const { Provider } = ThemeContext
 
-const generateTheme = (options: ThemeOptions): Theme => createMuiTheme(options)
+const generateTheme = (options: ThemeOptions): Theme => createMuiTheme({ options })
 export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { theme, setTheme, setHighChart } = useThemeHandler()
 
