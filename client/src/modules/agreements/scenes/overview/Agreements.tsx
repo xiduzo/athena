@@ -21,7 +21,7 @@ import AddIcon from '@material-ui/icons/Add'
 import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { DELETE_AGREEMENT, GET_AGREEMENTS, DELETE_TRANSLATION } from 'src/common/services/agreementService'
 import { asyncForEach } from 'src/common/utils/asyncForEach'
 import { createFilter } from 'src/common/utils/createFilter'
@@ -34,6 +34,7 @@ import { useHotkeys } from 'src/lib/hooks/useHotkeys'
 import { IRootReducer } from 'src/lib/redux/rootReducer'
 import { IAgreement, ITranslation } from 'src/lib/types/agreement'
 import { NewAgreementModal } from './components/newAgreementModal'
+import { snackbarWrapper } from 'src/lib/utils/snackbarWrapper'
 
 const drawerWidth = '20vw'
 const useStyles = makeStyles((theme: Theme) => ({
@@ -57,15 +58,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   fieldset: {
     marginBottom: theme.spacing(2),
     width: '100%',
-  },
-  hotkeysInfo: {
-    color: theme.palette.grey[400],
-    position: 'absolute',
-    right: drawerWidth,
-    margin: theme.spacing(2),
-    '&:hover': {
-      cursor: 'help',
-    },
   },
   wrapper: {
     display: 'flex',
@@ -133,12 +125,6 @@ export const AgreementsRoute: FC = () => {
   }
 
   const removeAgreementHandler = async (agreement: IAgreement) => {
-    await DeleteAgreement({
-      variables: {
-        id: agreement.id,
-      },
-    })
-
     await asyncForEach(agreement.translations, async (translation: ITranslation) => {
       await DeleteTranslation({
         variables: {
@@ -147,7 +133,16 @@ export const AgreementsRoute: FC = () => {
       })
     })
 
-    refetch()
+    DeleteAgreement({
+      variables: {
+        id: agreement.id,
+      },
+    })
+      .then((_) => {
+        snackbarWrapper.success(`${t(`agreement`)} deleted`)
+        refetch()
+      })
+      .catch((error) => snackbarWrapper.error(error.message))
   }
 
   const toggleFocus = () => setElementHasFocus(!elementHasFocus)

@@ -29,6 +29,8 @@ import { useMutation } from '@apollo/react-hooks'
 import { CREATE_TRANSLATION, ADD_AGREEMENT_TRANSLATION, CREATE_AGREEMENT } from 'src/common/services/agreementService'
 import { v4 as uuid } from 'uuid'
 import { asyncForEach } from 'src/common/utils/asyncForEach'
+import { snackbarWrapper } from 'src/lib/utils/snackbarWrapper'
+import { useTranslation } from 'react-i18next'
 
 const Transition = forwardRef<unknown, TransitionProps>((props, ref) => <Slide direction={`up`} ref={ref} {...props} />)
 
@@ -49,6 +51,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
 
   const [ CreateTranslation ] = useMutation(CREATE_TRANSLATION)
   const [ AddAgreementTranslations ] = useMutation(ADD_AGREEMENT_TRANSLATION)
@@ -102,6 +105,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
       })
     })
 
+    snackbarWrapper.success(`${t(`agreement`)} created`)
     handleClose()
   }
 

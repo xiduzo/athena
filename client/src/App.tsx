@@ -44,7 +44,7 @@ const App: React.FC = () => {
         maxSnack={3}
         autoHideDuration={3000}
         anchorOrigin={{
-          horizontal: 'right',
+          horizontal: 'left',
           vertical: 'bottom',
         }}
       >
