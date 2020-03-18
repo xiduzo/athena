@@ -1,3 +1,4 @@
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import {
   Box,
   Container,
@@ -19,22 +20,27 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTranslation, Translation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import {
+  ADD_AGREEMENT_TRANSLATION,
+  CREATE_AGREEMENT,
+  CREATE_TRANSLATION,
+  DELETE_AGREEMENT,
+  GET_AGREEMENTS,
+} from 'src/common/services/agreementService'
+import { asyncForEach } from 'src/common/utils/asyncForEach'
 import { createFilter } from 'src/common/utils/createFilter'
 import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
 import { AgreementCard, AgreementCardMock } from 'src/components/Molecules/AgreementCard'
 import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
-import { addAgreement, getAgreements, removeAgreement } from 'src/lib/api'
 import { AgreementType } from 'src/lib/enums'
 import { Key } from 'src/lib/enums/keys'
 import { useHotkeys } from 'src/lib/hooks/useHotkeys'
 import { DispatchAction, IRootReducer } from 'src/lib/redux/rootReducer'
 import { IAgreement, ITranslation } from 'src/lib/types/agreement'
-import { NewAgreementModal } from './components/newAgreementModal'
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
 import { v4 as uuid } from 'uuid'
+import { NewAgreementModal } from './components/newAgreementModal'
 
 const drawerWidth = '20vw'
 const useStyles = makeStyles((theme: Theme) => ({
@@ -84,56 +90,6 @@ const initFilters = [
   },
 ]
 
-const GET_AGREEMENTS = gql`
-  {
-    Agreement(filter: { isBase: true }) {
-      id
-      points
-      isBase
-      type
-      translations {
-        language
-        text
-      }
-    }
-  }
-`
-
-const CREATE_AGREEMENT = gql`
-  mutation CreateAgreement($id: String!, $type: Int!, $isBase: Boolean!, $points: Int!) {
-    CreateAgreement(id: $id, type: $type, isBase: $isBase, points: $points) {
-      id
-    }
-  }
-`
-
-const CREATE_TRANSLATION = gql`
-  mutation CreateTranslation($id: String!, $language: String!, $text: String!) {
-    CreateTranslation(id: $id, language: $language, text: $text) {
-      id
-    }
-  }
-`
-
-const ADD_AGREEMENT_TRANSLATION = gql`
-  mutation AddAgreementTranslations($from: _AgreementInput!, $to: _TranslationInput!) {
-    AddAgreementTranslations(from: $from, to: $to) {
-      from {
-        id
-      }
-      to {
-        id
-      }
-    }
-  }
-`
-
-async function asyncForEach(array: any[], callback: any) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array)
-  }
-}
-
 export const AgreementsRoute: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
@@ -141,26 +97,18 @@ export const AgreementsRoute: FC = () => {
   const dispatch = useDispatch<DispatchAction>()
   const { loading, error, data, refetch } = useQuery(GET_AGREEMENTS)
   const [ CreateTranslation ] = useMutation(CREATE_TRANSLATION)
+  const [ DeleteAgreement ] = useMutation(DELETE_AGREEMENT)
   const [ AddAgreementTranslations ] = useMutation(ADD_AGREEMENT_TRANSLATION)
-
-  const [ CreateAgreement ] = useMutation(CREATE_AGREEMENT, {
-    // update: (cache: DataProxy, mutationResult: FetchResult) => {
-    update: (cache: any, mutationResult: any) => {
-      // console.log(cache, mutationResult)
-    },
-    onCompleted: (_: any) => {},
-  })
+  const [ CreateAgreement ] = useMutation(CREATE_AGREEMENT)
 
   const hotkeysEnabled = useSelector((state: IRootReducer) => state.global.hotkeysEnabled)
+  const newAgreementHotkey = useHotkeys(Key.A)
 
-  const [ agreements, setAgreements ] = useState<IAgreement[]>([])
   const [ modalOpen, setModalOpen ] = useState(false)
   const [ filters, setFilters ] = useState(initFilters)
   const [ elementHasFocus, setElementHasFocus ] = useState(false)
 
   const { register, errors } = useForm()
-
-  const newAgreement = useHotkeys(Key.A)
 
   const handleNameFilter = (event: ChangeEvent<HTMLInputElement>) => {
     setFilters([
@@ -170,13 +118,13 @@ export const AgreementsRoute: FC = () => {
         return filter
       }),
     ])
-    console.log(filters)
   }
 
   const handleTypeFilter = (event: ChangeEvent<HTMLInputElement>) => {
-    setFilters((current) =>
-      current.map((item) => {
-        if (item.property === `type`) item.value = event.target.value !== '-1' ? event.target.value : ''
+    const { value } = event.target
+    setFilters(
+      filters.map((item) => {
+        if (item.property === `type`) item.value = value && value !== '-1' ? value : ''
         return item
       })
     )
@@ -218,31 +166,26 @@ export const AgreementsRoute: FC = () => {
     setModalOpen(!modalOpen)
   }
 
-  const removeAgreementHandler = (agreementId: string) => {
-    dispatch(removeAgreement(agreementId))
+  const removeAgreementHandler = async (agreementId: string) => {
+    await DeleteAgreement({
+      variables: {
+        id: agreementId,
+      },
+    })
+    refetch()
   }
 
-  const toggleFocus = () => {
-    setElementHasFocus(!elementHasFocus)
-  }
+  const toggleFocus = () => setElementHasFocus(!elementHasFocus)
 
   useEffect(
     () => {
-      if (!data) return
-      setAgreements(data.Agreement)
-    },
-    [ data ]
-  )
-
-  useEffect(
-    () => {
-      if (!hotkeysEnabled) return
       if (elementHasFocus) return
-      if (!newAgreement) return
+      if (!hotkeysEnabled) return
+      if (!newAgreementHotkey) return
 
       setModalOpen(true)
     },
-    [ newAgreement, hotkeysEnabled, elementHasFocus ]
+    [ newAgreementHotkey, hotkeysEnabled, elementHasFocus ]
   )
 
   return (
@@ -261,29 +204,20 @@ export const AgreementsRoute: FC = () => {
           <Grid item xs={12}>
             <Typography variant='h4'>{t('agreements')}</Typography>
           </Grid>
-          {/* {agreements.status === Status.loading ? (
-            [ ...Array(48) ].map((_, index: number) => (
-              <Grid key={index} item xs={12} sm={6} lg={4}>
-                <AgreementCardMock />
-              </Grid>
-            ))
-          ) : !agreements.items.length ? (
-            <Grid item={true} xs={12}>
-              <EmptyState title={t('agreementsNotFound')} image={<Illustration type={Illustrations.empty} />} />
-            </Grid>
-          ) : ( */}
           {loading ? (
-            [ ...Array(48) ].map((_, index: number) => (
+            [ ...Array(12) ].map((_, index: number) => (
               <Grid key={index} item xs={12} sm={6} lg={4}>
                 <AgreementCardMock />
               </Grid>
             ))
           ) : error ? (
             <div>{error.message}</div>
-          ) : !agreements.length ? (
-            <div>no agreements</div>
+          ) : !data.Agreement.length ? (
+            <Grid item={true} xs={12}>
+              <EmptyState title={t('agreementsNotFound')} image={<Illustration type={Illustrations.empty} />} />
+            </Grid>
           ) : (
-            agreements.filter(createFilter(...filters)).map((agreement: IAgreement) => (
+            data.Agreement.filter(createFilter(...filters)).map((agreement: IAgreement) => (
               <Grid key={agreement.id} item xs={12} sm={6} lg={4}>
                 <AgreementCard
                   agreement={agreement}
@@ -298,8 +232,6 @@ export const AgreementsRoute: FC = () => {
               </Grid>
             ))
           )}
-          {/* )) */}
-          {/* )} */}
         </Grid>
       </Container>
       <Hidden smDown={true}>

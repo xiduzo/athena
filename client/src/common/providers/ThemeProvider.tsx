@@ -253,7 +253,7 @@ const useThemeHandler = () => {
 
 const { Provider } = ThemeContext
 
-const generateTheme = (options: ThemeOptions): Theme => createMuiTheme({ options })
+const generateTheme = (options: ThemeOptions): Theme => createMuiTheme(options)
 export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { theme, setTheme, setHighChart } = useThemeHandler()
 
