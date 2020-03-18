@@ -63,7 +63,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
   }
 
   const onSubmit = async (data: Partial<IAgreement>) => {
-    if(!data.translations) return // TODO alet
+    if(!data.translations) return // TODO alert
 
     const agreement: IAgreement = {
       ...data,
@@ -85,7 +85,6 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
         type: parseInt(`${agreement.type}`, 10)
       },
     })
-    console.log(agreement.translations)
 
     await asyncForEach(agreement.translations || [], async (translation: ITranslation) => {
       await CreateTranslation({
@@ -103,7 +102,6 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
       })
     })
 
-    console.log(`done`)
     handleClose()
   }
 
