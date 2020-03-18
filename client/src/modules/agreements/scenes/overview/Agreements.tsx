@@ -35,6 +35,7 @@ import { IRootReducer } from 'src/lib/redux/rootReducer'
 import { IAgreement, ITranslation } from 'src/lib/types/agreement'
 import { NewAgreementModal } from './components/newAgreementModal'
 import { snackbarWrapper } from 'src/lib/utils/snackbarWrapper'
+import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
 
 const drawerWidth = '20vw'
 const useStyles = makeStyles((theme: Theme) => ({
@@ -142,7 +143,7 @@ export const AgreementsRoute: FC = () => {
         snackbarWrapper.success(`${t(`agreement`)} deleted`)
         refetch()
       })
-      .catch((error) => snackbarWrapper.error(error.message))
+      .catch(generalCatchHandler)
   }
 
   const toggleFocus = () => setElementHasFocus(!elementHasFocus)

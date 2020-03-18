@@ -1,6 +1,7 @@
 import * as request from 'superagent'
 import { Auth } from 'aws-amplify'
 import { Response } from 'superagent'
+import { ApolloError } from 'apollo-errors'
 import { snackbarWrapper } from 'src/lib/utils/snackbarWrapper'
 
 interface ISuperAgentWrapper {
@@ -22,15 +23,14 @@ const getToken = async (): Promise<string> => {
   return token || ''
 }
 
-export const generalCatchHandler = (error: IErrorResponse) => {
-  const { message, response } = error
+export const generalCatchHandler = (error: ApolloError) => {
+  const { message } = error
 
   // TODO: add logging to cloud watch
-  console.log(response)
+  console.log(error)
   // if (response.status === 404) return
 
-  console.log(message, response)
-  snackbarWrapper.error(message)
+  snackbarWrapper.error(message || ((error as unknown) as string))
 }
 
 // const getToken = (): string => {

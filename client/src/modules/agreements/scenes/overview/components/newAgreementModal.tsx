@@ -26,11 +26,13 @@ import { AgreementType } from 'src/lib/enums'
 import { IAgreement, ITranslation } from 'src/lib/types/agreement'
 import { supportedLanguages } from 'src/i18n'
 import { useMutation } from '@apollo/react-hooks'
+import { ApolloError } from 'apollo-errors'
 import { CREATE_TRANSLATION, ADD_AGREEMENT_TRANSLATION, CREATE_AGREEMENT } from 'src/common/services/agreementService'
 import { v4 as uuid } from 'uuid'
 import { asyncForEach } from 'src/common/utils/asyncForEach'
 import { snackbarWrapper } from 'src/lib/utils/snackbarWrapper'
 import { useTranslation } from 'react-i18next'
+import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
 import { SlideUp } from 'src/components/Atoms/Transitions/SlideUp'
 
 interface INewAgreementModal {
@@ -57,6 +59,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
   const [ CreateAgreement ] = useMutation(CREATE_AGREEMENT)
 
   const [ sliderValue, setSliderValue ] = useState(0)
+  const [ isSubmitting, setIsSubmitting ] = useState(false)
 
   const { register, handleSubmit, errors } = useForm()
 
@@ -65,7 +68,10 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
   }
 
   const onSubmit = async (data: Partial<IAgreement>) => {
-    if(!data.translations) return // TODO alert
+    if (!data.translations) return // TODO alert
+    setIsSubmitting(true)
+
+    let errorCount = 0
 
     const agreement: IAgreement = {
       ...data,
@@ -77,34 +83,47 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
         text: data.translations ? data.translations[translation] : '',
       })),
       feedback: [],
-      type: data?.type || AgreementType.ATTITUDE,
+      type: data.type || AgreementType.ATTITUDE,
       points: sliderValue,
     }
 
     await CreateAgreement({
       variables: {
         ...agreement,
-        type: parseInt(`${agreement.type}`, 10)
+        type: parseInt(`${agreement.type}`, 10),
       },
+    }).catch((error: ApolloError) => {
+      errorCount++
+      generalCatchHandler(error)
     })
 
-    await asyncForEach(agreement.translations || [], async (translation: ITranslation) => {
-      await CreateTranslation({
-        variables: {
-          ...translation,
-        },
-      })
+    if (!errors) {
+      await asyncForEach(agreement.translations || [], async (translation: ITranslation) => {
+        await CreateTranslation({
+          variables: {
+            ...translation,
+          },
+        }).catch((error: ApolloError) => {
+          errorCount++
+          generalCatchHandler(error)
+        })
 
-      await AddAgreementTranslations({
-        variables: {
-          id: uuid(),
-          from: { id: agreement.id },
-          to: { id: translation.id },
-        },
+        await AddAgreementTranslations({
+          variables: {
+            id: uuid(),
+            from: { id: agreement.id },
+            to: { id: translation.id },
+          },
+        }).catch((error: ApolloError) => {
+          errorCount++
+          generalCatchHandler(error)
+        })
       })
-    })
+    }
 
-    snackbarWrapper.success(`${t(`agreement`)} created`)
+    if (errorCount === 0) snackbarWrapper.success(`${t(`agreement`)} created`)
+
+    setIsSubmitting(false)
     handleClose()
   }
 
@@ -118,7 +137,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
           <Typography variant='h6' className={classes.title}>
             New agreement
           </Typography>
-          <Button autoFocus color='inherit' onClick={handleSubmit(onSubmit)}>
+          <Button disabled={isSubmitting} color='inherit' onClick={handleSubmit(onSubmit)}>
             save
           </Button>
         </Toolbar>
@@ -229,7 +248,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
               />
             </Grid> */}
             <Grid item xs={12}>
-              <Button type='submit' variant='contained' color='primary'>
+              <Button disabled={isSubmitting} type='submit' variant='contained' color='primary'>
                 submit
               </Button>
             </Grid>
