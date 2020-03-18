@@ -31,8 +31,7 @@ import { v4 as uuid } from 'uuid'
 import { asyncForEach } from 'src/common/utils/asyncForEach'
 import { snackbarWrapper } from 'src/lib/utils/snackbarWrapper'
 import { useTranslation } from 'react-i18next'
-
-const Transition = forwardRef<unknown, TransitionProps>((props, ref) => <Slide direction={`up`} ref={ref} {...props} />)
+import { SlideUp } from 'src/components/Atoms/Transitions/SlideUp'
 
 interface INewAgreementModal {
   isOpen: boolean
@@ -110,7 +109,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
   }
 
   return (
-    <Dialog fullScreen open={isOpen} onClose={handleClose} TransitionComponent={Transition}>
+    <Dialog fullScreen open={isOpen} onClose={handleClose} TransitionComponent={SlideUp}>
       <AppBar className={classes.appBar}>
         <Toolbar>
           <IconButton edge='start' color='inherit' onClick={handleClose} aria-label='close'>
