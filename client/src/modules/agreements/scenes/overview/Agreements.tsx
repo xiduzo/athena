@@ -95,7 +95,13 @@ export const AgreementsRoute: FC = () => {
   const { t } = useTranslation()
 
   const dispatch = useDispatch<DispatchAction>()
-  const { loading, error, data, refetch } = useQuery(GET_AGREEMENTS)
+  const { loading, error, data, refetch } = useQuery(GET_AGREEMENTS, {
+    variables: {
+      filter: {
+        isBase: true,
+      },
+    },
+  })
   const [ CreateTranslation ] = useMutation(CREATE_TRANSLATION)
   const [ DeleteAgreement ] = useMutation(DELETE_AGREEMENT)
   const [ AddAgreementTranslations ] = useMutation(ADD_AGREEMENT_TRANSLATION)

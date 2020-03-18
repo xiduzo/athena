@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export const GET_AGREEMENTS = gql`
-  {
-    Agreement(filter: { isBase: true }) {
+  query Agreement($filter: _AgreementFilter) {
+    Agreement(filter: $filter) {
       id
       points
       isBase
