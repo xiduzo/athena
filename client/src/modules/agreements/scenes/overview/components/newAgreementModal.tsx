@@ -23,14 +23,18 @@ import CloseIcon from '@material-ui/icons/Close'
 import { TransitionProps } from '@material-ui/core/transitions/transition'
 import { useForm } from 'react-hook-form'
 import { AgreementType } from 'src/lib/enums'
-import { IAgreement } from 'src/lib/types/agreement'
+import { IAgreement, ITranslation } from 'src/lib/types/agreement'
 import { supportedLanguages } from 'src/i18n'
+import { useMutation } from '@apollo/react-hooks'
+import { CREATE_TRANSLATION, ADD_AGREEMENT_TRANSLATION, CREATE_AGREEMENT } from 'src/common/services/agreementService'
+import { v4 as uuid } from 'uuid'
+import { asyncForEach } from 'src/common/utils/asyncForEach'
 
-const Transition = forwardRef<unknown, TransitionProps>((props, ref) => <Slide direction='up' ref={ref} {...props} />)
+const Transition = forwardRef<unknown, TransitionProps>((props, ref) => <Slide direction={`up`} ref={ref} {...props} />)
 
 interface INewAgreementModal {
   isOpen: boolean
-  onClose?: (agreement?: IAgreement) => void
+  onClose?: () => void
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -45,27 +49,62 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) => {
   const classes = useStyles()
-  const { register, handleSubmit, errors } = useForm()
+
+  const [ CreateTranslation ] = useMutation(CREATE_TRANSLATION)
+  const [ AddAgreementTranslations ] = useMutation(ADD_AGREEMENT_TRANSLATION)
+  const [ CreateAgreement ] = useMutation(CREATE_AGREEMENT)
 
   const [ sliderValue, setSliderValue ] = useState(0)
 
+  const { register, handleSubmit, errors } = useForm()
+
   const handleClose = () => {
-    console.log(true)
     onClose && onClose()
   }
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: Partial<IAgreement>) => {
+    if(!data.translations) return // TODO alet
+
     const agreement: IAgreement = {
       ...data,
-      type: parseInt(data.type, 10),
+      id: uuid(),
+      isBase: true,
       translations: Object.keys(data.translations).map((translation: string) => ({
+        id: uuid(),
         language: translation,
-        text: data.translations[translation],
+        text: data.translations ? data.translations[translation] : '',
       })),
+      feedback: [],
+      type: data?.type || AgreementType.ATTITUDE,
       points: sliderValue,
     }
 
-    onClose && onClose(agreement)
+    await CreateAgreement({
+      variables: {
+        ...agreement,
+        type: parseInt(`${agreement.type}`, 10)
+      },
+    })
+    console.log(agreement.translations)
+
+    await asyncForEach(agreement.translations || [], async (translation: ITranslation) => {
+      await CreateTranslation({
+        variables: {
+          ...translation,
+        },
+      })
+
+      await AddAgreementTranslations({
+        variables: {
+          id: uuid(),
+          from: { id: agreement.id },
+          to: { id: translation.id },
+        },
+      })
+    })
+
+    console.log(`done`)
+    handleClose()
   }
 
   return (

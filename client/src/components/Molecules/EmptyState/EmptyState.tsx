@@ -11,7 +11,6 @@ interface IEmptyState {
 export const useStyles = makeStyles((theme: Theme) => {
   return {
     root: {
-      height: '80vh',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
@@ -25,10 +24,10 @@ export const EmptyState: FC<IEmptyState> = ({ title, subtitle, image }) => {
   return (
     <section className={classes.root}>
       {image && image}
-      <Typography variant="h4" gutterBottom={true}>
+      <Typography variant='h4' gutterBottom={true}>
         {title}
       </Typography>
-      {subtitle && <Typography variant="body2">{subtitle}</Typography>}
+      {subtitle && <Typography variant='body2'>{subtitle}</Typography>}
     </section>
   )
 }

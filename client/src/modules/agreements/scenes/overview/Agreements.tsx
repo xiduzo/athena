@@ -22,13 +22,7 @@ import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  ADD_AGREEMENT_TRANSLATION,
-  CREATE_AGREEMENT,
-  CREATE_TRANSLATION,
-  DELETE_AGREEMENT,
-  GET_AGREEMENTS,
-} from 'src/common/services/agreementService'
+import { DELETE_AGREEMENT, GET_AGREEMENTS, DELETE_TRANSLATION } from 'src/common/services/agreementService'
 import { asyncForEach } from 'src/common/utils/asyncForEach'
 import { createFilter } from 'src/common/utils/createFilter'
 import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
@@ -37,9 +31,8 @@ import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
 import { AgreementType } from 'src/lib/enums'
 import { Key } from 'src/lib/enums/keys'
 import { useHotkeys } from 'src/lib/hooks/useHotkeys'
-import { DispatchAction, IRootReducer } from 'src/lib/redux/rootReducer'
+import { IRootReducer } from 'src/lib/redux/rootReducer'
 import { IAgreement, ITranslation } from 'src/lib/types/agreement'
-import { v4 as uuid } from 'uuid'
 import { NewAgreementModal } from './components/newAgreementModal'
 
 const drawerWidth = '20vw'
@@ -94,7 +87,6 @@ export const AgreementsRoute: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const dispatch = useDispatch<DispatchAction>()
   const { loading, error, data, refetch } = useQuery(GET_AGREEMENTS, {
     variables: {
       filter: {
@@ -102,10 +94,9 @@ export const AgreementsRoute: FC = () => {
       },
     },
   })
-  const [ CreateTranslation ] = useMutation(CREATE_TRANSLATION)
+
+  const [ DeleteTranslation ] = useMutation(DELETE_TRANSLATION)
   const [ DeleteAgreement ] = useMutation(DELETE_AGREEMENT)
-  const [ AddAgreementTranslations ] = useMutation(ADD_AGREEMENT_TRANSLATION)
-  const [ CreateAgreement ] = useMutation(CREATE_AGREEMENT)
 
   const hotkeysEnabled = useSelector((state: IRootReducer) => state.global.hotkeysEnabled)
   const newAgreementHotkey = useHotkeys(Key.A)
@@ -136,48 +127,26 @@ export const AgreementsRoute: FC = () => {
     )
   }
 
-  const handleClose = async (agreement?: IAgreement) => {
-    if (agreement) {
-      const agreementId = uuid()
-
-      await CreateAgreement({
-        variables: {
-          id: agreementId,
-          isBase: true,
-          ...agreement,
-        },
-      })
-
-      await asyncForEach(agreement.translations, async (translation: ITranslation) => {
-        const translationId = uuid()
-
-        await CreateTranslation({
-          variables: {
-            id: translationId,
-            ...translation,
-          },
-        })
-
-        await AddAgreementTranslations({
-          variables: {
-            id: uuid(),
-            from: { id: agreementId },
-            to: { id: translationId },
-          },
-        })
-      })
-
-      refetch()
-    }
+  const handleClose = () => {
+    refetch()
     setModalOpen(!modalOpen)
   }
 
-  const removeAgreementHandler = async (agreementId: string) => {
+  const removeAgreementHandler = async (agreement: IAgreement) => {
     await DeleteAgreement({
       variables: {
-        id: agreementId,
+        id: agreement.id,
       },
     })
+
+    await asyncForEach(agreement.translations, async (translation: ITranslation) => {
+      await DeleteTranslation({
+        variables: {
+          id: translation.id,
+        },
+      })
+    })
+
     refetch()
   }
 
@@ -229,7 +198,7 @@ export const AgreementsRoute: FC = () => {
                   agreement={agreement}
                   onRightClickItems={
                     <Box>
-                      <MenuItem onClick={() => removeAgreementHandler(agreement.id)}>
+                      <MenuItem onClick={() => removeAgreementHandler(agreement)}>
                         <Typography color='error'>Remove agreement</Typography>
                       </MenuItem>
                     </Box>

@@ -2,8 +2,9 @@
   "agreements": "afspraken",
   "dashboard": "dashboard",
   "language": "taal",
-  "squads": "groepen",
-  "tribes": "projecten",
+  "squads": "squads",
+  "tribes": "tribes",
+  "tribesNotfound": "geen tribes gevonden",
   "users": "gebruikers",
   "agreementsNotFound": "geen afspraken gevonden",
   "_": ""

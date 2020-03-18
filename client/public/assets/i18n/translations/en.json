@@ -2,11 +2,12 @@
   "agreements": "agreements",
   "dashboard": "dashboard",
   "language": "language",
-  "squads": "groups",
-  "tribes": "projects",
+  "squads": "squads",
+  "tribes": "tribes",
+  "tribesNotfound": "no tribes found",
   "users": "users",
-  "agreementNew": "New agreement",
-  "agreementsNotFound": "No agreements found",
+  "agreementNew": "new agreement",
+  "agreementsNotFound": "no agreements found",
   "agreement": "agreement",
   "_": ""
 }

@@ -2,7 +2,7 @@ import { AgreementType } from 'src/lib/enums'
 import { IEntityBase } from '../IEntityBase'
 import { IFeedback } from './IFeedback'
 
-export interface ITranslation {
+export interface ITranslation extends IEntityBase {
   language: string
   text: string
 }

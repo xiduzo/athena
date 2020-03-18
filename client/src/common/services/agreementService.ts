@@ -8,6 +8,7 @@ export const GET_AGREEMENTS = gql`
       isBase
       type
       translations {
+        id
         language
         text
       }
@@ -47,6 +48,14 @@ export const ADD_AGREEMENT_TRANSLATION = gql`
 export const DELETE_AGREEMENT = gql`
   mutation DeleteAgreement($id: String!) {
     DeleteAgreement(id: $id) {
+      id
+    }
+  }
+`
+
+export const DELETE_TRANSLATION = gql`
+  mutation DeleteTranslation($id: String!) {
+    DeleteTranslation(id: $id) {
       id
     }
   }
