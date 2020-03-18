@@ -1,12 +1,12 @@
 import React, { FC, useState, useEffect } from 'react'
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
-import { useSelector, useDispatch } from 'react-redux'
-import { getAgreements } from 'src/lib/api'
 import { useWidth } from 'src/lib/hooks/useWidth'
 import { IAgreement } from 'src/lib/types/agreement'
 import { getTranslation } from 'src/common/utils/getTranslation'
-import { IRootReducer, DispatchAction } from 'src/lib/redux/rootReducer'
+import { useQuery } from '@apollo/react-hooks'
+import { GET_AGREEMENTS } from 'src/common/services/agreementService'
+
 interface IAgreementSelectorModal {
   title: string
   isOpen: boolean
@@ -16,19 +16,17 @@ interface IAgreementSelectorModal {
 
 export const AgreementsSelector: FC<IAgreementSelectorModal> = ({ title, isOpen, onClose, without }) => {
   const width = useWidth()
+
+  const { loading, error, data } = useQuery(GET_AGREEMENTS, {
+    variables: {
+      filter: {
+        isBase: true,
+      },
+    },
+  })
+
   const [ agreementsToAdd, setAgreementsToAdd ] = useState<IAgreement[]>([])
 
-  const agreements = useSelector<IRootReducer, IAgreement[]>((state) => {
-    return state.agreements.items.filter((agreement) => agreement.isBase)
-  })
-  const dispatch = useDispatch<DispatchAction>()
-
-  useEffect(
-    () => {
-      if (!agreements.length) dispatch(getAgreements())
-    },
-    [ dispatch, agreements ]
-  )
   const handleSubmit = () => {
     clearAgreementsToAdd()
     onClose(agreementsToAdd)
@@ -48,7 +46,13 @@ export const AgreementsSelector: FC<IAgreementSelectorModal> = ({ title, isOpen,
         {/* {subtitle && <DialogContentText>{subtitle}</DialogContentText>} */}
         <Autocomplete
           id='disabled-options-demo'
-          options={agreements.filter((agreements) => !without.map((a) => a.id).includes(agreements.id))}
+          options={
+            loading || error ? (
+              []
+            ) : (
+              (data.Agreement as IAgreement[]).filter((agreements) => !without.map((a) => a.id).includes(agreements.id))
+            )
+          }
           clearOnEscape
           multiple
           onChange={(_: any, agreements: IAgreement[] | null) => {
