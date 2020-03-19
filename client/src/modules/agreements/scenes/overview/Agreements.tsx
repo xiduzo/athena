@@ -16,6 +16,7 @@ import {
   TextField,
   Theme,
   Typography,
+  Zoom,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import React, { ChangeEvent, FC, useEffect, useState } from 'react'
@@ -162,14 +163,16 @@ export const AgreementsRoute: FC = () => {
   return (
     <Box className={classes.wrapper}>
       <Container maxWidth='lg' className={classes.main}>
-        <Fab
-          color='primary'
-          aria-label={t('agreementNew')}
-          className={classes.fab}
-          onClick={() => setModalOpen(!modalOpen)}
-        >
-          <AddIcon />
-        </Fab>
+        <Zoom in={!loading && !error}>
+          <Fab
+            color='primary'
+            aria-label={t('agreementNew')}
+            className={classes.fab}
+            onClick={() => setModalOpen(!modalOpen)}
+          >
+            <AddIcon />
+          </Fab>
+        </Zoom>
         <NewAgreementModal isOpen={modalOpen} onClose={handleClose} />
         <Grid container spacing={2}>
           <Grid item xs={12}>
