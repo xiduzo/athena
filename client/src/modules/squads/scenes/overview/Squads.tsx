@@ -1,14 +1,15 @@
 import { useQuery } from '@apollo/react-hooks'
-import { Container, Grid, makeStyles, Theme, Typography } from '@material-ui/core'
+import { Container, Fab, Grid, makeStyles, Theme, Typography, Zoom } from '@material-ui/core'
+import AddIcon from '@material-ui/icons/Add'
 import gql from 'graphql-tag'
 import React, { FC, useState } from 'react'
-import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
 import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
 import { SquadCard, SquadCardMock } from 'src/components/Molecules/SquadCard'
 import { ISquad } from 'src/lib/interfaces'
+import { NewSquadModal } from './components/NewSquadModal'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -29,9 +30,7 @@ export const SquadsRoute: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const [ filters, setFilters ] = useState([])
-
-  const { register, errors } = useForm()
+  const [ modalOpen, setModalOpen ] = useState(false)
 
   const [ pageQuery ] = useState(gql`
     query {
@@ -42,19 +41,31 @@ export const SquadsRoute: FC = () => {
     }
   `)
 
-  const { loading, error, data } = useQuery(pageQuery)
+  const { loading, error, data, refetch } = useQuery(pageQuery)
 
   const location = useLocation()
   const history = useHistory()
 
   const navigateToSquad = (id: string) => history.push(`${location.pathname}/${id}`)
 
-  const handleFilter = () => {
-    setFilters([])
+  const handleClose = () => {
+    refetch()
+    setModalOpen(!modalOpen)
   }
 
   return (
     <Container maxWidth={`lg`} className={classes.root}>
+      <Zoom in={!loading && !error}>
+        <Fab
+          color='primary'
+          aria-label={t('tribeNew')}
+          className={classes.fab}
+          onClick={() => setModalOpen(!modalOpen)}
+        >
+          <AddIcon />
+        </Fab>
+      </Zoom>
+      <NewSquadModal isOpen={modalOpen} onClose={handleClose} />
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant='h4'>{t('squads')}</Typography>
@@ -72,52 +83,13 @@ export const SquadsRoute: FC = () => {
             <EmptyState title={t('squadsNotFound')} image={<Illustration type={Illustrations.empty} />} />
           </Grid>
         ) : (
-          data.Squad[0].map((squad: ISquad) => (
+          data.Squad.map((squad: ISquad) => (
             <Grid key={squad.id} item xs={12} sm={6} md={4} lg={3}>
               <SquadCard squad={squad} onLeftClick={() => navigateToSquad(squad.id)} />
             </Grid>
           ))
         )}
       </Grid>
-      {/* <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography variant='h4'>Squads</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper>
-            <Box p={2}>
-              <form autoComplete='off'>
-                <FormControl component='fieldset'>
-                  <Typography variant='h6'>Filter</Typography>
-                  <TextField
-                    id='filterByName'
-                    name='filterByName'
-                    label='Name'
-                    placeholder='Filter by name'
-                    fullWidth
-                    onChange={handleFilter}
-                    inputRef={register}
-                    error={errors.text ? true : false}
-                    helperText={errors.text && (errors.text as any).message}
-                  />
-                </FormControl>
-              </form>
-            </Box>
-          </Paper>
-        </Grid>
-        {squads.status === Status.loading &&
-          [ ...new Array(48) ].map((_, index: number) => (
-            <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-              <SquadCardMock />
-            </Grid>
-          ))}
-        {squads.status !== Status.loading &&
-          squads.items.filter(createFilter(...filters)).map((squad) => (
-            <Grid key={squad.id} item xs={12} sm={6} md={4} lg={3}>
-              <SquadCard squad={squad} onLeftClick={() => navigateToSquad(squad.id)} />
-            </Grid>
-          ))}
-      </Grid> */}
     </Container>
   )
 }
