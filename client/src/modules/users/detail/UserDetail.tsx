@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { IUser } from 'src/lib/interfaces/user'
+import { IUser } from 'src/lib/interfaces'
 import { useParams } from 'react-router'
 import { GetUserById } from 'src/lib/api'
 import { Container, Grid, Paper, makeStyles, Theme, Typography } from '@material-ui/core'

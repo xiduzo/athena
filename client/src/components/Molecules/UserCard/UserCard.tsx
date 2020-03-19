@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { IUserCard } from './interface'
+import { IUserCard } from './IUserCard'
 import { Card, CardActionArea, CardHeader, Typography, Box } from '@material-ui/core'
 import { Avataaar } from 'src/components/Atoms/Avataaar'
 

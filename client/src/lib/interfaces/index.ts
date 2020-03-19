@@ -1,2 +1,7 @@
 export * from './IEntityBase'
 export * from './IModalBase'
+export * from './IUser'
+export * from './ITribe'
+export * from './ISquad'
+export * from './IAgreement'
+export * from './IFeedback'

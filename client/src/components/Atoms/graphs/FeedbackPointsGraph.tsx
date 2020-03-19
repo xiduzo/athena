@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { Paper } from '@material-ui/core'
 import * as Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { IAgreement } from 'src/lib/interfaces/agreement'
+import { IAgreement } from 'src/lib/interfaces'
 import { useTheme } from '@material-ui/core/styles'
 
 interface IFeedbackPointsGraph {

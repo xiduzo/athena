@@ -8,7 +8,7 @@ import { NavLink, LinkProps } from 'react-router-dom'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import { routes, IRoute } from '../../Routes/links'
-import { useWidth } from 'src/lib/hooks/useWidth'
+import { useWidth } from 'src/common/hooks/useWidth'
 import { useAuth } from 'src/common/providers/AuthProvider'
 import { useTranslation } from 'react-i18next'
 

@@ -6,14 +6,14 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
 import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
 import { TribeCard, TribeCardMock } from 'src/components/Molecules/TribeCard'
-import { ITribe } from 'src/lib/interfaces/tribe'
+import { ITribe } from 'src/lib/interfaces'
 import { useTranslation } from 'react-i18next'
 import gql from 'graphql-tag'
 import { NewTribeModal } from './components/NewTribeModal'
 import { useSelector } from 'react-redux'
 import { IRootReducer } from 'src/lib/redux/rootReducer'
-import { and, useHotkeys } from 'src/lib/hooks/useHotkeys'
-import { Key } from 'src/lib/enums/keys'
+import { and, useHotkeys } from 'src/common/hooks/useHotkeys'
+import { Key } from 'src/lib/enums/Key'
 
 export const useStyles = makeStyles((theme: Theme) => {
   return {

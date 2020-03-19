@@ -1,6 +1,6 @@
 import React, { FC, useState, Fragment } from 'react'
 import { Card, CardActionArea, CardHeader, Menu } from '@material-ui/core'
-import { ISquad } from 'src/lib/interfaces/squad'
+import { ISquad } from 'src/lib/interfaces'
 
 interface ISquadCard {
   squad: ISquad

@@ -1,5 +1,5 @@
-import { IEntityBase } from '../IEntityBase'
-import { IAgreement } from '../agreement'
+import { IEntityBase } from './IEntityBase'
+import { IAgreement } from './IAgreement'
 
 interface ITrelloSettings {
   board: string

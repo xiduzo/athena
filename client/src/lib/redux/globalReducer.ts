@@ -1,6 +1,6 @@
 import { IAction } from './rootReducer'
 import { Status } from './status'
-import { getLocalItem, updateLocalItem } from '../utils/Managers/OfflineManager'
+import { getLocalItem, updateLocalItem } from '../../common/utils/offlineManager'
 import i18n from 'src/i18n'
 
 export interface IGlobalState {

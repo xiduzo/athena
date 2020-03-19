@@ -1,5 +1,5 @@
 import { v4 } from 'uuid'
-import { isArray } from '../isOfType'
+import { isArray } from './isOfType'
 
 interface ILocalStorageItem {
   id: number

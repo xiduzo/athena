@@ -1,7 +1,7 @@
 import superagent, { generalCatchHandler } from 'src/common/utils/superagentWrapper'
 
 import { BACKEND_URL, ACCOUNT_ENDPOINT } from '../constants'
-import { IUser } from '../interfaces/user'
+import { IUser } from '../interfaces'
 
 export const GetUsers = async (): Promise<IUser[]> => {
   return superagent.get(`${BACKEND_URL}/${ACCOUNT_ENDPOINT}`).then((response) => response.body).catch((error) => {

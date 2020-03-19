@@ -1,7 +1,7 @@
-import { ISquad } from 'src/lib/interfaces/squad'
+import { ISquad } from 'src/lib/interfaces'
 import { IAction } from './rootReducer'
 import { Status } from './status'
-import { getLocalItem, updateLocalItem } from '../utils/Managers/OfflineManager'
+import { getLocalItem, updateLocalItem } from '../../common/utils/offlineManager'
 
 export interface ISquadsState {
   items: ISquad[]

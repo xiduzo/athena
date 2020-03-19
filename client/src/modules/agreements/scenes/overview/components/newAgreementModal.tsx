@@ -22,7 +22,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close'
 import { useForm } from 'react-hook-form'
 import { AgreementType } from 'src/lib/enums'
-import { IAgreement, ITranslation } from 'src/lib/interfaces/agreement'
+import { IAgreement, ITranslation } from 'src/lib/interfaces'
 import { supportedLanguages } from 'src/i18n'
 import { useMutation } from '@apollo/react-hooks'
 import { ApolloError } from 'apollo-errors'

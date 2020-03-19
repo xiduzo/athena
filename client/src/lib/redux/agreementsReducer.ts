@@ -1,7 +1,7 @@
-import { IAgreement } from 'src/lib/interfaces/agreement'
+import { IAgreement } from 'src/lib/interfaces'
 import { IAction } from './rootReducer'
 import { Status } from './status'
-import { getLocalItem, updateLocalItem } from '../utils/Managers/OfflineManager'
+import { getLocalItem, updateLocalItem } from '../../common/utils/offlineManager'
 
 export enum AgreementActions {
   setAgreements = 'setAgreements',

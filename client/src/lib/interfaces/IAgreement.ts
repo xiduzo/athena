@@ -1,5 +1,5 @@
 import { AgreementType } from 'src/lib/enums'
-import { IEntityBase } from '../IEntityBase'
+import { IEntityBase } from './IEntityBase'
 import { IFeedback } from './IFeedback'
 
 export interface ITranslation extends IEntityBase {

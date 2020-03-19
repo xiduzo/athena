@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { KeyTypes } from '../enums/keys'
+import { KeyTypes } from '../../lib/enums'
 
 let sequenceBuffer: number[] = []
 let lastKeyTime: number = Date.now()

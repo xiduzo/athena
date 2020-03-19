@@ -1,7 +1,7 @@
-import { ITribe } from 'src/lib/interfaces/tribe'
+import { ITribe } from 'src/lib/interfaces'
 import { IAction } from './rootReducer'
 import { Status } from './status'
-import { getLocalItem, updateLocalItem } from '../utils/Managers/OfflineManager'
+import { getLocalItem, updateLocalItem } from '../../common/utils/offlineManager'
 
 export interface ITribesState {
   status: Status

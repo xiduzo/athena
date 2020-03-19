@@ -1,4 +1,4 @@
-import { IUser } from 'src/lib/interfaces/user'
+import { IUser } from 'src/lib/interfaces'
 
 export interface IUserState {
   items: IUser[]

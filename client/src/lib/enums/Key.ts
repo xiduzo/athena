@@ -1,8 +1,3 @@
-export enum KeyTypes {
-  KeyUp = 'keyup',
-  KeyDown = 'keydown',
-}
-
 export enum Key {
   Backspace = 8,
   Tab = 9,

@@ -1,12 +1,11 @@
 import * as request from 'superagent'
 import { Dispatch } from 'react'
 import { BACKEND_URL, AGREEMENTS_ENDPOINT } from '../constants'
-import { IAgreement } from '../interfaces/agreement'
+import { IAgreement, ISquad } from 'src/lib/interfaces'
 import { AgreementActions } from '../redux/agreementsReducer'
 import { IAction } from '../redux/rootReducer'
 import superagent, { generalCatchHandler } from '../../common/utils/superagentWrapper'
 import { updateSquad } from './squads'
-import { ISquad } from '../interfaces/squad'
 
 export const getAgreements = (ids?: string[]) => (dispatch: Dispatch<IAction>) => {
   const suffix = !ids ? '' : `${`${ids.join('&')}`}`

@@ -11,12 +11,10 @@ import {
   Box,
   MenuItem,
 } from '@material-ui/core'
-import { ITribe } from 'src/lib/interfaces/tribe'
+import { ITribe, IUser, ISquad } from 'src/lib/interfaces'
 import { useParams } from 'react-router'
 import { getTribeById, updateTribe, getSquads } from 'src/lib/api'
-import { IUser } from 'src/lib/interfaces/user'
 import { UserCard } from 'src/components/Molecules/UserCard'
-import { ISquad } from 'src/lib/interfaces/squad'
 import { SquadCard } from 'src/components/Molecules/SquadCard'
 
 import AddIcon from '@material-ui/icons/Add'

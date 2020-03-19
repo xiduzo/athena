@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Grid, Typography, List, ListItem, Container, CardContent, makeStyles, Theme, Tooltip } from '@material-ui/core'
 import { FeedbackPointsGraph, FeedbackSpiderGraph } from 'src/components/Atoms/graphs'
-import { useWidth } from 'src/lib/hooks/useWidth'
+import { useWidth } from 'src/common/hooks/useWidth'
 import { ProgressCard } from 'src/components/Molecules/ProgressCard'
 
 const useStyles = makeStyles((theme: Theme) => ({

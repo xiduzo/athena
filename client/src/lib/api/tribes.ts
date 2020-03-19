@@ -1,7 +1,7 @@
 import { BACKEND_URL, TRIBE_ENDPOINT } from '../constants'
 import { Dispatch } from 'react'
 import { TribeActions } from '../redux/tribesReducer'
-import { ITribe } from '../interfaces/tribe'
+import { ITribe } from 'src/lib/interfaces'
 import { IAction } from '../redux/rootReducer'
 import superagent, { generalCatchHandler } from 'src/common/utils/superagentWrapper'
 

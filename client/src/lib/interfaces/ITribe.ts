@@ -1,5 +1,5 @@
-import { IEntityBase } from '../IEntityBase'
-import { ISquad } from '../squad'
+import { IEntityBase } from './IEntityBase'
+import { ISquad } from './ISquad'
 
 export interface ITribe extends IEntityBase {
   name: string

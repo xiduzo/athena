@@ -4,7 +4,7 @@ import { GetUsers } from 'src/lib/api'
 
 import AddIcon from '@material-ui/icons/Add'
 import { Fab, Container, Grid, Typography } from '@material-ui/core'
-import { IUser } from 'src/lib/interfaces/user'
+import { IUser } from 'src/lib/interfaces'
 import { UserCard, UserCardMock } from 'src/components/Molecules/UserCard'
 import { useHistory, useLocation } from 'react-router-dom'
 
