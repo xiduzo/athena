@@ -29,7 +29,7 @@ interface ITribeDetailRouteParams {
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
-    main: {
+    root: {
       padding: theme.spacing(2, 0),
     },
   }
@@ -110,7 +110,7 @@ export const TribeDetailRoute: FC = () => {
 
   console.log(tribe)
   return (
-    <section className={classes.main}>
+    <section className={classes.root}>
       <Container maxWidth='lg'>
         {tribe && (
           <Grid container spacing={2}>

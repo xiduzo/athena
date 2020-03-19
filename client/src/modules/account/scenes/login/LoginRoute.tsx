@@ -38,7 +38,7 @@ import { Auth } from 'aws-amplify'
 import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
 
 const useStyles = makeStyles((theme: Theme) => ({
-  main: {
+  root: {
     padding: theme.spacing(2, 3),
     display: 'flex',
     justifyContent: 'center',
@@ -140,7 +140,7 @@ export const LoginRoute: FC = () => {
   }
 
   return (
-    <Container maxWidth='xl' className={classes.main}>
+    <Container maxWidth='xl' className={classes.root}>
       <Grid container justify='center' alignItems='center'>
         <Grid item xs={12} sm={9} md={7} lg={5} xl={3}>
           <Card>

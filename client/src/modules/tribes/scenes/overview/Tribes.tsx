@@ -23,7 +23,7 @@ export const useStyles = makeStyles((theme: Theme) => {
       right: 0,
       margin: theme.spacing(2),
     },
-    main: {
+    root: {
       padding: theme.spacing(2, 3),
     },
   }
@@ -70,7 +70,7 @@ export const TribesRoute: FC = () => {
   )
 
   return (
-    <Container maxWidth='lg' className={classes.main}>
+    <Container maxWidth='lg' className={classes.root}>
       <Zoom in={!loading && !error}>
         <Fab
           color='primary'

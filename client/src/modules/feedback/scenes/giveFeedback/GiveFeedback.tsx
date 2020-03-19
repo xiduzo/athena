@@ -34,7 +34,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   error: {
     color: red[500],
   },
-  main: {
+  root: {
     padding: theme.spacing(2, 3),
   },
 }))
@@ -43,7 +43,7 @@ export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
   const classes = useStyles()
 
   return (
-    <Container maxWidth='lg' className={classes.main}>
+    <Container maxWidth='lg' className={classes.root}>
       <Grid container spacing={4}>
         <Grid item xs={12}>
           <Typography variant='h4'>Feedback</Typography>

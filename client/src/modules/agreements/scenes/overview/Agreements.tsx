@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(2),
     zIndex: theme.zIndex.mobileStepper,
   },
-  main: {
+  root: {
     padding: theme.spacing(2, 3),
   },
   toolbar: {
@@ -173,7 +173,7 @@ export const AgreementsRoute: FC = () => {
 
   return (
     <Box className={classes.wrapper}>
-      <Container maxWidth='lg' className={classes.main}>
+      <Container maxWidth='lg' className={classes.root}>
         <Zoom in={!loading && !error}>
           <Fab
             color='primary'

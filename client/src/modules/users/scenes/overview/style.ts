@@ -10,7 +10,7 @@ export const useStyles = makeStyles((theme: Theme) => {
       right: 0,
       margin: theme.spacing(2),
     },
-    main: {
+    root: {
       padding: theme.spacing(2, 3),
     },
   }

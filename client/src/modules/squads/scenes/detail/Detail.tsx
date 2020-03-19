@@ -29,7 +29,7 @@ interface ISquadDetailRouteParams {
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
-    main: {
+    root: {
       padding: theme.spacing(2, 0),
     },
   }
@@ -107,7 +107,7 @@ export const SquadDetailRoute: FC = () => {
   )
 
   return (
-    <section className={classes.main}>
+    <section className={classes.root}>
       <Container maxWidth='lg'>
         <Suspense fallback={'getting there'}>
           {squad && (

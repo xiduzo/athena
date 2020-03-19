@@ -5,7 +5,7 @@ import { useWidth } from 'src/common/hooks/useWidth'
 import { ProgressCard } from 'src/components/Molecules/ProgressCard'
 
 const useStyles = makeStyles((theme: Theme) => ({
-  main: {
+  root: {
     padding: theme.spacing(2, 3),
   },
   centered: {
@@ -54,7 +54,7 @@ export const StudentDashboardRoute: FC = () => {
   ]
 
   return (
-    <Container maxWidth='lg' className={classes.main}>
+    <Container maxWidth='lg' className={classes.root}>
       <Grid container spacing={width === 'xs' ? 2 : 4}>
         <Grid item xs={12}>
           <Typography variant='h4' component='h2'>

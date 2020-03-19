@@ -11,7 +11,7 @@ interface IUserDetailRouteParams {
 
 export const useStyles = makeStyles((theme: Theme) => {
   return {
-    main: {
+    root: {
       padding: theme.spacing(4, 0, 12, 0),
     },
     avatar: {
@@ -46,7 +46,7 @@ export const UserDetailRoute: FC = () => {
   )
 
   return (
-    <section className={classes.main}>
+    <section className={classes.root}>
       {user && (
         <Container maxWidth={'lg'}>
           <Grid container spacing={2}>

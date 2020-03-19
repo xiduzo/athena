@@ -33,7 +33,7 @@ export const UsersRoute: FC = () => {
   }
 
   return (
-    <Container maxWidth='lg' className={classes.main}>
+    <Container maxWidth='lg' className={classes.root}>
       <Fab color='primary' aria-label='New agreement' className={classes.fab}>
         <AddIcon />
       </Fab>
