@@ -6,6 +6,9 @@ import { ISquad } from 'src/lib/interfaces'
 import { getSquads } from 'src/lib/api'
 import { useWidth } from 'src/common/hooks/useWidth'
 import { IRootReducer, DispatchAction } from 'src/lib/redux/rootReducer'
+import { useQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
+
 interface ISquadSelectorModal {
   title: string
   isOpen: boolean
@@ -15,17 +18,20 @@ interface ISquadSelectorModal {
 
 export const SquadsSelector: FC<ISquadSelectorModal> = ({ title, isOpen, onClose, without }) => {
   const width = useWidth()
+
   const [ squadsToAdd, setSquadsToAdd ] = useState<ISquad[]>([])
 
-  const squads = useSelector<IRootReducer, ISquad[]>((state) => state.squads.items)
-  const dispatch = useDispatch<DispatchAction>()
+  const [ pageQuery ] = useState(gql`
+    query {
+      Squad {
+        id
+        name
+      }
+    }
+  `)
 
-  useEffect(
-    () => {
-      if (!squads.length) dispatch(getSquads())
-    },
-    [ dispatch, squads ]
-  )
+  const { loading, error, data } = useQuery(pageQuery)
+
   const handleSubmit = () => {
     clearSquadsToAdd()
     onClose(squadsToAdd)
@@ -45,7 +51,9 @@ export const SquadsSelector: FC<ISquadSelectorModal> = ({ title, isOpen, onClose
         {/* {subtitle && <DialogContentText>{subtitle}</DialogContentText>} */}
         <Autocomplete
           id='disabled-options-demo'
-          options={squads.filter((squad) => !without.map((s) => s.id).includes(squad.id))}
+          options={
+            loading || error ? [] : data.Squad.filter((squad: ISquad) => !without.map((s) => s.id).includes(squad.id))
+          }
           clearOnEscape
           multiple
           onChange={(_: any, squads: ISquad[] | null) => {

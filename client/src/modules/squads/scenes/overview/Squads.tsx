@@ -1,24 +1,25 @@
-import React, { FC, useEffect, useState } from 'react'
-import { getSquads } from 'src/lib/api'
-import { Container, Grid, makeStyles, Theme, Typography, FormControl, TextField, Paper, Box } from '@material-ui/core'
-import { SquadCard, SquadCardMock } from 'src/components/Molecules/SquadCard'
-import { useHistory, useLocation } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { ISquadsState } from 'src/lib/redux/squadsReducer'
+import { useQuery } from '@apollo/react-hooks'
+import { Container, Grid, makeStyles, Theme, Typography } from '@material-ui/core'
+import gql from 'graphql-tag'
+import React, { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { createFilter } from 'src/common/utils/createFilter'
-import { IRootReducer, DispatchAction } from 'src/lib/redux/rootReducer'
-import { Status } from 'src/lib/redux/status'
+import { useTranslation } from 'react-i18next'
+import { useHistory, useLocation } from 'react-router-dom'
+import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
+import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
+import { SquadCard, SquadCardMock } from 'src/components/Molecules/SquadCard'
+import { ISquad } from 'src/lib/interfaces'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
+    // TODO make default fab component
     fab: {
       position: 'fixed',
       bottom: 0,
       right: 0,
       margin: theme.spacing(2),
     },
-    main: {
+    root: {
       padding: theme.spacing(2, 3),
     },
   }
@@ -26,34 +27,59 @@ const useStyles = makeStyles((theme: Theme) => {
 
 export const SquadsRoute: FC = () => {
   const classes = useStyles()
-  const { register, errors } = useForm()
+  const { t } = useTranslation()
 
   const [ filters, setFilters ] = useState([])
 
-  const dispatch = useDispatch<DispatchAction>()
-  const squads = useSelector<IRootReducer, ISquadsState>((state) => state.squads)
+  const { register, errors } = useForm()
+
+  const [ pageQuery ] = useState(gql`
+    query {
+      Squad {
+        id
+        name
+      }
+    }
+  `)
+
+  const { loading, error, data } = useQuery(pageQuery)
 
   const location = useLocation()
   const history = useHistory()
 
-  useEffect(
-    () => {
-      dispatch(getSquads())
-    },
-    [ dispatch ]
-  )
-
-  const navigateToSquad = (id: string) => {
-    history.push(`${location.pathname}/${id}`)
-  }
+  const navigateToSquad = (id: string) => history.push(`${location.pathname}/${id}`)
 
   const handleFilter = () => {
     setFilters([])
   }
 
   return (
-    <Container maxWidth={`lg`} className={classes.main}>
+    <Container maxWidth={`lg`} className={classes.root}>
       <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant='h4'>{t('squads')}</Typography>
+        </Grid>
+        {loading ? (
+          Array.from({ length: 12 }).map((_, index: number) => (
+            <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+              <SquadCardMock />
+            </Grid>
+          ))
+        ) : error ? (
+          <div>{error.message}</div>
+        ) : !data.Squad.length ? (
+          <Grid item xs={12}>
+            <EmptyState title={t('squadsNotFound')} image={<Illustration type={Illustrations.empty} />} />
+          </Grid>
+        ) : (
+          data.Squad[0].map((squad: ISquad) => (
+            <Grid key={squad.id} item xs={12} sm={6} md={4} lg={3}>
+              <SquadCard squad={squad} onLeftClick={() => navigateToSquad(squad.id)} />
+            </Grid>
+          ))
+        )}
+      </Grid>
+      {/* <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant='h4'>Squads</Typography>
         </Grid>
@@ -91,7 +117,7 @@ export const SquadsRoute: FC = () => {
               <SquadCard squad={squad} onLeftClick={() => navigateToSquad(squad.id)} />
             </Grid>
           ))}
-      </Grid>
+      </Grid> */}
     </Container>
   )
 }

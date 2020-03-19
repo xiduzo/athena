@@ -1,27 +1,29 @@
-import React, { FC, useState, useEffect, Suspense } from 'react'
+import { useQuery } from '@apollo/react-hooks'
 import {
-  Container,
-  Grid,
-  Typography,
-  makeStyles,
-  Theme,
+  Box,
   Card,
   CardActionArea,
   CardContent,
-  Box,
+  Container,
+  Grid,
+  makeStyles,
   MenuItem,
+  Theme,
+  Typography,
 } from '@material-ui/core'
-import { ITribe, IUser, ISquad } from 'src/lib/interfaces'
-import { useParams } from 'react-router'
-import { getTribeById, updateTribe, getSquads } from 'src/lib/api'
-import { UserCard } from 'src/components/Molecules/UserCard'
-import { SquadCard } from 'src/components/Molecules/SquadCard'
-
 import AddIcon from '@material-ui/icons/Add'
-import { SquadsSelector } from './components/SquadSelector'
-import { useSelector, useDispatch } from 'react-redux'
+import gql from 'graphql-tag'
+import React, { FC, Fragment, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router'
 import { useHistory } from 'react-router-dom'
-import { IRootReducer, DispatchAction } from 'src/lib/redux/rootReducer'
+import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
+import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
+import { SquadCard } from 'src/components/Molecules/SquadCard'
+import { TribeCardMock } from 'src/components/Molecules/TribeCard'
+import { UserCard } from 'src/components/Molecules/UserCard'
+import { ISquad, IUser } from 'src/lib/interfaces'
+import { SquadsSelector } from './components/SquadSelector'
 
 interface ITribeDetailRouteParams {
   id: string
@@ -36,55 +38,39 @@ const useStyles = makeStyles((theme: Theme) => {
 })
 
 export const TribeDetailRoute: FC = () => {
-  const classes = useStyles()
   const { id } = useParams<ITribeDetailRouteParams>()
-  const history = useHistory()
 
-  const tribe = useSelector<IRootReducer, ITribe | undefined>((state) => {
-    console.log(state.tribes.items)
-    return state.tribes.items.find((item) => item.id === id)
-  })
-  const tribeSquads = useSelector<IRootReducer, ISquad[]>((state) => {
-    if (!tribe) return []
-    console.log(tribe)
-
-    // const squads = state.squads.items.filter((squad) => tribe.squads.includes(squad.id))
-
-    return state.squads.items
-  })
-  const tribeLeaders = useSelector<IRootReducer, IUser[]>((state) => {
-    if (!tribe) return []
-
-    const foundLeaders = state.users.items.filter((user) => tribe.leaders.includes(user.id))
-
-    return foundLeaders
-  })
-
-  const dispatch = useDispatch<DispatchAction>()
+  const classes = useStyles()
+  const { t } = useTranslation()
 
   const [ squadModalOpen, setSquadModalOpen ] = useState(false)
 
-  useEffect(
-    () => {
-      if (id && !tribe) dispatch(getTribeById(id))
+  const [ pageQuery ] = useState(gql`
+    query Tribe($id: String!) {
+      Tribe(filter: { id: $id }) {
+        id
+        name
+        squads {
+          id
+          name
+        }
+        leaders {
+          id
+          displayName
+        }
+      }
+    }
+  `)
+
+  const { loading, error, data, refetch } = useQuery(pageQuery, {
+    variables: {
+      id,
     },
-    [ id, tribe, dispatch ]
-  )
+  })
 
-  useEffect(
-    () => {
-      if (!tribe || !tribe.squads.length) return
-      // if (!tribeSquads.length) return
-
-      // const missingSquads = tribe.squads.filter((squad) => !tribeSquads.map((ts) => ts.id).includes(squad))
-
-      // if (missingSquads.length) dispatch(getSquads()) // TODO: only get the squads we need
-    },
-    [ tribe, tribeSquads, dispatch ]
-  )
+  const history = useHistory()
 
   const toggleSquadModal = () => setSquadModalOpen(!squadModalOpen)
-
   const onSquadModalCloseHandler = (squads?: ISquad[]) => {
     // if (tribe && squads) dispatch(updateTribe(tribe, { squads: [ ...tribe.squads, ...squads.map((s) => s.id) ] }))
     toggleSquadModal()
@@ -98,38 +84,39 @@ export const TribeDetailRoute: FC = () => {
     // if (tribe) dispatch(updateTribe(tribe, { squads: tribe.squads.filter((squad) => squad !== squadId) }))
   }
 
-  useEffect(
-    () => {
-      if (!tribe) return
-
-      const missingLeaders = tribe.leaders.filter((user) => !tribeLeaders.map((tl) => tl.id).includes(user))
-      console.log(`missing leaders (${missingLeaders.length}): ${missingLeaders}`)
-    },
-    [ tribeLeaders, tribe ]
-  )
-
-  console.log(tribe)
   return (
     <section className={classes.root}>
       <Container maxWidth='lg'>
-        {tribe && (
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant='h3'>{tribe.name}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant='h5'>Leaders</Typography>
-            </Grid>
-            {tribeLeaders.map((user: IUser) => (
-              <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
-                <UserCard user={user} />
+        <Grid container spacing={2}>
+          {loading ? (
+            Array.from({ length: 12 }).map((_, index: number) => (
+              <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                <TribeCardMock />
               </Grid>
-            ))}
+            ))
+          ) : error ? (
+            <div>{error.message}</div>
+          ) : !data.Tribe.length ? (
             <Grid item xs={12}>
-              <Typography variant='h5'>Squads</Typography>
+              <EmptyState title={t('tribeNotFound')} image={<Illustration type={Illustrations.notFound} />} />
             </Grid>
-            {tribeSquads &&
-              tribeSquads.map((squad: ISquad) => (
+          ) : (
+            <Fragment>
+              <Grid item xs={12}>
+                <Typography variant='h3'>{data.Tribe[0].name}</Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant='h5'>Leaders</Typography>
+              </Grid>
+              {data.Tribe[0].leaders.map((user: IUser) => (
+                <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
+                  <UserCard user={user} />
+                </Grid>
+              ))}
+              <Grid item xs={12}>
+                <Typography variant='h5'>{t('squads')}</Typography>
+              </Grid>
+              {data.Tribe[0].squads.map((squad: ISquad) => (
                 <Grid key={squad.id} item xs={12} sm={6} md={4} lg={3}>
                   <SquadCard
                     onLeftClick={() => gotoSquad(squad.id)}
@@ -144,25 +131,26 @@ export const TribeDetailRoute: FC = () => {
                   />
                 </Grid>
               ))}
-            <SquadsSelector
-              title={`Select squads to add to ${tribe.name}`}
-              without={tribeSquads || []}
-              isOpen={squadModalOpen}
-              onClose={onSquadModalCloseHandler}
-            />
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Card>
-                <CardActionArea onClick={toggleSquadModal}>
-                  <CardContent>
-                    <Grid container justify='center' alignItems='center'>
-                      <AddIcon />
-                    </Grid>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-          </Grid>
-        )}
+              <SquadsSelector
+                title={`Select squads to add to ${data.Tribe[0].name}`}
+                without={data.Tribe[0].squads}
+                isOpen={squadModalOpen}
+                onClose={onSquadModalCloseHandler}
+              />
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Card>
+                  <CardActionArea onClick={toggleSquadModal}>
+                    <CardContent>
+                      <Grid container justify='center' alignItems='center'>
+                        <AddIcon />
+                      </Grid>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            </Fragment>
+          )}
+        </Grid>
       </Container>
     </section>
   )
