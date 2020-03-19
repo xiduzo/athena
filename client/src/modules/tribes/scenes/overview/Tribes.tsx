@@ -43,14 +43,6 @@ export const TribesRoute: FC = () => {
       Tribe {
         id
         name
-        squads {
-          id
-          name
-        }
-        leaders {
-          id
-          displayName
-        }
       }
     }
   `)
@@ -103,7 +95,7 @@ export const TribesRoute: FC = () => {
         ) : error ? (
           <div>{error.message}</div>
         ) : !data.Tribe.length ? (
-          <Grid item={true} xs={12}>
+          <Grid item xs={12}>
             <EmptyState title={t('tribesNotfound')} image={<Illustration type={Illustrations.empty} />} />
           </Grid>
         ) : (
