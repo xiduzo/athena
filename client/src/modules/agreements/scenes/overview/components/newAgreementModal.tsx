@@ -71,7 +71,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
     if (!data.translations) return // TODO alert
     setIsSubmitting(true)
 
-    let errorCount = 0
+    let hasError = false
 
     const agreement: IAgreement = {
       ...data,
@@ -87,26 +87,25 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
       points: sliderValue,
     }
 
+    const catchError = (error: ApolloError) => {
+      hasError = !hasError
+      generalCatchHandler(error)
+    }
+
     await CreateAgreement({
       variables: {
         ...agreement,
         type: parseInt(`${agreement.type}`, 10),
       },
-    }).catch((error: ApolloError) => {
-      errorCount++
-      generalCatchHandler(error)
-    })
+    }).catch(catchError)
 
-    if (!errors) {
+    if (!errors.length) {
       await asyncForEach(agreement.translations || [], async (translation: ITranslation) => {
         await CreateTranslation({
           variables: {
             ...translation,
           },
-        }).catch((error: ApolloError) => {
-          errorCount++
-          generalCatchHandler(error)
-        })
+        }).catch(catchError)
 
         await AddAgreementTranslations({
           variables: {
@@ -114,14 +113,11 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
             from: { id: agreement.id },
             to: { id: translation.id },
           },
-        }).catch((error: ApolloError) => {
-          errorCount++
-          generalCatchHandler(error)
-        })
+        }).catch(catchError)
       })
     }
 
-    if (errorCount === 0) snackbarWrapper.success(`${t(`agreement`)} created`)
+    if (!hasError) snackbarWrapper.success(`${t(`agreement`)} created`)
 
     setIsSubmitting(false)
     handleClose()
@@ -131,7 +127,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
     <Dialog fullScreen open={isOpen} onClose={handleClose} TransitionComponent={SlideUp}>
       <AppBar className={classes.appBar}>
         <Toolbar>
-          <IconButton edge='start' color='inherit' onClick={handleClose} aria-label='close'>
+          <IconButton edge='start' autoFocus color='inherit' onClick={handleClose} aria-label='close'>
             <CloseIcon />
           </IconButton>
           <Typography variant='h6' className={classes.title}>
