@@ -9,6 +9,7 @@ export const typeDefs = `
     reader
     user
     admin
+    testRole
   }
 
   type User {
@@ -33,8 +34,8 @@ export const typeDefs = `
     weekNum: Int!
   }
 
-  type Agreement {
-    id: String!
+  type Agreement @isAuthenticated {
+    id: String! @hasRole(roles: [testRole])
     type: Int!
     isBase: Boolean!
     points: Int!

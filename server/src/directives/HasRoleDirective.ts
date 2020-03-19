@@ -41,13 +41,13 @@ export class HasRoleDirective extends SchemaDirectiveVisitor {
       // FIXME: override with env var
       const roles = keysToCheck.filter((item) => decoded[item])
 
-      if (arrayHasMatchesWith(expectedRoles, roles)) {
-        return next && next(result, args, { ...context, user: decoded }, info)
+      if (!arrayHasMatchesWith(expectedRoles, roles)) {
+        throw new AuthorizationError({
+          message: 'You are not authorized for this resource',
+        })
       }
 
-      throw new AuthorizationError({
-        message: 'You are not authorized for this resource',
-      })
+      return next && next(result, args, { ...context, user: decoded }, info)
     }
   }
 
