@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import {
   Box,
   Card,
@@ -24,6 +24,11 @@ import { TribeCardMock } from 'src/components/Molecules/TribeCard'
 import { UserCard } from 'src/components/Molecules/UserCard'
 import { ISquad, IUser } from 'src/lib/interfaces'
 import { SquadsSelector } from './components/SquadSelector'
+import { asyncForEach } from 'src/common/utils/asyncForEach'
+import { ADD_TRIBE_SQUAD } from 'src/common/services/tribeService'
+import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
+import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
+import { ApolloError } from 'apollo-errors'
 
 interface ITribeDetailRouteParams {
   id: string
@@ -44,6 +49,8 @@ export const TribeDetailRoute: FC = () => {
   const { t } = useTranslation()
 
   const [ squadModalOpen, setSquadModalOpen ] = useState(false)
+
+  const [ AddTribeSquads ] = useMutation(ADD_TRIBE_SQUAD)
 
   const [ pageQuery ] = useState(gql`
     query Tribe($id: String!) {
@@ -71,8 +78,20 @@ export const TribeDetailRoute: FC = () => {
   const history = useHistory()
 
   const toggleSquadModal = () => setSquadModalOpen(!squadModalOpen)
-  const onSquadModalCloseHandler = (squads?: ISquad[]) => {
-    // if (tribe && squads) dispatch(updateTribe(tribe, { squads: [ ...tribe.squads, ...squads.map((s) => s.id) ] }))
+
+  const onSquadModalCloseHandler = async (squads?: ISquad[]) => {
+    await asyncForEach(squads || [], async (squad: ISquad) => {
+      await AddTribeSquads({
+        variables: {
+          from: { id: squad.id },
+          to: { id: id },
+        },
+      })
+        .then((_) => snackbarWrapper.success(`${squad.name}->${data.Tribe[0].name}`))
+        .catch(generalCatchHandler)
+    })
+
+    refetch()
     toggleSquadModal()
   }
 

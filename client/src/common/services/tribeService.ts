@@ -24,3 +24,16 @@ export const CREATE_TRIBE = gql`
     }
   }
 `
+
+export const ADD_TRIBE_SQUAD = gql`
+  mutation AddTribeSquads($from: _SquadInput!, $to: _TribeInput!) {
+    AddTribeSquads(from: $from, to: $to) {
+      from {
+        id
+      }
+      to {
+        id
+      }
+    }
+  }
+`
