@@ -35,7 +35,7 @@ import { EyebrowType } from 'src/components/Atoms/Avataaar/enums/EyebrowType'
 import { MouthType } from 'src/components/Atoms/Avataaar/enums/MouthType'
 import { SkinColor } from 'src/components/Atoms/Avataaar/enums/SkinColor'
 import { Auth } from 'aws-amplify'
-import { snackbarWrapper } from 'src/lib/utils/snackbarWrapper'
+import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
 
 const useStyles = makeStyles((theme: Theme) => ({
   main: {

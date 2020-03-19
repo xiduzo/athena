@@ -1,6 +1,6 @@
 import React, { FC, useState, Fragment } from 'react'
 import { Card, CardActionArea, CardHeader, Menu } from '@material-ui/core'
-import { ISquad } from 'src/lib/types/squad'
+import { ISquad } from 'src/lib/interfaces/squad'
 
 interface ISquadCard {
   squad: ISquad
@@ -45,7 +45,7 @@ export const SquadCard: FC<ISquadCard> = ({ squad, onLeftClick, onRightClickItem
           keepMounted
           open={mousePos.mouseY !== null}
           onClose={onRightClickHandler}
-          anchorReference="anchorPosition"
+          anchorReference='anchorPosition'
           anchorPosition={
             mousePos.mouseY !== null && mousePos.mouseX !== null ? (
               { top: mousePos.mouseY, left: mousePos.mouseX }

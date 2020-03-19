@@ -2,7 +2,7 @@ import * as request from 'superagent'
 import { Auth } from 'aws-amplify'
 import { Response } from 'superagent'
 import { ApolloError } from 'apollo-errors'
-import { snackbarWrapper } from 'src/lib/utils/snackbarWrapper'
+import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
 
 interface ISuperAgentWrapper {
   delete: (url: string) => Promise<Response>

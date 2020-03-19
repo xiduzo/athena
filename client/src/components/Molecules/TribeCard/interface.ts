@@ -1,4 +1,4 @@
-import { ITribe } from 'src/lib/types/tribe'
+import { ITribe } from 'src/lib/interfaces/tribe'
 
 export interface ITribeCard {
   tribe: ITribe

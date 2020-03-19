@@ -23,7 +23,7 @@ import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { DELETE_AGREEMENT, GET_AGREEMENTS, DELETE_TRANSLATION } from 'src/common/services/agreementService'
+import { DELETE_AGREEMENT, DELETE_TRANSLATION } from 'src/common/services/agreementService'
 import { asyncForEach } from 'src/common/utils/asyncForEach'
 import { createFilter } from 'src/common/utils/createFilter'
 import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
@@ -31,12 +31,13 @@ import { AgreementCard, AgreementCardMock } from 'src/components/Molecules/Agree
 import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
 import { AgreementType } from 'src/lib/enums'
 import { Key } from 'src/lib/enums/keys'
-import { useHotkeys } from 'src/lib/hooks/useHotkeys'
+import { and, useHotkeys } from 'src/lib/hooks/useHotkeys'
 import { IRootReducer } from 'src/lib/redux/rootReducer'
-import { IAgreement, ITranslation } from 'src/lib/types/agreement'
+import { IAgreement, ITranslation } from 'src/lib/interfaces/agreement'
 import { NewAgreementModal } from './components/newAgreementModal'
-import { snackbarWrapper } from 'src/lib/utils/snackbarWrapper'
+import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
 import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
+import gql from 'graphql-tag'
 
 const drawerWidth = '20vw'
 const useStyles = makeStyles((theme: Theme) => ({
@@ -81,7 +82,24 @@ export const AgreementsRoute: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const { loading, error, data, refetch } = useQuery(GET_AGREEMENTS, {
+  const [ modalOpen, setModalOpen ] = useState(false)
+  const [ filters, setFilters ] = useState(initFilters)
+  const [ pageQuery ] = useState(gql`
+    query {
+      Agreement(filter: { isBase: true }) {
+        id
+        points
+        type
+        translations {
+          id
+          language
+          text
+        }
+      }
+    }
+  `)
+
+  const { loading, error, data, refetch } = useQuery(pageQuery, {
     variables: {
       filter: {
         isBase: true,
@@ -93,11 +111,7 @@ export const AgreementsRoute: FC = () => {
   const [ DeleteAgreement ] = useMutation(DELETE_AGREEMENT)
 
   const hotkeysEnabled = useSelector((state: IRootReducer) => state.global.hotkeysEnabled)
-  const newAgreementHotkey = useHotkeys(Key.A)
-
-  const [ modalOpen, setModalOpen ] = useState(false)
-  const [ filters, setFilters ] = useState(initFilters)
-  const [ elementHasFocus, setElementHasFocus ] = useState(false)
+  const newAgreementHotkey = and([ useHotkeys(Key.Alt), useHotkeys(Key.N) ])
 
   const { register, errors } = useForm()
 
@@ -147,17 +161,14 @@ export const AgreementsRoute: FC = () => {
       .catch(generalCatchHandler)
   }
 
-  const toggleFocus = () => setElementHasFocus(!elementHasFocus)
-
   useEffect(
     () => {
-      if (elementHasFocus) return
       if (!hotkeysEnabled) return
       if (!newAgreementHotkey) return
 
       setModalOpen(true)
     },
-    [ newAgreementHotkey, hotkeysEnabled, elementHasFocus ]
+    [ newAgreementHotkey, hotkeysEnabled ]
   )
 
   return (
@@ -229,8 +240,6 @@ export const AgreementsRoute: FC = () => {
                     id='translations'
                     name='translations'
                     label={t('agreement')}
-                    onFocus={toggleFocus}
-                    onBlur={toggleFocus}
                     onChange={handleNameFilter}
                     inputRef={register}
                     error={errors.text ? true : false}
@@ -247,8 +256,6 @@ export const AgreementsRoute: FC = () => {
                     id='type'
                     defaultValue='-1'
                     onChange={handleTypeFilter}
-                    onFocus={toggleFocus}
-                    onBlur={toggleFocus}
                   >
                     <FormControlLabel inputRef={register} value={`-1`} control={<Radio />} label='All' />
                     <FormControlLabel

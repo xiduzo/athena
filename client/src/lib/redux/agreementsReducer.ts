@@ -1,4 +1,4 @@
-import { IAgreement } from 'src/lib/types/agreement'
+import { IAgreement } from 'src/lib/interfaces/agreement'
 import { IAction } from './rootReducer'
 import { Status } from './status'
 import { getLocalItem, updateLocalItem } from '../utils/Managers/OfflineManager'

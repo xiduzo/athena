@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { IUser } from 'src/lib/types/user'
+import { IUser } from 'src/lib/interfaces/user'
 import { useParams } from 'react-router'
 import { GetUserById } from 'src/lib/api'
 import { Container, Grid, Paper, makeStyles, Theme, Typography } from '@material-ui/core'
@@ -51,13 +51,13 @@ export const UserDetailRoute: FC = () => {
         <Container maxWidth={'lg'}>
           <Grid container spacing={2}>
             <Grid item xs={12} className={classes.avatar}>
-              <Avataaar avatarStyle="Circle" style={{ width: `100px`, height: `100px` }} />
+              <Avataaar avatarStyle='Circle' style={{ width: `100px`, height: `100px` }} />
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.userInfo}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <Typography variant="h4" align="center">
+                    <Typography variant='h4' align='center'>
                       {`${user.first_name} ${user.surname_prefix || ''} ${user.surname}`}
                     </Typography>
                   </Grid>
@@ -65,7 +65,7 @@ export const UserDetailRoute: FC = () => {
               </Paper>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6">Squads</Typography>
+              <Typography variant='h6'>Squads</Typography>
             </Grid>
           </Grid>
         </Container>

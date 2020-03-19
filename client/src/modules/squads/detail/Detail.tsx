@@ -13,11 +13,11 @@ import {
   Box,
   MenuItem,
 } from '@material-ui/core'
-import { ISquad } from 'src/lib/types/squad'
-import { IUser } from 'src/lib/types/user'
+import { ISquad } from 'src/lib/interfaces/squad'
+import { IUser } from 'src/lib/interfaces/user'
 import { UserCard } from 'src/components/Molecules/UserCard'
 import { useDispatch, useSelector } from 'react-redux'
-import { IAgreement } from 'src/lib/types/agreement'
+import { IAgreement } from 'src/lib/interfaces/agreement'
 import { addSquadAgreement, getAgreements } from 'src/lib/api'
 import { AgreementCard } from 'src/components/Molecules/AgreementCard'
 import { AgreementsSelector } from './components/AgreementSelector'

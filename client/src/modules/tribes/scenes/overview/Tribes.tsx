@@ -1,14 +1,19 @@
 import { useQuery } from '@apollo/react-hooks'
-import { Container, Fab, Grid, Typography, makeStyles, Theme } from '@material-ui/core'
+import { Container, Fab, Grid, Typography, makeStyles, Theme, Zoom } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import { GET_TRIBES } from 'src/common/services/tribeService'
 import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
 import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
 import { TribeCard, TribeCardMock } from 'src/components/Molecules/TribeCard'
-import { ITribe } from 'src/lib/types/tribe'
+import { ITribe } from 'src/lib/interfaces/tribe'
 import { useTranslation } from 'react-i18next'
+import gql from 'graphql-tag'
+import { NewTribeModal } from './components/NewTribeModal'
+import { useSelector } from 'react-redux'
+import { IRootReducer } from 'src/lib/redux/rootReducer'
+import { and, useHotkeys } from 'src/lib/hooks/useHotkeys'
+import { Key } from 'src/lib/enums/keys'
 
 export const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -28,18 +33,63 @@ export const TribesRoute: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const { loading, error, data } = useQuery(GET_TRIBES)
+  const [ modalOpen, setModalOpen ] = useState(false)
+
+  const hotkeysEnabled = useSelector((state: IRootReducer) => state.global.hotkeysEnabled)
+  const newTribeHotkey = and([ useHotkeys(Key.Alt), useHotkeys(Key.N) ])
+
+  const [ pageQuery ] = useState(gql`
+    query {
+      Tribe {
+        id
+        name
+        squads {
+          id
+          name
+        }
+        leaders {
+          id
+          displayName
+        }
+      }
+    }
+  `)
+
+  const { loading, error, data, refetch } = useQuery(pageQuery)
 
   const location = useLocation()
   const history = useHistory()
 
   const navigateToTribe = (id: string) => history.push(`${location.pathname}/${id}`)
 
+  const handleClose = () => {
+    refetch()
+    setModalOpen(!modalOpen)
+  }
+
+  useEffect(
+    () => {
+      if (!hotkeysEnabled) return
+      if (!newTribeHotkey) return
+
+      setModalOpen(true)
+    },
+    [ newTribeHotkey, hotkeysEnabled ]
+  )
+
   return (
     <Container maxWidth='lg' className={classes.main}>
-      <Fab color='primary' aria-label='New tribe' className={classes.fab}>
-        <AddIcon />
-      </Fab>
+      <Zoom in={!loading && !error}>
+        <Fab
+          color='primary'
+          aria-label={t('tribeNew')}
+          className={classes.fab}
+          onClick={() => setModalOpen(!modalOpen)}
+        >
+          <AddIcon />
+        </Fab>
+      </Zoom>
+      <NewTribeModal isOpen={modalOpen} onClose={handleClose} />
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant='h4'>{t('tribes')}</Typography>

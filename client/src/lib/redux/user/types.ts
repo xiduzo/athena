@@ -1,5 +1,5 @@
 import { UserActions } from './actions'
-import { IUser } from 'src/lib/types/user'
+import { IUser } from 'src/lib/interfaces/user'
 
 interface UserLoginAction {
   type: UserActions.userLogin

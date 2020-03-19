@@ -1,5 +1,5 @@
 import React, { FC, useState, Fragment } from 'react'
-import { IAgreement } from 'src/lib/types/agreement'
+import { IAgreement } from 'src/lib/interfaces/agreement'
 import {
   Card,
   CardActionArea,

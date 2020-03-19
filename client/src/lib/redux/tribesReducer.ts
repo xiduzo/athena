@@ -1,4 +1,4 @@
-import { ITribe } from 'src/lib/types/tribe'
+import { ITribe } from 'src/lib/interfaces/tribe'
 import { IAction } from './rootReducer'
 import { Status } from './status'
 import { getLocalItem, updateLocalItem } from '../utils/Managers/OfflineManager'

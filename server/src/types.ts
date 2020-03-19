@@ -35,7 +35,7 @@ export const typeDefs = `
   }
 
   type Agreement @isAuthenticated {
-    id: String! @hasRole(roles: [testRole])
+    id: String!
     type: Int!
     isBase: Boolean!
     points: Int!

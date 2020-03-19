@@ -1,7 +1,7 @@
 import { BACKEND_URL, SQUAD_ENDPOINT } from '../constants'
 import { SquadActions } from '../redux/squadsReducer'
 import { Dispatch } from 'react'
-import { ISquad } from '../types/squad'
+import { ISquad } from '../interfaces/squad'
 import { IAction } from '../redux/rootReducer'
 import superagent, { generalCatchHandler } from 'src/common/utils/superagentWrapper'
 

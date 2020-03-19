@@ -11,7 +11,7 @@ export const or = (props: boolean[]): boolean => props.includes(true)
 export const not = (isTrue: boolean): boolean => !isTrue
 
 export const xor = (keyOne: boolean, keyTwo: boolean): boolean =>
-  and([not(and([keyOne, keyTwo])), or([keyOne, keyTwo])])
+  and([ not(and([ keyOne, keyTwo ])), or([ keyOne, keyTwo ]) ])
 
 export const sequence = (keyCodes: number[], canExecute: boolean) => {
   const joiner = '>'
@@ -28,7 +28,7 @@ export const sequence = (keyCodes: number[], canExecute: boolean) => {
 }
 
 export const useHotkeys = (key: number, keyType: KeyTypes = KeyTypes.KeyDown) => {
-  const [pressed, setPressed] = useState<boolean>(false)
+  const [ pressed, setPressed ] = useState<boolean>(false)
 
   const match = (event: KeyboardEvent) => key === event.which
 

@@ -1,4 +1,4 @@
-import { ITranslation } from 'src/lib/types/agreement'
+import { ITranslation } from 'src/lib/interfaces/agreement'
 
 import i18n from 'src/i18n'
 

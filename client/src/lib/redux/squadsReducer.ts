@@ -1,4 +1,4 @@
-import { ISquad } from 'src/lib/types/squad'
+import { ISquad } from 'src/lib/interfaces/squad'
 import { IAction } from './rootReducer'
 import { Status } from './status'
 import { getLocalItem, updateLocalItem } from '../utils/Managers/OfflineManager'

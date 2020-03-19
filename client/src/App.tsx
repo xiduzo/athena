@@ -8,7 +8,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { ThemeProvider } from './common/providers/ThemeProvider'
 import { AuthProvider } from './common/providers/AuthProvider'
 import { SnackbarProvider } from 'notistack'
-import { SnackbarUtilsConfiguration } from './lib/utils/snackbarWrapper'
+import { SnackbarUtilsConfiguration } from './common/utils/snackbarWrapper'
 import { ApolloProvider } from './common/providers/ApolloProvider'
 
 const useStyles = makeStyles((theme: Theme) => {
