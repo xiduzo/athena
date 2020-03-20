@@ -1,22 +1,15 @@
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  Container,
-  Grid,
-  makeStyles,
-  MenuItem,
-  Theme,
-  Typography,
-} from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
+import { useMutation, useQuery } from '@apollo/react-hooks'
+import { Box, Container, Grid, makeStyles, MenuItem, Theme, Typography } from '@material-ui/core'
 import gql from 'graphql-tag'
 import React, { FC, Fragment, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 import { useHistory } from 'react-router-dom'
+import { ADD_TRIBE_SQUAD, REMOVE_TRIBE_SQUAD } from 'src/common/services/tribeService'
+import { asyncForEach } from 'src/common/utils/asyncForEach'
+import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
+import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
+import { AddCard } from 'src/components/Atoms'
 import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
 import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
 import { SquadCard } from 'src/components/Molecules/SquadCard'
@@ -24,11 +17,6 @@ import { TribeCardMock } from 'src/components/Molecules/TribeCard'
 import { UserCard } from 'src/components/Molecules/UserCard'
 import { ISquad, IUser } from 'src/lib/interfaces'
 import { SquadsSelector } from './components/SquadSelector'
-import { asyncForEach } from 'src/common/utils/asyncForEach'
-import { ADD_TRIBE_SQUAD, REMOVE_TRIBE_SQUAD } from 'src/common/services/tribeService'
-import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
-import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
-import { ApolloError } from 'apollo-errors'
 
 interface ITribeDetailRouteParams {
   id: string
@@ -78,6 +66,8 @@ export const TribeDetailRoute: FC = () => {
 
   const history = useHistory()
 
+  const gotoSquad = (squadId: string) => history.push(`/squads/${squadId}`)
+
   const toggleSquadModal = () => setSquadModalOpen(!squadModalOpen)
 
   const onSquadModalCloseHandler = async (squads?: ISquad[]) => {
@@ -94,10 +84,6 @@ export const TribeDetailRoute: FC = () => {
 
     refetch()
     toggleSquadModal()
-  }
-
-  const gotoSquad = (squadId: string) => {
-    history.push(`/squads/${squadId}`)
   }
 
   const removeSquadHandler = async (squad: ISquad) => {
@@ -167,15 +153,7 @@ export const TribeDetailRoute: FC = () => {
                 onClose={onSquadModalCloseHandler}
               />
               <Grid item xs={12} sm={6} md={4} lg={3}>
-                <Card>
-                  <CardActionArea onClick={toggleSquadModal}>
-                    <CardContent>
-                      <Grid container justify='center' alignItems='center'>
-                        <AddIcon />
-                      </Grid>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
+                <AddCard onClick={toggleSquadModal} />
               </Grid>
             </Fragment>
           )}
