@@ -7,3 +7,29 @@ export const CREATE_SQUAD = gql`
     }
   }
 `
+
+export const ADD_SQUAD_AGREEMENT = gql`
+  mutation AddSquadAgreements($from: _SquadInput!, $to: _AgreementInput!) {
+    AddSquadAgreements(from: $from, to: $to) {
+      from {
+        id
+      }
+      to {
+        id
+      }
+    }
+  }
+`
+
+export const REMOVE_SQUAD_AGREEMENT = gql`
+  mutation RemoveSquadAgreements($from: _SquadInput!, $to: _AgreementInput!) {
+    RemoveSquadAgreements(from: $from, to: $to) {
+      from {
+        id
+      }
+      to {
+        id
+      }
+    }
+  }
+`

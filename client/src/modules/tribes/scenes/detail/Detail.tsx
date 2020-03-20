@@ -71,6 +71,10 @@ export const TribeDetailRoute: FC = () => {
   const toggleSquadModal = () => setSquadModalOpen(!squadModalOpen)
 
   const onSquadModalCloseHandler = async (squads?: ISquad[]) => {
+    toggleSquadModal()
+
+    if (!squads) return
+
     await asyncForEach(squads || [], async (squad: ISquad) => {
       await AddTribeSquads({
         variables: {
@@ -83,7 +87,6 @@ export const TribeDetailRoute: FC = () => {
     })
 
     refetch()
-    toggleSquadModal()
   }
 
   const removeSquadHandler = async (squad: ISquad) => {

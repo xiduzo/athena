@@ -12,24 +12,24 @@ export const typeDefs = `
     testRole
   }
 
-  type User {
-    id: String!
-    email: String!
-    displayName: String!
-    squads: [Squad] @relation(name: "HAS_MEMBER", direction: "IN")
-    tribes: [Tribe] @relation(name: "IS_LEADER_OF", direction: "OUT")
-  }
-
   type Translation  {
     id: String!
     language: String!
     text: String!
   }
 
+  type User {
+    id: String!
+    email: String!
+    displayName: String!
+    squads: [Squad] @relation(name: "IS_MEMBER_OF", direction: "OUT")
+    tribes: [Tribe] @relation(name: "IS_LEADER_OF", direction: "OUT")
+  }
+
   type Feedback {
     id: String!
-    from: User @relation(name: "GAVE_FEEDBACK", direction: "IN")
-    to: User @relation(name: "GOT_FEEDBACK", direction: "OUT")
+    from: User @relation(name: "FEEDBACK", direction: "IN")
+    to: User @relation(name: "FEEDBACK", direction: "OUT")
     rating: Int!
     weekNum: Int!
   }
@@ -39,7 +39,9 @@ export const typeDefs = `
     type: Int!
     isBase: Boolean!
     points: Int!
-    translations: [Translation] @relation(name: "HAS_TRANSLATION", direction: "OUT")
+    parent: Agreement @relation(name: "IS_CHILD_OF", direction: "OUT")
+    children: [Agreement] @relation(name: "IS_CHILD_OF", direction: "IN")
+    translations: [Translation] @relation(name: "IS_TRANSLATION_OF", direction: "IN")
     feedback: [Feedback] @relation(name: "ON", direction: "IN")
   }
 
@@ -47,7 +49,7 @@ export const typeDefs = `
     id: String!
     name: String!
     agreements: [Agreement] @relation(name: "HAS_AGREED_TO", direction: "OUT")
-    members: [User] @relation(name: "HAS_MEMBER", direction: "OUT")
+    members: [User] @relation(name: "IS_MEMBER_OF", direction: "IN")
     tribe: Tribe @relation(name: "IS_PART_OF", direction: "OUT")
   }
 
@@ -55,6 +57,6 @@ export const typeDefs = `
     id: String!
     name: String!
     squads: [Squad] @relation(name: "IS_PART_OF", direction: "IN")
-    leaders: [User] @relation(name: "IS_LED_BY", direction: "OUT")
+    leaders: [User] @relation(name: "IS_LEADER_OF", direction: "IN")
   }
 `

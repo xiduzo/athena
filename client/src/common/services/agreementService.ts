@@ -33,8 +33,21 @@ export const CREATE_TRANSLATION = gql`
 `
 
 export const ADD_AGREEMENT_TRANSLATION = gql`
-  mutation AddAgreementTranslations($from: _AgreementInput!, $to: _TranslationInput!) {
+  mutation AddAgreementTranslations($from: _TranslationInput!, $to: _AgreementInput!) {
     AddAgreementTranslations(from: $from, to: $to) {
+      from {
+        id
+      }
+      to {
+        id
+      }
+    }
+  }
+`
+
+export const ADD_AGREEMENT_PARENT = gql`
+  mutation AddAgreementParent($from: _AgreementInput!, $to: _AgreementInput!) {
+    AddAgreementParent(from: $from, to: $to) {
       from {
         id
       }

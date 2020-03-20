@@ -13,4 +13,6 @@ export interface IAgreement extends IEntityBase {
   points: number
   translations: ITranslation[]
   feedback: IFeedback[]
+  parent?: IAgreement
+  children?: IAgreement[]
 }

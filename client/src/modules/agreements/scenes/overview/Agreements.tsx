@@ -140,15 +140,7 @@ export const AgreementsRoute: FC = () => {
     setModalOpen(!modalOpen)
   }
 
-  const removeAgreementHandler = async (agreement: IAgreement) => {
-    await asyncForEach(agreement.translations, async (translation: ITranslation) => {
-      await DeleteTranslation({
-        variables: {
-          id: translation.id,
-        },
-      })
-    })
-
+  const removeAgreementHandler = (agreement: IAgreement) => {
     DeleteAgreement({
       variables: {
         id: agreement.id,

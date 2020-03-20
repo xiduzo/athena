@@ -50,7 +50,7 @@ export const AgreementsSelector: FC<IAgreementSelectorModal> = ({ title, isOpen,
             loading || error ? (
               []
             ) : (
-              (data.Agreement as IAgreement[]).filter((agreements) => !without.map((a) => a.id).includes(agreements.id))
+              data.Agreement.filter((agreements: IAgreement) => !without.map((a) => a.id).includes(agreements.id))
             )
           }
           clearOnEscape
@@ -58,7 +58,7 @@ export const AgreementsSelector: FC<IAgreementSelectorModal> = ({ title, isOpen,
           onChange={(_: any, agreements: IAgreement[] | null) => {
             if (agreements) setAgreementsToAdd(agreements)
           }}
-          // getOptionLabel={(agreement: IAgreement) => getTranslation(agreement.translations)}
+          getOptionLabel={(agreement: IAgreement) => getTranslation(agreement.translations)}
           getOptionDisabled={(agreement: IAgreement) =>
             agreementsToAdd.find((a) => a.id === agreement.id) ? true : false}
           renderInput={(params) => (
@@ -67,7 +67,7 @@ export const AgreementsSelector: FC<IAgreementSelectorModal> = ({ title, isOpen,
           clearText='[Clear text]'
           closeText='[Close text]'
           noOptionsText='[No options text]'
-          loadingText='[Loading text'
+          loadingText='[Loading text]'
           openText='[Open text]'
         />
       </DialogContent>

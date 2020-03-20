@@ -93,7 +93,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
       },
     }).catch(catchError)
 
-    if (!errors.length) {
+    if (!hasError) {
       await asyncForEach(agreement.translations || [], async (translation: ITranslation) => {
         await CreateTranslation({
           variables: {
@@ -104,8 +104,8 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
         await AddAgreementTranslations({
           variables: {
             id: uuid(),
-            from: { id: agreement.id },
-            to: { id: translation.id },
+            from: { id: translation.id },
+            to: { id: agreement.id },
           },
         }).catch(catchError)
       })
