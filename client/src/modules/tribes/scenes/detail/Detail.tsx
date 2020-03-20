@@ -25,7 +25,7 @@ import { UserCard } from 'src/components/Molecules/UserCard'
 import { ISquad, IUser } from 'src/lib/interfaces'
 import { SquadsSelector } from './components/SquadSelector'
 import { asyncForEach } from 'src/common/utils/asyncForEach'
-import { ADD_TRIBE_SQUAD } from 'src/common/services/tribeService'
+import { ADD_TRIBE_SQUAD, REMOVE_TRIBE_SQUAD } from 'src/common/services/tribeService'
 import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
 import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
 import { ApolloError } from 'apollo-errors'
@@ -50,8 +50,6 @@ export const TribeDetailRoute: FC = () => {
 
   const [ squadModalOpen, setSquadModalOpen ] = useState(false)
 
-  const [ AddTribeSquads ] = useMutation(ADD_TRIBE_SQUAD)
-
   const [ pageQuery ] = useState(gql`
     query Tribe($id: String!) {
       Tribe(filter: { id: $id }) {
@@ -74,6 +72,9 @@ export const TribeDetailRoute: FC = () => {
       id,
     },
   })
+
+  const [ AddTribeSquads ] = useMutation(ADD_TRIBE_SQUAD)
+  const [ RemoveTribeSquads ] = useMutation(REMOVE_TRIBE_SQUAD)
 
   const history = useHistory()
 
@@ -99,8 +100,17 @@ export const TribeDetailRoute: FC = () => {
     history.push(`/squads/${squadId}`)
   }
 
-  const removeSquadHandler = (squadId: string) => {
-    // if (tribe) dispatch(updateTribe(tribe, { squads: tribe.squads.filter((squad) => squad !== squadId) }))
+  const removeSquadHandler = async (squad: ISquad) => {
+    await RemoveTribeSquads({
+      variables: {
+        from: { id: squad.id },
+        to: { id: id },
+      },
+    })
+      .then((_) => snackbarWrapper.success(`$removed {squad.name}->${data.Tribe[0].name}`))
+      .catch(generalCatchHandler)
+
+    refetch()
   }
 
   return (
@@ -142,7 +152,7 @@ export const TribeDetailRoute: FC = () => {
                     squad={squad}
                     onRightClickItems={
                       <Box>
-                        <MenuItem onClick={() => removeSquadHandler(squad.id)}>
+                        <MenuItem onClick={() => removeSquadHandler(squad)}>
                           <Typography color='error'>Remove squad</Typography>
                         </MenuItem>
                       </Box>

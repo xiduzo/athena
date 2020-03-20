@@ -37,3 +37,16 @@ export const ADD_TRIBE_SQUAD = gql`
     }
   }
 `
+
+export const REMOVE_TRIBE_SQUAD = gql`
+  mutation RemoveTribeSquads($from: _SquadInput!, $to: _TribeInput!) {
+    RemoveTribeSquads(from: $from, to: $to) {
+      from {
+        id
+      }
+      to {
+        id
+      }
+    }
+  }
+`
