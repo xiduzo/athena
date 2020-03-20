@@ -17,7 +17,7 @@ export const typeDefs = `
     email: String!
     displayName: String!
     squads: [Squad] @relation(name: "HAS_MEMBER", direction: "IN")
-    tribes: [Tribe] @relation(name: "IS_LEADER_OF", direction: "IN")
+    tribes: [Tribe] @relation(name: "IS_LEADER_OF", direction: "OUT")
   }
 
   type Translation  {
@@ -46,8 +46,9 @@ export const typeDefs = `
   type Squad {
     id: String!
     name: String!
-    agreements: [Agreement] @relation(name: "HAS_AGREED_TO", direction: "IN")
+    agreements: [Agreement] @relation(name: "HAS_AGREED_TO", direction: "OUT")
     members: [User] @relation(name: "HAS_MEMBER", direction: "OUT")
+    tribe: Tribe @relation(name: "IS_PART_OF", direction: "OUT")
   }
 
   type Tribe {
