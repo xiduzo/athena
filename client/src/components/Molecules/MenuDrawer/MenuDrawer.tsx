@@ -1,16 +1,15 @@
-import React, { FC, useState, useEffect, forwardRef } from 'react'
-import clsx from 'clsx'
-import { useStyles } from './style'
-import { Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, Icon, Tooltip } from '@material-ui/core'
-
-import { NavLink, LinkProps } from 'react-router-dom'
-
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { Divider, Drawer, Icon, List, ListItem, ListItemIcon, ListItemText, Tooltip } from '@material-ui/core'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-import { routes, IRoute } from '../../Routes/links'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import clsx from 'clsx'
+import React, { FC, forwardRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { LinkProps, NavLink } from 'react-router-dom'
 import { useWidth } from 'src/common/hooks/useWidth'
 import { useAuth } from 'src/common/providers/AuthProvider'
-import { useTranslation } from 'react-i18next'
+import { getLocalItem, setLocalItem } from 'src/common/utils/offlineManager'
+import { IRoute, routes } from '../../Routes/links'
+import { useStyles } from './style'
 
 const AdapterLink = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
   <NavLink innerRef={ref as any} {...props} />
@@ -23,20 +22,14 @@ export const MenuDrawer: FC = () => {
   const width = useWidth()
   const { userSession } = useAuth()
 
-  const [ menuOpen, setMenuOpen ] = useState<boolean>(false)
+  const localStorageKey = 'menuState'
+
+  const [ menuOpen, setMenuOpen ] = useState<boolean>(getLocalItem<boolean>(localStorageKey) || false)
 
   const toggleMenuDrawer = () => {
-    localStorage.setItem('menuState', JSON.stringify(!menuOpen))
+    setLocalItem<boolean>(localStorageKey, !menuOpen)
     setMenuOpen(!menuOpen)
   }
-
-  useEffect(
-    () => {
-      const localState = JSON.parse(localStorage.getItem('menuState') as string)
-      setMenuOpen(localState)
-    },
-    [ setMenuOpen ]
-  )
 
   if (!userSession) return null
   return (
