@@ -11,23 +11,9 @@ interface IApolloContext {}
 
 const ApolloContext = createContext<IApolloContext>({})
 
-const useAuthHandler = () => {
-  //   const [ userCredentials, setUserCredentials ] = useState<ICredentials | null>(null)
-  //   const [ userSession, setUserSession ] = useState<CognitoUserSession | null>(null)
-  //   const setCredentials = (credentials: ICredentials | null) => {
-  //     setUserCredentials(credentials)
-  //   }
-  //   const setSession = (session: CognitoUserSession | null) => {
-  //     setUserSession(session)
-  //   }
-  //   return { userCredentials, setCredentials, userSession, setSession }
-}
-
 const { Provider } = ApolloContext
 
 export const ApolloProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  //   const { userCredentials, setCredentials, userSession, setSession } = useAuthHandler()
-
   const httpLink = createHttpLink({
     uri: 'http://localhost:5000/graphql',
   })
