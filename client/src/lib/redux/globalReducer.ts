@@ -4,14 +4,14 @@ import { IAction } from './rootReducer'
 
 export interface IGlobalState {
   hotkeysEnabled: boolean
-  themeMode: string
+  themeType: string
   language: string
   menuOpen: boolean
 }
 
 export enum GlobalActions {
   setHotkeysEnabled = 'setHotkeysEnabled',
-  setThemeMode = 'setThemeMode',
+  setThemeType = 'setThemeType',
   setLanguage = 'setLanguage',
   setMenuOpen = 'setMenuOpen',
 }
@@ -20,7 +20,7 @@ const localStateName = 'IGlobalState'
 
 const initial_state: IGlobalState = {
   hotkeysEnabled: true,
-  themeMode: 'light',
+  themeType: 'light',
   menuOpen: false,
   language: i18n.language || i18n.languages ? i18n.languages[0] : 'nl',
   ...getLocalItem<IGlobalState>(localStateName) as object,
@@ -37,10 +37,10 @@ export const globalReducer = (state: IGlobalState = initial_state, action: IActi
         hotkeysEnabled: payload,
       }
       break
-    case GlobalActions.setThemeMode:
+    case GlobalActions.setThemeType:
       newState = {
         ...state,
-        themeMode: payload,
+        themeType: payload,
       }
       break
     case GlobalActions.setLanguage:

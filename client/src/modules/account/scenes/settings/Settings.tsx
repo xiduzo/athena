@@ -28,11 +28,11 @@ export const Settings: FC = () => {
       ...theme,
       palette: {
         ...theme.palette,
-        type: globalState.themeMode === 'dark' ? 'light' : 'dark',
+        type: globalState.themeType === 'dark' ? 'light' : 'dark',
       },
     }
     dispatch({
-      type: GlobalActions.setThemeMode,
+      type: GlobalActions.setThemeType,
       payload: newTheme.palette.type,
     })
     setTheme(newTheme as ThemeOptions)
@@ -55,7 +55,7 @@ export const Settings: FC = () => {
     })
   }
 
-  const { hotkeysEnabled, language, themeMode } = globalState
+  const { hotkeysEnabled, language, themeType: themeMode } = globalState
 
   return (
     <Container maxWidth='lg'>

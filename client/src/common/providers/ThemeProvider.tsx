@@ -16,14 +16,14 @@ interface IThemeContext {
 }
 
 type ThemeType = 'dark' | 'light'
-const localThemeStyleValue = getLocalItem<IGlobalState>(`IGlobalState`)
-const localThemeStyle = !isNull(localThemeStyleValue) ? localThemeStyleValue.themeMode as ThemeType : undefined
+const localValue = getLocalItem<IGlobalState>(`IGlobalState`)
+const localThemeType = !isNull(localValue) ? localValue.themeType as ThemeType : undefined
 
 const initialTheme: ThemeOptions = {
   palette: {
     primary: primaryColor,
     secondary: secondaryColor,
-    type: localThemeStyle,
+    type: localThemeType,
   },
 }
 
@@ -31,6 +31,8 @@ const ThemeContext = createContext<IThemeContext>({
   theme: initialTheme,
   setTheme: (_: ThemeOptions) => {},
 })
+
+const generateTheme = (options: ThemeOptions): Theme => createMuiTheme(options)
 
 const generateHighchartsTheme = (theme: Theme): Highcharts.Options => {
   const isDarkMode = theme.palette.type === 'dark' ? true : false
@@ -240,6 +242,7 @@ const generateHighchartsTheme = (theme: Theme): Highcharts.Options => {
 
 const useThemeHandler = () => {
   const [ theme, setNewTheme ] = useState<ThemeOptions>(initialTheme)
+
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
   const dispatch = useDispatch<DispatchAction>()
@@ -248,7 +251,7 @@ const useThemeHandler = () => {
     (newTheme: ThemeOptions) => {
       if (newTheme.palette && newTheme.palette.type) {
         dispatch({
-          type: GlobalActions.setThemeMode,
+          type: GlobalActions.setThemeType,
           payload: newTheme.palette.type,
         })
       }
@@ -269,9 +272,8 @@ const useThemeHandler = () => {
   useEffect(
     () => {
       if (!prefersDarkMode) return
-
       // Let's get the user comfortable, shall we
-      const styleToUse = localThemeStyle ? localThemeStyle : prefersDarkMode ? 'dark' : 'light'
+      const styleToUse = localThemeType ? localThemeType : prefersDarkMode ? 'dark' : 'light'
       setTheme({
         palette: {
           ...theme.palette,
@@ -279,16 +281,14 @@ const useThemeHandler = () => {
         },
       })
     },
-    [ prefersDarkMode, setTheme ] // TODO fix the inclusion of theme.palette
+    [ prefersDarkMode, setTheme ] // @ts-ignore // TODO fix the inclusion of theme.palette
   )
 
   return { theme, setTheme, setHighChart }
 }
 
-const { Provider } = ThemeContext
-
-const generateTheme = (options: ThemeOptions): Theme => createMuiTheme(options)
 export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const { Provider } = ThemeContext
   const { theme, setTheme, setHighChart } = useThemeHandler()
 
   // Mui theme
