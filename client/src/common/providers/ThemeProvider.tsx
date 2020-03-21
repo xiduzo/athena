@@ -7,7 +7,8 @@ import { useMediaQuery } from '@material-ui/core'
 import { isNull } from 'util'
 import { useDispatch } from 'react-redux'
 import { DispatchAction } from 'src/lib/redux/rootReducer'
-import { GlobalActions } from 'src/lib/redux/globalReducer'
+import { GlobalActions, IGlobalState } from 'src/lib/redux/globalReducer'
+import { getLocalItem } from '../utils/offlineManager'
 
 interface IThemeContext {
   theme: ThemeOptions
@@ -15,9 +16,8 @@ interface IThemeContext {
 }
 
 type ThemeType = 'dark' | 'light'
-const localThemeStyleValue = localStorage.getItem('themeStyle')
-console.log(localThemeStyleValue)
-const localThemeStyle = !isNull(localThemeStyleValue) ? localThemeStyleValue as ThemeType : undefined
+const localThemeStyleValue = getLocalItem<IGlobalState>(`IGlobalState`)
+const localThemeStyle = !isNull(localThemeStyleValue) ? localThemeStyleValue.themeMode as ThemeType : undefined
 
 const initialTheme: ThemeOptions = {
   palette: {
@@ -269,7 +269,6 @@ const useThemeHandler = () => {
 
       // Let's get the user comfortable, shall we
       const styleToUse = localThemeStyle ? localThemeStyle : prefersDarkMode ? 'dark' : 'light'
-      console.log(localThemeStyle, prefersDarkMode, styleToUse)
       setTheme({
         palette: {
           ...theme.palette,
