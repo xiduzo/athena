@@ -41,28 +41,29 @@ export const TribeDetailRoute: FC = () => {
   const [ squadModalOpen, setSquadModalOpen ] = useState(false)
   const [ userModalOpen, setUserModalOpen ] = useState(false)
 
-  const [ pageQuery ] = useState(gql`
-    query Tribe($id: String!) {
-      Tribe(filter: { id: $id }) {
-        id
-        name
-        squads {
+  const { loading, error, data, refetch } = useQuery(
+    gql`
+      query Tribe($id: String!) {
+        Tribe(filter: { id: $id }) {
           id
           name
-        }
-        leaders {
-          id
-          displayName
+          squads {
+            id
+            name
+          }
+          leaders {
+            id
+            displayName
+          }
         }
       }
+    `,
+    {
+      variables: {
+        id,
+      },
     }
-  `)
-
-  const { loading, error, data, refetch } = useQuery(pageQuery, {
-    variables: {
-      id,
-    },
-  })
+  )
 
   const [ AddTribeLeaders ] = useMutation(ADD_TRIBE_LEADER)
   const [ RemoveTribeLeaders ] = useMutation(REMOVE_TRIBE_LEADER)

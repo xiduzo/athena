@@ -11,7 +11,7 @@ import * as Highcharts from 'highcharts'
 import more from 'highcharts/highcharts-more'
 
 import { Provider as StoreProvider } from 'react-redux'
-import { store } from './lib/redux'
+import { store } from './common/redux'
 
 Amplify.configure(awsConfig)
 

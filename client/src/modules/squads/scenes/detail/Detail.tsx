@@ -36,41 +36,42 @@ export const SquadDetailRoute: FC = () => {
 
   const [ agreementsModalOpen, setAgreementsModalOpen ] = useState(false)
 
-  const [ pageQuery ] = useState(gql`
-    query Squad($id: String!) {
-      Squad(filter: { id: $id }) {
-        id
-        name
-        members {
+  const { loading, error, data, refetch } = useQuery(
+    gql`
+      query Squad($id: String!) {
+        Squad(filter: { id: $id }) {
           id
-          displayName
-        }
-        agreements {
-          id
-          type
-          parent {
+          name
+          members {
             id
+            displayName
           }
-          translations {
-            language
-            text
+          agreements {
+            id
+            type
+            parent {
+              id
+            }
+            translations {
+              language
+              text
+            }
           }
         }
       }
+    `,
+    {
+      variables: {
+        id,
+      },
     }
-  `)
+  )
 
   const [ AddSquadAgreements ] = useMutation(ADD_SQUAD_AGREEMENT)
   const [ RemoveSquadAgreements ] = useMutation(REMOVE_SQUAD_AGREEMENT)
   const [ AddAgreementTranslations ] = useMutation(ADD_AGREEMENT_TRANSLATION)
   const [ CreateAgreement ] = useMutation(CREATE_AGREEMENT)
   const [ AddAgreementParent ] = useMutation(ADD_AGREEMENT_PARENT)
-
-  const { loading, error, data, refetch } = useQuery(pageQuery, {
-    variables: {
-      id,
-    },
-  })
 
   const toggleAgreementsModal = () => setAgreementsModalOpen(!agreementsModalOpen)
 

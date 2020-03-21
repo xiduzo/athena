@@ -14,8 +14,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from 'src/common/providers/ThemeProvider'
 import { FeedbackPointsGraph } from 'src/components/Atoms/graphs'
 import { supportedLanguages } from 'src/i18n'
-import { GlobalActions } from 'src/lib/redux/globalReducer'
-import { DispatchAction, IRootReducer } from 'src/lib/redux/rootReducer'
+import { GlobalActions } from 'src/common/redux/globalReducer'
+import { DispatchAction, IRootReducer } from 'src/common/redux/rootReducer'
 
 export const Settings: FC = () => {
   const { theme, setTheme } = useTheme()

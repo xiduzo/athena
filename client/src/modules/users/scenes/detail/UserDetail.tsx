@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { IUser } from 'src/lib/interfaces'
 import { useParams } from 'react-router'
-import { GetUserById } from 'src/lib/api'
 import { Container, Grid, Paper, makeStyles, Theme, Typography } from '@material-ui/core'
 import { Avataaar } from 'src/components/Atoms/Avataaar'
 
@@ -32,18 +31,6 @@ export const UserDetailRoute: FC = () => {
   const [ user, setUser ] = useState<IUser>()
 
   const { id } = useParams<IUserDetailRouteParams>()
-
-  useEffect(
-    () => {
-      GetUserById(id)
-        .then((response: IUser) => {
-          setUser(response)
-          console.log(response)
-        })
-        .catch((error) => console.log(error))
-    },
-    [ id ]
-  )
 
   return (
     <section className={classes.root}>

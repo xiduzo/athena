@@ -6,8 +6,8 @@ import * as Highcharts from 'highcharts'
 import { useMediaQuery } from '@material-ui/core'
 import { isNull } from 'util'
 import { useDispatch } from 'react-redux'
-import { DispatchAction } from 'src/lib/redux/rootReducer'
-import { GlobalActions, IGlobalState } from 'src/lib/redux/globalReducer'
+import { DispatchAction } from 'src/common/redux/rootReducer'
+import { GlobalActions, IGlobalState } from 'src/common/redux/globalReducer'
 import { getLocalItem } from '../utils/offlineManager'
 
 interface IThemeContext {

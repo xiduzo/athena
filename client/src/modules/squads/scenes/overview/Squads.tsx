@@ -32,7 +32,7 @@ export const SquadsRoute: FC = () => {
 
   const [ modalOpen, setModalOpen ] = useState(false)
 
-  const [ pageQuery ] = useState(gql`
+  const { loading, error, data, refetch } = useQuery(gql`
     query {
       Squad {
         id
@@ -40,8 +40,6 @@ export const SquadsRoute: FC = () => {
       }
     }
   `)
-
-  const { loading, error, data, refetch } = useQuery(pageQuery)
 
   const location = useLocation()
   const history = useHistory()

@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import gql from 'graphql-tag'
 import { NewTribeModal } from './components/NewTribeModal'
 import { useSelector } from 'react-redux'
-import { IRootReducer } from 'src/lib/redux/rootReducer'
+import { IRootReducer } from 'src/common/redux/rootReducer'
 import { and, useHotkeys } from 'src/common/hooks/useHotkeys'
 import { Key } from 'src/lib/enums/Key'
 
@@ -38,7 +38,7 @@ export const TribesRoute: FC = () => {
   const hotkeysEnabled = useSelector((state: IRootReducer) => state.global.hotkeysEnabled)
   const newTribeHotkey = and([ useHotkeys(Key.Alt), useHotkeys(Key.N) ])
 
-  const [ pageQuery ] = useState(gql`
+  const { loading, error, data, refetch } = useQuery(gql`
     query {
       Tribe {
         id
@@ -46,8 +46,6 @@ export const TribesRoute: FC = () => {
       }
     }
   `)
-
-  const { loading, error, data, refetch } = useQuery(pageQuery)
 
   const location = useLocation()
   const history = useHistory()

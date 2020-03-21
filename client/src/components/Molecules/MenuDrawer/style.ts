@@ -40,6 +40,13 @@ export const useStyles = makeStyles((theme: Theme) => {
     flex: {
       flexGrow: 1,
       overflow: 'hidden',
+      overflowY: 'scroll',
+      overflowX: 'hidden',
+      height: 'inherit',
+      maxHeight: '100%',
+      '&::-webkit-scrollbar': {
+        display: 'none',
+      },
     },
     drawerToggleButton: {
       display: 'flex',

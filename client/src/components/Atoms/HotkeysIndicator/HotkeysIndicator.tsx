@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { makeStyles, Theme, Hidden, Tooltip, Icon } from '@material-ui/core'
 import { useSelector } from 'react-redux'
-import { IRootReducer } from 'src/lib/redux/rootReducer'
+import { IRootReducer } from 'src/common/redux/rootReducer'
 import { green, red } from '@material-ui/core/colors'
 import KeyboardIcon from '@material-ui/icons/Keyboard'
 

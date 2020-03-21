@@ -35,7 +35,7 @@ import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
 import { AgreementType } from 'src/lib/enums'
 import { Key } from 'src/lib/enums/Key'
 import { IAgreement } from 'src/lib/interfaces'
-import { IRootReducer } from 'src/lib/redux/rootReducer'
+import { IRootReducer } from 'src/common/redux/rootReducer'
 import { NewAgreementModal } from './components/newAgreementModal'
 
 const drawerWidth = '20vw'
@@ -83,28 +83,30 @@ export const AgreementsRoute: FC = () => {
 
   const [ modalOpen, setModalOpen ] = useState(false)
   const [ filters, setFilters ] = useState(initFilters)
-  const [ pageQuery ] = useState(gql`
-    query {
-      Agreement(filter: { isBase: true }) {
-        id
-        points
-        type
-        translations {
+
+  const { loading, error, data, refetch } = useQuery(
+    gql`
+      query {
+        Agreement(filter: { isBase: true }) {
           id
-          language
-          text
+          points
+          type
+          translations {
+            id
+            language
+            text
+          }
         }
       }
-    }
-  `)
-
-  const { loading, error, data, refetch } = useQuery(pageQuery, {
-    variables: {
-      filter: {
-        isBase: true,
+    `,
+    {
+      variables: {
+        filter: {
+          isBase: true,
+        },
       },
-    },
-  })
+    }
+  )
 
   const [ DeleteAgreement ] = useMutation(DELETE_AGREEMENT)
 
