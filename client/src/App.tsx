@@ -50,8 +50,8 @@ const App: React.FC = () => {
       >
         <SnackbarUtilsConfiguration />
         <div className={classes.root}>
-          <AuthProvider>
-            <ApolloProvider>
+          <ApolloProvider>
+            <AuthProvider>
               <CssBaseline />
               <Suspense fallback={'loading'}>
                 <Router>
@@ -66,8 +66,8 @@ const App: React.FC = () => {
                   </main>
                 </Router>
               </Suspense>
-            </ApolloProvider>
-          </AuthProvider>
+            </AuthProvider>
+          </ApolloProvider>
         </div>
       </SnackbarProvider>
     </ThemeProvider>

@@ -58,7 +58,7 @@ export const UserDetailRoute: FC = () => {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Typography variant='h4' align='center'>
-                      {`${user.first_name} ${user.surname_prefix || ''} ${user.surname}`}
+                      {user.displayName}
                     </Typography>
                   </Grid>
                 </Grid>

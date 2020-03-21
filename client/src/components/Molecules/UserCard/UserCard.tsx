@@ -21,11 +21,10 @@ export const UserCard: FC<IUserCard> = ({ user, onClick }) => {
           title={
             <Typography>
               <Box fontWeight={600} component={'span'}>
-                {user.first_name} {user.surname_prefix || ''} {user.surname}
+                {user.displayName}
               </Box>
             </Typography>
           }
-          subheader={`${user.is_superuser && 'admin'} ${user.is_staff && 'lecturer'} ${!user.is_staff && 'student'}`}
         />
       </CardActionArea>
     </Card>
