@@ -31,7 +31,7 @@ export interface IRoute {
 const coordinatorRoutes: IRoute[] = [
   {
     name: 'agreements',
-    path: '/agreements',
+    path: '/agreement',
     icon: MenuBookIcon,
     component: AgreementsRoute,
     private: true,

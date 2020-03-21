@@ -2,12 +2,14 @@ import { Divider, Drawer, Icon, List, ListItem, ListItemIcon, ListItemText, Tool
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import clsx from 'clsx'
-import React, { FC, forwardRef, useState } from 'react'
+import React, { FC, forwardRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import { LinkProps, NavLink } from 'react-router-dom'
 import { useWidth } from 'src/common/hooks/useWidth'
 import { useAuth } from 'src/common/providers/AuthProvider'
-import { getLocalItem, setLocalItem } from 'src/common/utils/offlineManager'
+import { GlobalActions } from 'src/lib/redux/globalReducer'
+import { DispatchAction, IRootReducer } from 'src/lib/redux/rootReducer'
 import { IRoute, routes } from '../../Routes/links'
 import { useStyles } from './style'
 
@@ -22,16 +24,19 @@ export const MenuDrawer: FC = () => {
   const width = useWidth()
   const { userSession } = useAuth()
 
-  const localStorageKey = 'menuState'
-
-  const [ menuOpen, setMenuOpen ] = useState<boolean>(getLocalItem<boolean>(localStorageKey) || false)
+  const globalState = useSelector((state: IRootReducer) => state.global)
+  const dispatch = useDispatch<DispatchAction>()
 
   const toggleMenuDrawer = () => {
-    setLocalItem<boolean>(localStorageKey, !menuOpen)
-    setMenuOpen(!menuOpen)
+    dispatch({
+      type: GlobalActions.setMenuOpen,
+      payload: !globalState.menuOpen,
+    })
   }
 
   if (!userSession) return null
+
+  const { menuOpen } = globalState
   return (
     <Drawer
       variant={width !== 'xs' ? 'permanent' : 'temporary'}

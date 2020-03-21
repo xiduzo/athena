@@ -17,6 +17,8 @@ import { TribeCardMock } from 'src/components/Molecules/TribeCard'
 import { UserCard } from 'src/components/Molecules/UserCard'
 import { ISquad, IUser } from 'src/lib/interfaces'
 import { SquadsSelector } from './components/SquadSelector'
+import { UserSelector } from './components/UserSelector'
+import { ADD_TRIBE_LEADER, REMOVE_TRIBE_LEADER } from 'src/common/services/userService'
 
 interface ITribeDetailRouteParams {
   id: string
@@ -37,6 +39,7 @@ export const TribeDetailRoute: FC = () => {
   const { t } = useTranslation()
 
   const [ squadModalOpen, setSquadModalOpen ] = useState(false)
+  const [ userModalOpen, setUserModalOpen ] = useState(false)
 
   const [ pageQuery ] = useState(gql`
     query Tribe($id: String!) {
@@ -61,12 +64,48 @@ export const TribeDetailRoute: FC = () => {
     },
   })
 
+  const [ AddTribeLeaders ] = useMutation(ADD_TRIBE_LEADER)
+  const [ RemoveTribeLeaders ] = useMutation(REMOVE_TRIBE_LEADER)
+
   const [ AddTribeSquads ] = useMutation(ADD_TRIBE_SQUAD)
   const [ RemoveTribeSquads ] = useMutation(REMOVE_TRIBE_SQUAD)
 
   const history = useHistory()
 
-  const gotoSquad = (squadId: string) => history.push(`/squads/${squadId}`)
+  //#region User
+  const gotoUser = (user: IUser) => history.push(`/users/${user.id}`)
+  const toggleUserModal = () => setUserModalOpen(!userModalOpen)
+
+  const createTribeLeadersMutation = (user: IUser) => ({
+    variables: {
+      from: {
+        id: user.id,
+      },
+      to: {
+        id: id,
+      },
+    },
+  })
+
+  const onUserModalCloseHandler = async (users?: IUser[]) => {
+    toggleUserModal()
+    if (!users) return
+
+    await asyncForEach(users, async (user: IUser) => {
+      await AddTribeLeaders(createTribeLeadersMutation(user))
+    })
+
+    refetch()
+  }
+
+  const removeUserHandler = async (user: IUser) => {
+    await RemoveTribeLeaders(createTribeLeadersMutation(user))
+  }
+
+  //#endregion
+
+  //#region Squads
+  const gotoSquad = (squad: ISquad) => history.push(`/squads/${squad.id}`)
 
   const toggleSquadModal = () => setSquadModalOpen(!squadModalOpen)
 
@@ -75,10 +114,10 @@ export const TribeDetailRoute: FC = () => {
 
     if (!squads) return
 
-    await asyncForEach(squads || [], async (squad: ISquad) => {
+    await asyncForEach(squads, async (squad: ISquad) => {
       await AddTribeSquads({
         variables: {
-          from: { id: squad.id },
+          from: squad,
           to: { id: id },
         },
       })
@@ -101,6 +140,7 @@ export const TribeDetailRoute: FC = () => {
 
     refetch()
   }
+  //#endregion
 
   return (
     <section className={classes.root}>
@@ -128,17 +168,36 @@ export const TribeDetailRoute: FC = () => {
               </Grid>
               {data.Tribe[0].leaders.map((user: IUser) => (
                 <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
-                  <UserCard user={user} />
+                  <UserCard
+                    user={user}
+                    // onLeftClick={() => gotoUser(user)}
+                    // onRightClickItems={
+                    //   <Box>
+                    //     <MenuItem onClick={() => removeUserHandler(user)}>
+                    //       <Typography color='error'>Remove user</Typography>
+                    //     </MenuItem>
+                    //   </Box>
+                    // }
+                  />
                 </Grid>
               ))}
+              <UserSelector
+                title={`user modal ${data.Tribe[0].name}`}
+                without={data.Tribe[0].leaders}
+                isOpen={userModalOpen}
+                onClose={onUserModalCloseHandler}
+              />
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <AddCard onClick={toggleUserModal} />
+              </Grid>
               <Grid item xs={12}>
                 <Typography variant='h5'>{t('squads')}</Typography>
               </Grid>
               {data.Tribe[0].squads.map((squad: ISquad) => (
                 <Grid key={squad.id} item xs={12} sm={6} md={4} lg={3}>
                   <SquadCard
-                    onLeftClick={() => gotoSquad(squad.id)}
                     squad={squad}
+                    onLeftClick={() => gotoSquad(squad)}
                     onRightClickItems={
                       <Box>
                         <MenuItem onClick={() => removeSquadHandler(squad)}>

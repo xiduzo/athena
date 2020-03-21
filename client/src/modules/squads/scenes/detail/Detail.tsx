@@ -149,8 +149,6 @@ export const SquadDetailRoute: FC = () => {
       .catch(generalCatchHandler)
 
     refetch()
-    // if (squad)
-    // dispatch(updateSquad(squad, { agreements: squad.agreements.filter((agreement) => agreement !== agreementId) }))
   }
 
   return (

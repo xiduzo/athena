@@ -1,7 +1,7 @@
 import { amber as primaryColor, grey as secondaryColor, deepPurple, teal, pink, lime } from '@material-ui/core/colors'
 import { createMuiTheme, MuiThemeProvider, Theme, fade, lighten, darken } from '@material-ui/core/styles'
 import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
-import React, { createContext, FC, ReactNode, useContext, useState, useEffect } from 'react'
+import React, { createContext, FC, ReactNode, useContext, useState, useEffect, useCallback } from 'react'
 import * as Highcharts from 'highcharts'
 import { useMediaQuery } from '@material-ui/core'
 import { isNull } from 'util'
@@ -244,20 +244,23 @@ const useThemeHandler = () => {
 
   const dispatch = useDispatch<DispatchAction>()
 
-  const setTheme = (newTheme: ThemeOptions) => {
-    if (newTheme.palette && newTheme.palette.type) {
-      dispatch({
-        type: GlobalActions.setThemeMode,
-        payload: newTheme.palette.type,
-      })
-    }
+  const setTheme = useCallback(
+    (newTheme: ThemeOptions) => {
+      if (newTheme.palette && newTheme.palette.type) {
+        dispatch({
+          type: GlobalActions.setThemeMode,
+          payload: newTheme.palette.type,
+        })
+      }
 
-    // React mui
-    setNewTheme(newTheme)
+      // React mui
+      setNewTheme(newTheme)
 
-    // Highcharts
-    setHighChart(generateTheme(newTheme))
-  }
+      // Highcharts
+      setHighChart(generateTheme(newTheme))
+    },
+    [ dispatch ]
+  )
 
   const setHighChart = (generatedTheme: Theme) => {
     Highcharts.setOptions(generateHighchartsTheme(generatedTheme))
@@ -276,7 +279,7 @@ const useThemeHandler = () => {
         },
       })
     },
-    [ prefersDarkMode ]
+    [ prefersDarkMode, setTheme ] // TODO fix the inclusion of theme.palette
   )
 
   return { theme, setTheme, setHighChart }

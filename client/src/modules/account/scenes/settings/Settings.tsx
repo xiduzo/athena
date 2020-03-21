@@ -1,29 +1,41 @@
-import React, { FC, useState, useEffect } from 'react'
-import { Container, Paper, FormControl, InputLabel, Select, MenuItem, Grid, Switch } from '@material-ui/core'
-
-import i18n from 'i18next'
-import { supportedLanguages } from 'src/i18n'
+import {
+  Container,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Switch,
+  ThemeOptions,
+} from '@material-ui/core'
+import React, { FC } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from 'src/common/providers/ThemeProvider'
 import { FeedbackPointsGraph } from 'src/components/Atoms/graphs'
-import { useSelector, useDispatch } from 'react-redux'
-import { IRootReducer, DispatchAction } from 'src/lib/redux/rootReducer'
+import { supportedLanguages } from 'src/i18n'
 import { GlobalActions } from 'src/lib/redux/globalReducer'
-
-// export const useStyles = makeStyles((_: Theme) => ({
-// }))
+import { DispatchAction, IRootReducer } from 'src/lib/redux/rootReducer'
 
 export const Settings: FC = () => {
-  // const { classes } = useStyles()
   const { theme, setTheme } = useTheme()
 
   const globalState = useSelector((state: IRootReducer) => state.global)
   const dispatch = useDispatch<DispatchAction>()
 
-  const [ selectedLanguage, setSelectedLanguage ] = useState<string>(i18n.language)
-
   const toggleDarkMode = (): void => {
-    const newThemeStyle = globalState.themeMode === 'dark' ? 'light' : 'dark'
-    setTheme({ palette: { ...theme.palette, type: newThemeStyle } })
+    const newTheme = {
+      ...theme,
+      palette: {
+        ...theme.palette,
+        type: globalState.themeMode === 'dark' ? 'light' : 'dark',
+      },
+    }
+    dispatch({
+      type: GlobalActions.setThemeMode,
+      payload: newTheme.palette.type,
+    })
+    setTheme(newTheme as ThemeOptions)
   }
 
   const toggleHotkeys = () => {
@@ -37,24 +49,13 @@ export const Settings: FC = () => {
     const { target } = event
     const { value } = target
 
-    console.log(value)
     dispatch({
       type: GlobalActions.setLanguage,
       payload: value,
     })
-
-    setSelectedLanguage(value)
-    i18n.changeLanguage(value)
   }
 
-  useEffect(
-    () => {
-      if (!i18n.language && selectedLanguage) return
-
-      setSelectedLanguage(i18n.language)
-    },
-    [ selectedLanguage ]
-  )
+  const { hotkeysEnabled, language, themeMode } = globalState
 
   return (
     <Container maxWidth='lg'>
@@ -63,17 +64,17 @@ export const Settings: FC = () => {
           <Paper>
             <FormControl>
               <InputLabel id='language-select'>Language</InputLabel>
-              <Select value={selectedLanguage || 'en'} onChange={changeLanguage}>
+              <Select value={language} onChange={changeLanguage}>
                 {supportedLanguages &&
-                  supportedLanguages.map((language) => (
-                    <MenuItem value={language} key={language}>
-                      {language}
+                  supportedLanguages.map((supportedLanguage) => (
+                    <MenuItem value={supportedLanguage} key={supportedLanguage}>
+                      {supportedLanguage}
                     </MenuItem>
                   ))}
               </Select>
             </FormControl>
-            <Switch color='primary' checked={globalState.hotkeysEnabled} onChange={toggleHotkeys} />
-            <Switch checked={globalState.themeMode === 'dark'} onChange={toggleDarkMode} />
+            <Switch color='primary' checked={hotkeysEnabled} onChange={toggleHotkeys} />
+            <Switch checked={themeMode === 'dark'} onChange={toggleDarkMode} />
           </Paper>
         </Grid>
         <Grid item xs={12}>

@@ -46,9 +46,9 @@ const useAuthHandler = () => {
           ...userInfo,
           email: attributes['email'] || null,
           identityProviderReference: attributes['custom:ipReferenceNumber'] || null,
-          displayName: attributes['custom:displayName'] || attributes['email'], // Need to add this to users when sign up
+          displayName: attributes['custom:displayName'] || attributes['email'], // TODO Need to add this to users when sign up
         }
-        console.log(user)
+
         MergeUser({
           variables: {
             ...user,
