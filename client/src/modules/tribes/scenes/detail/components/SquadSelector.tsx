@@ -1,13 +1,10 @@
-import React, { FC, useState, useEffect } from 'react'
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@material-ui/core'
-import Autocomplete from '@material-ui/lab/Autocomplete'
-import { useSelector, useDispatch } from 'react-redux'
-import { ISquad } from 'src/lib/interfaces'
-import { getSquads } from 'src/lib/api'
-import { useWidth } from 'src/common/hooks/useWidth'
-import { IRootReducer, DispatchAction } from 'src/lib/redux/rootReducer'
 import { useQuery } from '@apollo/react-hooks'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
+import Autocomplete from '@material-ui/lab/Autocomplete'
 import gql from 'graphql-tag'
+import React, { FC, useState } from 'react'
+import { useWidth } from 'src/common/hooks/useWidth'
+import { ISquad } from 'src/lib/interfaces'
 
 interface ISquadSelectorModal {
   title: string

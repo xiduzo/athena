@@ -1,1 +1,1 @@
-export * from './SettingsRoute'
+export * from './Settings'

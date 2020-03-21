@@ -1,39 +1,37 @@
-import React, { FC, forwardRef, useState } from 'react'
+import { useMutation } from '@apollo/react-hooks'
 import {
-  Slider,
-  Dialog,
   AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
   Button,
-  makeStyles,
-  Theme,
   Container,
-  Grid,
-  TextField,
+  Dialog,
   FormControl,
-  FormLabel,
-  RadioGroup,
   FormControlLabel,
+  FormLabel,
+  Grid,
+  IconButton,
+  makeStyles,
   Radio,
-  Hidden,
+  RadioGroup,
+  Slider,
+  TextField,
+  Theme,
+  Toolbar,
+  Typography,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
-import { useForm } from 'react-hook-form'
-import { AgreementType } from 'src/lib/enums'
-import { IAgreement, ITranslation } from 'src/lib/interfaces'
-import { supportedLanguages } from 'src/i18n'
-import { useMutation } from '@apollo/react-hooks'
 import { ApolloError } from 'apollo-errors'
-import { CREATE_TRANSLATION, ADD_AGREEMENT_TRANSLATION, CREATE_AGREEMENT } from 'src/common/services/agreementService'
-import { v4 as uuid } from 'uuid'
+import React, { FC, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { ADD_AGREEMENT_TRANSLATION, CREATE_AGREEMENT, CREATE_TRANSLATION } from 'src/common/services/agreementService'
 import { asyncForEach } from 'src/common/utils/asyncForEach'
 import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
-import { useTranslation } from 'react-i18next'
 import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
 import { SlideUp } from 'src/components/Atoms/Transitions/SlideUp'
-import { IModalBase } from 'src/lib/interfaces'
+import { supportedLanguages } from 'src/i18n'
+import { AgreementType } from 'src/lib/enums'
+import { IAgreement, IModalBase, ITranslation } from 'src/lib/interfaces'
+import { v4 as uuid } from 'uuid'
 
 interface INewAgreementModal extends IModalBase {}
 

@@ -46,6 +46,7 @@ const useAuthHandler = () => {
           ...userInfo,
           email: attributes['email'] || null,
           identityProviderReference: attributes['custom:ipReferenceNumber'] || null,
+          displayName: attributes['custom:displayName'] || attributes['email'], // Need to add this to users when sign up
         }
         console.log(user)
         MergeUser({
@@ -57,7 +58,7 @@ const useAuthHandler = () => {
 
       mergeUserToDatabase()
     },
-    [ userSession, userCredentials ]
+    [ userSession, userCredentials, MergeUser ]
   )
 
   return { userCredentials, setCredentials, userSession, setSession }

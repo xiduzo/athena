@@ -1,16 +1,24 @@
 import { amber as primaryColor, grey as secondaryColor, deepPurple, teal, pink, lime } from '@material-ui/core/colors'
 import { createMuiTheme, MuiThemeProvider, Theme, fade, lighten, darken } from '@material-ui/core/styles'
 import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
-import React, { createContext, FC, ReactNode, useContext, useState } from 'react'
+import React, { createContext, FC, ReactNode, useContext, useState, useEffect } from 'react'
 import * as Highcharts from 'highcharts'
 import { useMediaQuery } from '@material-ui/core'
+import { isNull } from 'util'
+import { useDispatch } from 'react-redux'
+import { DispatchAction } from 'src/lib/redux/rootReducer'
+import { GlobalActions } from 'src/lib/redux/globalReducer'
 
 interface IThemeContext {
   theme: ThemeOptions
   setTheme: (theme: ThemeOptions) => void
 }
 
-const localThemeStyle = localStorage.getItem('themeStyle') === 'dark' ? 'dark' : 'light'
+type ThemeType = 'dark' | 'light'
+const localThemeStyleValue = localStorage.getItem('themeStyle')
+console.log(localThemeStyleValue)
+const localThemeStyle = !isNull(localThemeStyleValue) ? localThemeStyleValue as ThemeType : undefined
+
 const initialTheme: ThemeOptions = {
   palette: {
     primary: primaryColor,
@@ -234,8 +242,15 @@ const useThemeHandler = () => {
   const [ theme, setNewTheme ] = useState<ThemeOptions>(initialTheme)
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
+  const dispatch = useDispatch<DispatchAction>()
+
   const setTheme = (newTheme: ThemeOptions) => {
-    if (newTheme.palette && newTheme.palette.type) localStorage.setItem('themeStyle', newTheme.palette.type as string)
+    if (newTheme.palette && newTheme.palette.type) {
+      dispatch({
+        type: GlobalActions.setThemeMode,
+        payload: newTheme.palette.type,
+      })
+    }
 
     // React mui
     setNewTheme(newTheme)
@@ -247,6 +262,23 @@ const useThemeHandler = () => {
   const setHighChart = (generatedTheme: Theme) => {
     Highcharts.setOptions(generateHighchartsTheme(generatedTheme))
   }
+
+  useEffect(
+    () => {
+      if (!prefersDarkMode) return
+
+      // Let's get the user comfortable, shall we
+      const styleToUse = localThemeStyle ? localThemeStyle : prefersDarkMode ? 'dark' : 'light'
+      console.log(localThemeStyle, prefersDarkMode, styleToUse)
+      setTheme({
+        palette: {
+          ...theme.palette,
+          type: styleToUse,
+        },
+      })
+    },
+    [ prefersDarkMode ]
+  )
 
   return { theme, setTheme, setHighChart }
 }

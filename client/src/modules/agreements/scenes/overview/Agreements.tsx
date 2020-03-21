@@ -19,25 +19,24 @@ import {
   Zoom,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
+import gql from 'graphql-tag'
 import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { DELETE_AGREEMENT, DELETE_TRANSLATION } from 'src/common/services/agreementService'
-import { asyncForEach } from 'src/common/utils/asyncForEach'
+import { and, useHotkeys } from 'src/common/hooks/useHotkeys'
+import { DELETE_AGREEMENT } from 'src/common/services/agreementService'
 import { createFilter } from 'src/common/utils/createFilter'
+import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
+import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
 import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
 import { AgreementCard, AgreementCardMock } from 'src/components/Molecules/AgreementCard'
 import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
 import { AgreementType } from 'src/lib/enums'
 import { Key } from 'src/lib/enums/Key'
-import { and, useHotkeys } from 'src/common/hooks/useHotkeys'
+import { IAgreement } from 'src/lib/interfaces'
 import { IRootReducer } from 'src/lib/redux/rootReducer'
-import { IAgreement, ITranslation } from 'src/lib/interfaces'
 import { NewAgreementModal } from './components/newAgreementModal'
-import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
-import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
-import gql from 'graphql-tag'
 
 const drawerWidth = '20vw'
 const useStyles = makeStyles((theme: Theme) => ({
@@ -107,7 +106,6 @@ export const AgreementsRoute: FC = () => {
     },
   })
 
-  const [ DeleteTranslation ] = useMutation(DELETE_TRANSLATION)
   const [ DeleteAgreement ] = useMutation(DELETE_AGREEMENT)
 
   const hotkeysEnabled = useSelector((state: IRootReducer) => state.global.hotkeysEnabled)

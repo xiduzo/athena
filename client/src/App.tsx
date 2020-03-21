@@ -10,6 +10,7 @@ import { AuthProvider } from './common/providers/AuthProvider'
 import { SnackbarProvider } from 'notistack'
 import { SnackbarUtilsConfiguration } from './common/utils/snackbarWrapper'
 import { ApolloProvider } from './common/providers/ApolloProvider'
+import { TopType } from './components/Atoms/Avataaar/enums/TopType'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -37,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) => {
 
 const App: React.FC = () => {
   const classes = useStyles()
+  console.log(TopType['NoHair'])
 
   return (
     <ThemeProvider>

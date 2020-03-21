@@ -5,14 +5,14 @@ export const MERGE_USER = gql`
     $id: String!
     $email: String
     $displayName: String
-    $avatarHash: String
+    $avatarStyle: String
     $identityProviderReferenceNumber: String
   ) {
     MergeUser(
       id: $id
       email: $email
       displayName: $displayName
-      avatarHash: $avatarHash
+      avatarStyle: $avatarStyle
       identityProviderReferenceNumber: $identityProviderReferenceNumber
     ) {
       id

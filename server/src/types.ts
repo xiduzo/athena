@@ -22,7 +22,7 @@ export const typeDefs = `
     id: String!
     email: String!
     displayName: String!
-    avatarHash: String!
+    avatarStyle: String!
     identityProviderReferenceNumber: String!
     squads: [Squad] @relation(name: "IS_MEMBER_OF", direction: "OUT")
     tribes: [Tribe] @relation(name: "IS_LEADER_OF", direction: "OUT")

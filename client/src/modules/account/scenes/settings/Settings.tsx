@@ -12,7 +12,7 @@ import { GlobalActions } from 'src/lib/redux/globalReducer'
 // export const useStyles = makeStyles((_: Theme) => ({
 // }))
 
-export const SettingsRoute: FC = () => {
+export const Settings: FC = () => {
   // const { classes } = useStyles()
   const { theme, setTheme } = useTheme()
 
@@ -23,10 +23,6 @@ export const SettingsRoute: FC = () => {
 
   const toggleDarkMode = (): void => {
     const newThemeStyle = globalState.themeMode === 'dark' ? 'light' : 'dark'
-    dispatch({
-      type: GlobalActions.setThemeMode,
-      payload: newThemeStyle,
-    })
     setTheme({ palette: { ...theme.palette, type: newThemeStyle } })
   }
 

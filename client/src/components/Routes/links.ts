@@ -7,7 +7,7 @@ import FeedbackIcon from '@material-ui/icons/Feedback'
 import MenuBookIcon from '@material-ui/icons/MenuBook'
 import PeopleIcon from '@material-ui/icons/People'
 import { LoginRoute } from 'src/modules/account/scenes/login'
-import { SettingsRoute } from 'src/modules/account/scenes/settings'
+import { Settings } from 'src/modules/account/scenes/settings'
 import { AgreementsRoute } from 'src/modules/agreements/scenes/overview'
 import { GiveFeedbackRoute } from 'src/modules/feedback/scenes/giveFeedback'
 import { SquadDetailRoute } from 'src/modules/squads/scenes/detail/Detail'
@@ -101,7 +101,7 @@ const accountRoutes: IRoute[] = [
     name: 'settings',
     path: '/account/settings',
     icon: ExitToAppIcon,
-    component: SettingsRoute,
+    component: Settings,
     private: true,
     exact: false,
     showInMenu: false,

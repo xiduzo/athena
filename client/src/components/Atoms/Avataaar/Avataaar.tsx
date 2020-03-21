@@ -20,7 +20,7 @@ import { SkinColor } from './enums/SkinColor'
 import Skeleton from '@material-ui/lab/Skeleton'
 import { lightBlue } from '@material-ui/core/colors'
 
-const getRandomAvatar = (): IAvataaar => {
+export const generateRandomAvatar = (): IAvataaar => {
   return {
     avatarStyle: 'Circle',
     style: { width: '50px', height: '50px' },
@@ -41,8 +41,11 @@ const getRandomAvatar = (): IAvataaar => {
     skinColor: SkinColor[Object.keys(SkinColor)[Math.floor(Math.random() * Object.keys(SkinColor).length)]],
   }
 }
+const randomAvatar = generateRandomAvatar()
+
 const avatarCircleColor: string = lightBlue[100]
-export const useStyles = makeStyles((_: Theme) => {
+
+const useStyles = makeStyles((_: Theme) => {
   return {
     avatarLazy: {
       background: avatarCircleColor,
@@ -58,10 +61,10 @@ export const useStyles = makeStyles((_: Theme) => {
     },
   }
 })
+
 export const Avataaar: FC<IAvataaar> = (props) => {
   const classes = useStyles()
 
-  const randomAvatar = getRandomAvatar()
   const avatar: IAvataaar = {
     ...randomAvatar,
     ...props,
@@ -72,7 +75,7 @@ export const Avataaar: FC<IAvataaar> = (props) => {
       height={60}
       placeholder={
         <ReactAvatar className={classes.avatarLazy}>
-          <Skeleton variant="circle" />
+          <Skeleton variant='circle' />
         </ReactAvatar>
       }
     >

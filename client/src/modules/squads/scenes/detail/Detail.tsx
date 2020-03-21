@@ -1,26 +1,21 @@
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import { Box, Container, Grid, makeStyles, MenuItem, Theme, Typography } from '@material-ui/core'
+import { ApolloError } from 'apollo-errors'
 import gql from 'graphql-tag'
 import React, { FC, useState } from 'react'
 import { useParams } from 'react-router'
+import { ADD_AGREEMENT_PARENT, ADD_AGREEMENT_TRANSLATION, CREATE_AGREEMENT } from 'src/common/services/agreementService'
+import { ADD_SQUAD_AGREEMENT, REMOVE_SQUAD_AGREEMENT } from 'src/common/services/squadService'
+import { asyncForEach } from 'src/common/utils/asyncForEach'
+import { getTranslation } from 'src/common/utils/getTranslation'
+import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
+import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
 import { AddCard } from 'src/components/Atoms'
 import { AgreementCard } from 'src/components/Molecules/AgreementCard'
 import { UserCard } from 'src/components/Molecules/UserCard'
-import { IAgreement, IUser, ITranslation } from 'src/lib/interfaces'
-import { AgreementsSelector } from './components/AgreementSelector'
-import { ADD_SQUAD_AGREEMENT, REMOVE_SQUAD_AGREEMENT } from 'src/common/services/squadService'
-import { asyncForEach } from 'src/common/utils/asyncForEach'
-import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
-import { getTranslation } from 'src/common/utils/getTranslation'
-import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
+import { IAgreement, ITranslation, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
-import { ApolloError } from 'apollo-errors'
-import {
-  CREATE_TRANSLATION,
-  ADD_AGREEMENT_TRANSLATION,
-  CREATE_AGREEMENT,
-  ADD_AGREEMENT_PARENT,
-} from 'src/common/services/agreementService'
+import { AgreementsSelector } from './components/AgreementSelector'
 
 interface ISquadDetailRouteParams {
   id: string

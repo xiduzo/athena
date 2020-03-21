@@ -1,29 +1,28 @@
+import { useMutation } from '@apollo/react-hooks'
 import {
   AppBar,
   Button,
   Container,
   Dialog,
+  Grid,
   IconButton,
   makeStyles,
+  TextField,
   Theme,
   Toolbar,
   Typography,
-  Grid,
-  TextField,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
+import { ApolloError } from 'apollo-errors'
 import React, { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { SlideUp } from 'src/components/Atoms/Transitions/SlideUp'
-import { IModalBase, ITribe, ISquad } from 'src/lib/interfaces'
-import { useMutation } from '@apollo/react-hooks'
-import { CREATE_TRIBE } from 'src/common/services/tribeService'
-import { v4 as uuid } from 'uuid'
-import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
-import { ApolloError } from 'apollo-errors'
-import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
 import { CREATE_SQUAD } from 'src/common/services/squadService'
+import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
+import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
+import { SlideUp } from 'src/components/Atoms/Transitions/SlideUp'
+import { IModalBase, ISquad } from 'src/lib/interfaces'
+import { v4 as uuid } from 'uuid'
 
 interface INewSquadModal extends IModalBase {}
 
