@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { CssBaseline, makeStyles, Theme } from '@material-ui/core'
+import { CssBaseline, makeStyles, Theme, Hidden } from '@material-ui/core'
 import { AppBar } from './components/Molecules/AppBar'
 import { MenuDrawer } from './components/Molecules/MenuDrawer'
 import { Routes } from './components/Routes'
@@ -10,6 +10,7 @@ import { AuthProvider } from './common/providers/AuthProvider'
 import { SnackbarProvider } from 'notistack'
 import { SnackbarUtilsConfiguration } from './common/utils/snackbarWrapper'
 import { ApolloProvider } from './common/providers/ApolloProvider'
+import { ToolbarSpacer } from './components/Atoms/ToolbarSpacer'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -18,19 +19,6 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     root: {
       display: 'flex',
-    },
-    toolbar: {
-      [theme.breakpoints.up('sm')]: {
-        ...theme.mixins.toolbar,
-        padding: theme.spacing(0, 1),
-      },
-    },
-    toolbarBottom: {
-      ...theme.mixins.toolbar,
-      [theme.breakpoints.down('xs')]: {
-        ...theme.mixins.toolbar,
-        padding: theme.spacing(0, 1),
-      },
     },
   }
 })
@@ -59,10 +47,14 @@ const App: React.FC = () => {
                   <MenuDrawer />
                   {/* TODO wrap main in own component */}
                   <main className={classes.content}>
-                    <div className={classes.toolbar} />
+                    <Hidden xsDown>
+                      <ToolbarSpacer />
+                    </Hidden>
                     {/* TODO: add breadcrumbs? */}
                     <Routes />
-                    <div className={classes.toolbarBottom} />
+                    <Hidden mdUp>
+                      <ToolbarSpacer />
+                    </Hidden>
                   </main>
                 </Router>
               </Suspense>
