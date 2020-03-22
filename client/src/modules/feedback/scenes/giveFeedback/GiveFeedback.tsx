@@ -91,7 +91,7 @@ export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
 
   const FeedbackPanel = (agreement: any) => {
     return (
-      <ExpansionPanel disabled={selectedWeek > currentWeek}>
+      <ExpansionPanel disabled={selectedWeek > currentWeek} TransitionProps={{ unmountOnExit: true }}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <Grid container alignItems='center' justify='space-between'>
             <Typography variant='h6'>agreement {agreement}</Typography>
