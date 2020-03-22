@@ -18,6 +18,7 @@ import {
   Typography,
   Zoom,
   IconButton,
+  Tooltip,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import gql from 'graphql-tag'
@@ -243,9 +244,17 @@ export const AgreementOverview: FC = () => {
         onClose={toggleDrawer}
       >
         <ToolbarSpacer smDown />
-        <Typography component='h2' variant='h5'>
-          Filter
-        </Typography>
+        <Grid container justify='space-between' alignItems='center'>
+          <Typography variant='h5'>Filter</Typography>
+          {!loading &&
+          !error &&
+          data.Agreement.length && (
+            <Tooltip title={`Amount of agreements left after applying filters`}>
+              <Typography variant='caption'>{data.Agreement.filter(createFilter(...filters)).length}</Typography>
+            </Tooltip>
+          )}
+        </Grid>
+
         <form autoComplete='off'>
           <Grid container>
             <Grid item xs={12}>
@@ -253,7 +262,7 @@ export const AgreementOverview: FC = () => {
                 <TextField
                   id='translations'
                   name='translations'
-                  label={t('agreement')}
+                  label={t('theStudent')}
                   onChange={handleNameFilter}
                   inputRef={register}
                   error={errors.text ? true : false}
