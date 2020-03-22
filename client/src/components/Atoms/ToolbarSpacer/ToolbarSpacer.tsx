@@ -1,13 +1,17 @@
 import React, { FC } from 'react'
-import { makeStyles, Theme } from '@material-ui/core'
+import { makeStyles, Theme, HiddenProps, Hidden } from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) => ({
   toolbar: {
-    height: theme.mixins.toolbar.minHeight,
+    ...theme.mixins.toolbar,
   },
 }))
 
-export const ToolbarSpacer: FC = () => {
+export const ToolbarSpacer: FC<HiddenProps> = (props) => {
   const classes = useStyles()
-  return <div className={classes.toolbar} />
+  return (
+    <Hidden {...props}>
+      <div className={classes.toolbar} />
+    </Hidden>
+  )
 }

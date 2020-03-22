@@ -74,7 +74,7 @@ export const TribeDetail: FC = () => {
   const history = useHistory()
 
   //#region User
-  const gotoUser = (user: IUser) => history.push(`/users/${user.id}`)
+  const navigateToUser = (user: IUser) => history.push(`/user/${user.id}`)
   const toggleUserModal = () => setUserModalOpen(!userModalOpen)
 
   const createTribeLeadersMutation = (user: IUser) => ({
@@ -108,7 +108,7 @@ export const TribeDetail: FC = () => {
   //#endregion
 
   //#region Squads
-  const gotoSquad = (squad: ISquad) => history.push(`/squads/${squad.id}`)
+  const navigateToSquad = (squad: ISquad) => history.push(`/squad/${squad.id}`)
 
   const toggleSquadModal = () => setSquadModalOpen(!squadModalOpen)
 
@@ -173,7 +173,7 @@ export const TribeDetail: FC = () => {
                 <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
                   <UserCard
                     user={user}
-                    onLeftClick={() => gotoUser(user)}
+                    onLeftClick={() => navigateToUser(user)}
                     onRightClickItems={
                       <Box>
                         <MenuItem onClick={() => removeUserHandler(user)}>
@@ -200,7 +200,7 @@ export const TribeDetail: FC = () => {
                 <Grid key={squad.id} item xs={12} sm={6} md={4} lg={3}>
                   <SquadCard
                     squad={squad}
-                    onLeftClick={() => gotoSquad(squad)}
+                    onLeftClick={() => navigateToSquad(squad)}
                     onRightClickItems={
                       <Box>
                         <MenuItem onClick={() => removeSquadHandler(squad)}>

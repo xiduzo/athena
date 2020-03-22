@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { CssBaseline, makeStyles, Theme, Hidden } from '@material-ui/core'
+import { CssBaseline, makeStyles, Theme, Hidden, Container } from '@material-ui/core'
 import { AppBar } from './components/Molecules/AppBar'
 import { MenuDrawer } from './components/Molecules/MenuDrawer'
 import { Routes } from './components/Routes'
@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     root: {
       display: 'flex',
+      padding: 0,
     },
   }
 })
@@ -27,42 +28,38 @@ const App: React.FC = () => {
   const classes = useStyles()
 
   return (
-    <ThemeProvider>
-      <SnackbarProvider
-        maxSnack={3}
-        autoHideDuration={3000}
-        anchorOrigin={{
-          horizontal: 'left',
-          vertical: 'bottom',
-        }}
-      >
-        <SnackbarUtilsConfiguration />
-        <div className={classes.root}>
-          <ApolloProvider>
-            <AuthProvider>
-              <CssBaseline />
+    <ApolloProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <SnackbarProvider
+            maxSnack={3}
+            autoHideDuration={3000}
+            anchorOrigin={{
+              horizontal: 'left',
+              vertical: 'bottom',
+            }}
+          >
+            <SnackbarUtilsConfiguration />
+            <CssBaseline />
+            {/* TODO container in own component */}
+            <Container maxWidth={false} className={classes.root}>
               <Suspense fallback={'loading'}>
                 <Router>
                   <AppBar />
                   <MenuDrawer />
-                  {/* TODO wrap main in own component */}
                   <main className={classes.content}>
-                    <Hidden xsDown>
-                      <ToolbarSpacer />
-                    </Hidden>
                     {/* TODO: add breadcrumbs? */}
+                    <ToolbarSpacer xsDown />
                     <Routes />
-                    <Hidden mdUp>
-                      <ToolbarSpacer />
-                    </Hidden>
+                    <ToolbarSpacer mdUp />
                   </main>
                 </Router>
               </Suspense>
-            </AuthProvider>
-          </ApolloProvider>
-        </div>
-      </SnackbarProvider>
-    </ThemeProvider>
+            </Container>
+          </SnackbarProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </ApolloProvider>
   )
 }
 

@@ -30,10 +30,6 @@ export const useStyles = makeStyles((theme: Theme) => {
         width: theme.spacing(9) + 1,
       },
     },
-    toolbar: {
-      padding: theme.spacing(0, 1),
-      ...theme.mixins.toolbar,
-    },
     ListItemIcon: {
       paddingLeft: theme.spacing(1),
     },
@@ -66,10 +62,8 @@ export const useStyles = makeStyles((theme: Theme) => {
         duration: theme.transitions.duration.enteringScreen,
       }),
       '&.active': {
-        // TODO: add active state
         borderColor: theme.palette.primary.main,
         background: fade(theme.palette.primary.main, 0.25),
-        // color: theme.palette.primary.contrastText,
       },
       '&:not(.active):hover': {
         borderColor: theme.palette.grey[300],

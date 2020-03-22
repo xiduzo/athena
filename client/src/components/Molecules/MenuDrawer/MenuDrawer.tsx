@@ -12,6 +12,7 @@ import { GlobalActions } from 'src/common/redux/globalReducer'
 import { DispatchAction, IRootReducer } from 'src/common/redux/rootReducer'
 import { IRoute, routes } from '../../Routes/links'
 import { useStyles } from './style'
+import { ToolbarSpacer } from 'src/components/Atoms/ToolbarSpacer'
 
 const AdapterLink = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
   <NavLink innerRef={ref as any} {...props} />
@@ -37,6 +38,7 @@ export const MenuDrawer: FC = () => {
   if (!userSession) return null
 
   const { menuOpen } = globalState
+
   return (
     <Drawer
       variant={width !== 'xs' ? 'permanent' : 'temporary'}
@@ -51,7 +53,7 @@ export const MenuDrawer: FC = () => {
         }),
       }}
     >
-      <div className={classes.toolbar} />
+      <ToolbarSpacer xsDown />
       <section className={classes.flex}>
         <List>
           {routes.filter((route: IRoute) => route.showInMenu).map((route: IRoute) => (

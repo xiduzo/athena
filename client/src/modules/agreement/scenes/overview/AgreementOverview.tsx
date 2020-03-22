@@ -17,6 +17,7 @@ import {
   Theme,
   Typography,
   Zoom,
+  IconButton,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import gql from 'graphql-tag'
@@ -37,19 +38,34 @@ import { AgreementType } from 'src/lib/enums'
 import { Key } from 'src/lib/enums/Key'
 import { IAgreement } from 'src/lib/interfaces'
 import { NewAgreementModal } from './components/NewAgreementModal'
+import FilterListIcon from '@material-ui/icons/FilterList'
+import { ToolbarSpacer } from 'src/components/Atoms/ToolbarSpacer'
+import { useWidth } from 'src/common/hooks/useWidth'
 
 const drawerWidth = '20vw'
 const useStyles = makeStyles((theme: Theme) => ({
   drawer: {
     width: drawerWidth,
     padding: theme.spacing(2),
+    [theme.breakpoints.only('sm')]: {
+      width: `50vw`,
+    },
+    [theme.breakpoints.only('xs')]: {
+      width: `75vw`,
+    },
   },
   fab: {
     position: 'fixed',
     bottom: 0,
-    right: drawerWidth,
+    right: 0,
     margin: theme.spacing(2),
     zIndex: theme.zIndex.mobileStepper,
+    [theme.breakpoints.up('md')]: {
+      right: drawerWidth,
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginBottom: (theme.mixins.toolbar.minHeight as number) + theme.spacing(2),
+    },
   },
   root: {
     padding: theme.spacing(2, 3),
@@ -80,8 +96,10 @@ const initFilters = [
 export const AgreementOverview: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
+  const width = useWidth()
 
   const [ modalOpen, setModalOpen ] = useState(false)
+  const [ drawerOpen, setDrawerOpen ] = useState(false)
   const [ filters, setFilters ] = useState(initFilters)
 
   const { loading, error, data, refetch } = useQuery(
@@ -128,9 +146,12 @@ export const AgreementOverview: FC = () => {
     )
   }
 
+  const toggleDrawer = () => setDrawerOpen(!drawerOpen)
+  const toggleModal = () => setModalOpen(!modalOpen)
+
   const closeNewAgreementModalHandle = () => {
     refetch()
-    setModalOpen(!modalOpen)
+    toggleModal()
   }
 
   const removeAgreementHandler = (agreement: IAgreement) => {
@@ -156,23 +177,30 @@ export const AgreementOverview: FC = () => {
     [ newAgreementHotkey, hotkeysEnabled ]
   )
 
+  useEffect(
+    () => {
+      if ([ 'xs', 'sm' ].indexOf(width) === -1) setDrawerOpen(false)
+    },
+    [ width ]
+  )
+
   return (
     <Box className={classes.wrapper}>
       <Container maxWidth='lg' className={classes.root}>
         <Zoom in={!loading && !error}>
-          <Fab
-            color='primary'
-            aria-label={t('agreementNew')}
-            className={classes.fab}
-            onClick={() => setModalOpen(!modalOpen)}
-          >
+          <Fab color='primary' aria-label={t('agreementNew')} className={classes.fab} onClick={toggleModal}>
             <AddIcon />
           </Fab>
         </Zoom>
         <NewAgreementModal isOpen={modalOpen} onClose={closeNewAgreementModalHandle} />
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid item container justify={`space-between`} alignItems={`center`} xs={12}>
             <Typography variant='h4'>{t('agreements')}</Typography>
+            <Hidden mdUp={true}>
+              <IconButton aria-label='filter' onClick={toggleDrawer}>
+                <FilterListIcon />
+              </IconButton>
+            </Hidden>
           </Grid>
           {loading ? (
             [ ...Array(12) ].map((_, index: number) => (
@@ -204,75 +232,75 @@ export const AgreementOverview: FC = () => {
           )}
         </Grid>
       </Container>
-      <Hidden smDown={true}>
-        <Drawer
-          variant='permanent'
-          anchor='right'
-          className={classes.drawer}
-          classes={{
-            paper: classes.drawer,
-          }}
-        >
-          <div className={classes.toolbar} />
-          <Typography component='h2' variant='h5'>
-            Filter
-          </Typography>
-          <form autoComplete='off'>
-            <Grid container>
-              <Grid item xs={12}>
-                <FormControl component='fieldset' className={classes.fieldset}>
-                  <TextField
-                    id='translations'
-                    name='translations'
-                    label={t('agreement')}
-                    onChange={handleNameFilter}
-                    inputRef={register}
-                    error={errors.text ? true : false}
-                    helperText={errors.text && (errors.text as any).message}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl component='fieldset' className={classes.fieldset}>
-                  <FormLabel component='legend'>Type</FormLabel>
-                  <RadioGroup
-                    aria-label='Filter by type'
-                    name='type'
-                    id='type'
-                    defaultValue='-1'
-                    onChange={handleTypeFilter}
-                  >
-                    <FormControlLabel inputRef={register} value={`-1`} control={<Radio />} label='All' />
-                    <FormControlLabel
-                      inputRef={register}
-                      value={`${AgreementType.ATTITUDE}`}
-                      control={<Radio />}
-                      label='Attitude'
-                    />
-                    <FormControlLabel
-                      inputRef={register}
-                      value={`${AgreementType.FUNCTIONING_WITHING_TEAM}`}
-                      control={<Radio />}
-                      label='Functioning'
-                    />
-                    <FormControlLabel
-                      inputRef={register}
-                      value={`${AgreementType.KNOWLEDGE_DEVELOPMENT}`}
-                      control={<Radio />}
-                      label='Knowledge'
-                    />
-                    <FormControlLabel
-                      value={`${AgreementType.ACCOUNTABILITY}`}
-                      control={<Radio />}
-                      label='Accountability'
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
+      <Drawer
+        variant={[ 'xs', 'sm' ].indexOf(width) > -1 ? 'temporary' : 'permanent'}
+        anchor='right'
+        open={drawerOpen}
+        className={classes.drawer}
+        classes={{
+          paper: classes.drawer,
+        }}
+        onClose={toggleDrawer}
+      >
+        <ToolbarSpacer smDown />
+        <Typography component='h2' variant='h5'>
+          Filter
+        </Typography>
+        <form autoComplete='off'>
+          <Grid container>
+            <Grid item xs={12}>
+              <FormControl component='fieldset' className={classes.fieldset}>
+                <TextField
+                  id='translations'
+                  name='translations'
+                  label={t('agreement')}
+                  onChange={handleNameFilter}
+                  inputRef={register}
+                  error={errors.text ? true : false}
+                  helperText={errors.text && (errors.text as any).message}
+                />
+              </FormControl>
             </Grid>
-          </form>
-        </Drawer>
-      </Hidden>
+            <Grid item xs={12}>
+              <FormControl component='fieldset' className={classes.fieldset}>
+                <FormLabel component='legend'>Type</FormLabel>
+                <RadioGroup
+                  aria-label='Filter by type'
+                  name='type'
+                  id='type'
+                  defaultValue='-1'
+                  onChange={handleTypeFilter}
+                >
+                  <FormControlLabel inputRef={register} value={`-1`} control={<Radio />} label='All' />
+                  <FormControlLabel
+                    inputRef={register}
+                    value={`${AgreementType.ATTITUDE}`}
+                    control={<Radio />}
+                    label='Attitude'
+                  />
+                  <FormControlLabel
+                    inputRef={register}
+                    value={`${AgreementType.FUNCTIONING_WITHING_TEAM}`}
+                    control={<Radio />}
+                    label='Functioning'
+                  />
+                  <FormControlLabel
+                    inputRef={register}
+                    value={`${AgreementType.KNOWLEDGE_DEVELOPMENT}`}
+                    control={<Radio />}
+                    label='Knowledge'
+                  />
+                  <FormControlLabel
+                    value={`${AgreementType.ACCOUNTABILITY}`}
+                    control={<Radio />}
+                    label='Accountability'
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </form>
+      </Drawer>
     </Box>
   )
 }

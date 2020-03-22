@@ -25,7 +25,7 @@ interface IInfoCard {
 
 export const StudentDashboard: FC = () => {
   const classes = useStyles()
-  const width = useWidth()
+
   const infoCards: IInfoCard[] = [
     {
       value: 3,
@@ -55,7 +55,7 @@ export const StudentDashboard: FC = () => {
 
   return (
     <Container maxWidth='lg' className={classes.root}>
-      <Grid container spacing={width === 'xs' ? 2 : 4}>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant='h4' component='h2'>
             Team name

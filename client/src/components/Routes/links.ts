@@ -40,7 +40,7 @@ const coordinatorRoutes: IRoute[] = [
   },
   {
     name: 'users',
-    path: '/users',
+    path: '/user',
     icon: PeopleIcon,
     component: UserOverview,
     private: true,
@@ -49,7 +49,7 @@ const coordinatorRoutes: IRoute[] = [
   },
   {
     name: 'userDetail',
-    path: '/users/:id',
+    path: '/user/:id',
     icon: PeopleIcon,
     component: UserDetailRoute,
     private: true,
@@ -58,7 +58,7 @@ const coordinatorRoutes: IRoute[] = [
   },
   {
     name: 'tribes',
-    path: '/tribes',
+    path: '/tribe',
     icon: DialpadIcon,
     component: TribeOverview,
     private: true,
@@ -67,7 +67,7 @@ const coordinatorRoutes: IRoute[] = [
   },
   {
     name: 'tribeDetail',
-    path: '/tribes/:id',
+    path: '/tribe/:id',
     icon: DialpadIcon,
     component: TribeDetail,
     private: true,
@@ -79,7 +79,7 @@ const coordinatorRoutes: IRoute[] = [
 const lecturerRoutes: IRoute[] = [
   {
     name: 'squads',
-    path: '/squads',
+    path: '/squad',
     icon: BubbleChartIcon,
     component: SquadOverview,
     private: true,
@@ -88,7 +88,7 @@ const lecturerRoutes: IRoute[] = [
   },
   {
     name: 'squadDetail',
-    path: '/squads/:id',
+    path: '/squad/:id',
     icon: BubbleChartIcon,
     component: SquadDetail,
     private: true,
