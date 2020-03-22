@@ -1,16 +1,20 @@
 import React, { FC } from 'react'
-import { IUserCard } from './IUserCard'
 import { Card, CardActionArea, CardHeader, Typography, Box } from '@material-ui/core'
 import { Avataaar } from 'src/components/Atoms/Avataaar'
+import { IUser } from 'src/lib/interfaces'
+import { IClickableCard, ClickableCard } from '../ClickableCard'
+
+export interface IUserCard extends IClickableCard {
+  user: IUser
+}
 
 export const userCardAvatarSize: number = 50
-export const UserCard: FC<IUserCard> = ({ user, onClick }) => {
-  const onClickHandler = () => {
-    onClick && onClick()
-  }
+export const UserCard: FC<IUserCard> = ({ user, onLeftClick, onRightClickItems }) => {
   return (
-    <Card>
-      <CardActionArea onClick={onClickHandler} disabled={onClick ? false : true}>
+    <ClickableCard
+      onLeftClick={onLeftClick}
+      onRightClickItems={onRightClickItems}
+      cardContent={
         <CardHeader
           avatar={
             <Avataaar
@@ -26,7 +30,7 @@ export const UserCard: FC<IUserCard> = ({ user, onClick }) => {
             </Typography>
           }
         />
-      </CardActionArea>
-    </Card>
+      }
+    />
   )
 }

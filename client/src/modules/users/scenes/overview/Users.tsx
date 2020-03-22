@@ -66,7 +66,7 @@ export const UsersRoute: FC = () => {
         ) : (
           data.User.map((user: IUser) => (
             <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
-              <UserCard user={user} onClick={() => navigateToUser(user)} />
+              <UserCard user={user} onLeftClick={() => navigateToUser(user)} />
             </Grid>
           ))
         )}
