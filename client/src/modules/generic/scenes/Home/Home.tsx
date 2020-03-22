@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react'
 import { useAuth } from 'src/common/providers/AuthProvider'
 import { useHistory } from 'react-router-dom'
 
-export const HomeRoute: FC = () => {
+export const Home: FC = () => {
   const { userCredentials, userSession } = useAuth()
   const history = useHistory()
 

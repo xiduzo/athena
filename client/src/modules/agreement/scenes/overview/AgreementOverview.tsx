@@ -77,7 +77,7 @@ const initFilters = [
   },
 ]
 
-export const AgreementsRoute: FC = () => {
+export const AgreementOverview: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 

@@ -6,17 +6,17 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import FeedbackIcon from '@material-ui/icons/Feedback'
 import MenuBookIcon from '@material-ui/icons/MenuBook'
 import PeopleIcon from '@material-ui/icons/People'
-import { LoginRoute } from 'src/modules/account/scenes/login'
-import { Settings } from 'src/modules/account/scenes/settings'
-import { AgreementsRoute } from 'src/modules/agreements/scenes/overview'
+import { AccountLogin } from 'src/modules/account/scenes/login'
+import { AccountSettings } from 'src/modules/account/scenes/settings'
+import { AgreementOverview } from 'src/modules/agreement/scenes/overview'
 import { GiveFeedbackRoute } from 'src/modules/feedback/scenes/giveFeedback'
-import { SquadDetailRoute } from 'src/modules/squads/scenes/detail/Detail'
-import { SquadsRoute } from 'src/modules/squads/scenes/overview'
-import { StudentDashboardRoute } from 'src/modules/student/scenes/dashboard'
-import { TribeDetailRoute } from 'src/modules/tribes/scenes/detail'
-import { TribesRoute } from 'src/modules/tribes/scenes/overview'
-import { UserDetailRoute } from 'src/modules/users/scenes/detail/UserDetail'
-import { UsersRoute } from 'src/modules/users/scenes/overview'
+import { SquadDetail } from 'src/modules/squad/scenes/detail'
+import { SquadOverview } from 'src/modules/squad/scenes/overview'
+import { StudentDashboard } from 'src/modules/student/scenes/dashboard'
+import { TribeDetail } from 'src/modules/tribe/scenes/detail'
+import { TribeOverview } from 'src/modules/tribe/scenes/overview'
+import { UserDetailRoute } from 'src/modules/user/scenes/detail/UserDetail'
+import { UsersRoute } from 'src/modules/user/scenes/overview'
 
 export interface IRoute {
   name: string
@@ -33,7 +33,7 @@ const coordinatorRoutes: IRoute[] = [
     name: 'agreements',
     path: '/agreement',
     icon: MenuBookIcon,
-    component: AgreementsRoute,
+    component: AgreementOverview,
     private: true,
     exact: false,
     showInMenu: true,
@@ -60,7 +60,7 @@ const coordinatorRoutes: IRoute[] = [
     name: 'tribes',
     path: '/tribes',
     icon: DialpadIcon,
-    component: TribesRoute,
+    component: TribeOverview,
     private: true,
     exact: true,
     showInMenu: true,
@@ -69,7 +69,7 @@ const coordinatorRoutes: IRoute[] = [
     name: 'tribeDetail',
     path: '/tribes/:id',
     icon: DialpadIcon,
-    component: TribeDetailRoute,
+    component: TribeDetail,
     private: true,
     exact: true,
     showInMenu: false,
@@ -81,7 +81,7 @@ const lecturerRoutes: IRoute[] = [
     name: 'squads',
     path: '/squads',
     icon: BubbleChartIcon,
-    component: SquadsRoute,
+    component: SquadOverview,
     private: true,
     exact: true,
     showInMenu: true,
@@ -90,7 +90,7 @@ const lecturerRoutes: IRoute[] = [
     name: 'squadDetail',
     path: '/squads/:id',
     icon: BubbleChartIcon,
-    component: SquadDetailRoute,
+    component: SquadDetail,
     private: true,
     exact: true,
     showInMenu: false,
@@ -102,7 +102,7 @@ const accountRoutes: IRoute[] = [
     name: 'settings',
     path: '/account/settings',
     icon: ExitToAppIcon,
-    component: Settings,
+    component: AccountSettings,
     private: true,
     exact: false,
     showInMenu: false,
@@ -111,7 +111,7 @@ const accountRoutes: IRoute[] = [
     name: 'login',
     path: '/account/login',
     icon: ExitToAppIcon,
-    component: LoginRoute,
+    component: AccountLogin,
     private: false,
     exact: false,
     showInMenu: false,
@@ -123,7 +123,7 @@ const studentRoutes: IRoute[] = [
     name: 'dashboard',
     path: '/student/dashboard',
     icon: DashboardIcon,
-    component: StudentDashboardRoute,
+    component: StudentDashboard,
     private: true,
     exact: false,
     showInMenu: true,

@@ -15,9 +15,9 @@ import { AgreementCard } from 'src/components/Molecules/AgreementCard'
 import { UserCard } from 'src/components/Molecules/UserCard'
 import { IAgreement, ITranslation, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
-import { AgreementsSelector } from './components/AgreementSelector'
+import { AgreementSelector } from './components/AgreementSelector'
 
-interface ISquadDetailRouteParams {
+interface ISquadDetailParams {
   id: string
 }
 
@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme: Theme) => {
   }
 })
 
-export const SquadDetailRoute: FC = () => {
-  const { id } = useParams<ISquadDetailRouteParams>()
+export const SquadDetail: FC = () => {
+  const { id } = useParams<ISquadDetailParams>()
 
   const classes = useStyles()
 
@@ -191,7 +191,7 @@ export const SquadDetailRoute: FC = () => {
                 />
               </Grid>
             ))}
-            <AgreementsSelector
+            <AgreementSelector
               title={`Select agreements to add to ${data.Squad[0].name}`}
               without={
                 data.Squad[0].agreements.map((agreement: any) => {

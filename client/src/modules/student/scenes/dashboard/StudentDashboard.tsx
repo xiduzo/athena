@@ -23,7 +23,7 @@ interface IInfoCard {
   inverse: boolean
 }
 
-export const StudentDashboardRoute: FC = () => {
+export const StudentDashboard: FC = () => {
   const classes = useStyles()
   const width = useWidth()
   const infoCards: IInfoCard[] = [

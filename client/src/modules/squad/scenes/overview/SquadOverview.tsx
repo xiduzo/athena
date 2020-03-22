@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => {
   }
 })
 
-export const SquadsRoute: FC = () => {
+export const SquadOverview: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 

@@ -17,10 +17,10 @@ import { SquadCard } from 'src/components/Molecules/SquadCard'
 import { TribeCardMock } from 'src/components/Molecules/TribeCard'
 import { UserCard } from 'src/components/Molecules/UserCard'
 import { ISquad, IUser } from 'src/lib/interfaces'
-import { SquadsSelector } from './components/SquadSelector'
+import { SquadSelector } from './components/SquadSelector'
 import { UserSelector } from './components/UserSelector'
 
-interface ITribeDetailRouteParams {
+interface ITribeDetailParams {
   id: string
 }
 
@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme: Theme) => {
   }
 })
 
-export const TribeDetailRoute: FC = () => {
-  const { id } = useParams<ITribeDetailRouteParams>()
+export const TribeDetail: FC = () => {
+  const { id } = useParams<ITribeDetailParams>()
 
   const classes = useStyles()
   const { t } = useTranslation()
@@ -211,7 +211,7 @@ export const TribeDetailRoute: FC = () => {
                   />
                 </Grid>
               ))}
-              <SquadsSelector
+              <SquadSelector
                 title={`Select squads to add to ${data.Tribe[0].name}`}
                 without={data.Tribe[0].squads}
                 isOpen={squadModalOpen}

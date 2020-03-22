@@ -17,7 +17,7 @@ import { supportedLanguages } from 'src/i18n'
 import { GlobalActions } from 'src/common/redux/globalReducer'
 import { DispatchAction, IRootReducer } from 'src/common/redux/rootReducer'
 
-export const Settings: FC = () => {
+export const AccountSettings: FC = () => {
   const { theme, setTheme } = useTheme()
 
   const globalState = useSelector((state: IRootReducer) => state.global)

@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-export const LoginRoute: FC = () => {
+export const AccountLogin: FC = () => {
   const classes = useStyles()
   const { userSession, setCredentials, setSession } = useAuth()
   const history = useHistory()

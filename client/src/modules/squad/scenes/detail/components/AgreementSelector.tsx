@@ -14,7 +14,7 @@ interface IAgreementSelectorModal {
   onClose: (agreements?: IAgreement[]) => void
 }
 
-export const AgreementsSelector: FC<IAgreementSelectorModal> = ({ title, isOpen, onClose, without }) => {
+export const AgreementSelector: FC<IAgreementSelectorModal> = ({ title, isOpen, onClose, without }) => {
   const width = useWidth()
 
   const { loading, error, data } = useQuery(GET_AGREEMENTS, {

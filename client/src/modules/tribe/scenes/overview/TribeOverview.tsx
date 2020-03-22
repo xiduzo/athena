@@ -29,7 +29,7 @@ export const useStyles = makeStyles((theme: Theme) => {
   }
 })
 
-export const TribesRoute: FC = () => {
+export const TribeOverview: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 

@@ -3,8 +3,8 @@ import React, { FC } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { PrivateRoute } from '../Routes/Private'
 import { IRoute, routes } from './links'
-import { NotFoundRoute } from 'src/modules/generic/scenes/404'
-import { HomeRoute } from 'src/modules/generic/scenes/Home'
+import { NotFound } from 'src/modules/generic/scenes/notFound'
+import { Home } from 'src/modules/generic/scenes/home'
 
 export const Routes: FC = () => {
   const renderRoute = (route: IRoute) => (
@@ -17,9 +17,9 @@ export const Routes: FC = () => {
 
   return (
     <Switch>
-      <PrivateRoute exact={true} path={'/'} component={HomeRoute} />
+      <PrivateRoute exact={true} path={'/'} component={Home} />
       {routes.map((route: IRoute) => (route.private ? renderPrivateRoute(route) : renderRoute(route)))}
-      <Route path={'/'} component={NotFoundRoute} />
+      <Route path={'/'} component={NotFound} />
     </Switch>
   )
 }
