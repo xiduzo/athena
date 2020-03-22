@@ -281,13 +281,15 @@ const useThemeHandler = () => {
         },
       })
     },
-    [ prefersDarkMode, setTheme ] // @ts-ignore // TODO fix the inclusion of theme.palette
+    // eslint-disable-next-line
+    [ prefersDarkMode, setTheme ] // TODO fix the inclusion of theme.palette
   )
 
   return { theme, setTheme, setHighChart }
 }
 
 export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  console.log(true)
   const { Provider } = ThemeContext
   const { theme, setTheme, setHighChart } = useThemeHandler()
 

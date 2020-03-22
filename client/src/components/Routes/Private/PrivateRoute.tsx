@@ -1,14 +1,9 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { useAuth } from 'src/common/providers/AuthProvider'
+import { IRoute } from 'src/lib/interfaces'
 
-interface IPrivateRoute {
-  component: any
-  path: string
-  exact: boolean
-}
-
-export const PrivateRoute: React.FC<IPrivateRoute> = ({ component: Component, ...rest }) => {
+export const PrivateRoute: React.FC<Partial<IRoute>> = ({ component: Component, ...rest }) => {
   const { userSession } = useAuth()
 
   return (

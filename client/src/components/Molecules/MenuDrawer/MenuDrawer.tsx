@@ -10,7 +10,7 @@ import { useWidth } from 'src/common/hooks/useWidth'
 import { useAuth } from 'src/common/providers/AuthProvider'
 import { GlobalActions } from 'src/common/redux/globalReducer'
 import { DispatchAction, IRootReducer } from 'src/common/redux/rootReducer'
-import { IRoute, routes } from '../../Routes/links'
+import { routes } from '../../Routes/links'
 import { useStyles } from './style'
 import { ToolbarSpacer } from 'src/components/Atoms/ToolbarSpacer'
 
@@ -56,7 +56,7 @@ export const MenuDrawer: FC = () => {
       <ToolbarSpacer xsDown />
       <section className={classes.flex}>
         <List>
-          {routes.filter((route: IRoute) => route.showInMenu).map((route: IRoute) => (
+          {routes.filter((route) => route.showInMenu).map((route) => (
             <Tooltip title={t(route.name)} key={route.path} placement='right' enterDelay={!menuOpen ? 350 : 1000 * 60}>
               <ListItem button key={route.path} component={AdapterLink} to={route.path} className={classes.navLink}>
                 <ListItemIcon className={classes.ListItemIcon}>

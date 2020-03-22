@@ -1,4 +1,3 @@
-import { SvgIconProps } from '@material-ui/core/SvgIcon'
 import BubbleChartIcon from '@material-ui/icons/BubbleChart'
 import DashboardIcon from '@material-ui/icons/Dashboard'
 import DialpadIcon from '@material-ui/icons/Dialpad'
@@ -6,6 +5,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import FeedbackIcon from '@material-ui/icons/Feedback'
 import MenuBookIcon from '@material-ui/icons/MenuBook'
 import PeopleIcon from '@material-ui/icons/People'
+import { IRoute } from 'src/lib/interfaces'
 import { AccountLogin } from 'src/modules/account/scenes/login'
 import { AccountSettings } from 'src/modules/account/scenes/settings'
 import { AgreementOverview } from 'src/modules/agreement/scenes/overview'
@@ -17,16 +17,6 @@ import { TribeDetail } from 'src/modules/tribe/scenes/detail'
 import { TribeOverview } from 'src/modules/tribe/scenes/overview'
 import { UserDetailRoute } from 'src/modules/user/scenes/detail'
 import { UserOverview } from 'src/modules/user/scenes/overview'
-
-export interface IRoute {
-  name: string
-  path: string
-  icon: (props: SvgIconProps) => JSX.Element
-  component: any
-  private: boolean
-  exact: boolean
-  showInMenu: boolean
-}
 
 const coordinatorRoutes: IRoute[] = [
   {
