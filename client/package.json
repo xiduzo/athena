@@ -37,7 +37,6 @@
     "react-paginate": "^6.3.2",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1",
     "redux-thunk": "^2.3.0",
     "superagent": "^5.2.2",
     "uuid": "^7.0.2"
@@ -54,6 +53,7 @@
     "@types/superagent": "^4.1.7",
     "@types/uuid": "^7.0.2",
     "json-server": "^0.16.1",
+    "react-scripts": "^3.4.1",
     "typescript": "^3.8.3"
   },
   "eslintConfig": {

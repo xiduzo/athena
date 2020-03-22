@@ -1,10 +1,9 @@
+import { useQuery } from '@apollo/react-hooks'
 import { Container, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core'
-import React, { FC, useState, Fragment } from 'react'
+import gql from 'graphql-tag'
+import React, { FC, Fragment } from 'react'
 import { useParams } from 'react-router'
 import { Avataaar } from 'src/components/Atoms/Avataaar'
-import { IUser } from 'src/lib/interfaces'
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
 
 interface IUserDetailRouteParams {
   id: string
@@ -60,7 +59,7 @@ export const UserDetailRoute: FC = () => {
         ) : (
           <Fragment>
             <Grid item xs={12} className={classes.avatar}>
-              <Avataaar avatarStyle='Circle' style={{ width: `100px`, height: `100px` }} />
+              <Avataaar style={{ width: `100px`, height: `100px` }} />
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.userInfo}>

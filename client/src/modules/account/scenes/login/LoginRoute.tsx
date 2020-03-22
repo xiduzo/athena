@@ -1,41 +1,43 @@
-import React, { FC, useEffect, Fragment, useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import { useAuth } from 'src/common/providers/AuthProvider'
 import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
   Container,
   Grid,
-  makeStyles,
-  Theme,
-  Typography,
-  Card,
-  CardHeader,
-  CardContent,
   IconButton,
-  MenuItem,
-  Menu,
-  TextField,
-  Tooltip,
-  Button,
   LinearProgress,
-  Box,
+  makeStyles,
+  Menu,
+  MenuItem,
+  TextField,
+  Theme,
+  Tooltip,
+  Typography,
 } from '@material-ui/core'
 import LanguageIcon from '@material-ui/icons/Language'
-import { useForm } from 'react-hook-form'
-import { Avataaar } from 'src/components/Atoms/Avataaar'
-import { IAvataaar } from 'src/components/Atoms/Avataaar/interface'
-import { TopType } from 'src/components/Atoms/Avataaar/enums/TopType'
-import { AccessoriesType } from 'src/components/Atoms/Avataaar/enums/AccessoriesType'
-import { HairColor } from 'src/components/Atoms/Avataaar/enums/HairColor'
-import { FacialHairType } from 'src/components/Atoms/Avataaar/enums/FacialHairType'
-import { FacialHairColor } from 'src/components/Atoms/Avataaar/enums/FacialHairColor'
-import { ClotheType } from 'src/components/Atoms/Avataaar/enums/ClotheType'
-import { ClotheColor } from 'src/components/Atoms/Avataaar/enums/ClotheColor'
-import { EyeType } from 'src/components/Atoms/Avataaar/enums/EyeType'
-import { EyebrowType } from 'src/components/Atoms/Avataaar/enums/EyebrowType'
-import { MouthType } from 'src/components/Atoms/Avataaar/enums/MouthType'
-import { SkinColor } from 'src/components/Atoms/Avataaar/enums/SkinColor'
 import { Auth } from 'aws-amplify'
+import React, { FC, Fragment, useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
+import { useAuth } from 'src/common/providers/AuthProvider'
 import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
+import { Avataaar } from 'src/components/Atoms/Avataaar'
+import {
+  AccessoriesType,
+  ClotheColor,
+  ClotheType,
+  EyebrowType,
+  EyeType,
+  FacialHairColor,
+  FacialHairType,
+  HairColor,
+  MouthType,
+  SkinColor,
+  TopType,
+} from 'src/lib/enums/avataaar'
+import { IAvataaar } from 'src/lib/interfaces'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -106,7 +108,6 @@ export const LoginRoute: FC = () => {
 
   // https://getavataaars.com/?accessoriesType=Round&avatarStyle=Circle&clotheColor=Blue03&clotheType=Hoodie&eyeType=Default&eyebrowType=Default&facialHairColor=Auburn&facialHairType=BeardLight&hairColor=Brown&mouthType=Default&skinColor=Light&topType=ShortHairShortWaved
   const baseAvataaar: IAvataaar = {
-    avatarStyle: 'Circle',
     style: { width: '75px', height: '75px' },
     topType: TopType.ShortHairShortWaved,
     accessoriesType: AccessoriesType.Round,

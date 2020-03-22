@@ -25,17 +25,17 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { and, useHotkeys } from 'src/common/hooks/useHotkeys'
+import { IRootReducer } from 'src/common/redux/rootReducer'
 import { DELETE_AGREEMENT } from 'src/common/services/agreementService'
 import { createFilter } from 'src/common/utils/createFilter'
+import { generalCatchHandler } from 'src/common/utils/generalCatchHandler'
 import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
-import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
 import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
 import { AgreementCard, AgreementCardMock } from 'src/components/Molecules/AgreementCard'
-import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
+import { EmptyState } from 'src/components/Molecules/EmptyState'
 import { AgreementType } from 'src/lib/enums'
 import { Key } from 'src/lib/enums/Key'
 import { IAgreement } from 'src/lib/interfaces'
-import { IRootReducer } from 'src/common/redux/rootReducer'
 import { NewAgreementModal } from './components/newAgreementModal'
 
 const drawerWidth = '20vw'
@@ -98,14 +98,7 @@ export const AgreementsRoute: FC = () => {
           }
         }
       }
-    `,
-    {
-      variables: {
-        filter: {
-          isBase: true,
-        },
-      },
-    }
+    `
   )
 
   const [ DeleteAgreement ] = useMutation(DELETE_AGREEMENT)
@@ -135,7 +128,7 @@ export const AgreementsRoute: FC = () => {
     )
   }
 
-  const handleClose = () => {
+  const closeNewAgreementModalHandle = () => {
     refetch()
     setModalOpen(!modalOpen)
   }
@@ -176,7 +169,7 @@ export const AgreementsRoute: FC = () => {
             <AddIcon />
           </Fab>
         </Zoom>
-        <NewAgreementModal isOpen={modalOpen} onClose={handleClose} />
+        <NewAgreementModal isOpen={modalOpen} onClose={closeNewAgreementModalHandle} />
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant='h4'>{t('agreements')}</Typography>

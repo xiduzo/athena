@@ -6,19 +6,19 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 import { useHistory } from 'react-router-dom'
 import { ADD_TRIBE_SQUAD, REMOVE_TRIBE_SQUAD } from 'src/common/services/tribeService'
+import { ADD_TRIBE_LEADER, REMOVE_TRIBE_LEADER } from 'src/common/services/userService'
 import { asyncForEach } from 'src/common/utils/asyncForEach'
 import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
-import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
+import { generalCatchHandler } from 'src/common/utils/generalCatchHandler'
 import { AddCard } from 'src/components/Atoms'
 import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
-import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
+import { EmptyState } from 'src/components/Molecules/EmptyState'
 import { SquadCard } from 'src/components/Molecules/SquadCard'
 import { TribeCardMock } from 'src/components/Molecules/TribeCard'
 import { UserCard } from 'src/components/Molecules/UserCard'
 import { ISquad, IUser } from 'src/lib/interfaces'
 import { SquadsSelector } from './components/SquadSelector'
 import { UserSelector } from './components/UserSelector'
-import { ADD_TRIBE_LEADER, REMOVE_TRIBE_LEADER } from 'src/common/services/userService'
 
 interface ITribeDetailRouteParams {
   id: string
@@ -101,6 +101,8 @@ export const TribeDetailRoute: FC = () => {
 
   const removeUserHandler = async (user: IUser) => {
     await RemoveTribeLeaders(createTribeLeadersMutation(user))
+
+    refetch()
   }
 
   //#endregion
@@ -171,14 +173,14 @@ export const TribeDetailRoute: FC = () => {
                 <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
                   <UserCard
                     user={user}
-                    // onLeftClick={() => gotoUser(user)}
-                    // onRightClickItems={
-                    //   <Box>
-                    //     <MenuItem onClick={() => removeUserHandler(user)}>
-                    //       <Typography color='error'>Remove user</Typography>
-                    //     </MenuItem>
-                    //   </Box>
-                    // }
+                    onLeftClick={() => gotoUser(user)}
+                    onRightClickItems={
+                      <Box>
+                        <MenuItem onClick={() => removeUserHandler(user)}>
+                          <Typography color='error'>Remove user</Typography>
+                        </MenuItem>
+                      </Box>
+                    }
                   />
                 </Grid>
               ))}

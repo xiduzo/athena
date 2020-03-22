@@ -9,8 +9,6 @@ export interface IClickableCard {
 }
 
 export const ClickableCard: FC<IClickableCard> = ({ onLeftClick, onRightClickItems, cardContent }) => {
-  console.log(onLeftClick, onRightClickItems)
-
   const [ mousePos, setMousePos ] = useState<{
     mouseX: NumberOrNull
     mouseY: NumberOrNull

@@ -1,28 +1,28 @@
-import React, { FC } from 'react'
-import { IAvataaar } from './interface'
-import LazyLoad from 'react-lazyload'
-
 import { Avatar as ReactAvatar, makeStyles, Theme } from '@material-ui/core'
-
-import Avatar from 'avataaars'
-import { TopType } from './enums/TopType'
-import { AccessoriesType } from './enums/AccessoriesType'
-import { HairColor } from './enums/HairColor'
-import { FacialHairType } from './enums/FacialHairType'
-import { FacialHairColor } from './enums/FacialHairColor'
-import { ClotheType } from './enums/ClotheType'
-import { ClotheColor } from './enums/ClotheColor'
-import { GraphicType } from './enums/GraphicType'
-import { EyeType } from './enums/EyeType'
-import { EyebrowType } from './enums/EyebrowType'
-import { MouthType } from './enums/MouthType'
-import { SkinColor } from './enums/SkinColor'
-import Skeleton from '@material-ui/lab/Skeleton'
 import { lightBlue } from '@material-ui/core/colors'
+import Skeleton from '@material-ui/lab/Skeleton'
+import Avatar, { AvatarStyle } from 'avataaars'
+import React, { FC } from 'react'
+import LazyLoad from 'react-lazyload'
+import {
+  AccessoriesType,
+  ClotheColor,
+  ClotheType,
+  EyebrowType,
+  EyeType,
+  FacialHairColor,
+  FacialHairType,
+  GraphicType,
+  HairColor,
+  MouthType,
+  SkinColor,
+  TopType,
+} from 'src/lib/enums/avataaar'
+import { IAvataaar } from 'src/lib/interfaces'
 
 export const generateRandomAvatar = (): IAvataaar => {
   return {
-    avatarStyle: 'Circle',
+    avatarStyle: AvatarStyle.Circle,
     style: { width: '50px', height: '50px' },
     topType: TopType[Object.keys(TopType)[Math.floor(Math.random() * Object.keys(TopType).length)]],
     accessoriesType:
@@ -64,11 +64,12 @@ const useStyles = makeStyles((_: Theme) => {
 export const Avataaar: FC<IAvataaar> = (props) => {
   const classes = useStyles()
   const randomAvatar = generateRandomAvatar()
+  console.log(randomAvatar)
 
-  const avatar: IAvataaar = {
-    ...randomAvatar,
-    ...props,
-  }
+  // const avatar: IAvataaar = {
+  //   // ...randomAvatar,
+  //   ...props,
+  // }
 
   return (
     <LazyLoad
@@ -80,7 +81,11 @@ export const Avataaar: FC<IAvataaar> = (props) => {
       }
     >
       <div className={classes.avatar}>
-        <Avatar {...avatar} />
+        <Avatar
+          avatarStyle={props.avatarStyle ? props.avatarStyle : AvatarStyle.Circle}
+          style={{ width: '50px', height: '50px', ...props.style }}
+          {...props}
+        />
       </div>
     </LazyLoad>
   )

@@ -6,7 +6,7 @@ import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
-import { EmptyState } from 'src/components/Molecules/EmptyState/EmptyState'
+import { EmptyState } from 'src/components/Molecules/EmptyState'
 import { UserCard, UserCardMock } from 'src/components/Molecules/UserCard'
 import { IUser } from 'src/lib/interfaces'
 

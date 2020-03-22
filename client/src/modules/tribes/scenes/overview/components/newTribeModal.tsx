@@ -20,7 +20,7 @@ import { IModalBase, ITribe } from 'src/lib/interfaces'
 import { useMutation } from '@apollo/react-hooks'
 import { CREATE_TRIBE } from 'src/common/services/tribeService'
 import { v4 as uuid } from 'uuid'
-import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
+import { generalCatchHandler } from 'src/common/utils/generalCatchHandler'
 import { ApolloError } from 'apollo-errors'
 import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
 

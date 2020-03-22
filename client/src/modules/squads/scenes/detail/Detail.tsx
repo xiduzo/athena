@@ -9,7 +9,7 @@ import { ADD_SQUAD_AGREEMENT, REMOVE_SQUAD_AGREEMENT } from 'src/common/services
 import { asyncForEach } from 'src/common/utils/asyncForEach'
 import { getTranslation } from 'src/common/utils/getTranslation'
 import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
-import { generalCatchHandler } from 'src/common/utils/superagentWrapper'
+import { generalCatchHandler } from 'src/common/utils/generalCatchHandler'
 import { AddCard } from 'src/components/Atoms'
 import { AgreementCard } from 'src/components/Molecules/AgreementCard'
 import { UserCard } from 'src/components/Molecules/UserCard'

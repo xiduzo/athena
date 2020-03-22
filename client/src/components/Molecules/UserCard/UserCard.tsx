@@ -1,8 +1,8 @@
+import { Box, CardHeader, Typography } from '@material-ui/core'
 import React, { FC } from 'react'
-import { Card, CardActionArea, CardHeader, Typography, Box } from '@material-ui/core'
 import { Avataaar } from 'src/components/Atoms/Avataaar'
 import { IUser } from 'src/lib/interfaces'
-import { IClickableCard, ClickableCard } from '../ClickableCard'
+import { ClickableCard, IClickableCard } from '../ClickableCard'
 
 export interface IUserCard extends IClickableCard {
   user: IUser
@@ -16,12 +16,7 @@ export const UserCard: FC<IUserCard> = ({ user, onLeftClick, onRightClickItems }
       onRightClickItems={onRightClickItems}
       cardContent={
         <CardHeader
-          avatar={
-            <Avataaar
-              avatarStyle='Circle'
-              style={{ width: `${userCardAvatarSize}px`, height: `${userCardAvatarSize}px` }}
-            />
-          }
+          avatar={<Avataaar style={{ width: `${userCardAvatarSize}px`, height: `${userCardAvatarSize}px` }} />}
           title={
             <Typography>
               <Box fontWeight={600} component={'span'}>
