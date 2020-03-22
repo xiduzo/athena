@@ -1,8 +1,10 @@
-import React, { FC, useEffect, useState } from 'react'
-import { IUser } from 'src/lib/interfaces'
+import { Container, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core'
+import React, { FC, useState, Fragment } from 'react'
 import { useParams } from 'react-router'
-import { Container, Grid, Paper, makeStyles, Theme, Typography } from '@material-ui/core'
 import { Avataaar } from 'src/components/Atoms/Avataaar'
+import { IUser } from 'src/lib/interfaces'
+import gql from 'graphql-tag'
+import { useQuery } from '@apollo/react-hooks'
 
 interface IUserDetailRouteParams {
   id: string
@@ -11,7 +13,7 @@ interface IUserDetailRouteParams {
 export const useStyles = makeStyles((theme: Theme) => {
   return {
     root: {
-      padding: theme.spacing(4, 0, 12, 0),
+      padding: theme.spacing(2, 3),
     },
     avatar: {
       display: ' flex',
@@ -26,18 +28,57 @@ export const useStyles = makeStyles((theme: Theme) => {
 })
 
 export const UserDetailRoute: FC = () => {
-  const classes = useStyles()
-
-  const [ user, setUser ] = useState<IUser>()
-
   const { id } = useParams<IUserDetailRouteParams>()
 
+  const classes = useStyles()
+
+  const { loading, error, data } = useQuery(
+    gql`
+      query User($id: String!) {
+        User(filter: { id: $id }) {
+          id
+          displayName
+        }
+      }
+    `,
+    {
+      variables: {
+        id,
+      },
+    }
+  )
+
   return (
-    <section className={classes.root}>
-      {user && (
-        <Container maxWidth={'lg'}>
-          <Grid container spacing={2}>
+    <Container maxWidth={'lg'} className={classes.root}>
+      <Grid container spacing={2}>
+        {loading ? (
+          <div>loading</div>
+        ) : error ? (
+          <div>error</div>
+        ) : !data.User.length ? (
+          <div>empty</div>
+        ) : (
+          <Fragment>
             <Grid item xs={12} className={classes.avatar}>
+              <Avataaar avatarStyle='Circle' style={{ width: `100px`, height: `100px` }} />
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={classes.userInfo}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Typography variant='h4' align='center'>
+                      {data.User[0].displayName}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant='h6'>Squads</Typography>
+            </Grid>
+          </Fragment>
+        )}
+        {/* <Grid item xs={12} className={classes.avatar}>
               <Avataaar avatarStyle='Circle' style={{ width: `100px`, height: `100px` }} />
             </Grid>
             <Grid item xs={12}>
@@ -53,10 +94,8 @@ export const UserDetailRoute: FC = () => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant='h6'>Squads</Typography>
-            </Grid>
-          </Grid>
-        </Container>
-      )}
-    </section>
+            </Grid> */}
+      </Grid>
+    </Container>
   )
 }

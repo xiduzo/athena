@@ -41,7 +41,6 @@ export const generateRandomAvatar = (): IAvataaar => {
     skinColor: SkinColor[Object.keys(SkinColor)[Math.floor(Math.random() * Object.keys(SkinColor).length)]],
   }
 }
-const randomAvatar = generateRandomAvatar()
 
 const avatarCircleColor: string = lightBlue[100]
 
@@ -64,6 +63,7 @@ const useStyles = makeStyles((_: Theme) => {
 
 export const Avataaar: FC<IAvataaar> = (props) => {
   const classes = useStyles()
+  const randomAvatar = generateRandomAvatar()
 
   const avatar: IAvataaar = {
     ...randomAvatar,

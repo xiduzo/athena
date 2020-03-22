@@ -130,7 +130,6 @@ export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
     )
   }
 
-  console.log(width)
   return (
     <Container maxWidth='lg' className={classes.root}>
       <Grid container spacing={2}>
