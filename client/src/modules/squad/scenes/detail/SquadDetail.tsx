@@ -7,9 +7,9 @@ import { useParams } from 'react-router'
 import { ADD_AGREEMENT_PARENT, ADD_AGREEMENT_TRANSLATION, CREATE_AGREEMENT } from 'src/common/services/agreementService'
 import { ADD_SQUAD_AGREEMENT, REMOVE_SQUAD_AGREEMENT } from 'src/common/services/squadService'
 import { asyncForEach } from 'src/common/utils/asyncForEach'
+import { generalCatchHandler } from 'src/common/utils/generalCatchHandler'
 import { getTranslation } from 'src/common/utils/getTranslation'
 import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
-import { generalCatchHandler } from 'src/common/utils/generalCatchHandler'
 import { AddCard } from 'src/components/Atoms'
 import { AgreementCard } from 'src/components/Molecules/AgreementCard'
 import { UserCard } from 'src/components/Molecules/UserCard'
@@ -194,12 +194,14 @@ export const SquadDetail: FC = () => {
             <AgreementSelector
               title={`Select agreements to add to ${data.Squad[0].name}`}
               without={
-                data.Squad[0].agreements.map((agreement: any) => {
-                  return {
-                    ...agreement,
-                    id: agreement.parent.id,
-                  }
-                }) || []
+                data.Squad[0].agreements
+                  .filter((agreement: IAgreement) => agreement.parent !== null)
+                  .map((agreement: any) => {
+                    return {
+                      ...agreement,
+                      id: agreement.parent.id,
+                    }
+                  }) || []
               } // TODO: without its parent component as id
               isOpen={agreementsModalOpen}
               onClose={onAgreementsModalCloseHandler}

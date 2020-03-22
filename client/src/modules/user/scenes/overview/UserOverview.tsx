@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/react-hooks'
-import { Container, Fab, Grid, Typography, makeStyles, Theme } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
+import { Container, Grid, makeStyles, Theme, Typography } from '@material-ui/core'
 import gql from 'graphql-tag'
 import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) => {
   }
 })
 
-export const UsersRoute: FC = () => {
+export const UserOverview: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 
@@ -44,9 +43,6 @@ export const UsersRoute: FC = () => {
 
   return (
     <Container maxWidth='lg' className={classes.root}>
-      <Fab color='primary' aria-label='New agreement' className={classes.fab}>
-        <AddIcon />
-      </Fab>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant='h4'>{t(`users`)}</Typography>

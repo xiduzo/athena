@@ -63,8 +63,7 @@ const useStyles = makeStyles((_: Theme) => {
 
 export const Avataaar: FC<IAvataaar> = (props) => {
   const classes = useStyles()
-  const randomAvatar = generateRandomAvatar()
-  console.log(randomAvatar)
+  // const randomAvatar = generateRandomAvatar()
 
   // const avatar: IAvataaar = {
   //   // ...randomAvatar,

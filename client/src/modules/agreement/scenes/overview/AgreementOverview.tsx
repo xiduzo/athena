@@ -36,7 +36,7 @@ import { EmptyState } from 'src/components/Molecules/EmptyState'
 import { AgreementType } from 'src/lib/enums'
 import { Key } from 'src/lib/enums/Key'
 import { IAgreement } from 'src/lib/interfaces'
-import { NewAgreementModal } from './components/newAgreementModal'
+import { NewAgreementModal } from './components/NewAgreementModal'
 
 const drawerWidth = '20vw'
 const useStyles = makeStyles((theme: Theme) => ({

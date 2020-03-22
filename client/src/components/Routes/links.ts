@@ -15,8 +15,8 @@ import { SquadOverview } from 'src/modules/squad/scenes/overview'
 import { StudentDashboard } from 'src/modules/student/scenes/dashboard'
 import { TribeDetail } from 'src/modules/tribe/scenes/detail'
 import { TribeOverview } from 'src/modules/tribe/scenes/overview'
-import { UserDetailRoute } from 'src/modules/user/scenes/detail/UserDetail'
-import { UsersRoute } from 'src/modules/user/scenes/overview'
+import { UserDetailRoute } from 'src/modules/user/scenes/detail'
+import { UserOverview } from 'src/modules/user/scenes/overview'
 
 export interface IRoute {
   name: string
@@ -42,7 +42,7 @@ const coordinatorRoutes: IRoute[] = [
     name: 'users',
     path: '/users',
     icon: PeopleIcon,
-    component: UsersRoute,
+    component: UserOverview,
     private: true,
     exact: true,
     showInMenu: true,
