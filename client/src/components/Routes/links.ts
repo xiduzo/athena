@@ -21,7 +21,7 @@ import { UsersRoute } from 'src/modules/users/scenes/overview'
 export interface IRoute {
   name: string
   path: string
-  icon?: (props: SvgIconProps) => JSX.Element
+  icon: (props: SvgIconProps) => JSX.Element
   component: any
   private: boolean
   exact: boolean
@@ -68,6 +68,7 @@ const coordinatorRoutes: IRoute[] = [
   {
     name: 'tribeDetail',
     path: '/tribes/:id',
+    icon: DialpadIcon,
     component: TribeDetailRoute,
     private: true,
     exact: true,
