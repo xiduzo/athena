@@ -14,6 +14,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import ErrorIcon from '@material-ui/icons/Error'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import StarBorderIcon from '@material-ui/icons/StarBorder'
+import StarIcon from '@material-ui/icons/Star'
 import WarningIcon from '@material-ui/icons/Warning'
 import { Pagination, Rating } from '@material-ui/lab'
 import { Auth } from 'aws-amplify'
@@ -121,6 +122,13 @@ export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
                     size='large'
                     value={null}
                     precision={0.5}
+                    emptyIcon={
+                      selectedWeek !== currentWeek ? (
+                        <StarIcon fontSize={`inherit`} />
+                      ) : (
+                        <StarBorderIcon fontSize={`inherit`} />
+                      )
+                    }
                   />
                 </Grid>
               ))}
@@ -144,14 +152,7 @@ export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
             <Grid item xs={12} sm={6} md={4} lg={3} className={classes.center}>
               <Avataaar avatarStyle='Circle' style={{ width: '75px', height: '75px' }} />
               <Typography variant='subtitle1'>user {user}</Typography>
-              <Rating
-                max={4}
-                size='large'
-                value={Math.random() * 4}
-                readOnly
-                precision={0.1}
-                emptyIcon={<StarBorderIcon fontSize='inherit' />}
-              />
+              <Rating max={4} size='large' value={Math.random() * 4} readOnly precision={0.1} />
             </Grid>
           </Tooltip>
         ))}
