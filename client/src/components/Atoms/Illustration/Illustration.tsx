@@ -1,11 +1,14 @@
 import React, { FC } from 'react'
 
 import { makeStyles } from '@material-ui/styles'
-import { Theme } from '@material-ui/core'
+import { Theme, Box } from '@material-ui/core'
 
 import empty from 'src/illustrations/empty.png'
-import empty2 from 'src/illustrations/empty2.png'
+import emptyTwo from 'src/illustrations/empty2.png'
 import notFound from 'src/illustrations/notFound.png'
+import notAuthorized from 'src/illustrations/notAuthorized.png'
+
+import { IllustrationType } from 'src/lib/enums'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -21,23 +24,18 @@ const useStyles = makeStyles((theme: Theme) => {
 })
 
 interface IIllustration {
-  type: Illustrations
-}
-
-export enum Illustrations {
-  empty = 'empty',
-  empty2 = 'empty2',
-  notFound = 'notFound',
+  type: IllustrationType
 }
 
 export const Illustration: FC<IIllustration> = ({ type }) => {
   const classes = useStyles()
 
   return (
-    <div className={classes.root}>
-      {type === Illustrations.empty && <img src={empty} alt={'empty'} />}
-      {type === Illustrations.empty2 && <img src={empty2} alt={'empty'} />}
-      {type === Illustrations.notFound && <img src={notFound} alt={'empty'} />}
-    </div>
+    <Box className={classes.root}>
+      {type === IllustrationType.Empty && <img src={empty} alt={'empty'} />}
+      {type === IllustrationType.EmptyTwo && <img src={emptyTwo} alt={'empty'} />}
+      {type === IllustrationType.NotFound && <img src={notFound} alt={'not found'} />}
+      {type === IllustrationType.NotAuthorized && <img src={notAuthorized} alt={'not authorized'} />}
+    </Box>
   )
 }

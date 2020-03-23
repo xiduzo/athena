@@ -31,15 +31,8 @@ import { and, useHotkeys, useWidth } from 'src/common/hooks'
 import { IRootReducer } from 'src/common/redux'
 import { DELETE_AGREEMENT } from 'src/common/services'
 import { createFilter, generalCatchHandler, snackbarWrapper } from 'src/common/utils'
-import {
-  AgreementCard,
-  AgreementCardMock,
-  EmptyState,
-  Illustration,
-  Illustrations,
-  ToolbarSpacer,
-} from 'src/components'
-import { AgreementType, Key } from 'src/lib/enums'
+import { AgreementCard, AgreementCardMock, EmptyState, Illustration, ToolbarSpacer } from 'src/components'
+import { AgreementType, Key, IllustrationType } from 'src/lib/enums'
 import { IAgreement } from 'src/lib/interfaces'
 import { NewAgreementModal } from './components'
 
@@ -213,7 +206,7 @@ export const AgreementOverview: FC = () => {
             <div>{error.message}</div>
           ) : !data.Agreement.length ? (
             <Grid item={true} xs={12}>
-              <EmptyState title={t('agreementsNotFound')} image={<Illustration type={Illustrations.empty} />} />
+              <EmptyState title={t('agreementsNotFound')} image={<Illustration type={IllustrationType.Empty} />} />
             </Grid>
           ) : (
             data.Agreement.filter(createFilter(...filters)).map((agreement: IAgreement) => (

@@ -4,8 +4,9 @@ import gql from 'graphql-tag'
 import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useLocation } from 'react-router-dom'
-import { EmptyState, Illustration, Illustrations, UserCard, UserCardMock } from 'src/components'
+import { EmptyState, Illustration, UserCard, UserCardMock } from 'src/components'
 import { IUser } from 'src/lib/interfaces'
+import { IllustrationType } from 'src/lib/enums'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -55,7 +56,7 @@ export const UserOverview: FC = () => {
           <div>{error.message}</div>
         ) : !data.User.length ? (
           <Grid item xs={12}>
-            <EmptyState title={t('usersNotFound')} image={<Illustration type={Illustrations.empty} />} />
+            <EmptyState title={t('usersNotFound')} image={<Illustration type={IllustrationType.Empty} />} />
           </Grid>
         ) : (
           data.User.map((user: IUser) => (

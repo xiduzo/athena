@@ -8,8 +8,8 @@ import { useSelector } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
 import { and, useHotkeys } from 'src/common/hooks'
 import { IRootReducer } from 'src/common/redux'
-import { EmptyState, Illustration, Illustrations, TribeCard, TribeCardMock } from 'src/components'
-import { Key } from 'src/lib/enums'
+import { EmptyState, Illustration, TribeCard, TribeCardMock, Show } from 'src/components'
+import { Key, IllustrationType, UserRole } from 'src/lib/enums'
 import { ITribe } from 'src/lib/interfaces'
 import { NewTribeModal } from './components'
 
@@ -67,16 +67,18 @@ export const TribeOverview: FC = () => {
 
   return (
     <Container maxWidth='lg' className={classes.root}>
-      <Zoom in={!loading && !error}>
-        <Fab
-          color='primary'
-          aria-label={t('tribeNew')}
-          className={classes.fab}
-          onClick={() => setModalOpen(!modalOpen)}
-        >
-          <AddIcon />
-        </Fab>
-      </Zoom>
+      <Show forGroups={[ UserRole.Admin ]}>
+        <Zoom in={!loading && !error}>
+          <Fab
+            color='primary'
+            aria-label={t('tribeNew')}
+            className={classes.fab}
+            onClick={() => setModalOpen(!modalOpen)}
+          >
+            <AddIcon />
+          </Fab>
+        </Zoom>
+      </Show>
       <NewTribeModal isOpen={modalOpen} onClose={handleClose} />
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -92,7 +94,7 @@ export const TribeOverview: FC = () => {
           <div>{error.message}</div>
         ) : !data.Tribe.length ? (
           <Grid item xs={12}>
-            <EmptyState title={t('tribesNotfound')} image={<Illustration type={Illustrations.empty} />} />
+            <EmptyState title={t('tribesNotfound')} image={<Illustration type={IllustrationType.Empty} />} />
           </Grid>
         ) : (
           data.Tribe.map((tribe: ITribe) => (

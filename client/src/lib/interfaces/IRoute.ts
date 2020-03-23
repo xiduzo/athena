@@ -8,4 +8,5 @@ export interface IRoute {
   private: boolean
   exact: boolean
   showInMenu: boolean
+  userGroups: string[]
 }

@@ -1,4 +1,6 @@
 export * from './AgreementType'
+export * from './avataaar'
 export * from './Key'
 export * from './KeyTypes'
-export * from './avataaar'
+export * from './UserRole'
+export * from './IllustrationType'

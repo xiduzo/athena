@@ -1,4 +1,4 @@
-import { getLocalItem } from 'src/common/utils'
+import { getLocalItem, formatDate } from 'src/common/utils'
 import { useMediaQuery } from '@material-ui/core'
 import { amber as primaryColor, deepPurple, grey as secondaryColor, lime, pink, teal } from '@material-ui/core/colors'
 import { createMuiTheme, darken, fade, lighten, MuiThemeProvider, Theme } from '@material-ui/core/styles'
@@ -48,6 +48,15 @@ const generateHighchartsTheme = (theme: Theme): Highcharts.Options => {
   const highlightColor = theme.palette.primary.main
 
   return {
+    exporting: {
+      enabled: true,
+      buttons: {
+        contextButton: {
+          titleKey: 'Export',
+          symbol: 'exportIcon',
+        },
+      },
+    },
     colors: [
       // Main
       theme.palette.primary.main,
@@ -158,6 +167,8 @@ const generateHighchartsTheme = (theme: Theme): Highcharts.Options => {
       },
     },
     credits: {
+      href: undefined,
+      text: formatDate(new Date(), 'd/m/y h:i'),
       style: {
         color: textColor,
       },
@@ -171,10 +182,25 @@ const generateHighchartsTheme = (theme: Theme): Highcharts.Options => {
       },
     },
     navigation: {
+      menuItemStyle: {
+        color: textColor,
+      },
+      menuStyle: {
+        backgroundColor: fade(theme.palette.background.paper, 0.75),
+        padding: '0',
+        borderRadius: theme.shape.borderRadius,
+        boxShadow: 'none',
+        border: `1px solid ${textColor}`,
+      },
+      menuItemHoverStyle: {
+        backgroundColor: highlightColor,
+      },
       buttonOptions: {
-        symbolStroke: strokeColor,
+        symbolFill: highlightColor,
+        symbolStroke: darken(highlightColor, 0.5),
+        symbolStrokeWidth: 2,
         theme: {
-          fill: fillColor,
+          fill: 'none',
         },
       },
     },

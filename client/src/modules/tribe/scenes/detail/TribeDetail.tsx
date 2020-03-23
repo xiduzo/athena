@@ -11,7 +11,6 @@ import {
   AddCard,
   EmptyState,
   Illustration,
-  Illustrations,
   SquadCard,
   SquadSelector,
   TribeCardMock,
@@ -19,6 +18,7 @@ import {
   UserSelector,
 } from 'src/components'
 import { ISquad, IUser } from 'src/lib/interfaces'
+import { IllustrationType } from 'src/lib/enums'
 
 interface ITribeDetailParams {
   id: string
@@ -159,7 +159,7 @@ export const TribeDetail: FC = () => {
             <div>{error.message}</div>
           ) : !data.Tribe.length ? (
             <Grid item xs={12}>
-              <EmptyState title={t('tribeNotFound')} image={<Illustration type={Illustrations.notFound} />} />
+              <EmptyState title={t('tribeNotFound')} image={<Illustration type={IllustrationType.NotFound} />} />
             </Grid>
           ) : (
             <Fragment>

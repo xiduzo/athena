@@ -17,6 +17,8 @@ import { TribeDetail } from 'src/modules/tribe/scenes/detail'
 import { TribeOverview } from 'src/modules/tribe/scenes/overview'
 import { UserDetailRoute } from 'src/modules/user/scenes/detail'
 import { UserOverview } from 'src/modules/user/scenes/overview'
+import { UserRole } from 'src/lib/enums'
+import { Home } from 'src/modules/generic/scenes/home'
 
 const coordinatorRoutes: IRoute[] = [
   {
@@ -27,6 +29,7 @@ const coordinatorRoutes: IRoute[] = [
     private: true,
     exact: false,
     showInMenu: true,
+    userGroups: [ UserRole.Admin ],
   },
   {
     name: 'users',
@@ -36,6 +39,7 @@ const coordinatorRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: true,
+    userGroups: [ UserRole.Admin ],
   },
   {
     name: 'userDetail',
@@ -45,6 +49,7 @@ const coordinatorRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: false,
+    userGroups: [ UserRole.Admin ],
   },
   {
     name: 'tribes',
@@ -54,6 +59,7 @@ const coordinatorRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: true,
+    userGroups: [ UserRole.Admin ],
   },
   {
     name: 'tribeDetail',
@@ -63,6 +69,7 @@ const coordinatorRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: false,
+    userGroups: [ UserRole.Admin ],
   },
 ]
 
@@ -75,6 +82,7 @@ const lecturerRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: true,
+    userGroups: [ UserRole.Admin ],
   },
   {
     name: 'squadDetail',
@@ -84,6 +92,7 @@ const lecturerRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: false,
+    userGroups: [ UserRole.Admin ],
   },
 ]
 
@@ -96,6 +105,7 @@ const accountRoutes: IRoute[] = [
     private: true,
     exact: false,
     showInMenu: false,
+    userGroups: [ UserRole.Admin ],
   },
   {
     name: 'login',
@@ -105,6 +115,7 @@ const accountRoutes: IRoute[] = [
     private: false,
     exact: false,
     showInMenu: false,
+    userGroups: [ UserRole.Admin ],
   },
 ]
 
@@ -117,6 +128,7 @@ const studentRoutes: IRoute[] = [
     private: true,
     exact: false,
     showInMenu: true,
+    userGroups: [],
   },
   {
     name: 'feedback',
@@ -126,7 +138,27 @@ const studentRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: true,
+    userGroups: [ UserRole.Admin ],
   },
 ]
 
-export const routes: IRoute[] = [ ...coordinatorRoutes, ...lecturerRoutes, ...studentRoutes, ...accountRoutes ]
+const generalRoutes: IRoute[] = [
+  {
+    name: 'home',
+    path: '/',
+    icon: FeedbackIcon,
+    component: Home,
+    private: false,
+    exact: true,
+    showInMenu: false,
+    userGroups: [],
+  },
+]
+
+export const routes: IRoute[] = [
+  ...generalRoutes,
+  ...coordinatorRoutes,
+  ...lecturerRoutes,
+  ...studentRoutes,
+  ...accountRoutes,
+]

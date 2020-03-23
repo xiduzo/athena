@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
 import { Paper } from '@material-ui/core'
+import { useTheme } from '@material-ui/core/styles'
 import * as Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import React, { FC } from 'react'
 import { IAgreement } from 'src/lib/interfaces'
-import { useTheme } from '@material-ui/core/styles'
 
 interface IFeedbackPointsGraph {
   agreements?: IAgreement[]
@@ -16,16 +16,20 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
 
   const options = {
     title: { text: 'Feedback' },
-    xAxis: { categories: [] },
+    xAxis: {
+      visible: false,
+      categories: [],
+    },
     yAxis: [
       {
-        title: { text: 'Punten percentage' },
+        visible: false,
+        // title: { text: 'Punten percentage' },
         min: 0,
         max: 100,
       },
     ],
     tooltip: {
-      pointFormat: '{series.name} <strong>{point.y:,.0f}%</strong><br>',
+      pointFormat: 'Week {series.name} <strong>{point.y:,.0f}%</strong><br>',
     },
     series: [
       { name: `Average`, data: [ 45, 87, 34, 65, 43, 23, 56, 38 ], color: theme.palette.grey[400] },

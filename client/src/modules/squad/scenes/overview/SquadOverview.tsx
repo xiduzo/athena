@@ -5,9 +5,10 @@ import gql from 'graphql-tag'
 import React, { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useLocation } from 'react-router-dom'
-import { EmptyState, Illustration, Illustrations, SquadCard, SquadCardMock } from 'src/components'
+import { EmptyState, Illustration, SquadCard, SquadCardMock } from 'src/components'
 import { ISquad } from 'src/lib/interfaces'
 import { NewSquadModal } from './components'
+import { IllustrationType } from 'src/lib/enums'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -76,7 +77,7 @@ export const SquadOverview: FC = () => {
           <div>{error.message}</div>
         ) : !data.Squad.length ? (
           <Grid item xs={12}>
-            <EmptyState title={t('squadsNotFound')} image={<Illustration type={Illustrations.empty} />} />
+            <EmptyState title={t('squadsNotFound')} image={<Illustration type={IllustrationType.Empty} />} />
           </Grid>
         ) : (
           data.Squad.map((squad: ISquad) => (
