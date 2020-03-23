@@ -8,10 +8,9 @@ import {
   ADD_AGREEMENT_PARENT,
   ADD_AGREEMENT_TRANSLATION,
   ADD_SQUAD_AGREEMENT,
+  ADD_SQUAD_MEMBER,
   CREATE_AGREEMENT,
   REMOVE_SQUAD_AGREEMENT,
-  ADD_TRIBE_LEADER,
-  ADD_SQUAD_MEMBER,
   REMOVE_SQUAD_MEMBER,
 } from 'src/common/services'
 import { asyncForEach, generalCatchHandler, getTranslation, snackbarWrapper } from 'src/common/utils'
