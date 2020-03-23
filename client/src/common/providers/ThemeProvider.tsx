@@ -288,7 +288,6 @@ const useThemeHandler = () => {
 }
 
 export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  console.log(true)
   const { Provider } = ThemeContext
   const { theme, setTheme, setHighChart } = useThemeHandler()
 

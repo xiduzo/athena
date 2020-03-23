@@ -10,9 +10,12 @@ import {
   ADD_SQUAD_AGREEMENT,
   CREATE_AGREEMENT,
   REMOVE_SQUAD_AGREEMENT,
+  ADD_TRIBE_LEADER,
+  ADD_SQUAD_MEMBER,
+  REMOVE_SQUAD_MEMBER,
 } from 'src/common/services'
 import { asyncForEach, generalCatchHandler, getTranslation, snackbarWrapper } from 'src/common/utils'
-import { AddCard, AgreementCard, AgreementSelector, UserCard } from 'src/components'
+import { AddCard, AgreementCard, AgreementSelector, UserCard, UserSelector } from 'src/components'
 import { IAgreement, ITranslation, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
 
@@ -34,6 +37,7 @@ export const SquadDetail: FC = () => {
   const classes = useStyles()
 
   const [ agreementsModalOpen, setAgreementsModalOpen ] = useState(false)
+  const [ usersModalOpen, setUsersModalOpen ] = useState(false)
 
   const { loading, error, data, refetch } = useQuery(
     gql`
@@ -71,6 +75,53 @@ export const SquadDetail: FC = () => {
   const [ AddAgreementTranslations ] = useMutation(ADD_AGREEMENT_TRANSLATION)
   const [ CreateAgreement ] = useMutation(CREATE_AGREEMENT)
   const [ AddAgreementParent ] = useMutation(ADD_AGREEMENT_PARENT)
+  const [ AddSquadMembers ] = useMutation(ADD_SQUAD_MEMBER)
+  const [ RemoveSquadMembers ] = useMutation(REMOVE_SQUAD_MEMBER)
+
+  const toggleUsersModal = () => setUsersModalOpen(!usersModalOpen)
+
+  const onUserModalCloseHandler = async (users?: IUser[]) => {
+    toggleUsersModal()
+
+    if (!users) return
+
+    let hasError: boolean = false
+
+    const catchError = (error: ApolloError) => {
+      hasError = !hasError
+      generalCatchHandler(error)
+    }
+
+    await asyncForEach(users, async (user: IUser) => {
+      await AddSquadMembers({
+        variables: {
+          from: {
+            id: user.id,
+          },
+          to: {
+            id: id,
+          },
+        },
+      })
+        .then(() => snackbarWrapper.success(`${user.displayName}->${data.Squad[0].name}`))
+        .catch(catchError)
+    })
+
+    refetch()
+  }
+
+  const removeSquadMemberHandler = async (user: IUser) => {
+    await RemoveSquadMembers({
+      variables: {
+        from: { id: user.id },
+        to: { id: id },
+      },
+    })
+      .then((_) => snackbarWrapper.success(`Removed ${user.displayName}->${data.Squad[0].name}`))
+      .catch(generalCatchHandler)
+
+    refetch()
+  }
 
   const toggleAgreementsModal = () => setAgreementsModalOpen(!agreementsModalOpen)
 
@@ -79,7 +130,7 @@ export const SquadDetail: FC = () => {
 
     if (!agreements) return
 
-    await asyncForEach(agreements || [], async (agreement: IAgreement) => {
+    await asyncForEach(agreements, async (agreement: IAgreement) => {
       let hasError = false
       const originalId = agreement.id
       // Overwrite agreement object
@@ -170,9 +221,27 @@ export const SquadDetail: FC = () => {
             </Grid>
             {data.Squad[0].members.map((user: IUser) => (
               <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
-                <UserCard user={user} />
+                <UserCard
+                  user={user}
+                  onRightClickItems={
+                    <Box>
+                      <MenuItem onClick={() => removeSquadMemberHandler(user)}>
+                        <Typography color='error'>Remove member</Typography>
+                      </MenuItem>
+                    </Box>
+                  }
+                />
               </Grid>
             ))}
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <UserSelector
+                title={`user modal ${data.Squad[0].name}`}
+                without={data.Squad[0].members}
+                isOpen={usersModalOpen}
+                onClose={onUserModalCloseHandler}
+              />
+              <AddCard onClick={toggleUsersModal} />
+            </Grid>
             <Grid item xs={12}>
               <Typography variant={`h5`}>{`Agreements`}</Typography>
             </Grid>
@@ -190,22 +259,22 @@ export const SquadDetail: FC = () => {
                 />
               </Grid>
             ))}
-            <AgreementSelector
-              title={`Select agreements to add to ${data.Squad[0].name}`}
-              without={
-                data.Squad[0].agreements
-                  .filter((agreement: IAgreement) => agreement.parent !== null)
-                  .map((agreement: any) => {
-                    return {
-                      ...agreement,
-                      id: agreement.parent.id,
-                    }
-                  }) || []
-              } // TODO: without its parent component as id
-              isOpen={agreementsModalOpen}
-              onClose={onAgreementsModalCloseHandler}
-            />
             <Grid item xs={12} sm={6} md={4} lg={3}>
+              <AgreementSelector
+                title={`Select agreements to add to ${data.Squad[0].name}`}
+                without={
+                  data.Squad[0].agreements
+                    .filter((agreement: IAgreement) => agreement.parent !== null)
+                    .map((agreement: any) => {
+                      return {
+                        ...agreement,
+                        id: agreement.parent.id,
+                      }
+                    }) || []
+                } // TODO: without its parent component as id
+                isOpen={agreementsModalOpen}
+                onClose={onAgreementsModalCloseHandler}
+              />
               <AddCard onClick={toggleAgreementsModal} />
             </Grid>
           </Grid>

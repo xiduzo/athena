@@ -33,3 +33,29 @@ export const REMOVE_SQUAD_AGREEMENT = gql`
     }
   }
 `
+
+export const ADD_SQUAD_MEMBER = gql`
+  mutation AddSquadMembers($from: _UserInput!, $to: _SquadInput!) {
+    AddSquadMembers(from: $from, to: $to) {
+      from {
+        id
+      }
+      to {
+        id
+      }
+    }
+  }
+`
+
+export const REMOVE_SQUAD_MEMBER = gql`
+  mutation RemoveSquadMembers($from: _UserInput!, $to: _SquadInput!) {
+    RemoveSquadMembers(from: $from, to: $to) {
+      from {
+        id
+      }
+      to {
+        id
+      }
+    }
+  }
+`

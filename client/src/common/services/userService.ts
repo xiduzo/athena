@@ -19,29 +19,3 @@ export const MERGE_USER = gql`
     }
   }
 `
-
-export const ADD_TRIBE_LEADER = gql`
-  mutation AddTribeLeaders($from: _UserInput!, $to: _TribeInput!) {
-    AddTribeLeaders(from: $from, to: $to) {
-      from {
-        id
-      }
-      to {
-        id
-      }
-    }
-  }
-`
-
-export const REMOVE_TRIBE_LEADER = gql`
-  mutation RemoveTribeLeaders($from: _UserInput!, $to: _TribeInput!) {
-    RemoveTribeLeaders(from: $from, to: $to) {
-      from {
-        id
-      }
-      to {
-        id
-      }
-    }
-  }
-`
