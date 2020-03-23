@@ -18,7 +18,7 @@ export const useStyles = makeStyles((theme: Theme) => {
       display: ' flex',
       justifyContent: 'center',
       marginBottom: theme.spacing(-8),
-      zIndex: 9000,
+      zIndex: theme.zIndex.appBar - 1,
     },
     userInfo: {
       padding: theme.spacing(8, 2, 2, 2),

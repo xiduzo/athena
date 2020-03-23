@@ -1,6 +1,7 @@
 import { Card, CardActionArea, Menu } from '@material-ui/core'
 import React, { FC, useState } from 'react'
 import { NumberOrNull } from 'src/lib/types'
+import { IMousePosition } from 'src/lib/interfaces'
 
 export interface IClickableCard {
   onLeftClick?: () => void
@@ -9,23 +10,20 @@ export interface IClickableCard {
 }
 
 export const ClickableCard: FC<IClickableCard> = ({ onLeftClick, onRightClickItems, cardContent }) => {
-  const [ mousePos, setMousePos ] = useState<{
-    mouseX: NumberOrNull
-    mouseY: NumberOrNull
-  }>({
-    mouseX: null,
-    mouseY: null,
+  const [ mousePos, setMousePos ] = useState<IMousePosition>({
+    x: null,
+    y: null,
   })
 
-  const setMousePosValues = (mouseX: NumberOrNull, mouseY: NumberOrNull): void => {
-    setMousePos({ mouseX, mouseY })
+  const setMousePosValues = (x: NumberOrNull, y: NumberOrNull): void => {
+    setMousePos({ x, y })
   }
 
   const clearMousePos = () => setMousePosValues(null, null)
 
   const handleContextMenuClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault()
-    if (mousePos.mouseX || mousePos.mouseY) return clearMousePos()
+    if (mousePos.x || mousePos.y) return clearMousePos()
 
     const { clientX, clientY } = event
 
@@ -42,16 +40,10 @@ export const ClickableCard: FC<IClickableCard> = ({ onLeftClick, onRightClickIte
     return (
       <Menu
         keepMounted
-        open={mousePos.mouseY !== null}
+        open={mousePos.y !== null}
         onClose={onRightClickHandler}
         anchorReference='anchorPosition'
-        anchorPosition={
-          mousePos.mouseY !== null && mousePos.mouseX !== null ? (
-            { top: mousePos.mouseY, left: mousePos.mouseX }
-          ) : (
-            undefined
-          )
-        }
+        anchorPosition={mousePos.y !== null && mousePos.x !== null ? { top: mousePos.y, left: mousePos.x } : undefined}
       >
         {onRightClickItems}
       </Menu>
@@ -75,7 +67,7 @@ export const ClickableCard: FC<IClickableCard> = ({ onLeftClick, onRightClickIte
     return (
       <CardActionArea
         onClick={onLeftClick && onLeftClickHandler}
-        disabled={mousePos.mouseY !== null}
+        disabled={mousePos.y !== null}
         onContextMenu={onRightClickItems && handleContextMenuClick}
       >
         {onRightClickItems && renderRightClick()}

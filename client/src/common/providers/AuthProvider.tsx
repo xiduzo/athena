@@ -43,15 +43,17 @@ const useAuthHandler = () => {
       const mergeUserToDatabase = async () => {
         // Lets upgrade our user in the database
         const userInfo = await Auth.currentUserInfo()
+        setUserInfo(userInfo)
+
         const { attributes } = userInfo
         const user: Partial<IUser> = {
           ...userInfo,
-          email: attributes['email'] || null,
-          identityProviderReference: attributes['custom:ipReferenceNumber'] || null,
-          displayName: attributes['custom:displayName'] || attributes['email'], // TODO Need to add this to users when sign up
+          email: attributes['email'], // TODO Need to add email to users when sign up
+          identityProviderReference: attributes['custom:ipReferenceNumber'] || null, // TODO Need to add ipReferenceNumber to users when sign up
+          displayName: attributes['custom:displayName'] || attributes['email'], // TODO Need to add displayName to users when sign up
         }
 
-        MergeUser({
+        await MergeUser({
           variables: {
             ...user,
           },
@@ -61,19 +63,6 @@ const useAuthHandler = () => {
       mergeUserToDatabase()
     },
     [ userSession, userCredentials, MergeUser ]
-  )
-
-  useEffect(
-    () => {
-      if (!userSession || !userCredentials) return
-      const getUserInfo = async () => {
-        const info = await Auth.currentUserInfo()
-        setUserInfo(info)
-      }
-
-      getUserInfo()
-    },
-    [ userSession, userCredentials ]
   )
 
   return { userCredentials, setCredentials, userSession, setSession, userInfo }

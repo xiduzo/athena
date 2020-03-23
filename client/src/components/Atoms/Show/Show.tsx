@@ -15,6 +15,7 @@ export const Show: FC<IShow> = ({ forGroups, forUsers, children }) => {
   useEffect(
     () => {
       if (!userSession) return
+      if (!userInfo) return
       if (forGroups) {
         const userGroups: string[] = userSession.getAccessToken().payload['cognito:groups']
         const isAuthorized = hasMatchesWith<string>(forGroups, userGroups)
@@ -26,7 +27,7 @@ export const Show: FC<IShow> = ({ forGroups, forUsers, children }) => {
         setShowElement(isAuthorized)
       }
     },
-    [ userSession, forGroups, forUsers ]
+    [ userSession, forGroups, forUsers, userInfo ]
   )
 
   if (!showElement) return null

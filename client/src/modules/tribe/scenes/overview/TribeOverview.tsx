@@ -67,7 +67,7 @@ export const TribeOverview: FC = () => {
 
   return (
     <Container maxWidth='lg' className={classes.root}>
-      <Show forGroups={[ UserRole.Admin ]}>
+      <Show forGroups={[ UserRole.Root, UserRole.Admin ]}>
         <Zoom in={!loading && !error}>
           <Fab
             color='primary'

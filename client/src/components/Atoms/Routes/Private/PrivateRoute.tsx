@@ -22,7 +22,6 @@ export const PrivateRoute: React.FC<IRoute> = ({ component: Component, ...route 
         image={<Illustration type={IllustrationType.NotAuthorized} />}
       />
     )
-
   return (
     <Route
       {...route}
