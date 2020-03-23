@@ -29,7 +29,7 @@ const coordinatorRoutes: IRoute[] = [
     private: true,
     exact: false,
     showInMenu: true,
-    userGroups: [ UserRole.Admin ],
+    userGroups: [ UserRole.Root, UserRole.Admin ],
   },
   {
     name: 'users',
@@ -39,7 +39,7 @@ const coordinatorRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: true,
-    userGroups: [ UserRole.Admin ],
+    userGroups: [ UserRole.Root, UserRole.Admin ],
   },
   {
     name: 'userDetail',
@@ -49,7 +49,7 @@ const coordinatorRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: false,
-    userGroups: [ UserRole.Admin ],
+    userGroups: [ UserRole.Root, UserRole.Admin ],
   },
   {
     name: 'tribes',
@@ -59,7 +59,7 @@ const coordinatorRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: true,
-    userGroups: [ UserRole.Admin ],
+    userGroups: [ UserRole.Root, UserRole.Admin ],
   },
   {
     name: 'tribeDetail',
@@ -69,7 +69,7 @@ const coordinatorRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: false,
-    userGroups: [ UserRole.Admin ],
+    userGroups: [ UserRole.Root, UserRole.Admin ],
   },
 ]
 
@@ -82,7 +82,7 @@ const lecturerRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: true,
-    userGroups: [ UserRole.Admin ],
+    userGroups: [ UserRole.Root, UserRole.Admin ],
   },
   {
     name: 'squadDetail',
@@ -92,7 +92,7 @@ const lecturerRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: false,
-    userGroups: [ UserRole.Admin ],
+    userGroups: [ UserRole.Root, UserRole.Admin ],
   },
 ]
 
@@ -105,7 +105,7 @@ const accountRoutes: IRoute[] = [
     private: true,
     exact: false,
     showInMenu: false,
-    userGroups: [ UserRole.Admin ],
+    userGroups: [ UserRole.Root, UserRole.Admin ],
   },
   {
     name: 'login',
@@ -115,7 +115,7 @@ const accountRoutes: IRoute[] = [
     private: false,
     exact: false,
     showInMenu: false,
-    userGroups: [ UserRole.Admin ],
+    userGroups: [ UserRole.Root, UserRole.Admin ],
   },
 ]
 
@@ -128,7 +128,7 @@ const studentRoutes: IRoute[] = [
     private: true,
     exact: false,
     showInMenu: true,
-    userGroups: [],
+    userGroups: [ UserRole.Root, UserRole.Admin ],
   },
   {
     name: 'feedback',
@@ -138,7 +138,7 @@ const studentRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: true,
-    userGroups: [ UserRole.Admin ],
+    userGroups: [ UserRole.Root, UserRole.Admin ],
   },
 ]
 
@@ -148,10 +148,10 @@ const generalRoutes: IRoute[] = [
     path: '/',
     icon: FeedbackIcon,
     component: Home,
-    private: false,
+    private: true,
     exact: true,
     showInMenu: false,
-    userGroups: [],
+    userGroups: [ UserRole.Root ],
   },
 ]
 

@@ -5,11 +5,11 @@ import { hasMatchesWith } from 'src/common/utils'
 
 interface IShow {
   forGroups?: UserRole[]
-  forUser?: string
+  forUsers?: string[]
   children: ReactNode
 }
-export const Show: FC<IShow> = ({ forGroups, forUser, children }) => {
-  const { userSession } = useAuth()
+export const Show: FC<IShow> = ({ forGroups, forUsers, children }) => {
+  const { userSession, userInfo } = useAuth()
   const [ showElement, setShowElement ] = useState(false)
 
   useEffect(
@@ -21,10 +21,12 @@ export const Show: FC<IShow> = ({ forGroups, forUser, children }) => {
         setShowElement(isAuthorized)
       }
 
-      if (forUser) {
+      if (forUsers) {
+        const isAuthorized = forUsers.some((user) => userInfo.id)
+        setShowElement(isAuthorized)
       }
     },
-    [ userSession, forGroups, forUser ]
+    [ userSession, forGroups, forUsers ]
   )
 
   if (!showElement) return null

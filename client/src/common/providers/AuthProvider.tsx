@@ -11,6 +11,7 @@ interface IAuthContext {
   setSession: (session: CognitoUserSession | null) => void
   userCredentials: ICredentials | null
   userSession: CognitoUserSession | null
+  userInfo: any
 }
 
 const AuthContext = createContext<IAuthContext>({
@@ -18,11 +19,13 @@ const AuthContext = createContext<IAuthContext>({
   setSession: (_: CognitoUserSession | null) => {},
   userCredentials: null,
   userSession: null,
+  userInfo: null,
 })
 
 const useAuthHandler = () => {
   const [ userCredentials, setUserCredentials ] = useState<ICredentials | null>(null)
   const [ userSession, setUserSession ] = useState<CognitoUserSession | null>(null)
+  const [ userInfo, setUserInfo ] = useState<any>(null)
 
   const [ MergeUser ] = useMutation(MERGE_USER)
 
@@ -60,13 +63,26 @@ const useAuthHandler = () => {
     [ userSession, userCredentials, MergeUser ]
   )
 
-  return { userCredentials, setCredentials, userSession, setSession }
+  useEffect(
+    () => {
+      if (!userSession || !userCredentials) return
+      const getUserInfo = async () => {
+        const info = await Auth.currentUserInfo()
+        setUserInfo(info)
+      }
+
+      getUserInfo()
+    },
+    [ userSession, userCredentials ]
+  )
+
+  return { userCredentials, setCredentials, userSession, setSession, userInfo }
 }
 
 const { Provider } = AuthContext
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const { userCredentials, setCredentials, userSession, setSession } = useAuthHandler()
+  const { userCredentials, setCredentials, userSession, setSession, userInfo } = useAuthHandler()
 
   useEffect(
     () => {
@@ -84,7 +100,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     [ userCredentials, setCredentials ]
   )
 
-  return <Provider value={{ userCredentials, setCredentials, userSession, setSession }}>{children}</Provider>
+  return <Provider value={{ userCredentials, setCredentials, userSession, setSession, userInfo }}>{children}</Provider>
 }
 
 export const useAuth = () => useContext(AuthContext)

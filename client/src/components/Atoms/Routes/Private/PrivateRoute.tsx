@@ -18,7 +18,7 @@ export const PrivateRoute: React.FC<IRoute> = ({ component: Component, ...route 
     return (
       <EmptyState
         title={'Not authorized'}
-        subtitle={`You are not allowed to view this page`}
+        subtitle={`You are not authorized to view this page`}
         image={<Illustration type={IllustrationType.NotAuthorized} />}
       />
     )

@@ -22,6 +22,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useWidth } from 'src/common/hooks'
 import { Avataaar } from 'src/components'
+import { useAuth } from 'src/common/providers'
 
 interface IGiveFeedbackRoute {}
 
@@ -49,8 +50,9 @@ export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
   const classes = useStyles()
   const width = useWidth()
   const { t } = useTranslation()
+  const { userInfo } = useAuth()
 
-  const [ self, setSelf ] = useState<{ id: string } | undefined>(undefined)
+  const [ self, setSelf ] = useState(userInfo)
   const [ currentWeek ] = useState(6)
   const [ selectedWeek, setSelectedWeek ] = useState(currentWeek)
 
@@ -59,19 +61,6 @@ export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
 
     setSelectedWeek(value)
   }
-
-  useEffect(
-    () => {
-      if (self) return
-      const getSelf = async () => {
-        const user = await Auth.currentUserInfo()
-        setSelf(user)
-      }
-
-      getSelf()
-    },
-    [ self ]
-  )
 
   const pagination = () => {
     return (
@@ -109,7 +98,7 @@ export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
         <ExpansionPanelDetails>
           <Grid container spacing={2}>
             {[ 'eu-west-1:3c05b54c-250f-417b-825b-716a2352ace3', 2, 3, 4 ]
-              .filter((user) => self && user !== self.id)
+              .filter((user) => self && user !== userInfo.id)
               .map((user) => (
                 <Grid key={`${agreement}${user}`} item xs={12} sm={6} md={4} lg={3} className={classes.center}>
                   <Avataaar style={{ width: '75px', height: '75px' }} />

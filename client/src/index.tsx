@@ -29,3 +29,14 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.register()
+
+// TODO add some fun easter eggs on the window element
+// declare global {
+//   interface Window {
+//     testFunction: () => void
+//   }
+// }
+// const testAlert = () => alert(`wowwww`)
+// window.testFunction = () => {
+//   testAlert()
+// }
