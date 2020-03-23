@@ -1,5 +1,5 @@
 import { ApolloError } from 'apollo-errors'
-import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
+import { snackbarWrapper } from 'src/common/utils'
 
 export const generalCatchHandler = (error: ApolloError) => {
   const { message } = error

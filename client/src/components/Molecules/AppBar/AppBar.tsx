@@ -1,16 +1,14 @@
-import React, { FC, useState } from 'react'
-
-import { AppBar as MuiAppBar, Toolbar, Typography, Button, Icon, Menu, MenuItem, IconButton } from '@material-ui/core'
-import { useStyles } from './style'
-
+import { AppBar as MuiAppBar, Button, Icon, IconButton, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core'
 import AccountBoxIcon from '@material-ui/icons/AccountBox'
-import { AthenaIcon } from 'src/lib/icons'
-import { useHistory } from 'react-router-dom'
 import MenuIcon from '@material-ui/icons/Menu'
-import { useWidth } from 'src/common/hooks/useWidth'
 import { Auth } from 'aws-amplify'
-import { useAuth } from 'src/common/providers/AuthProvider'
-import { HotkeysIndicator } from 'src/components/Atoms/HotkeysIndicator'
+import React, { FC, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useWidth } from 'src/common/hooks'
+import { useAuth } from 'src/common/providers'
+import { HotkeysIndicator } from 'src/components'
+import { AthenaIcon } from 'src/lib/icons'
+import { useStyles } from './style'
 
 export const AppBar: FC = () => {
   const classes = useStyles()

@@ -13,15 +13,15 @@ import {
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import ErrorIcon from '@material-ui/icons/Error'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import StarBorderIcon from '@material-ui/icons/StarBorder'
 import StarIcon from '@material-ui/icons/Star'
+import StarBorderIcon from '@material-ui/icons/StarBorder'
 import WarningIcon from '@material-ui/icons/Warning'
 import { Pagination, Rating } from '@material-ui/lab'
 import { Auth } from 'aws-amplify'
 import React, { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useWidth } from 'src/common/hooks/useWidth'
-import { Avataaar } from 'src/components/Atoms/Avataaar'
+import { useWidth } from 'src/common/hooks'
+import { Avataaar } from 'src/components'
 
 interface IGiveFeedbackRoute {}
 

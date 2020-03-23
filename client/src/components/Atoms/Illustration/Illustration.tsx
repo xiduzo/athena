@@ -7,7 +7,7 @@ import empty from 'src/illustrations/empty.png'
 import empty2 from 'src/illustrations/empty2.png'
 import notFound from 'src/illustrations/notFound.png'
 
-export const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles((theme: Theme) => {
   return {
     root: {
       maxHeight: '30vh',

@@ -3,7 +3,7 @@ import { Card, CardHeader, makeStyles, Theme, Avatar } from '@material-ui/core'
 import Skeleton from '@material-ui/lab/Skeleton'
 import { userCardAvatarSize } from './UserCard'
 
-export const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles((theme: Theme) => {
   return {
     avatar: {
       background: theme.palette.grey[100],

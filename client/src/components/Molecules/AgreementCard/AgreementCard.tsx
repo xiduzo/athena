@@ -1,9 +1,8 @@
 import { Avatar, CardContent, CardHeader, makeStyles, Theme, Typography } from '@material-ui/core'
 import React, { FC } from 'react'
-import { getTranslation } from 'src/common/utils/getTranslation'
-import { AgreementIcon } from 'src/components/Atoms'
+import { getTranslation } from 'src/common/utils'
+import { AgreementIcon, ClickableCard, IClickableCard } from 'src/components'
 import { IAgreement } from 'src/lib/interfaces'
-import { ClickableCard, IClickableCard } from '../ClickableCard'
 
 interface IAgreementCard extends IClickableCard {
   agreement: IAgreement

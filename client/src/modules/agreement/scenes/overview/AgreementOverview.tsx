@@ -9,39 +9,39 @@ import {
   FormLabel,
   Grid,
   Hidden,
+  IconButton,
   makeStyles,
   MenuItem,
   Radio,
   RadioGroup,
   TextField,
   Theme,
+  Tooltip,
   Typography,
   Zoom,
-  IconButton,
-  Tooltip,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
+import FilterListIcon from '@material-ui/icons/FilterList'
 import gql from 'graphql-tag'
 import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { and, useHotkeys } from 'src/common/hooks/useHotkeys'
-import { IRootReducer } from 'src/common/redux/rootReducer'
-import { DELETE_AGREEMENT } from 'src/common/services/agreementService'
-import { createFilter } from 'src/common/utils/createFilter'
-import { generalCatchHandler } from 'src/common/utils/generalCatchHandler'
-import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
-import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
-import { AgreementCard, AgreementCardMock } from 'src/components/Molecules/AgreementCard'
-import { EmptyState } from 'src/components/Molecules/EmptyState'
-import { AgreementType } from 'src/lib/enums'
-import { Key } from 'src/lib/enums/Key'
+import { and, useHotkeys, useWidth } from 'src/common/hooks'
+import { IRootReducer } from 'src/common/redux'
+import { DELETE_AGREEMENT } from 'src/common/services'
+import { createFilter, generalCatchHandler, snackbarWrapper } from 'src/common/utils'
+import {
+  AgreementCard,
+  AgreementCardMock,
+  EmptyState,
+  Illustration,
+  Illustrations,
+  ToolbarSpacer,
+} from 'src/components'
+import { AgreementType, Key } from 'src/lib/enums'
 import { IAgreement } from 'src/lib/interfaces'
-import { NewAgreementModal } from './components/NewAgreementModal'
-import FilterListIcon from '@material-ui/icons/FilterList'
-import { ToolbarSpacer } from 'src/components/Atoms/ToolbarSpacer'
-import { useWidth } from 'src/common/hooks/useWidth'
+import { NewAgreementModal } from './components'
 
 const drawerWidth = '20vw'
 const useStyles = makeStyles((theme: Theme) => ({

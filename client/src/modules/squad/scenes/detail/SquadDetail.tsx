@@ -4,18 +4,17 @@ import { ApolloError } from 'apollo-errors'
 import gql from 'graphql-tag'
 import React, { FC, useState } from 'react'
 import { useParams } from 'react-router'
-import { ADD_AGREEMENT_PARENT, ADD_AGREEMENT_TRANSLATION, CREATE_AGREEMENT } from 'src/common/services/agreementService'
-import { ADD_SQUAD_AGREEMENT, REMOVE_SQUAD_AGREEMENT } from 'src/common/services/squadService'
-import { asyncForEach } from 'src/common/utils/asyncForEach'
-import { generalCatchHandler } from 'src/common/utils/generalCatchHandler'
-import { getTranslation } from 'src/common/utils/getTranslation'
-import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
-import { AddCard } from 'src/components/Atoms'
-import { AgreementCard } from 'src/components/Molecules/AgreementCard'
-import { UserCard } from 'src/components/Molecules/UserCard'
+import {
+  ADD_AGREEMENT_PARENT,
+  ADD_AGREEMENT_TRANSLATION,
+  ADD_SQUAD_AGREEMENT,
+  CREATE_AGREEMENT,
+  REMOVE_SQUAD_AGREEMENT,
+} from 'src/common/services'
+import { asyncForEach, generalCatchHandler, getTranslation, snackbarWrapper } from 'src/common/utils'
+import { AddCard, AgreementCard, AgreementSelector, UserCard } from 'src/components'
 import { IAgreement, ITranslation, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
-import { AgreementSelector } from './components/AgreementSelector'
 
 interface ISquadDetailParams {
   id: string

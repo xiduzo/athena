@@ -2,9 +2,9 @@ import { useQuery } from '@apollo/react-hooks'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import React, { FC, useState } from 'react'
-import { useWidth } from 'src/common/hooks/useWidth'
-import { GET_AGREEMENTS } from 'src/common/services/agreementService'
-import { getTranslation } from 'src/common/utils/getTranslation'
+import { useWidth } from 'src/common/hooks'
+import { GET_AGREEMENTS } from 'src/common/services'
+import { getTranslation } from 'src/common/utils'
 import { IAgreement } from 'src/lib/interfaces'
 
 interface IAgreementSelectorModal {

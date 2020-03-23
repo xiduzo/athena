@@ -11,11 +11,10 @@ import {
 } from '@material-ui/core'
 import React, { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useTheme } from 'src/common/providers/ThemeProvider'
-import { FeedbackPointsGraph } from 'src/components/Atoms/graphs'
+import { useTheme } from 'src/common/providers'
+import { DispatchAction, GlobalActions, IRootReducer } from 'src/common/redux'
+import { FeedbackPointsGraph } from 'src/components'
 import { supportedLanguages } from 'src/i18n'
-import { GlobalActions } from 'src/common/redux/globalReducer'
-import { DispatchAction, IRootReducer } from 'src/common/redux/rootReducer'
 
 export const AccountSettings: FC = () => {
   const { theme, setTheme } = useTheme()

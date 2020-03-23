@@ -3,7 +3,7 @@ import { Container, Grid, makeStyles, Paper, Theme, Typography } from '@material
 import gql from 'graphql-tag'
 import React, { FC, Fragment } from 'react'
 import { useParams } from 'react-router'
-import { Avataaar } from 'src/components/Atoms/Avataaar'
+import { Avataaar } from 'src/components'
 
 interface IUserDetailRouteParams {
   id: string

@@ -21,9 +21,9 @@ import { Auth } from 'aws-amplify'
 import React, { FC, Fragment, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
-import { useAuth } from 'src/common/providers/AuthProvider'
-import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
-import { Avataaar } from 'src/components/Atoms/Avataaar'
+import { useAuth } from 'src/common/providers'
+import { snackbarWrapper } from 'src/common/utils'
+import { Avataaar } from 'src/components'
 import {
   AccessoriesType,
   ClotheColor,
@@ -36,7 +36,7 @@ import {
   MouthType,
   SkinColor,
   TopType,
-} from 'src/lib/enums/avataaar'
+} from 'src/lib/enums'
 import { IAvataaar } from 'src/lib/interfaces'
 
 const useStyles = makeStyles((theme: Theme) => ({

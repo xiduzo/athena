@@ -1,8 +1,8 @@
 import { Box, CardHeader, Typography } from '@material-ui/core'
 import React, { FC } from 'react'
-import { Avataaar } from 'src/components/Atoms/Avataaar'
+import { Avataaar } from 'src/components'
 import { IUser } from 'src/lib/interfaces'
-import { ClickableCard, IClickableCard } from '../ClickableCard'
+import { ClickableCard, IClickableCard } from 'src/components'
 
 export interface IUserCard extends IClickableCard {
   user: IUser

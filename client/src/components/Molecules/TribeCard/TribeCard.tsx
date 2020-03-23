@@ -1,6 +1,11 @@
 import React, { FC } from 'react'
 import { Card, CardActionArea, CardHeader } from '@material-ui/core'
-import { ITribeCard } from './interface'
+import { ITribe } from 'src/lib/interfaces'
+
+export interface ITribeCard {
+  tribe: ITribe
+  onClick?: () => void
+}
 
 export const TribeCard: FC<ITribeCard> = ({ tribe, onClick }) => {
   const onClickHandler = () => {

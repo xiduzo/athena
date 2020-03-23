@@ -1,1 +1,1 @@
-export * from './Athena'
+export * from './AthenaIcon'

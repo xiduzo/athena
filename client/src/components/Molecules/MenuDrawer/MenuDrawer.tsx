@@ -6,13 +6,11 @@ import React, { FC, forwardRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkProps, NavLink } from 'react-router-dom'
-import { useWidth } from 'src/common/hooks/useWidth'
-import { useAuth } from 'src/common/providers/AuthProvider'
-import { GlobalActions } from 'src/common/redux/globalReducer'
-import { DispatchAction, IRootReducer } from 'src/common/redux/rootReducer'
-import { routes } from '../../Routes/links'
+import { useWidth } from 'src/common/hooks'
+import { useAuth } from 'src/common/providers'
+import { DispatchAction, GlobalActions, IRootReducer } from 'src/common/redux'
+import { routes, ToolbarSpacer } from 'src/components'
 import { useStyles } from './style'
-import { ToolbarSpacer } from 'src/components/Atoms/ToolbarSpacer'
 
 const AdapterLink = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
   <NavLink innerRef={ref as any} {...props} />

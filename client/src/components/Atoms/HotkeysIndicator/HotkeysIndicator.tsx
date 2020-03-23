@@ -5,7 +5,7 @@ import { IRootReducer } from 'src/common/redux/rootReducer'
 import { green, red } from '@material-ui/core/colors'
 import KeyboardIcon from '@material-ui/icons/Keyboard'
 
-export const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   hotkeysInfo: {
     color: theme.palette.grey[400],
     // margin: theme.spacing(2),

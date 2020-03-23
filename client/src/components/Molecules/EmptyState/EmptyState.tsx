@@ -8,7 +8,7 @@ interface IEmptyState {
   image?: any
 }
 
-export const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles((theme: Theme) => {
   return {
     root: {
       display: 'flex',

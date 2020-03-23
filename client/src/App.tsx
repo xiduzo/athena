@@ -2,14 +2,9 @@ import { Container, CssBaseline, makeStyles, Theme } from '@material-ui/core'
 import { SnackbarProvider } from 'notistack'
 import React, { Suspense } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { ApolloProvider } from './common/providers/ApolloProvider'
-import { AuthProvider } from './common/providers/AuthProvider'
-import { ThemeProvider } from './common/providers/ThemeProvider'
-import { SnackbarUtilsConfiguration } from './common/utils/snackbarWrapper'
-import { ToolbarSpacer } from './components/Atoms/ToolbarSpacer'
-import { AppBar } from './components/Molecules/AppBar'
-import { MenuDrawer } from './components/Molecules/MenuDrawer'
-import { Routes } from './components/Routes'
+import { ApolloProvider, AuthProvider, ThemeProvider } from 'src/common/providers'
+import { SnackbarUtilsConfiguration } from 'src/common/utils'
+import { AppBar, MenuDrawer, Routes, ToolbarSpacer } from 'src/components'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {

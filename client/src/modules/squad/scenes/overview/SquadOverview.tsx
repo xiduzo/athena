@@ -5,11 +5,9 @@ import gql from 'graphql-tag'
 import React, { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
-import { EmptyState } from 'src/components/Molecules/EmptyState'
-import { SquadCard, SquadCardMock } from 'src/components/Molecules/SquadCard'
+import { EmptyState, Illustration, Illustrations, SquadCard, SquadCardMock } from 'src/components'
 import { ISquad } from 'src/lib/interfaces'
-import { NewSquadModal } from './components/NewSquadModal'
+import { NewSquadModal } from './components'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {

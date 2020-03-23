@@ -46,4 +46,4 @@ export const ApolloProvider: FC<{ children: ReactNode }> = ({ children }) => {
   )
 }
 
-export const useAuth = () => useContext(ApolloContext)
+export const useApollo = () => useContext(ApolloContext)

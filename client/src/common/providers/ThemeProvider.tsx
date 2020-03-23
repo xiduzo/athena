@@ -1,14 +1,13 @@
-import { amber as primaryColor, grey as secondaryColor, deepPurple, teal, pink, lime } from '@material-ui/core/colors'
-import { createMuiTheme, MuiThemeProvider, Theme, fade, lighten, darken } from '@material-ui/core/styles'
-import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
-import React, { createContext, FC, ReactNode, useContext, useState, useEffect, useCallback } from 'react'
-import * as Highcharts from 'highcharts'
+import { getLocalItem } from 'src/common/utils'
 import { useMediaQuery } from '@material-ui/core'
-import { isNull } from 'util'
+import { amber as primaryColor, deepPurple, grey as secondaryColor, lime, pink, teal } from '@material-ui/core/colors'
+import { createMuiTheme, darken, fade, lighten, MuiThemeProvider, Theme } from '@material-ui/core/styles'
+import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
+import * as Highcharts from 'highcharts'
+import React, { createContext, FC, ReactNode, useCallback, useContext, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { DispatchAction } from 'src/common/redux/rootReducer'
-import { GlobalActions, IGlobalState } from 'src/common/redux/globalReducer'
-import { getLocalItem } from '../utils/offlineManager'
+import { DispatchAction, GlobalActions, IGlobalState } from 'src/common/redux'
+import { isNull } from 'util'
 
 interface IThemeContext {
   theme: ThemeOptions

@@ -1,5 +1,5 @@
 import i18n from 'src/i18n'
-import { getLocalItem, updateLocalItem } from '../utils/offlineManager'
+import { getLocalItem, updateLocalItem } from 'src/common/utils'
 import { IAction } from './rootReducer'
 
 export interface IGlobalState {

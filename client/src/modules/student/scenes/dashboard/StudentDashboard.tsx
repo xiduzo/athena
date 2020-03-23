@@ -1,7 +1,6 @@
 import { CardContent, Container, Grid, List, ListItem, makeStyles, Theme, Tooltip, Typography } from '@material-ui/core'
 import React, { FC } from 'react'
-import { FeedbackPointsGraph, FeedbackSpiderGraph } from 'src/components/Atoms/graphs'
-import { ProgressCard } from 'src/components/Molecules/ProgressCard'
+import { FeedbackPointsGraph, FeedbackSpiderGraph, ProgressCard } from 'src/components'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {

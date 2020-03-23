@@ -5,20 +5,20 @@ import React, { FC, Fragment, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 import { useHistory } from 'react-router-dom'
-import { ADD_TRIBE_SQUAD, REMOVE_TRIBE_SQUAD } from 'src/common/services/tribeService'
-import { ADD_TRIBE_LEADER, REMOVE_TRIBE_LEADER } from 'src/common/services/userService'
-import { asyncForEach } from 'src/common/utils/asyncForEach'
-import { snackbarWrapper } from 'src/common/utils/snackbarWrapper'
-import { generalCatchHandler } from 'src/common/utils/generalCatchHandler'
-import { AddCard } from 'src/components/Atoms'
-import { Illustration, Illustrations } from 'src/components/Atoms/Illustration/Illustration'
-import { EmptyState } from 'src/components/Molecules/EmptyState'
-import { SquadCard } from 'src/components/Molecules/SquadCard'
-import { TribeCardMock } from 'src/components/Molecules/TribeCard'
-import { UserCard } from 'src/components/Molecules/UserCard'
+import { ADD_TRIBE_LEADER, ADD_TRIBE_SQUAD, REMOVE_TRIBE_LEADER, REMOVE_TRIBE_SQUAD } from 'src/common/services'
+import { asyncForEach, generalCatchHandler, snackbarWrapper } from 'src/common/utils'
+import {
+  AddCard,
+  EmptyState,
+  Illustration,
+  Illustrations,
+  SquadCard,
+  SquadSelector,
+  TribeCardMock,
+  UserCard,
+  UserSelector,
+} from 'src/components'
 import { ISquad, IUser } from 'src/lib/interfaces'
-import { SquadSelector } from './components/SquadSelector'
-import { UserSelector } from './components/UserSelector'
 
 interface ITribeDetailParams {
   id: string

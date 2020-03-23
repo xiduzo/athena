@@ -1,11 +1,10 @@
-import React, { createContext, FC, ReactNode, useContext, useState, useEffect } from 'react'
-
+import { useMutation } from '@apollo/react-hooks'
 import { ICredentials } from '@aws-amplify/core'
 import { CognitoUserSession } from 'amazon-cognito-identity-js'
 import { Auth } from 'aws-amplify'
+import React, { createContext, FC, ReactNode, useContext, useEffect, useState } from 'react'
+import { MERGE_USER } from 'src/common/services'
 import { IUser } from 'src/lib/interfaces'
-import { useMutation } from '@apollo/react-hooks'
-import { MERGE_USER } from '../services/userService'
 
 interface IAuthContext {
   setCredentials: (credentials: ICredentials | null) => void
