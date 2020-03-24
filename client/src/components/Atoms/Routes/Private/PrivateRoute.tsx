@@ -28,7 +28,7 @@ export const PrivateRoute: React.FC<IRoute> = ({ component: Component, ...route 
         session ? (
           <Component {...props} />
         ) : (
-          <Redirect to={{ pathname: '/account/login', state: { referer: props.location } }} />
+          <Redirect to={{ pathname: '/login', state: { referer: props.location } }} />
         )}
     />
   )

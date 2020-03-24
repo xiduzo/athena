@@ -28,10 +28,10 @@ export const Home: FC = () => {
       const isUser = hasMatchesWith<string>([ UserRole.Member ], userGroups)
       console.log(isRoot, isAdmin, isLeader, isUser)
 
-      if (isAdmin) return history.push(`/student/dashboard`)
-      if (isUser) return history.push(`/student/dashboard`)
+      if (isAdmin) return history.push(`/member/dashboard`)
+      if (isUser) return history.push(`/member/dashboard`)
     },
-    [ session ]
+    [ session, history ]
   )
 
   return (

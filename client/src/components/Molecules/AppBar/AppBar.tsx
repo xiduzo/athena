@@ -160,7 +160,7 @@ export const AppBar: FC = () => {
               <MenuItem onClick={() => gotoRoute(`/user/${userInfo.id}`)}>
                 <Typography>Profile</Typography>
               </MenuItem>
-              <MenuItem onClick={() => gotoRoute('/account/settings')}>
+              <MenuItem onClick={() => gotoRoute('/settings')}>
                 <Typography>Settings</Typography>
               </MenuItem>
               <MenuItem onClick={logout}>
