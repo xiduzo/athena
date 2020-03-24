@@ -16,7 +16,7 @@ import { DispatchAction, GlobalActions, IRootReducer } from 'src/common/redux'
 import { FeedbackPointsGraph } from 'src/components'
 import { supportedLanguages } from 'src/i18n'
 
-export const AccountSettings: FC = () => {
+export const UserSettings: FC = () => {
   const { theme, setTheme } = useTheme()
 
   const globalState = useSelector((state: IRootReducer) => state.global)

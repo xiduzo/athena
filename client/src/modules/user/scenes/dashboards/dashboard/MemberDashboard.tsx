@@ -21,7 +21,7 @@ interface IInfoCard {
   inverse: boolean
 }
 
-export const StudentDashboard: FC = () => {
+export const MemberDashboard: FC = () => {
   const classes = useStyles()
 
   const infoCards: IInfoCard[] = [

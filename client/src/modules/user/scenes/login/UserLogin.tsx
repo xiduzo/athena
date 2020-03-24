@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-export const AccountLogin: FC = () => {
+export const UserLogin: FC = () => {
   const classes = useStyles()
   const history = useHistory()
 

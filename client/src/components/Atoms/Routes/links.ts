@@ -5,29 +5,39 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import FeedbackIcon from '@material-ui/icons/Feedback'
 import MenuBookIcon from '@material-ui/icons/MenuBook'
 import PeopleIcon from '@material-ui/icons/People'
+import { UserRole } from 'src/lib/enums'
 import { IRoute } from 'src/lib/interfaces'
-import { AccountLogin } from 'src/modules/account/scenes/login'
-import { AccountSettings } from 'src/modules/account/scenes/settings'
 import { AgreementOverview } from 'src/modules/agreement/scenes/overview'
 import { GiveFeedbackRoute } from 'src/modules/feedback/scenes/giveFeedback'
+import { Home } from 'src/modules/generic/scenes/home'
 import { SquadDetail } from 'src/modules/squad/scenes/detail'
 import { SquadOverview } from 'src/modules/squad/scenes/overview'
-import { StudentDashboard } from 'src/modules/student/scenes/dashboard'
 import { TribeDetail } from 'src/modules/tribe/scenes/detail'
 import { TribeOverview } from 'src/modules/tribe/scenes/overview'
+import { MemberDashboard } from 'src/modules/user/scenes/dashboards/dashboard'
 import { UserDetailRoute } from 'src/modules/user/scenes/detail'
+import { UserLogin } from 'src/modules/user/scenes/login'
 import { UserOverview } from 'src/modules/user/scenes/overview'
-import { UserRole } from 'src/lib/enums'
-import { Home } from 'src/modules/generic/scenes/home'
+import { UserSettings } from 'src/modules/user/scenes/settings'
 
-const coordinatorRoutes: IRoute[] = [
+export const routes: IRoute[] = [
+  {
+    name: 'home',
+    path: '/',
+    icon: FeedbackIcon,
+    component: Home,
+    private: true,
+    exact: true,
+    showInMenu: false,
+    userGroups: [ UserRole.Root, UserRole.Admin ],
+  },
   {
     name: 'agreements',
     path: '/agreement',
     icon: MenuBookIcon,
     component: AgreementOverview,
     private: true,
-    exact: false,
+    exact: true,
     showInMenu: true,
     userGroups: [ UserRole.Root, UserRole.Admin ],
   },
@@ -52,6 +62,46 @@ const coordinatorRoutes: IRoute[] = [
     userGroups: [ UserRole.Root, UserRole.Admin ],
   },
   {
+    name: 'settings',
+    path: '/user/settings',
+    icon: ExitToAppIcon,
+    component: UserSettings,
+    private: true,
+    exact: true,
+    showInMenu: false,
+    userGroups: [ UserRole.Root, UserRole.Admin ],
+  },
+  {
+    name: 'login',
+    path: '/user/login',
+    icon: ExitToAppIcon,
+    component: UserLogin,
+    private: false,
+    exact: true,
+    showInMenu: false,
+    userGroups: [ UserRole.Root, UserRole.Admin ],
+  },
+  {
+    name: 'dashboard',
+    path: '/user/member/dashboard',
+    icon: DashboardIcon,
+    component: MemberDashboard,
+    private: true,
+    exact: true,
+    showInMenu: true,
+    userGroups: [ UserRole.Root, UserRole.Admin ],
+  },
+  {
+    name: 'feedback',
+    path: '/user/member/feedback',
+    icon: FeedbackIcon,
+    component: GiveFeedbackRoute,
+    private: true,
+    exact: true,
+    showInMenu: true,
+    userGroups: [ UserRole.Root, UserRole.Admin ],
+  },
+  {
     name: 'tribes',
     path: '/tribe',
     icon: DialpadIcon,
@@ -71,9 +121,6 @@ const coordinatorRoutes: IRoute[] = [
     showInMenu: false,
     userGroups: [ UserRole.Root, UserRole.Admin ],
   },
-]
-
-const lecturerRoutes: IRoute[] = [
   {
     name: 'squads',
     path: '/squad',
@@ -94,71 +141,4 @@ const lecturerRoutes: IRoute[] = [
     showInMenu: false,
     userGroups: [ UserRole.Root, UserRole.Admin ],
   },
-]
-
-const accountRoutes: IRoute[] = [
-  {
-    name: 'settings',
-    path: '/account/settings',
-    icon: ExitToAppIcon,
-    component: AccountSettings,
-    private: true,
-    exact: false,
-    showInMenu: false,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
-  },
-  {
-    name: 'login',
-    path: '/account/login',
-    icon: ExitToAppIcon,
-    component: AccountLogin,
-    private: false,
-    exact: false,
-    showInMenu: false,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
-  },
-]
-
-const studentRoutes: IRoute[] = [
-  {
-    name: 'dashboard',
-    path: '/student/dashboard',
-    icon: DashboardIcon,
-    component: StudentDashboard,
-    private: true,
-    exact: false,
-    showInMenu: true,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
-  },
-  {
-    name: 'feedback',
-    path: '/student/feedback',
-    icon: FeedbackIcon,
-    component: GiveFeedbackRoute,
-    private: true,
-    exact: true,
-    showInMenu: true,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
-  },
-]
-
-const generalRoutes: IRoute[] = [
-  {
-    name: 'home',
-    path: '/',
-    icon: FeedbackIcon,
-    component: Home,
-    private: true,
-    exact: true,
-    showInMenu: false,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
-  },
-]
-
-export const routes: IRoute[] = [
-  ...generalRoutes,
-  ...coordinatorRoutes,
-  ...lecturerRoutes,
-  ...studentRoutes,
-  ...accountRoutes,
 ]
