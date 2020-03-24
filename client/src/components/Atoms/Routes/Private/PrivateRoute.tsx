@@ -7,14 +7,12 @@ import { EmptyState, Illustration } from 'src/components'
 import { IllustrationType } from 'src/lib/enums'
 
 export const PrivateRoute: React.FC<IRoute> = ({ component: Component, ...route }) => {
-  const { userSession } = useAuth()
+  const { session } = useAuth()
 
-  if (!userSession) return null
-
-  const userGroups: string[] = userSession.getAccessToken().payload['cognito:groups']
+  const userGroups: string[] = session ? session.getAccessToken().payload['cognito:groups'] : []
   const isAuthorized = hasMatchesWith<string>(route.userGroups, userGroups)
 
-  if (!isAuthorized)
+  if (session && !isAuthorized)
     return (
       <EmptyState
         title={'Not authorized'}
@@ -22,11 +20,12 @@ export const PrivateRoute: React.FC<IRoute> = ({ component: Component, ...route 
         image={<Illustration type={IllustrationType.NotAuthorized} />}
       />
     )
+
   return (
     <Route
       {...route}
       render={(props) =>
-        userSession ? (
+        session ? (
           <Component {...props} />
         ) : (
           <Redirect to={{ pathname: '/account/login', state: { referer: props.location } }} />

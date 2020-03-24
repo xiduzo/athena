@@ -151,7 +151,7 @@ const generalRoutes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: false,
-    userGroups: [ UserRole.Root ],
+    userGroups: [ UserRole.Root, UserRole.Admin ],
   },
 ]
 

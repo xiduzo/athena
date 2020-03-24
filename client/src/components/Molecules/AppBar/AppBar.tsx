@@ -30,10 +30,6 @@ const useStyles = makeStyles((theme: Theme) => {
     appBar: {
       position: 'fixed',
       zIndex: theme.zIndex.drawer + 1,
-      transition: theme.transitions.create([ 'width', 'margin' ], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
       [theme.breakpoints.up('sm')]: {
         top: 0,
       },
@@ -57,7 +53,7 @@ export const AppBar: FC = () => {
   const classes = useStyles()
   const width = useWidth()
   const history = useHistory()
-  const { setCredentials, setSession, userInfo } = useAuth()
+  const { setCredentials, setSession, userInfo, setUserInfo } = useAuth()
 
   const [ anchorEl, setAnchorEl ] = useState(null)
 
@@ -98,6 +94,7 @@ export const AppBar: FC = () => {
     // Clear all user details from auth provider and state manager
     setCredentials(null)
     setSession(null)
+    setUserInfo(null)
     dispatch({
       type: GlobalActions.setUser,
       payload: null,

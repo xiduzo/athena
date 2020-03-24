@@ -21,7 +21,7 @@ export const MenuDrawer: FC = () => {
   const { t } = useTranslation()
 
   const width = useWidth()
-  const { userSession } = useAuth()
+  const { session } = useAuth()
 
   const globalState = useSelector((state: IRootReducer) => state.global)
   const dispatch = useDispatch<DispatchAction>()
@@ -33,7 +33,7 @@ export const MenuDrawer: FC = () => {
     })
   }
 
-  if (!userSession) return null
+  if (!session) return null
 
   const { menuOpen } = globalState
 

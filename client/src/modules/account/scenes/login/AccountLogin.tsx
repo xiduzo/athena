@@ -57,27 +57,27 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const AccountLogin: FC = () => {
   const classes = useStyles()
-  const { userSession, setCredentials, setSession } = useAuth()
   const history = useHistory()
-  const { register, handleSubmit, errors } = useForm()
 
   const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null)
   const [ loginButtonEnabled, setLoginButtonEnabled ] = useState(true)
-  const open = Boolean(anchorEl)
+
+  const { session, setCredentials, setSession } = useAuth()
+
+  const { register, handleSubmit, errors } = useForm()
 
   useEffect(
     () => {
-      if (userSession) {
-        const previousRoute = history.location.state
-        // history.goBack()
-        if (previousRoute && previousRoute.referer) {
-          return history.push(history.location.state.referer.pathname)
-        }
+      if (!session) return
 
-        history.push('/student/dashboard')
-      } // TODO goto dashboard route based on user group
+      const previousRoute = history.location.state
+      if (previousRoute && previousRoute.referer) {
+        return history.push(history.location.state.referer.pathname)
+      }
+
+      history.push('/') // Go to Home page
     },
-    [ userSession, history ]
+    [ session, history ]
   )
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -159,7 +159,7 @@ export const AccountLogin: FC = () => {
                   <IconButton aria-label='settings' onClick={handleClick}>
                     <LanguageIcon />
                   </IconButton>
-                  <Menu anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
+                  <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
                     {[ 'NL', 'ENG' ].map((option) => (
                       <MenuItem key={option} selected={option === 'ENG'} onClick={handleClose}>
                         {option}

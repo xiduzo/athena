@@ -9,37 +9,36 @@ import { IUser } from 'src/lib/interfaces'
 interface IAuthContext {
   setCredentials: (credentials: ICredentials | null) => void
   setSession: (session: CognitoUserSession | null) => void
-  userCredentials: ICredentials | null
-  userSession: CognitoUserSession | null
+  setUserInfo: any
+  credentials: ICredentials | null
+  session: CognitoUserSession | null
   userInfo: any
 }
 
 const AuthContext = createContext<IAuthContext>({
   setCredentials: (_: ICredentials | null) => {},
   setSession: (_: CognitoUserSession | null) => {},
-  userCredentials: null,
-  userSession: null,
+  setUserInfo: null,
+  credentials: null,
+  session: null,
   userInfo: null,
 })
 
 const useAuthHandler = () => {
-  const [ userCredentials, setUserCredentials ] = useState<ICredentials | null>(null)
-  const [ userSession, setUserSession ] = useState<CognitoUserSession | null>(null)
+  const [ credentials, setUserCredentials ] = useState<ICredentials | null>(null)
+
+  const [ session, setUserSession ] = useState<CognitoUserSession | null>(null)
   const [ userInfo, setUserInfo ] = useState<any>(null)
 
   const [ MergeUser ] = useMutation(MERGE_USER)
 
-  const setCredentials = (credentials: ICredentials | null) => {
-    setUserCredentials(credentials)
-  }
+  const setCredentials = (credentials: ICredentials | null) => setUserCredentials(credentials)
 
-  const setSession = (session: CognitoUserSession | null) => {
-    setUserSession(session)
-  }
+  const setSession = (session: CognitoUserSession | null) => setUserSession(session)
 
   useEffect(
     () => {
-      if (!userSession || !userCredentials) return
+      if (!session || !credentials) return
       const mergeUserToDatabase = async () => {
         // Lets upgrade our user in the database
         const userInfo = await Auth.currentUserInfo()
@@ -62,34 +61,36 @@ const useAuthHandler = () => {
 
       mergeUserToDatabase()
     },
-    [ userSession, userCredentials, MergeUser ]
+    [ session, credentials, MergeUser ]
   )
 
-  return { userCredentials, setCredentials, userSession, setSession, userInfo }
+  return { credentials, setCredentials, session, setSession, userInfo, setUserInfo }
 }
 
 const { Provider } = AuthContext
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const { userCredentials, setCredentials, userSession, setSession, userInfo } = useAuthHandler()
+  const { credentials, setCredentials, session, setSession, userInfo, setUserInfo } = useAuthHandler()
 
   useEffect(
     () => {
-      if (userSession) return
+      if (session) return
       Auth.currentSession().then(setSession).catch(console.log)
     },
-    [ userSession, setSession ]
+    [ session, setSession ]
   )
 
   useEffect(
     () => {
-      if (userCredentials) return
+      if (credentials) return
       Auth.currentCredentials().then(setCredentials).catch(console.log)
     },
-    [ userCredentials, setCredentials ]
+    [ credentials, setCredentials ]
   )
 
-  return <Provider value={{ userCredentials, setCredentials, userSession, setSession, userInfo }}>{children}</Provider>
+  return (
+    <Provider value={{ credentials, setCredentials, session, setSession, userInfo, setUserInfo }}>{children}</Provider>
+  )
 }
 
 export const useAuth = () => useContext(AuthContext)
