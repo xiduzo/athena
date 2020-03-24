@@ -2,14 +2,14 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { useAuth } from 'src/common/providers/AuthProvider'
 import { IRoute } from 'src/lib/interfaces'
-import { hasMatchesWith } from 'src/common/utils'
+import { hasMatchesWith, getUserGroups } from 'src/common/utils'
 import { EmptyState, Illustration } from 'src/components'
 import { IllustrationType } from 'src/lib/enums'
 
 export const PrivateRoute: React.FC<IRoute> = ({ component: Component, ...route }) => {
   const { session } = useAuth()
 
-  const userGroups: string[] = session ? session.getAccessToken().payload['cognito:groups'] : []
+  const userGroups: string[] = session ? getUserGroups(session) : []
   const isAuthorized = hasMatchesWith<string>(route.userGroups, userGroups)
 
   if (session && !isAuthorized)

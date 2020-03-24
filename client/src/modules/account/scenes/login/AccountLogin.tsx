@@ -75,7 +75,7 @@ export const AccountLogin: FC = () => {
         return history.push(history.location.state.referer.pathname)
       }
 
-      history.push('/') // Go to Home page
+      history.push('/') // for safety
     },
     [ session, history ]
   )
