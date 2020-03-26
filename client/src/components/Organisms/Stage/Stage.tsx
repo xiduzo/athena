@@ -8,6 +8,7 @@ const useStyles = makeStyles((_: Theme) => {
   return {
     content: {
       flexGrow: 1,
+      minHeight: `100vh`,
     },
     root: {
       display: 'flex',
@@ -40,7 +41,7 @@ export const Stage: FC = () => {
           {/* TODO: add breadcrumbs? */}
           <ToolbarSpacer xsDown />
           <Routes />
-          <ToolbarSpacer mdUp />
+          <ToolbarSpacer smUp />
         </main>
       </Suspense>
     </Container>

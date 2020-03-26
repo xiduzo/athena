@@ -17,13 +17,15 @@ import { Skeleton } from '@material-ui/lab'
 import { Auth } from 'aws-amplify'
 import gql from 'graphql-tag'
 import React, { FC, Fragment, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { useWidth } from 'src/common/hooks'
 import { useAuth } from 'src/common/providers'
-import { DispatchAction, GlobalActions } from 'src/common/redux'
+import { DispatchAction, GlobalActions, IRootReducer } from 'src/common/redux'
 import { AthenaIcon } from 'src/lib/icons'
 import { IUser } from 'src/lib/interfaces'
+import { Avataaar } from 'src/components'
+import { AvatarStyle } from 'avataaars'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -44,6 +46,7 @@ const useStyles = makeStyles((theme: Theme) => {
       marginRight: theme.spacing(2),
     },
     profileButton: {
+      padding: 0,
       color: theme.palette.primary.contrastText,
     },
   }
@@ -56,6 +59,8 @@ export const AppBar: FC = () => {
   const { setCredentials, setSession, userInfo, setUserInfo } = useAuth()
 
   const [ anchorEl, setAnchorEl ] = useState(null)
+
+  const globalState = useSelector((state: IRootReducer) => state.global)
 
   const { loading, error, data } = useQuery(
     gql`
@@ -84,12 +89,19 @@ export const AppBar: FC = () => {
 
   const dispatch = useDispatch<DispatchAction>()
 
-  const handleMenuClick = (event: any) => setAnchorEl(event.currentTarget)
+  const toggleMenuDrawer = () => {
+    dispatch({
+      type: GlobalActions.setMenuOpen,
+      payload: !globalState.menuOpen,
+    })
+  }
 
-  const handleClose = () => setAnchorEl(null)
+  const openUserMenu = (event: any) => setAnchorEl(event.currentTarget)
+
+  const closeUserMenu = () => setAnchorEl(null)
 
   const logout = async () => {
-    handleClose()
+    closeUserMenu()
     await Auth.signOut()
     // Clear all user details from auth provider and state manager
     setCredentials(null)
@@ -103,7 +115,7 @@ export const AppBar: FC = () => {
   }
 
   const gotoRoute = (route: string) => {
-    handleClose()
+    closeUserMenu()
     history.push(route)
   }
 
@@ -119,7 +131,7 @@ export const AppBar: FC = () => {
     <MuiAppBar position='static' className={classes.appBar}>
       <Toolbar>
         {width === 'xs' ? (
-          <IconButton className={classes.icon}>
+          <IconButton className={classes.icon} onClick={toggleMenuDrawer}>
             <MenuIcon />
           </IconButton>
         ) : (
@@ -130,9 +142,9 @@ export const AppBar: FC = () => {
         </Typography>
 
         {loading ? (
-          <Button startIcon={<AccountBoxIcon />}>
-            <Skeleton variant='text' style={{ width: '150px' }} />
-          </Button>
+          <IconButton>
+            <Skeleton variant='circle' style={{ width: '33px' }} />
+          </IconButton>
         ) : error ? (
           //error
           ''
@@ -141,9 +153,9 @@ export const AppBar: FC = () => {
           ''
         ) : (
           <Fragment>
-            <Button className={classes.profileButton} onClick={handleMenuClick} startIcon={<AccountBoxIcon />}>
-              {(data.User[0] as IUser).displayName}
-            </Button>
+            <IconButton className={classes.profileButton} onClick={openUserMenu}>
+              <Avataaar />
+            </IconButton>
             <Menu
               anchorEl={anchorEl}
               anchorOrigin={{
@@ -155,8 +167,11 @@ export const AppBar: FC = () => {
                 horizontal: 'center',
               }}
               open={Boolean(anchorEl)}
-              onClose={handleClose}
+              onClose={closeUserMenu}
             >
+              <MenuItem disabled>
+                <Typography>{data.User[0].displayName}</Typography>
+              </MenuItem>
               <MenuItem onClick={() => gotoRoute(`/user/${userInfo.id}`)}>
                 <Typography>Profile</Typography>
               </MenuItem>

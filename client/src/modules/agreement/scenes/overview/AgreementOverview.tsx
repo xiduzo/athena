@@ -34,7 +34,7 @@ import { createFilter, generalCatchHandler, snackbarWrapper } from 'src/common/u
 import { AgreementCard, AgreementCardMock, EmptyState, Illustration, ToolbarSpacer } from 'src/components'
 import { AgreementType, Key, IllustrationType } from 'src/lib/enums'
 import { IAgreement } from 'src/lib/interfaces'
-import { NewAgreementModal } from './components'
+import { NewAgreementModal } from './components/NewAgreementModal'
 
 const drawerWidth = '20vw'
 const useStyles = makeStyles((theme: Theme) => ({

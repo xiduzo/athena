@@ -11,6 +11,9 @@ export const useStyles = makeStyles((theme: Theme) => {
       width: drawerWidth,
       flexShrink: 0,
       whiteSpace: 'nowrap',
+      [theme.breakpoints.only('xs')]: {
+        width: `75vw`,
+      },
     },
     drawerOpen: {
       width: drawerWidth,
@@ -18,6 +21,9 @@ export const useStyles = makeStyles((theme: Theme) => {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),
+      [theme.breakpoints.only('xs')]: {
+        width: `75vw`,
+      },
     },
     drawerClose: {
       transition: theme.transitions.create('width', {
@@ -39,9 +45,17 @@ export const useStyles = makeStyles((theme: Theme) => {
       overflowY: 'scroll',
       overflowX: 'hidden',
       height: 'inherit',
-      maxHeight: '100%',
+      maxHeight: '100vh',
       '&::-webkit-scrollbar': {
         display: 'none',
+      },
+    },
+    flexList: {
+      height: 'inherit',
+      display: 'flex',
+      flexDirection: 'column',
+      [theme.breakpoints.only('xs')]: {
+        justifyContent: 'flex-end',
       },
     },
     drawerToggleButton: {
