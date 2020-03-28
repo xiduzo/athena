@@ -70,7 +70,10 @@ interface IAvataaarComponent {
 export const Avataaar: FC<IAvataaarComponent> = ({ avatar, user }) => {
   const classes = useStyles()
 
-  const [ style, setStyle ] = useState<IAvataaar>(generateRandomAvatar() as IAvataaar)
+  const [ style, setStyle ] = useState<IAvataaar>({
+    ...generateRandomAvatar() as IAvataaar,
+    ...avatar,
+  })
 
   const [ MergeUser ] = useMutation(MERGE_USER)
 

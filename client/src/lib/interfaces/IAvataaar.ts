@@ -27,5 +27,5 @@ export interface IAvataaar {
   eyeType?: EyeType
   eyebrowType?: EyebrowType
   mouthType?: MouthType
-  SkinColor?: SkinColor
+  skinColor?: SkinColor
 }

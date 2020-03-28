@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(2, 3),
   },
   paper: {
+    width: '100%',
     padding: theme.spacing(2),
   },
   formControl: {
@@ -57,51 +58,60 @@ export const AvatarCreator: FC<IAvatarCreator> = ({ user, isOpen, onClose }) => 
   const classes = useStyles()
 
   const [ style, setStyle ] = useState<IAvataaar>(generateRandomAvatar() as IAvataaar)
+  const [ previousStyle, setPreviousStyle ] = useState<IAvataaar>(style)
 
   const handleClose = () => {
     onClose && onClose()
   }
 
-  const changeStyle = (
-    event: React.ChangeEvent<{
-      name?: string | undefined
-      value: unknown
-    }>
-  ) => {
-    const { name, value } = event.target
-    if (!name) return
+  const changeStyle = (item: string, type: string) => {
+    const newStyle = {
+      ...style,
+      [item]: type,
+    }
+    setStyle(newStyle)
+    setPreviousStyle(newStyle)
+  }
 
+  const previewStyle = (item: string, type: string) => {
+    setPreviousStyle(style)
     setStyle({
       ...style,
-      [name]: value,
+      [item]: type,
     })
   }
 
+  const resetPreview = (_: any) => setStyle(previousStyle)
+
   // object: T
-  const renderFormControl = (object: Object, item: string): JSX.Element => {
+  const renderAvatarPreview = (object: Object, item: string): JSX.Element => {
     return (
-      <FormControl className={classes.formControl}>
-        <InputLabel htmlFor={item}>{item.replace('Type', '')}</InputLabel>
-        <Select
-          onChange={changeStyle}
-          value={style[item]}
-          fullWidth
-          inputProps={{
-            name: item,
-            id: item,
-          }}
-        >
-          {Object.keys(object).map((type) => {
-            const typeToString = type.toString()
-            const text = typeToString.match(/[A-Z][a-z]+/g)
-            return (
-              <MenuItem key={type} value={type}>
-                {text ? text.join(' ') : typeToString}
-              </MenuItem>
-            )
-          })}
-        </Select>
-      </FormControl>
+      <Grid container>
+        {Object.keys(object).map((type) => {
+          const typeToString = type.toString()
+          const text = typeToString.match(/[A-Z][a-z]+/g)
+          console.log(type)
+          return (
+            <Grid
+              item
+              xs={2}
+              onClick={() => changeStyle(item, type)}
+              onMouseEnter={() => previewStyle(item, type)}
+              onMouseLeave={resetPreview}
+            >
+              <Avataaar
+                key={type}
+                avatar={{
+                  ...style,
+                  style: { width: '100px', height: '100px' },
+                  [item]: type,
+                }}
+              />
+              <span>{text ? text.join(' ') : typeToString}</span>
+            </Grid>
+          )
+        })}
+      </Grid>
     )
   }
 
@@ -121,7 +131,7 @@ export const AvatarCreator: FC<IAvatarCreator> = ({ user, isOpen, onClose }) => 
   )
 
   return (
-    <Dialog fullScreen open={isOpen} onClose={handleClose} TransitionComponent={SlideUp}>
+    <Dialog fullScreen open={true} onClose={handleClose} TransitionComponent={SlideUp}>
       <AppBar position={`relative`}>
         <Toolbar>
           <IconButton edge='start' autoFocus color='inherit' onClick={handleClose} aria-label='close'>
@@ -144,55 +154,25 @@ export const AvatarCreator: FC<IAvatarCreator> = ({ user, isOpen, onClose }) => 
               }}
             />
           </Grid>
-        </Grid>
-        <Paper className={classes.paper}>
-          <Grid container>
-            <Grid item xs={12} md={6} lg={4} container spacing={2}>
-              <Grid item xs={12}>
-                {renderFormControl(TopType, 'topType')}
-              </Grid>
-              <Grid item xs={12}>
-                {renderFormControl(AccessoriesType, 'accessoriesType')}
-              </Grid>
-              <Grid item xs={12}>
-                {renderFormControl(HairColor, 'hairColor')}
-              </Grid>
-              <Grid item xs={12}>
-                {renderFormControl(FacialHairType, 'facialHairType')}
-              </Grid>
-              <Grid item xs={12}>
-                {renderFormControl(FacialHairColor, 'facialHairColor')}
-              </Grid>
-            </Grid>
-            <Grid item xs={12} md={6} lg={4} container spacing={2}>
-              <Grid item xs={12}>
-                {renderFormControl(ClotheType, 'clotheType')}
-              </Grid>
-              <Grid item xs={12}>
-                {renderFormControl(ClotheColor, 'clotheColor')}
-              </Grid>
-              {style.clotheType === ClotheType.GraphicShirt && (
-                <Grid item xs={12}>
-                  {renderFormControl(GraphicType, 'graphicType')}
-                </Grid>
-              )}
-            </Grid>
-            <Grid item xs={12} md={6} lg={4} container spacing={2}>
-              <Grid item xs={12}>
-                {renderFormControl(EyeType, 'eyeType')}
-              </Grid>
-              <Grid item xs={12}>
-                {renderFormControl(EyebrowType, 'eyebrowType')}
-              </Grid>
-              <Grid item xs={12}>
-                {renderFormControl(MouthType, 'mouthType')}
-              </Grid>
-              <Grid item xs={12}>
-                {renderFormControl(SkinColor, 'skinColor')}
-              </Grid>
-            </Grid>
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>
+              {renderAvatarPreview(SkinColor, 'skinColor')}
+              {renderAvatarPreview(TopType, 'topType')}
+              {renderAvatarPreview(AccessoriesType, 'accessoriesType')}
+              {renderAvatarPreview(HairColor, 'hairColor')}
+              {renderAvatarPreview(FacialHairType, 'facialHairType')}
+              {renderAvatarPreview(FacialHairColor, 'facialHairColor')}
+              {renderAvatarPreview(ClotheType, 'clotheType')}
+              {renderAvatarPreview(ClotheColor, 'clotheColor')}
+              {renderAvatarPreview(GraphicType, 'graphicType')}
+              {renderAvatarPreview(EyeType, 'eyebrowType')}
+              {renderAvatarPreview(EyebrowType, 'eyeType')}
+              {renderAvatarPreview(MouthType, 'mouthType')}
+              {renderAvatarPreview(GraphicType, 'graphicType')}
+              {renderAvatarPreview(GraphicType, 'graphicType')}
+            </Paper>
           </Grid>
-        </Paper>
+        </Grid>
       </Container>
     </Dialog>
   )
