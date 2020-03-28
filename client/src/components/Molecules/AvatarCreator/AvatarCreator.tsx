@@ -19,7 +19,20 @@ import CloseIcon from '@material-ui/icons/Close'
 import React, { FC, useState, useEffect } from 'react'
 import { Avataaar, SlideUp, generateRandomAvatar } from 'src/components/Atoms'
 import { IModalBase, IUser, IAvataaar } from 'src/lib/interfaces'
-import { TopType, AccessoriesType } from 'src/lib/enums'
+import {
+  TopType,
+  AccessoriesType,
+  HairColor,
+  FacialHairType,
+  FacialHairColor,
+  ClotheType,
+  ClotheColor,
+  GraphicType,
+  EyeType,
+  EyebrowType,
+  MouthType,
+  SkinColor,
+} from 'src/lib/enums'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -56,8 +69,8 @@ export const AvatarCreator: FC<IAvatarCreator> = ({ user, isOpen, onClose }) => 
     }>
   ) => {
     const { name, value } = event.target
-    console.log(name, value)
     if (!name) return
+
     setStyle({
       ...style,
       [name]: value,
@@ -136,10 +149,46 @@ export const AvatarCreator: FC<IAvatarCreator> = ({ user, isOpen, onClose }) => 
           <Grid container>
             <Grid item xs={12} md={6} lg={4} container spacing={2}>
               <Grid item xs={12}>
-                {renderFormControl(TopType, 'TopType')}
+                {renderFormControl(TopType, 'topType')}
               </Grid>
               <Grid item xs={12}>
-                {renderFormControl(AccessoriesType, 'AccessoriesType')}
+                {renderFormControl(AccessoriesType, 'accessoriesType')}
+              </Grid>
+              <Grid item xs={12}>
+                {renderFormControl(HairColor, 'hairColor')}
+              </Grid>
+              <Grid item xs={12}>
+                {renderFormControl(FacialHairType, 'facialHairType')}
+              </Grid>
+              <Grid item xs={12}>
+                {renderFormControl(FacialHairColor, 'facialHairColor')}
+              </Grid>
+            </Grid>
+            <Grid item xs={12} md={6} lg={4} container spacing={2}>
+              <Grid item xs={12}>
+                {renderFormControl(ClotheType, 'clotheType')}
+              </Grid>
+              <Grid item xs={12}>
+                {renderFormControl(ClotheColor, 'clotheColor')}
+              </Grid>
+              {style.clotheType === ClotheType.GraphicShirt && (
+                <Grid item xs={12}>
+                  {renderFormControl(GraphicType, 'graphicType')}
+                </Grid>
+              )}
+            </Grid>
+            <Grid item xs={12} md={6} lg={4} container spacing={2}>
+              <Grid item xs={12}>
+                {renderFormControl(EyeType, 'eyeType')}
+              </Grid>
+              <Grid item xs={12}>
+                {renderFormControl(EyebrowType, 'eyebrowType')}
+              </Grid>
+              <Grid item xs={12}>
+                {renderFormControl(MouthType, 'mouthType')}
+              </Grid>
+              <Grid item xs={12}>
+                {renderFormControl(SkinColor, 'skinColor')}
               </Grid>
             </Grid>
           </Grid>

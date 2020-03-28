@@ -5,6 +5,7 @@ import { Auth } from 'aws-amplify'
 import React, { createContext, FC, ReactNode, useContext, useEffect, useState } from 'react'
 import { MERGE_USER } from 'src/common/services'
 import { IUser } from 'src/lib/interfaces'
+import { generateRandomAvatar } from 'src/components'
 
 interface IAuthContext {
   setCredentials: (credentials: ICredentials | null) => void
@@ -50,6 +51,7 @@ const useAuthHandler = () => {
           email: attributes['email'], // TODO Need to add email to users when sign up
           identityProviderReference: attributes['custom:ipReferenceNumber'] || null, // TODO Need to add ipReferenceNumber to users when sign up
           displayName: attributes['custom:displayName'] || attributes['email'], // TODO Need to add displayName to users when sign up
+          // avatarStyle: JSON.stringify(generateRandomAvatar()),
         }
 
         await MergeUser({
