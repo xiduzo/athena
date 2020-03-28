@@ -65,7 +65,7 @@ export const ADD_TRIBE_LEADER = gql`
 `
 
 export const REMOVE_TRIBE_LEADER = gql`
-  mutation RemoveTribeLeaders($from: _SquadInput!, $to: _TribeInput!) {
+  mutation RemoveTribeLeaders($from: _UserInput!, $to: _TribeInput!) {
     RemoveTribeLeaders(from: $from, to: $to) {
       from {
         id

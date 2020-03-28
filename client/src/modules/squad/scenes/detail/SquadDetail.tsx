@@ -47,6 +47,7 @@ export const SquadDetail: FC = () => {
           members {
             id
             displayName
+            avatarStyle
           }
           agreements {
             id

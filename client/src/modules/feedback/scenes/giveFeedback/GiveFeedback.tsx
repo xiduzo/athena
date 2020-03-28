@@ -99,7 +99,11 @@ export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
               .filter((user) => userInfo && user !== userInfo.id)
               .map((user) => (
                 <Grid key={`${agreement}${user}`} item xs={12} sm={6} md={4} lg={3} className={classes.center}>
-                  <Avataaar style={{ width: '75px', height: '75px' }} />
+                  <Avataaar
+                    avatar={{
+                      style: { width: '75px', height: '75px' },
+                    }}
+                  />
                   <Typography variant='subtitle1'>user {user}</Typography>
 
                   <Rating
@@ -137,7 +141,11 @@ export const GiveFeedbackRoute: FC<IGiveFeedbackRoute> = () => {
         {[ 1, 2, 3, 4 ].map((user) => (
           <Tooltip key={`${user}`} title={`rating:`}>
             <Grid item xs={12} sm={6} md={4} lg={3} className={classes.center}>
-              <Avataaar style={{ width: '75px', height: '75px' }} />
+              <Avataaar
+                avatar={{
+                  style: { width: '75px', height: '75px' },
+                }}
+              />
               <Typography variant='subtitle1'>user {user}</Typography>
               <Rating max={4} size='large' value={Math.random() * 4} readOnly precision={0.1} />
             </Grid>

@@ -2,7 +2,7 @@ import { Divider, Drawer, Icon, List, ListItem, ListItemIcon, ListItemText, Tool
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import clsx from 'clsx'
-import React, { FC, forwardRef, useState, useEffect } from 'react'
+import React, { FC, forwardRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkProps, NavLink } from 'react-router-dom'
@@ -45,7 +45,7 @@ export const MenuDrawer: FC = () => {
         payload: false,
       })
     },
-    [ width ]
+    [ width, dispatch ]
   )
 
   if (!session) return null

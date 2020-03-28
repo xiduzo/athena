@@ -16,21 +16,16 @@ import { AvatarStyle } from 'avataaars'
 export interface IAvataaar {
   avatarStyle?: AvatarStyle
   style?: React.CSSProperties
-  topType?: TopType
-  accessoriesType?: AccessoriesType
-  hairColor?: HairColor
-  facialHairType?: FacialHairType
-  facialHairColor?: FacialHairColor
-  clotheType?: ClotheType
-  clotheColor?: ClotheColor
-  graphicType?: GraphicType
-  eyeType?: EyeType
-  eyebrowType?: EyebrowType
-  mouthType?: MouthType
-  skinColor?: SkinColor
-}
-
-export interface IAvataaarPiece {
-  pieceType?: PieceType
-  pieceSize?: number
+  TopType?: TopType
+  AccessoriesType?: AccessoriesType
+  HairColor?: HairColor
+  FacialHairType?: FacialHairType
+  FacialHairColor?: FacialHairColor
+  ClotheType?: ClotheType
+  ClotheColor?: ClotheColor
+  GraphicType?: GraphicType
+  EyeType?: EyeType
+  EyebrowType?: EyebrowType
+  MouthType?: MouthType
+  SkinColor?: SkinColor
 }

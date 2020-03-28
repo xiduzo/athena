@@ -58,9 +58,7 @@ export const SquadSelector: FC<ISquadSelector> = ({ title, isOpen, onClose, with
           }}
           getOptionLabel={(squad: ISquad) => squad.name}
           getOptionDisabled={(squad: ISquad) => (squadsToAdd.find((s) => s.id === squad.id) ? true : false)}
-          renderInput={(params) => (
-            <TextField label='Squads to add' {...params} autoFocus id='tribe' name='tribe' fullWidth />
-          )}
+          renderInput={(params) => <TextField label='Squads to add' {...params} id='tribe' name='tribe' fullWidth />}
           clearText='[Clear text]'
           closeText='[Close text]'
           noOptionsText='[No options text]'

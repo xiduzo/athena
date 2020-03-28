@@ -31,6 +31,7 @@ export const UserOverview: FC = () => {
       User {
         id
         displayName
+        avatarStyle
       }
     }
   `)

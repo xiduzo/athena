@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/react-hooks'
 import {
   AppBar as MuiAppBar,
-  Button,
   Icon,
   IconButton,
   makeStyles,
@@ -11,7 +10,6 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core'
-import AccountBoxIcon from '@material-ui/icons/AccountBox'
 import MenuIcon from '@material-ui/icons/Menu'
 import { Skeleton } from '@material-ui/lab'
 import { Auth } from 'aws-amplify'
@@ -22,10 +20,8 @@ import { useHistory } from 'react-router-dom'
 import { useWidth } from 'src/common/hooks'
 import { useAuth } from 'src/common/providers'
 import { DispatchAction, GlobalActions, IRootReducer } from 'src/common/redux'
-import { AthenaIcon } from 'src/lib/icons'
-import { IUser } from 'src/lib/interfaces'
 import { Avataaar } from 'src/components'
-import { AvatarStyle } from 'avataaars'
+import { AthenaIcon } from 'src/lib/icons'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -154,7 +150,7 @@ export const AppBar: FC = () => {
         ) : (
           <Fragment>
             <IconButton className={classes.profileButton} onClick={openUserMenu}>
-              <Avataaar />
+              <Avataaar user={data.User[0]} />
             </IconButton>
             <Menu
               anchorEl={anchorEl}

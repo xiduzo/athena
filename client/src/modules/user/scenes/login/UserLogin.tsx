@@ -109,29 +109,29 @@ export const UserLogin: FC = () => {
   // https://getavataaars.com/?accessoriesType=Round&avatarStyle=Circle&clotheColor=Blue03&clotheType=Hoodie&eyeType=Default&eyebrowType=Default&facialHairColor=Auburn&facialHairType=BeardLight&hairColor=Brown&mouthType=Default&skinColor=Light&topType=ShortHairShortWaved
   const baseAvataaar: IAvataaar = {
     style: { width: '75px', height: '75px' },
-    topType: TopType.ShortHairShortWaved,
-    accessoriesType: AccessoriesType.Round,
-    hairColor: HairColor.Brown,
-    facialHairType: FacialHairType.BeardLight,
-    facialHairColor: FacialHairColor.Auburn,
-    clotheType: ClotheType.Hoodie,
-    clotheColor: ClotheColor.Blue03,
-    eyeType: EyeType.Default,
-    eyebrowType: EyebrowType.Default,
-    mouthType: MouthType.Default,
-    skinColor: SkinColor.Light,
+    TopType: TopType.ShortHairShortWaved,
+    AccessoriesType: AccessoriesType.Round,
+    HairColor: HairColor.Brown,
+    FacialHairType: FacialHairType.BeardLight,
+    FacialHairColor: FacialHairColor.Auburn,
+    ClotheType: ClotheType.Hoodie,
+    ClotheColor: ClotheColor.Blue03,
+    EyeType: EyeType.Default,
+    EyebrowType: EyebrowType.Default,
+    MouthType: MouthType.Default,
+    SkinColor: SkinColor.Light,
   }
 
   const fancyAvataaar: IAvataaar = {
     ...baseAvataaar,
-    clotheType: ClotheType.CollarSweater,
-    clotheColor: ClotheColor.Red,
+    ClotheType: ClotheType.CollarSweater,
+    ClotheColor: ClotheColor.Red,
   }
 
   const casualAvataaar: IAvataaar = {
     ...baseAvataaar,
-    clotheType: ClotheType.ShirtCrewNeck,
-    clotheColor: ClotheColor.White,
+    ClotheType: ClotheType.ShirtCrewNeck,
+    ClotheColor: ClotheColor.White,
   }
 
   const avatarToUse = Math.random() > 0.5 ? baseAvataaar : Math.random() > 0.5 ? fancyAvataaar : casualAvataaar
@@ -149,7 +149,7 @@ export const UserLogin: FC = () => {
               avatar={
                 <Tooltip title={`greeting`} enterDelay={5000} arrow placement='top' onOpen={handleOpen}>
                   <div>
-                    <Avataaar {...avatarToUse} />
+                    <Avataaar avatar={avatarToUse} />
                   </div>
                 </Tooltip>
               }

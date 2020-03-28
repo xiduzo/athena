@@ -54,6 +54,7 @@ export const TribeDetail: FC = () => {
           leaders {
             id
             displayName
+            avatarStyle
           }
         }
       }
@@ -81,6 +82,17 @@ export const TribeDetail: FC = () => {
     variables: {
       from: {
         id: user.id,
+      },
+      to: {
+        id: id,
+      },
+    },
+  })
+
+  const createTribeSquadsMutation = (squad: ISquad) => ({
+    variables: {
+      from: {
+        id: squad.id,
       },
       to: {
         id: id,
@@ -118,12 +130,7 @@ export const TribeDetail: FC = () => {
     if (!squads) return
 
     await asyncForEach(squads, async (squad: ISquad) => {
-      await AddTribeSquads({
-        variables: {
-          from: squad,
-          to: { id: id },
-        },
-      })
+      await AddTribeSquads(createTribeSquadsMutation(squad))
         .then((_) => snackbarWrapper.success(`${squad.name}->${data.Tribe[0].name}`))
         .catch(generalCatchHandler)
     })
@@ -132,12 +139,7 @@ export const TribeDetail: FC = () => {
   }
 
   const removeSquadHandler = async (squad: ISquad) => {
-    await RemoveTribeSquads({
-      variables: {
-        from: { id: squad.id },
-        to: { id: id },
-      },
-    })
+    await RemoveTribeSquads(createTribeSquadsMutation(squad))
       .then((_) => snackbarWrapper.success(`$removed {squad.name}->${data.Tribe[0].name}`))
       .catch(generalCatchHandler)
 

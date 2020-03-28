@@ -1,9 +1,10 @@
 import { useQuery } from '@apollo/react-hooks'
-import { Container, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core'
+import { Container, Grid, makeStyles, Paper, Theme, Typography, IconButton } from '@material-ui/core'
 import gql from 'graphql-tag'
-import React, { FC, Fragment } from 'react'
+import React, { FC, Fragment, useState } from 'react'
 import { useParams } from 'react-router'
-import { Avataaar } from 'src/components'
+import { Avataaar, AvatarCreator } from 'src/components'
+import { useAuth } from 'src/common/providers'
 
 interface IUserDetailRouteParams {
   id: string
@@ -28,8 +29,11 @@ export const useStyles = makeStyles((theme: Theme) => {
 
 export const UserDetailRoute: FC = () => {
   const { id } = useParams<IUserDetailRouteParams>()
+  const { userInfo } = useAuth()
 
   const classes = useStyles()
+
+  const [ avatarCreatorOpen, setAvatarCreatorOpen ] = useState(false)
 
   const { loading, error, data } = useQuery(
     gql`
@@ -37,6 +41,7 @@ export const UserDetailRoute: FC = () => {
         User(filter: { id: $id }) {
           id
           displayName
+          avatarStyle
         }
       }
     `,
@@ -46,6 +51,8 @@ export const UserDetailRoute: FC = () => {
       },
     }
   )
+
+  const toggleChangeUser = () => setAvatarCreatorOpen(!avatarCreatorOpen)
 
   return (
     <Container maxWidth={'lg'} className={classes.root}>
@@ -59,7 +66,15 @@ export const UserDetailRoute: FC = () => {
         ) : (
           <Fragment>
             <Grid item xs={12} className={classes.avatar}>
-              <Avataaar style={{ width: `100px`, height: `100px` }} />
+              <IconButton onClick={toggleChangeUser} disabled={!userInfo || userInfo.id !== id}>
+                <Avataaar
+                  avatar={{
+                    style: { width: `100px`, height: `100px` },
+                  }}
+                  user={data.User[0]}
+                />
+              </IconButton>
+              <AvatarCreator isOpen={avatarCreatorOpen} user={data.User[0]} onClose={toggleChangeUser} />
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.userInfo}>
@@ -77,23 +92,6 @@ export const UserDetailRoute: FC = () => {
             </Grid>
           </Fragment>
         )}
-        {/* <Grid item xs={12} className={classes.avatar}>
-              <Avataaar avatarStyle='Circle' style={{ width: `100px`, height: `100px` }} />
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={classes.userInfo}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Typography variant='h4' align='center'>
-                      {user.displayName}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant='h6'>Squads</Typography>
-            </Grid> */}
       </Grid>
     </Container>
   )

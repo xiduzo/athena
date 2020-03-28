@@ -16,7 +16,14 @@ export const UserCard: FC<IUserCard> = ({ user, onLeftClick, onRightClickItems }
       onRightClickItems={onRightClickItems}
       cardContent={
         <CardHeader
-          avatar={<Avataaar style={{ width: `${userCardAvatarSize}px`, height: `${userCardAvatarSize}px` }} />}
+          avatar={
+            <Avataaar
+              avatar={{
+                style: { width: `${userCardAvatarSize}px`, height: `${userCardAvatarSize}px` },
+              }}
+              user={user}
+            />
+          }
           title={
             <Typography>
               <Box fontWeight={600} component={'span'}>
