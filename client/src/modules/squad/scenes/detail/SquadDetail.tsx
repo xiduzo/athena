@@ -3,7 +3,7 @@ import { Box, Container, Grid, makeStyles, MenuItem, Theme, Typography } from '@
 import { ApolloError } from 'apollo-errors'
 import gql from 'graphql-tag'
 import React, { FC, useState } from 'react'
-import { useParams } from 'react-router'
+import { useParams, useHistory } from 'react-router'
 import {
   ADD_AGREEMENT_PARENT,
   ADD_AGREEMENT_TRANSLATION,
@@ -34,6 +34,7 @@ export const SquadDetail: FC = () => {
   const { id } = useParams<ISquadDetailParams>()
 
   const classes = useStyles()
+  const history = useHistory()
 
   const [ agreementsModalOpen, setAgreementsModalOpen ] = useState(false)
   const [ usersModalOpen, setUsersModalOpen ] = useState(false)
@@ -122,6 +123,8 @@ export const SquadDetail: FC = () => {
 
     refetch()
   }
+
+  const navigateToUser = (user: IUser) => history.push(`/user/${user.id}`)
 
   const toggleAgreementsModal = () => setAgreementsModalOpen(!agreementsModalOpen)
 
@@ -223,6 +226,7 @@ export const SquadDetail: FC = () => {
               <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
                 <UserCard
                   user={user}
+                  onLeftClick={() => navigateToUser(user)}
                   onRightClickItems={
                     <Box>
                       <MenuItem onClick={() => removeSquadMemberHandler(user)}>

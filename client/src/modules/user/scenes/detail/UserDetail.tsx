@@ -35,7 +35,7 @@ export const UserDetailRoute: FC = () => {
 
   const [ avatarCreatorOpen, setAvatarCreatorOpen ] = useState(false)
 
-  const { loading, error, data } = useQuery(
+  const { loading, error, data, refetch } = useQuery(
     gql`
       query User($id: String!) {
         User(filter: { id: $id }) {
@@ -52,7 +52,10 @@ export const UserDetailRoute: FC = () => {
     }
   )
 
-  const toggleChangeUser = () => setAvatarCreatorOpen(!avatarCreatorOpen)
+  const toggleChangeUser = () => {
+    setAvatarCreatorOpen(!avatarCreatorOpen)
+    refetch()
+  }
 
   return (
     <Container maxWidth={'lg'} className={classes.root}>

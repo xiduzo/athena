@@ -53,6 +53,9 @@ const useAuthHandler = () => {
           displayName: attributes['custom:displayName'] || attributes['email'], // TODO Need to add displayName to users when sign up
           // avatarStyle: JSON.stringify(generateRandomAvatar()),
         }
+        if (false) {
+          console.log(generateRandomAvatar())
+        }
 
         await MergeUser({
           variables: {

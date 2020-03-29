@@ -18,6 +18,11 @@ export const typeDefs = `
     text: String!
   }
 
+  type DateRange {
+    start: String!
+    end: String!
+  }
+
   type User {
     id: String!
     email: String!
@@ -53,6 +58,9 @@ export const typeDefs = `
     agreements: [Agreement] @relation(name: "HAS_AGREED_TO", direction: "OUT")
     members: [User] @relation(name: "IS_MEMBER_OF", direction: "IN")
     tribe: Tribe @relation(name: "IS_PART_OF", direction: "OUT")
+    start: String!
+    end: String!
+    breaks: DateRange[]
   }
 
   type Tribe {
