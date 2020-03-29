@@ -9,6 +9,11 @@ import {
   Theme,
   Toolbar,
   Typography,
+  Grid,
+  Select,
+  InputAdornment,
+  FormControl,
+  Box,
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import { Skeleton } from '@material-ui/lab'
@@ -22,6 +27,10 @@ import { useAuth } from 'src/common/providers'
 import { DispatchAction, GlobalActions, IRootReducer } from 'src/common/redux'
 import { Avataaar } from 'src/components'
 import { AthenaIcon } from 'src/lib/icons'
+import DialpadIcon from '@material-ui/icons/Dialpad'
+import { lightBlue } from '@material-ui/core/colors'
+import { ISquad, ITribe } from 'src/lib/interfaces'
+import BubbleChartIcon from '@material-ui/icons/BubbleChart'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -40,10 +49,15 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     icon: {
       marginRight: theme.spacing(2),
+      padding: 0,
+      color: theme.palette.primary.contrastText,
     },
     profileButton: {
       padding: 0,
       color: theme.palette.primary.contrastText,
+    },
+    loadingUser: {
+      background: lightBlue[100],
     },
   }
 })
@@ -131,16 +145,17 @@ export const AppBar: FC = () => {
             <MenuIcon />
           </IconButton>
         ) : (
-          <Icon component={AthenaIcon} className={classes.icon} />
+          <Fragment>
+            <IconButton className={classes.icon} onClick={() => gotoRoute(`/`)}>
+              <Icon component={AthenaIcon} />
+            </IconButton>
+            <Typography variant='h6' className={classes.title}>
+              Athena
+            </Typography>
+          </Fragment>
         )}
-        <Typography variant='h6' className={classes.title}>
-          Athena
-        </Typography>
-
         {loading ? (
-          <IconButton>
-            <Skeleton variant='circle' style={{ width: '33px' }} />
-          </IconButton>
+          <Skeleton animation='wave' variant='circle' width={42} height={42} className={classes.loadingUser} />
         ) : error ? (
           //error
           ''
@@ -149,6 +164,41 @@ export const AppBar: FC = () => {
           ''
         ) : (
           <Fragment>
+            {/* // TODO make components of this selectors */}
+            {data.User[0].tribes.length && (
+              <Box px={2}>
+                <Select
+                  startAdornment={
+                    <InputAdornment position='start'>
+                      <DialpadIcon />
+                    </InputAdornment>
+                  }
+                >
+                  {data.User[0].tribes.map((tribe: ITribe) => (
+                    <MenuItem key={tribe.id} value={tribe.id}>
+                      {tribe.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
+            )}
+            {data.User[0].squads.length && (
+              <Box px={2}>
+                <Select
+                  startAdornment={
+                    <InputAdornment position='start'>
+                      <BubbleChartIcon />
+                    </InputAdornment>
+                  }
+                >
+                  {data.User[0].squads.map((squad: ISquad) => (
+                    <MenuItem key={squad.id} value={squad.id}>
+                      {squad.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
+            )}
             <IconButton className={classes.profileButton} onClick={openUserMenu}>
               <Avataaar user={data.User[0]} />
             </IconButton>

@@ -44,19 +44,17 @@ export const generateRandomAvatar = (): IAvataaar => {
   }
 }
 
-const avatarCircleColor: string = lightBlue[100]
-
 const useStyles = makeStyles((_: Theme) => {
   return {
     avatarLazy: {
-      background: avatarCircleColor,
+      background: lightBlue[100],
       width: '50px',
       height: '53px',
     },
     avatar: {
       '& #Circle': {
         '& g': {
-          fill: avatarCircleColor,
+          fill: lightBlue[100],
         },
       },
     },
