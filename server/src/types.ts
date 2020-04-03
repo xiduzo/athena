@@ -60,7 +60,7 @@ export const typeDefs = `
     tribe: Tribe @relation(name: "IS_PART_OF", direction: "OUT")
     start: String!
     end: String!
-    breaks: DateRange[]
+    breaks: [DateRange]
   }
 
   type Tribe {

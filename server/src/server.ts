@@ -8,7 +8,7 @@ import { HasRoleDirective } from './directives/HasRoleDirective'
 import { HasScopeDirective } from './directives/HasScopeDirective'
 import { IsAuthenticatedDirective } from './directives/IsAuthenticatedDirective'
 import { typeDefs } from './types'
-import { CreatedAtDirective } from './directives/createdAtDirective'
+import { CreatedAtDirective } from './directives/CreatedAtDirective'
 
 // Make sure we can use process.env variables
 dotenv.config()
