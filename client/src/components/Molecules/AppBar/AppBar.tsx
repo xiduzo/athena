@@ -1,20 +1,21 @@
 import { useQuery } from '@apollo/react-hooks'
 import {
   AppBar as MuiAppBar,
+  Box,
   Icon,
   IconButton,
+  InputAdornment,
   makeStyles,
   Menu,
   MenuItem,
+  Select,
   Theme,
   Toolbar,
   Typography,
-  Grid,
-  Select,
-  InputAdornment,
-  FormControl,
-  Box,
 } from '@material-ui/core'
+import { lightBlue } from '@material-ui/core/colors'
+import BubbleChartIcon from '@material-ui/icons/BubbleChart'
+import DialpadIcon from '@material-ui/icons/Dialpad'
 import MenuIcon from '@material-ui/icons/Menu'
 import { Skeleton } from '@material-ui/lab'
 import { Auth } from 'aws-amplify'
@@ -27,10 +28,7 @@ import { useAuth } from 'src/common/providers'
 import { DispatchAction, GlobalActions, IRootReducer } from 'src/common/redux'
 import { Avataaar } from 'src/components'
 import { AthenaIcon } from 'src/lib/icons'
-import DialpadIcon from '@material-ui/icons/Dialpad'
-import { lightBlue } from '@material-ui/core/colors'
 import { ISquad, ITribe } from 'src/lib/interfaces'
-import BubbleChartIcon from '@material-ui/icons/BubbleChart'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -129,6 +127,36 @@ export const AppBar: FC = () => {
     history.push(route)
   }
 
+  const selectSquad = (
+    event: React.ChangeEvent<{
+      name?: string | undefined
+      value: unknown
+    }>,
+    child: React.ReactNode
+  ) => {
+    const { value } = event.target
+
+    dispatch({
+      type: GlobalActions.setSelectedSquad,
+      payload: value,
+    })
+  }
+
+  const selectTribe = (
+    event: React.ChangeEvent<{
+      name?: string | undefined
+      value: unknown
+    }>,
+    child: React.ReactNode
+  ) => {
+    const { value } = event.target
+
+    dispatch({
+      type: GlobalActions.setSelectedTribe,
+      payload: value,
+    })
+  }
+
   useEffect(
     () => {
       // Hack to force query to run again
@@ -168,6 +196,8 @@ export const AppBar: FC = () => {
             {data.User[0].tribes.length && (
               <Box px={2}>
                 <Select
+                  onChange={selectTribe}
+                  value={globalState.selectedTribe}
                   startAdornment={
                     <InputAdornment position='start'>
                       <DialpadIcon />
@@ -185,6 +215,8 @@ export const AppBar: FC = () => {
             {data.User[0].squads.length && (
               <Box px={2}>
                 <Select
+                  onChange={selectSquad}
+                  value={globalState.selectedSquad}
                   startAdornment={
                     <InputAdornment position='start'>
                       <BubbleChartIcon />

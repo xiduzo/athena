@@ -9,6 +9,8 @@ export interface IGlobalState {
   language: string
   menuOpen: boolean
   user: IUser
+  selectedTribe: string
+  selectedSquad: string
 }
 
 export enum GlobalActions {
@@ -17,6 +19,8 @@ export enum GlobalActions {
   setLanguage = 'setLanguage',
   setMenuOpen = 'setMenuOpen',
   setUser = 'setUser',
+  setSelectedTribe = 'setSelectedTribe',
+  setSelectedSquad = 'setSelectedSquad',
 }
 
 const localStateName = 'IGlobalState'
@@ -27,6 +31,8 @@ const initial_state: IGlobalState = {
   menuOpen: false,
   language: i18n.language || i18n.languages ? i18n.languages[0] : 'nl',
   user: {} as IUser,
+  selectedTribe: '',
+  selectedSquad: '',
   ...getLocalItem<IGlobalState>(localStateName) as object,
 }
 
@@ -39,6 +45,18 @@ export const globalReducer = (state: IGlobalState = initial_state, action: IActi
       newState = {
         ...state,
         user: payload,
+      }
+      break
+    case GlobalActions.setSelectedSquad:
+      newState = {
+        ...state,
+        selectedSquad: payload,
+      }
+      break
+    case GlobalActions.setSelectedTribe:
+      newState = {
+        ...state,
+        selectedTribe: payload,
       }
       break
     case GlobalActions.setHotkeysEnabled:
