@@ -51,6 +51,8 @@ const useAuthHandler = () => {
           email: attributes['email'], // TODO Need to add email to users when sign up
           identityProviderReference: attributes['custom:ipReferenceNumber'] || null, // TODO Need to add ipReferenceNumber to users when sign up
           displayName: attributes['custom:displayName'] || attributes['email'], // TODO Need to add displayName to users when sign up
+          // TODO if users first time login, set random avatar
+          // Probably want to do this at sign-up => show avatar creator
           // avatarStyle: JSON.stringify(generateRandomAvatar()),
         }
         if (false) {

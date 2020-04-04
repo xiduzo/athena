@@ -35,8 +35,8 @@ export const typeDefs = `
 
   type Feedback {
     id: String!
-    from: User @relation(name: "FEEDBACK", direction: "IN")
-    to: User @relation(name: "FEEDBACK", direction: "OUT")
+    from: User @relation(name: "GAVE", direction: "IN")
+    to: User @relation(name: "TO", direction: "OUT")
     rating: Int!
     weekNum: Int!
   }
@@ -48,7 +48,7 @@ export const typeDefs = `
     points: Int!
     parent: Agreement @relation(name: "IS_CHILD_OF", direction: "OUT")
     children: [Agreement] @relation(name: "IS_CHILD_OF", direction: "IN")
-    translations: [Translation] @relation(name: "IS_TRANSLATION_OF", direction: "IN")
+    translations: [Translation] @relation(name: "TRANSLATES_TO", direction: "OUT")
     feedback: [Feedback] @relation(name: "ON", direction: "IN")
   }
 
@@ -58,9 +58,6 @@ export const typeDefs = `
     agreements: [Agreement] @relation(name: "HAS_AGREED_TO", direction: "OUT")
     members: [User] @relation(name: "IS_MEMBER_OF", direction: "IN")
     tribe: Tribe @relation(name: "IS_PART_OF", direction: "OUT")
-    start: String!
-    end: String!
-    breaks: [DateRange]
   }
 
   type Tribe {
@@ -68,5 +65,8 @@ export const typeDefs = `
     name: String!
     squads: [Squad] @relation(name: "IS_PART_OF", direction: "IN")
     leaders: [User] @relation(name: "IS_LEADER_OF", direction: "IN")
+    start: String
+    end: String
+    breaks: [DateRange]
   }
 `

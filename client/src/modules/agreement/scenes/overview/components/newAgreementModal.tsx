@@ -100,8 +100,8 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
         await AddAgreementTranslations({
           variables: {
             id: uuid(),
-            from: { id: translation.id },
-            to: { id: agreement.id },
+            from: { id: agreement.id },
+            to: { id: translation.id },
           },
         }).catch(catchError)
       })
