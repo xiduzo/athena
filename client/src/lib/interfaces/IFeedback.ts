@@ -7,4 +7,5 @@ export interface IFeedback extends IEntityBase {
   to: IUser
   rating: number
   agreement: string
+  weekNum: number
 }
