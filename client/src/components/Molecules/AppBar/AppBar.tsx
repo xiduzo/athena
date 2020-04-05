@@ -66,13 +66,13 @@ export const AppBar: FC = () => {
   const history = useHistory()
   const { setCredentials, setSession, userInfo, setUserInfo } = useAuth()
 
-  const [ anchorEl, setAnchorEl ] = useState(null)
+  const [anchorEl, setAnchorEl] = useState(null)
 
   const globalState = useSelector((state: IRootReducer) => state.global)
 
   const { loading, error, data } = useQuery(
     gql`
-      query User($id: String!) {
+      query UserTribesAndSquads($id: String!) {
         User(filter: { id: $id }) {
           id
           displayName
@@ -157,13 +157,10 @@ export const AppBar: FC = () => {
     })
   }
 
-  useEffect(
-    () => {
-      // Hack to force query to run again
-      // Sorry, not sorry
-    },
-    [ userInfo ]
-  )
+  useEffect(() => {
+    // Hack to force query to run again
+    // Sorry, not sorry
+  }, [userInfo])
 
   return (
     <MuiAppBar position='static' className={classes.appBar}>
@@ -183,7 +180,13 @@ export const AppBar: FC = () => {
           </Fragment>
         )}
         {loading ? (
-          <Skeleton animation='wave' variant='circle' width={42} height={42} className={classes.loadingUser} />
+          <Skeleton
+            animation='wave'
+            variant='circle'
+            width={42}
+            height={42}
+            className={classes.loadingUser}
+          />
         ) : error ? (
           //error
           ''

@@ -30,6 +30,7 @@ export const typeDefs = `
     avatarStyle: String!
     identityProviderReferenceNumber: String!
     squads: [Squad] @relation(name: "IS_MEMBER_OF", direction: "OUT")
+    mentors: [Squad] @relation(name: "IS_MENTOR_OF", direction: "OUT")
     tribes: [Tribe] @relation(name: "IS_LEADER_OF", direction: "OUT")
   }
 
@@ -37,6 +38,7 @@ export const typeDefs = `
     id: String!
     from: User @relation(name: "GAVE", direction: "IN")
     to: User @relation(name: "TO", direction: "OUT")
+    agreement: Agreement @relation(name: "ON", direction: "OUT")
     rating: Int!
     weekNum: Int!
   }
@@ -57,6 +59,7 @@ export const typeDefs = `
     name: String!
     agreements: [Agreement] @relation(name: "HAS_AGREED_TO", direction: "OUT")
     members: [User] @relation(name: "IS_MEMBER_OF", direction: "IN")
+    mentors: [User] @relation(name: "IS_MENTOR_OF", direction: "IN")
     tribe: Tribe @relation(name: "IS_PART_OF", direction: "OUT")
   }
 

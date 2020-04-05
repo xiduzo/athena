@@ -1,5 +1,13 @@
 import { useQuery } from '@apollo/react-hooks'
-import { Container, Grid, makeStyles, Paper, Theme, Typography, IconButton } from '@material-ui/core'
+import {
+  Container,
+  Grid,
+  makeStyles,
+  Paper,
+  Theme,
+  Typography,
+  IconButton,
+} from '@material-ui/core'
 import gql from 'graphql-tag'
 import React, { FC, Fragment, useState } from 'react'
 import { useParams } from 'react-router'
@@ -33,7 +41,7 @@ export const UserDetailRoute: FC = () => {
 
   const classes = useStyles()
 
-  const [ avatarCreatorOpen, setAvatarCreatorOpen ] = useState(false)
+  const [avatarCreatorOpen, setAvatarCreatorOpen] = useState(false)
 
   const { loading, error, data, refetch } = useQuery(
     gql`
@@ -77,7 +85,11 @@ export const UserDetailRoute: FC = () => {
                   user={data.User[0]}
                 />
               </IconButton>
-              <AvatarCreator isOpen={avatarCreatorOpen} user={data.User[0]} onClose={toggleChangeUser} />
+              <AvatarCreator
+                isOpen={avatarCreatorOpen}
+                user={data.User[0]}
+                onClose={toggleChangeUser}
+              />
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.userInfo}>

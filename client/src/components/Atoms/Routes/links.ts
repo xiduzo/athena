@@ -8,7 +8,7 @@ import PeopleIcon from '@material-ui/icons/People'
 import { UserRole } from 'src/lib/enums'
 import { IRoute } from 'src/lib/interfaces'
 import { AgreementOverview } from 'src/modules/agreement/scenes/overview'
-import { GiveFeedbackRoute } from 'src/modules/feedback/scenes/giveFeedback'
+import { GiveFeedback } from 'src/modules/feedback/scenes/giveFeedback'
 import { Home } from 'src/modules/generic/scenes/home'
 import { SquadDetail } from 'src/modules/squad/scenes/detail'
 import { SquadOverview } from 'src/modules/squad/scenes/overview'
@@ -29,7 +29,7 @@ export const routes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: false,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
+    userGroups: [UserRole.Root, UserRole.Admin],
   },
   {
     name: 'login',
@@ -39,7 +39,7 @@ export const routes: IRoute[] = [
     private: false,
     exact: false,
     showInMenu: false,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
+    userGroups: [UserRole.Root, UserRole.Admin],
   },
   {
     name: 'settings',
@@ -49,7 +49,7 @@ export const routes: IRoute[] = [
     private: true,
     exact: false,
     showInMenu: false,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
+    userGroups: [UserRole.Root, UserRole.Admin],
   },
   {
     name: 'agreements',
@@ -59,7 +59,7 @@ export const routes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: true,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
+    userGroups: [UserRole.Root, UserRole.Admin],
   },
   {
     name: 'users',
@@ -69,7 +69,7 @@ export const routes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: true,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
+    userGroups: [UserRole.Root, UserRole.Admin],
   },
   {
     name: 'userDetail',
@@ -79,7 +79,7 @@ export const routes: IRoute[] = [
     private: true,
     exact: false,
     showInMenu: false,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
+    userGroups: [UserRole.Root, UserRole.Admin],
   },
   {
     name: 'dashboard',
@@ -89,17 +89,17 @@ export const routes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: true,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
+    userGroups: [UserRole.Root, UserRole.Admin],
   },
   {
     name: 'feedback',
     path: '/member/feedback',
     icon: FeedbackIcon,
-    component: GiveFeedbackRoute,
+    component: GiveFeedback,
     private: true,
     exact: true,
     showInMenu: true,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
+    userGroups: [UserRole.Root, UserRole.Admin],
   },
   {
     name: 'tribes',
@@ -109,7 +109,7 @@ export const routes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: true,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
+    userGroups: [UserRole.Root, UserRole.Admin],
   },
   {
     name: 'tribeDetail',
@@ -119,7 +119,7 @@ export const routes: IRoute[] = [
     private: true,
     exact: false,
     showInMenu: false,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
+    userGroups: [UserRole.Root, UserRole.Admin],
   },
   {
     name: 'squads',
@@ -129,7 +129,7 @@ export const routes: IRoute[] = [
     private: true,
     exact: true,
     showInMenu: true,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
+    userGroups: [UserRole.Root, UserRole.Admin],
   },
   {
     name: 'squadDetail',
@@ -139,6 +139,6 @@ export const routes: IRoute[] = [
     private: true,
     exact: false,
     showInMenu: false,
-    userGroups: [ UserRole.Root, UserRole.Admin ],
+    userGroups: [UserRole.Root, UserRole.Admin],
   },
 ]

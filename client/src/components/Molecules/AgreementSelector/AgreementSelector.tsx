@@ -1,5 +1,12 @@
 import { useQuery } from '@apollo/react-hooks'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import React, { FC, useState } from 'react'
 import { useWidth } from 'src/common/hooks'
@@ -14,7 +21,12 @@ interface IAgreementSelectorModal {
   onClose: (agreements?: IAgreement[]) => void
 }
 
-export const AgreementSelector: FC<IAgreementSelectorModal> = ({ title, isOpen, onClose, without }) => {
+export const AgreementSelector: FC<IAgreementSelectorModal> = ({
+  title,
+  isOpen,
+  onClose,
+  without,
+}) => {
   const width = useWidth()
 
   const { loading, error, data } = useQuery(GET_AGREEMENTS, {
@@ -25,7 +37,7 @@ export const AgreementSelector: FC<IAgreementSelectorModal> = ({ title, isOpen, 
     },
   })
 
-  const [ agreementsToAdd, setAgreementsToAdd ] = useState<IAgreement[]>([])
+  const [agreementsToAdd, setAgreementsToAdd] = useState<IAgreement[]>([])
 
   const handleSubmit = () => {
     clearAgreementsToAdd()
@@ -40,18 +52,23 @@ export const AgreementSelector: FC<IAgreementSelectorModal> = ({ title, isOpen, 
   }
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} aria-labelledby='agreements selector' fullScreen={width === 'xs'}>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      aria-labelledby='agreements selector'
+      fullScreen={width === 'xs'}
+    >
       <DialogTitle id='agreements selector'>{title}</DialogTitle>
       <DialogContent>
         {/* {subtitle && <DialogContentText>{subtitle}</DialogContentText>} */}
         <Autocomplete
           id='disabled-options-demo'
           options={
-            loading || error ? (
-              []
-            ) : (
-              data.Agreement.filter((agreements: IAgreement) => !without.map((a) => a.id).includes(agreements.id))
-            )
+            loading || error
+              ? []
+              : data.Agreement.filter(
+                  (agreements: IAgreement) => !without.map((a) => a.id).includes(agreements.id)
+                )
           }
           clearOnEscape
           multiple
@@ -60,9 +77,17 @@ export const AgreementSelector: FC<IAgreementSelectorModal> = ({ title, isOpen, 
           }}
           getOptionLabel={(agreement: IAgreement) => getTranslation(agreement.translations)}
           getOptionDisabled={(agreement: IAgreement) =>
-            agreementsToAdd.find((a) => a.id === agreement.id) ? true : false}
+            Boolean(agreementsToAdd.find((a) => a.id === agreement.id))
+          }
           renderInput={(params) => (
-            <TextField label='Agreements to add' {...params} autoFocus id='agreement' name='agreement' fullWidth />
+            <TextField
+              label='Agreements to add'
+              {...params}
+              autoFocus
+              id='agreement'
+              name='agreement'
+              fullWidth
+            />
           )}
           clearText='[Clear text]'
           closeText='[Close text]'

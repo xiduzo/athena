@@ -5,7 +5,12 @@ import React, { FC, Fragment, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 import { useHistory } from 'react-router-dom'
-import { ADD_TRIBE_LEADER, ADD_TRIBE_SQUAD, REMOVE_TRIBE_LEADER, REMOVE_TRIBE_SQUAD } from 'src/common/services'
+import {
+  ADD_TRIBE_LEADER,
+  ADD_TRIBE_SQUAD,
+  REMOVE_TRIBE_LEADER,
+  REMOVE_TRIBE_SQUAD,
+} from 'src/common/services'
 import { asyncForEach, generalCatchHandler, snackbarWrapper } from 'src/common/utils'
 import {
   AddCard,
@@ -38,12 +43,12 @@ export const TribeDetail: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const [ squadModalOpen, setSquadModalOpen ] = useState(false)
-  const [ userModalOpen, setUserModalOpen ] = useState(false)
+  const [squadModalOpen, setSquadModalOpen] = useState(false)
+  const [userModalOpen, setUserModalOpen] = useState(false)
 
   const { loading, error, data, refetch } = useQuery(
     gql`
-      query Tribe($id: String!) {
+      query TribeDetail($id: String!) {
         Tribe(filter: { id: $id }) {
           id
           name
@@ -66,11 +71,11 @@ export const TribeDetail: FC = () => {
     }
   )
 
-  const [ AddTribeLeaders ] = useMutation(ADD_TRIBE_LEADER)
-  const [ RemoveTribeLeaders ] = useMutation(REMOVE_TRIBE_LEADER)
+  const [AddTribeLeaders] = useMutation(ADD_TRIBE_LEADER)
+  const [RemoveTribeLeaders] = useMutation(REMOVE_TRIBE_LEADER)
 
-  const [ AddTribeSquads ] = useMutation(ADD_TRIBE_SQUAD)
-  const [ RemoveTribeSquads ] = useMutation(REMOVE_TRIBE_SQUAD)
+  const [AddTribeSquads] = useMutation(ADD_TRIBE_SQUAD)
+  const [RemoveTribeSquads] = useMutation(REMOVE_TRIBE_SQUAD)
 
   const history = useHistory()
 
@@ -161,7 +166,10 @@ export const TribeDetail: FC = () => {
             <div>{error.message}</div>
           ) : !data.Tribe.length ? (
             <Grid item xs={12}>
-              <EmptyState title={t('tribeNotFound')} image={<Illustration type={IllustrationType.NotFound} />} />
+              <EmptyState
+                title={t('tribeNotFound')}
+                image={<Illustration type={IllustrationType.NotFound} />}
+              />
             </Grid>
           ) : (
             <Fragment>
