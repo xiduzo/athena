@@ -123,6 +123,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
 
   const [GiveFeedbackToUser] = useMutation<any, IGiveFeedbackToUserVariables>(GIVE_FEEDBACK)
 
+  // TODO move to utils, params userId and agreements
   const getAveragePoints = (userId: string) => {
     const agreements: IAgreement[] = data ? data.User[0].squads[0].agreements : []
     let totalPoints = 0
@@ -160,6 +161,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
     )
   }
 
+  // TODO move to utils, params agreement and uers
   const getFeedbackItemsToGo = (agreement: IAgreement) => {
     const usersInSquad = data ? data.User[0].squads[0].members.length - 1 : 0
     const amountToGo = usersInSquad - agreement.feedback.length
@@ -176,6 +178,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
     )
   }
 
+  // TODO move to utils layer?
   const giveFeedback = async (
     myFeedback: IFeedback | undefined,
     value: number | null,
@@ -183,6 +186,8 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
     agreement: IAgreement
   ) => {
     if (!value) return
+    // TODO fix bug
+    // First time running this it gets the right parameters, next time it doesnt
     console.log(myFeedback, value, user, agreement, userInfo.id)
     await GiveFeedbackToUser({
       variables: {
@@ -198,6 +203,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
     refetch()
   }
 
+  // TODO make its own component
   const FeedbackPanel = (agreement: IAgreement) => {
     if (!data) return <div>loading</div>
 
@@ -294,6 +300,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
               data.User[0].squads[0] &&
               data.User[0].squads[0].members.map((user: IUser) => {
                 const averagePoints = getAveragePoints(user.id)
+                // TODO make its own component
                 return (
                   <Tooltip key={`${user.id}`} title={averagePoints}>
                     <Grid item xs={12} sm={6} md={4} lg={3} className={classes.center}>
