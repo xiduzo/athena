@@ -39,7 +39,7 @@ export const typeDefs = `
     from: User @relation(name: "GAVE", direction: "IN")
     to: User @relation(name: "TO", direction: "OUT")
     agreement: Agreement @relation(name: "ON", direction: "OUT")
-    rating: Int!
+    rating: Float!
     weekNum: Int!
   }
 

@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import {
   Box,
   Container,
@@ -27,7 +27,9 @@ import { useAuth } from 'src/common/providers'
 import { IRootReducer } from 'src/common/redux'
 import { getTranslation } from 'src/common/utils'
 import { Avataaar } from 'src/components'
-import { IAgreement, ISquad, IUser } from 'src/lib/interfaces'
+import { IAgreement, ISquad, IUser, IFeedback } from 'src/lib/interfaces'
+import { GIVE_FEEDBACK, IGiveFeedbackToUserVariables } from 'src/common/services/feedbackService'
+import { v4 as uuid } from 'uuid'
 
 interface IGiveFeedbackRoute {}
 
@@ -72,7 +74,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
   const [currentWeek] = useState(6)
   const [selectedWeek, setSelectedWeek] = useState(currentWeek)
 
-  const { data, error, loading } = useQuery<IGiveFeedbackData, IGiveFeedbackDataVariables>(
+  const { data, error, loading, refetch } = useQuery<IGiveFeedbackData, IGiveFeedbackDataVariables>(
     gql`
       query UserFeedback($userId: String!, $squadId: String!, $currentWeek: Int!) {
         User(filter: { id: $userId }) {
@@ -100,6 +102,9 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
                 to {
                   id
                 }
+                agreement {
+                  id
+                }
                 rating
               }
             }
@@ -116,7 +121,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
     }
   )
 
-  console.log(loading, error, data)
+  const [GiveFeedbackToUser] = useMutation<any, IGiveFeedbackToUserVariables>(GIVE_FEEDBACK)
 
   const getAveragePoints = (userId: string) => {
     const agreements: IAgreement[] = data ? data.User[0].squads[0].agreements : []
@@ -171,6 +176,28 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
     )
   }
 
+  const giveFeedback = async (
+    myFeedback: IFeedback | undefined,
+    value: number | null,
+    user: IUser,
+    agreement: IAgreement
+  ) => {
+    if (!value) return
+    console.log(myFeedback, value, user, agreement, userInfo.id)
+    await GiveFeedbackToUser({
+      variables: {
+        toUserId: user.id,
+        fromUserId: userInfo.id,
+        agreementId: agreement.id,
+        feedbackId: myFeedback ? myFeedback.id : uuid(),
+        rating: value,
+        weekNum: currentWeek,
+      },
+    })
+
+    refetch()
+  }
+
   const FeedbackPanel = (agreement: IAgreement) => {
     if (!data) return <div>loading</div>
 
@@ -178,7 +205,6 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
     const membersToGiveFeedbackTo = squad.members.filter(
       (user: IUser) => userInfo && user.id !== userInfo.id
     )
-    const myFeedback = agreement.feedback.find((feedback) => feedback.from.id === userInfo.id)
     return (
       <ExpansionPanel
         disabled={selectedWeek > currentWeek}
@@ -192,42 +218,55 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Grid container spacing={2}>
-            {membersToGiveFeedbackTo.map((user: IUser) => (
-              <Grid
-                key={`${agreement.id}${user.id}`}
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                className={classes.center}
-              >
-                <Avataaar
-                  user={user}
-                  avatar={{
-                    style: { width: '75px', height: '75px' },
-                  }}
-                />
-                <Typography variant='subtitle1'>{user.displayName}</Typography>
+            {membersToGiveFeedbackTo.map((user: IUser) => {
+              const myFeedback = agreement.feedback.find((feedback) => {
+                console.log(feedback)
+                return (
+                  feedback.to.id === user.id &&
+                  feedback.weekNum === selectedWeek &&
+                  feedback.agreement.id === agreement.id
+                )
+              })
 
-                <Rating
-                  disabled={selectedWeek !== currentWeek}
-                  max={4}
-                  name='pristine'
-                  size='large'
-                  value={myFeedback ? myFeedback.rating : null}
-                  precision={0.5}
-                  onChange={() => console.log(true)}
-                  emptyIcon={
-                    selectedWeek !== currentWeek ? (
-                      <StarIcon fontSize={`inherit`} />
-                    ) : (
-                      <StarBorderIcon fontSize={`inherit`} />
-                    )
-                  }
-                />
-              </Grid>
-            ))}
+              return (
+                <Grid
+                  key={`${agreement.id}${user.id}`}
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={3}
+                  className={classes.center}
+                >
+                  <Avataaar
+                    user={user}
+                    avatar={{
+                      style: { width: '75px', height: '75px' },
+                    }}
+                  />
+                  <Typography variant='subtitle1'>{user.displayName}</Typography>
+
+                  <Rating
+                    disabled={selectedWeek !== currentWeek}
+                    max={4}
+                    name='pristine'
+                    size='large'
+                    value={myFeedback ? myFeedback.rating : null}
+                    precision={0.5}
+                    onChange={(_: React.ChangeEvent<{}>, value: number | null) =>
+                      giveFeedback(myFeedback, value, user, agreement)
+                    }
+                    emptyIcon={
+                      selectedWeek !== currentWeek ? (
+                        <StarIcon fontSize={`inherit`} />
+                      ) : (
+                        <StarBorderIcon fontSize={`inherit`} />
+                      )
+                    }
+                  />
+                </Grid>
+              )
+            })}
           </Grid>
         </ExpansionPanelDetails>
       </ExpansionPanel>
