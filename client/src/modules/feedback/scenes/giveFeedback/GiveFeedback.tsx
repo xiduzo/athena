@@ -1,35 +1,18 @@
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import {
-  Box,
-  Container,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  Grid,
-  makeStyles,
-  Theme,
-  Tooltip,
-  Typography,
-} from '@material-ui/core'
-import CheckCircleIcon from '@material-ui/icons/CheckCircle'
-import ErrorIcon from '@material-ui/icons/Error'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import StarIcon from '@material-ui/icons/Star'
-import StarBorderIcon from '@material-ui/icons/StarBorder'
-import WarningIcon from '@material-ui/icons/Warning'
-import { Pagination, Rating } from '@material-ui/lab'
-import gql from 'graphql-tag'
+import { useMutation, useQuery } from '@apollo/react-hooks'
+import { Box, Container, Grid, makeStyles, Theme, Typography } from '@material-ui/core'
+import { Pagination } from '@material-ui/lab'
 import React, { FC, Fragment, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useWidth } from 'src/common/hooks'
 import { useAuth } from 'src/common/providers'
 import { IRootReducer } from 'src/common/redux'
-import { getTranslation } from 'src/common/utils'
-import { Avataaar } from 'src/components'
-import { IAgreement, ISquad, IUser, IFeedback } from 'src/lib/interfaces'
+import { IGiveFeedbackData, IGiveFeedbackDataVariables, USER_FEEDBACK } from 'src/common/services'
 import { GIVE_FEEDBACK, IGiveFeedbackToUserVariables } from 'src/common/services/feedbackService'
+import { IAgreement, IFeedback, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
+import { FeedbackPanel } from './components/FeedbackPanel'
+import { UserAverageRating } from './components/UserAverageRating'
 
 interface IGiveFeedbackRoute {}
 
@@ -39,29 +22,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  success: {
-    color: theme.palette.success.main,
-  },
-  warning: {
-    color: theme.palette.warning.main,
-  },
-  error: {
-    color: theme.palette.error.main,
-  },
   root: {
     padding: theme.spacing(2, 3),
   },
 }))
-
-interface IGiveFeedbackData {
-  User: IUser[]
-}
-
-interface IGiveFeedbackDataVariables {
-  userId: string
-  squadId: string
-  currentWeek: number
-}
 
 export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
   const classes = useStyles()
@@ -71,52 +35,15 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
 
   const globalState = useSelector((state: IRootReducer) => state.global)
 
-  const [currentWeek] = useState(6)
+  const [currentWeek] = useState(7)
   const [selectedWeek, setSelectedWeek] = useState(currentWeek)
 
   const { data, error, loading, refetch } = useQuery<IGiveFeedbackData, IGiveFeedbackDataVariables>(
-    gql`
-      query UserFeedback($userId: String!, $squadId: String!, $currentWeek: Int!) {
-        User(filter: { id: $userId }) {
-          id
-          squads(filter: { id: $squadId }) {
-            name
-            members {
-              id
-              displayName
-              avatarStyle
-            }
-            agreements {
-              id
-              points
-              translations {
-                language
-                text
-              }
-              feedback(filter: { from: { id: $userId }, weekNum: $currentWeek }) {
-                id
-                weekNum
-                from {
-                  id
-                }
-                to {
-                  id
-                }
-                agreement {
-                  id
-                }
-                rating
-              }
-            }
-          }
-        }
-      }
-    `,
+    USER_FEEDBACK,
     {
       variables: {
         userId: userInfo ? userInfo.id : '', // todo, add user info to global state instead of auth?
         squadId: globalState.selectedSquad,
-        currentWeek: currentWeek,
       },
     }
   )
@@ -161,23 +88,6 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
     )
   }
 
-  // TODO move to utils, params agreement and uers
-  const getFeedbackItemsToGo = (agreement: IAgreement) => {
-    const usersInSquad = data ? data.User[0].squads[0].members.length - 1 : 0
-    const amountToGo = usersInSquad - agreement.feedback.length
-    return (
-      <Tooltip title={`amount to go: ${amountToGo}`}>
-        <Fragment>
-          {amountToGo <= Math.round(usersInSquad * 0.5) && <ErrorIcon className={classes.error} />}
-          {amountToGo > Math.round(usersInSquad * 0.5) && amountToGo !== 0 && (
-            <WarningIcon className={classes.warning} />
-          )}
-          {amountToGo === 0 && <CheckCircleIcon className={classes.success} />}
-        </Fragment>
-      </Tooltip>
-    )
-  }
-
   // TODO move to utils layer?
   const giveFeedback = async (
     myFeedback: IFeedback | undefined,
@@ -187,96 +97,29 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
   ) => {
     if (!value) return
     // TODO fix bug
-    // First time running this it gets the right parameters, next time it doesnt
-    console.log(myFeedback, value, user, agreement, userInfo.id)
-    await GiveFeedbackToUser({
-      variables: {
-        toUserId: user.id,
-        fromUserId: userInfo.id,
-        agreementId: agreement.id,
-        feedbackId: myFeedback ? myFeedback.id : uuid(),
-        rating: value,
-        weekNum: currentWeek,
-      },
+    // only first panel gives good agreement as paraments
+    // console.log(myFeedback, value, user, agreement, userInfo.id)
+    console.log(agreement)
+    console.log({
+      toUserId: user.id,
+      fromUserId: userInfo.id,
+      agreementId: agreement.id,
+      feedbackId: myFeedback ? myFeedback.id : uuid(),
+      rating: value,
+      weekNum: currentWeek,
     })
+    // await GiveFeedbackToUser({
+    //   variables: {
+    //     toUserId: user.id,
+    //     fromUserId: userInfo.id,
+    //     agreementId: agreement.id,
+    //     feedbackId: myFeedback ? myFeedback.id : uuid(),
+    //     rating: value,
+    //     weekNum: currentWeek,
+    //   },
+    // })
 
     refetch()
-  }
-
-  // TODO make its own component
-  const FeedbackPanel = (agreement: IAgreement) => {
-    if (!data) return <div>loading</div>
-
-    const squad: ISquad = data.User[0].squads[0]
-    const membersToGiveFeedbackTo = squad.members.filter(
-      (user: IUser) => userInfo && user.id !== userInfo.id
-    )
-    return (
-      <ExpansionPanel
-        disabled={selectedWeek > currentWeek}
-        TransitionProps={{ unmountOnExit: true }}
-      >
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Grid container alignItems='center' justify='space-between'>
-            <Typography variant='h6'>{getTranslation(agreement.translations)}</Typography>
-            {getFeedbackItemsToGo(agreement)}
-          </Grid>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Grid container spacing={2}>
-            {membersToGiveFeedbackTo.map((user: IUser) => {
-              const myFeedback = agreement.feedback.find((feedback) => {
-                console.log(feedback)
-                return (
-                  feedback.to.id === user.id &&
-                  feedback.weekNum === selectedWeek &&
-                  feedback.agreement.id === agreement.id
-                )
-              })
-
-              return (
-                <Grid
-                  key={`${agreement.id}${user.id}`}
-                  item
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={3}
-                  className={classes.center}
-                >
-                  <Avataaar
-                    user={user}
-                    avatar={{
-                      style: { width: '75px', height: '75px' },
-                    }}
-                  />
-                  <Typography variant='subtitle1'>{user.displayName}</Typography>
-
-                  <Rating
-                    disabled={selectedWeek !== currentWeek}
-                    max={4}
-                    name='pristine'
-                    size='large'
-                    value={myFeedback ? myFeedback.rating : null}
-                    precision={0.5}
-                    onChange={(_: React.ChangeEvent<{}>, value: number | null) =>
-                      giveFeedback(myFeedback, value, user, agreement)
-                    }
-                    emptyIcon={
-                      selectedWeek !== currentWeek ? (
-                        <StarIcon fontSize={`inherit`} />
-                      ) : (
-                        <StarBorderIcon fontSize={`inherit`} />
-                      )
-                    }
-                  />
-                </Grid>
-              )
-            })}
-          </Grid>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    )
   }
 
   return (
@@ -298,24 +141,9 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
           <Fragment>
             {data.User[0] &&
               data.User[0].squads[0] &&
-              data.User[0].squads[0].members.map((user: IUser) => {
-                const averagePoints = getAveragePoints(user.id)
-                // TODO make its own component
-                return (
-                  <Tooltip key={`${user.id}`} title={averagePoints}>
-                    <Grid item xs={12} sm={6} md={4} lg={3} className={classes.center}>
-                      <Avataaar
-                        user={user}
-                        avatar={{
-                          style: { width: '75px', height: '75px' },
-                        }}
-                      />
-                      <Typography variant='subtitle1'>{user.displayName}</Typography>
-                      <Rating max={4} size='large' value={averagePoints} readOnly precision={0.1} />
-                    </Grid>
-                  </Tooltip>
-                )
-              })}
+              data.User[0].squads[0].members.map((user: IUser) => (
+                <UserAverageRating user={user} agreements={data.User[0].squads[0].agreements} />
+              ))}
             <Grid
               item
               container
@@ -338,15 +166,17 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
             <Grid item xs={12}>
               {data.User[0] &&
                 data.User[0].squads[0] &&
-                data.User[0].squads[0].agreements.map((agreement: IAgreement) =>
-                  selectedWeek > currentWeek ? (
-                    <Tooltip key={agreement.id} title={`Patients you must have, my young padawan`}>
-                      {FeedbackPanel(agreement)}
-                    </Tooltip>
-                  ) : (
-                    <Box key={agreement.id}>{FeedbackPanel(agreement)}</Box>
-                  )
-                )}
+                data.User[0].squads[0].agreements.map((agreement: IAgreement) => (
+                  <Box key={agreement.id}>
+                    {agreement.id}
+                    <FeedbackPanel
+                      agreement={agreement}
+                      isCurrentWeek={selectedWeek === currentWeek}
+                      selectedWeek={selectedWeek}
+                      members={data.User[0].squads[0].members}
+                    />
+                  </Box>
+                ))}
             </Grid>
             <Grid item container xs={12} justify={`center`}>
               {pagination()}
