@@ -147,7 +147,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
                     agreement={agreement}
                     isCurrentWeek={selectedWeek === currentWeek}
                     selectedWeek={selectedWeek}
-                    members={data.User[0].squads[0].members}
+                    members={data.User[0].squads[0].members.filter((m) => m.id !== userInfo.id)}
                     callback={giveFeedback}
                   />
                 ))}
