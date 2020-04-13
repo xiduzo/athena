@@ -35,7 +35,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
 
   const globalState = useSelector((state: IRootReducer) => state.global)
 
-  const [currentWeek] = useState(7)
+  const [currentWeek] = useState(8)
   const [selectedWeek, setSelectedWeek] = useState(currentWeek)
 
   const { data, error, loading, refetch } = useQuery<IGiveFeedbackData, IGiveFeedbackDataVariables>(
@@ -50,22 +50,6 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
 
   const [GiveFeedbackToUser] = useMutation<any, IGiveFeedbackToUserVariables>(GIVE_FEEDBACK)
 
-  // TODO move to utils, params userId and agreements
-  const getAveragePoints = (userId: string) => {
-    const agreements: IAgreement[] = data ? data.User[0].squads[0].agreements : []
-    let totalPoints = 0
-
-    agreements.forEach((agreement) => {
-      agreement.feedback
-        .filter((feedback) => feedback.to.id === userId)
-        .forEach((feedback) => {
-          totalPoints += feedback.rating
-        })
-    })
-
-    return totalPoints / agreements.length
-  }
-
   const handleWeekChange = (_: any, value: number) => {
     if (!value) return
 
@@ -78,7 +62,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
         onChange={handleWeekChange}
         color={'primary'}
         count={10}
-        siblingCount={0}
+        siblingCount={width === 'xs' ? 0 : 1}
         boundaryCount={1}
         defaultPage={currentWeek}
         page={selectedWeek}
@@ -96,28 +80,16 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
     agreement: IAgreement
   ) => {
     if (!value) return
-    // TODO fix bug
-    // only first panel gives good agreement as paraments
-    // console.log(myFeedback, value, user, agreement, userInfo.id)
-    console.log(agreement)
-    console.log({
-      toUserId: user.id,
-      fromUserId: userInfo.id,
-      agreementId: agreement.id,
-      feedbackId: myFeedback ? myFeedback.id : uuid(),
-      rating: value,
-      weekNum: currentWeek,
+    await GiveFeedbackToUser({
+      variables: {
+        toUserId: user.id,
+        fromUserId: userInfo.id,
+        agreementId: agreement.id,
+        feedbackId: myFeedback ? myFeedback.id : uuid(),
+        rating: value,
+        weekNum: selectedWeek,
+      },
     })
-    // await GiveFeedbackToUser({
-    //   variables: {
-    //     toUserId: user.id,
-    //     fromUserId: userInfo.id,
-    //     agreementId: agreement.id,
-    //     feedbackId: myFeedback ? myFeedback.id : uuid(),
-    //     rating: value,
-    //     weekNum: currentWeek,
-    //   },
-    // })
 
     refetch()
   }
@@ -142,7 +114,12 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
             {data.User[0] &&
               data.User[0].squads[0] &&
               data.User[0].squads[0].members.map((user: IUser) => (
-                <UserAverageRating user={user} agreements={data.User[0].squads[0].agreements} />
+                <UserAverageRating
+                  key={user.id}
+                  user={user}
+                  currentWeek={currentWeek}
+                  agreements={data.User[0].squads[0].agreements}
+                />
               ))}
             <Grid
               item
@@ -167,15 +144,14 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
               {data.User[0] &&
                 data.User[0].squads[0] &&
                 data.User[0].squads[0].agreements.map((agreement: IAgreement) => (
-                  <Box key={agreement.id}>
-                    {agreement.id}
-                    <FeedbackPanel
-                      agreement={agreement}
-                      isCurrentWeek={selectedWeek === currentWeek}
-                      selectedWeek={selectedWeek}
-                      members={data.User[0].squads[0].members}
-                    />
-                  </Box>
+                  <FeedbackPanel
+                    key={agreement.id}
+                    agreement={agreement}
+                    isCurrentWeek={selectedWeek === currentWeek}
+                    selectedWeek={selectedWeek}
+                    members={data.User[0].squads[0].members}
+                    callback={giveFeedback}
+                  />
                 ))}
             </Grid>
             <Grid item container xs={12} justify={`center`}>

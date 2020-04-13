@@ -15,9 +15,10 @@ const useStyles = makeStyles((_: Theme) => ({
 interface IUserAverageRating {
   user: IUser
   agreements: IAgreement[]
+  currentWeek: number
 }
 
-export const UserAverageRating: FC<IUserAverageRating> = ({ user, agreements }) => {
+export const UserAverageRating: FC<IUserAverageRating> = ({ user, agreements, currentWeek }) => {
   const classes = useStyles()
 
   const getAveragePoints = () => {
@@ -31,10 +32,10 @@ export const UserAverageRating: FC<IUserAverageRating> = ({ user, agreements }) 
         })
     })
 
-    return totalPoints / agreements.length
+    return totalPoints / (agreements.length * currentWeek)
   }
 
-  const averagePoints = getAveragePoints()
+  const averagePoints = Math.round((getAveragePoints() + Number.EPSILON) * 100) / 100
   return (
     <Tooltip key={user.id} title={averagePoints}>
       <Grid item xs={12} sm={6} md={4} lg={3} className={classes.center}>
@@ -45,7 +46,7 @@ export const UserAverageRating: FC<IUserAverageRating> = ({ user, agreements }) 
           }}
         />
         <Typography variant='subtitle1'>{user.displayName}</Typography>
-        <Rating max={4} size='large' value={averagePoints} readOnly precision={0.1} />
+        <Rating max={4} size='large' value={averagePoints} readOnly precision={0.25} />
       </Grid>
     </Tooltip>
   )

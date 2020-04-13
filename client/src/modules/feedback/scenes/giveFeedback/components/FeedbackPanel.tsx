@@ -1,22 +1,24 @@
 import {
+  Box,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
   Grid,
   makeStyles,
   Theme,
-  Typography,
   Tooltip,
+  Typography,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import StarIcon from '@material-ui/icons/Star'
 import StarBorderIcon from '@material-ui/icons/StarBorder'
 import { Rating } from '@material-ui/lab'
 import React, { FC } from 'react'
-import { getTranslation } from 'src/common/utils'
+import { getTranslation, getFeedbackGivenThisWeek, getMyFeedback } from 'src/common/utils'
 import { Avataaar } from 'src/components'
-import { IAgreement, IUser } from 'src/lib/interfaces'
+import { IAgreement, IFeedback, IUser } from 'src/lib/interfaces'
 import { ItemsToGoIcon } from './ItemsToGoIcon'
+import { useAuth } from 'src/common/providers'
 
 const useStyles = makeStyles((theme: Theme) => ({
   center: {
@@ -27,6 +29,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   title: {
     paddingLeft: theme.spacing(2),
   },
+  flex: {
+    display: `flex`,
+  },
 }))
 
 interface IFeedbackPanel {
@@ -34,22 +39,43 @@ interface IFeedbackPanel {
   isCurrentWeek: boolean
   selectedWeek: number
   members: IUser[]
+  callback: (
+    myFeedback: IFeedback | undefined,
+    value: number | null,
+    user: IUser,
+    agreement: IAgreement
+  ) => void
 }
 export const FeedbackPanel: FC<IFeedbackPanel> = ({
   agreement,
   isCurrentWeek,
   selectedWeek,
   members,
+  callback,
 }) => {
   const classes = useStyles()
+  const { userInfo } = useAuth()
 
-  console.log(agreement)
+  const giveFeedback = async (
+    myFeedback: IFeedback | undefined,
+    value: number | null,
+    user: IUser,
+    agreement: IAgreement
+  ): Promise<void> => {
+    if (!value) return
+    callback(myFeedback, value, user, agreement)
+  }
+
+  const feedbackGivenThisWeek = getFeedbackGivenThisWeek(agreement, userInfo.id, selectedWeek)
+
   return (
-    <ExpansionPanel disabled={!isCurrentWeek}>
+    <ExpansionPanel>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
         <Grid container alignItems='center'>
-          <Tooltip title={`Feedback to give ${members.length - 0}`}>
-            <ItemsToGoIcon max={members.length} current={0} />
+          <Tooltip title={`Feedback to give ${members.length - feedbackGivenThisWeek}`}>
+            <Box className={classes.flex}>
+              <ItemsToGoIcon max={members.length} current={feedbackGivenThisWeek} />
+            </Box>
           </Tooltip>
           <Typography className={classes.title} variant='h6'>
             {getTranslation(agreement.translations)}
@@ -59,15 +85,7 @@ export const FeedbackPanel: FC<IFeedbackPanel> = ({
       <ExpansionPanelDetails>
         <Grid container spacing={2}>
           {members.map((user: IUser) => {
-            // TODO: move this to utils
-            const myFeedback = agreement.feedback.find((feedback) => {
-              return (
-                feedback.to.id === user.id &&
-                feedback.weekNum === selectedWeek &&
-                feedback.agreement.id === agreement.id
-              )
-            })
-            console.log(myFeedback)
+            const myFeedback = getMyFeedback(agreement, selectedWeek, user)
 
             return (
               <Grid
@@ -86,17 +104,15 @@ export const FeedbackPanel: FC<IFeedbackPanel> = ({
                   }}
                 />
                 <Typography variant='subtitle1'>{user.displayName}</Typography>
-
                 <Rating
-                  disabled={!isCurrentWeek}
+                  // disabled={!isCurrentWeek}
                   max={4}
-                  name='pristine'
+                  name={`${user.id}-${agreement.id}`}
                   size='large'
                   value={myFeedback ? myFeedback.rating : null}
                   precision={0.5}
                   onChange={(_: React.ChangeEvent<{}>, value: number | null) =>
-                    //  giveFeedback(myFeedback, value, user, agreement)
-                    console.log(value)
+                    giveFeedback(myFeedback, value, user, agreement)
                   }
                   emptyIcon={
                     !isCurrentWeek ? (

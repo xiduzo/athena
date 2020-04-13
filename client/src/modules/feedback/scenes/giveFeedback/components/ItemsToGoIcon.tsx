@@ -26,8 +26,8 @@ export const ItemsToGoIcon: FC<IItemsToGoIcon> = ({ current, max }) => {
 
   return (
     <Fragment>
-      {current <= max * 0.5 && <ErrorIcon className={classes.error} />}
-      {current > max * 0.5 && max !== 0 && <WarningIcon className={classes.warning} />}
+      {current < max * 0.5 && <ErrorIcon className={classes.error} />}
+      {current >= max * 0.5 && current !== max && <WarningIcon className={classes.warning} />}
       {current === max && <CheckCircleIcon className={classes.success} />}
     </Fragment>
   )
