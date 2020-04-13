@@ -6,15 +6,19 @@ import { PrivateRoute } from '../Routes/Private'
 import { routes } from './links'
 
 export const Routes: FC = () => {
-  const renderRoute = (route: IRoute) => (
+  const renderRoute = (route: IRoute): JSX.Element => (
     <Route key={route.path} exact={route.exact} path={route.path} component={route.component} />
   )
 
-  const renderPrivateRoute = (route: IRoute) => <PrivateRoute key={route.path} {...route} />
+  const renderPrivateRoute = (route: IRoute): JSX.Element => (
+    <PrivateRoute key={route.path} {...route} />
+  )
 
   return (
     <Switch>
-      {routes.map((route: IRoute) => (route.private ? renderPrivateRoute(route) : renderRoute(route)))}
+      {routes.map((route: IRoute) =>
+        route.private ? renderPrivateRoute(route) : renderRoute(route)
+      )}
       <Route component={NotFound} />
     </Switch>
   )

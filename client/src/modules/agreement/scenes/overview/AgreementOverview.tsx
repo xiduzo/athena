@@ -31,7 +31,13 @@ import { and, useHotkeys, useWidth } from 'src/common/hooks'
 import { IRootReducer } from 'src/common/redux'
 import { DELETE_AGREEMENT } from 'src/common/services'
 import { createFilter, generalCatchHandler, snackbarWrapper } from 'src/common/utils'
-import { AgreementCard, AgreementCardMock, EmptyState, Illustration, ToolbarSpacer } from 'src/components'
+import {
+  AgreementCard,
+  AgreementCardMock,
+  EmptyState,
+  Illustration,
+  ToolbarSpacer,
+} from 'src/components'
 import { AgreementType, Key, IllustrationType } from 'src/lib/enums'
 import { IAgreement } from 'src/lib/interfaces'
 import { NewAgreementModal } from './components/NewAgreementModal'
@@ -92,13 +98,13 @@ export const AgreementOverview: FC = () => {
   const { t } = useTranslation()
   const width = useWidth()
 
-  const [ modalOpen, setModalOpen ] = useState(false)
-  const [ drawerOpen, setDrawerOpen ] = useState(false)
-  const [ filters, setFilters ] = useState(initFilters)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [filters, setFilters] = useState(initFilters)
 
   const { loading, error, data, refetch } = useQuery(
     gql`
-      query {
+      query GetAgreements {
         Agreement(filter: { isBase: true }) {
           id
           points
@@ -113,14 +119,16 @@ export const AgreementOverview: FC = () => {
     `
   )
 
-  const [ DeleteAgreement ] = useMutation(DELETE_AGREEMENT)
+  const [DeleteAgreement] = useMutation(DELETE_AGREEMENT)
 
-  const hotkeysEnabled = useSelector((state: IRootReducer) => state.global.hotkeysEnabled)
-  const newAgreementHotkey = and([ useHotkeys(Key.Alt), useHotkeys(Key.N) ])
+  const hotkeysEnabled = useSelector<IRootReducer, boolean>(
+    (state: IRootReducer) => state.global.hotkeysEnabled
+  )
+  const newAgreementHotkey = and([useHotkeys(Key.Alt), useHotkeys(Key.N)])
 
   const { register, errors } = useForm()
 
-  const handleNameFilter = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleNameFilter = (event: ChangeEvent<HTMLInputElement>): void =>
     setFilters([
       ...initFilters.map((filter) => {
         if (filter.property === event.target.id) filter.value = event.target.value
@@ -128,9 +136,8 @@ export const AgreementOverview: FC = () => {
         return filter
       }),
     ])
-  }
 
-  const handleTypeFilter = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleTypeFilter = (event: ChangeEvent<HTMLInputElement>): void => {
     const { value } = event.target
     setFilters(
       filters.map((item) => {
@@ -140,15 +147,15 @@ export const AgreementOverview: FC = () => {
     )
   }
 
-  const toggleDrawer = () => setDrawerOpen(!drawerOpen)
-  const toggleModal = () => setModalOpen(!modalOpen)
+  const toggleDrawer = (): void => setDrawerOpen(!drawerOpen)
+  const toggleModal = (): void => setModalOpen(!modalOpen)
 
-  const closeNewAgreementModalHandle = () => {
+  const closeNewAgreementModalHandle = (): void => {
     refetch()
     toggleModal()
   }
 
-  const removeAgreementHandler = (agreement: IAgreement) => {
+  const removeAgreementHandler = (agreement: IAgreement): void => {
     DeleteAgreement({
       variables: {
         id: agreement.id,
@@ -161,28 +168,27 @@ export const AgreementOverview: FC = () => {
       .catch(generalCatchHandler)
   }
 
-  useEffect(
-    () => {
-      if (!hotkeysEnabled) return
-      if (!newAgreementHotkey) return
+  useEffect((): void => {
+    if (!hotkeysEnabled) return
+    if (!newAgreementHotkey) return
 
-      setModalOpen(true)
-    },
-    [ newAgreementHotkey, hotkeysEnabled ]
-  )
+    setModalOpen(true)
+  }, [newAgreementHotkey, hotkeysEnabled])
 
-  useEffect(
-    () => {
-      if ([ 'xs', 'sm' ].indexOf(width) === -1) setDrawerOpen(false)
-    },
-    [ width ]
-  )
+  useEffect((): void => {
+    if (['xs', 'sm'].indexOf(width) === -1) setDrawerOpen(false)
+  }, [width])
 
   return (
     <Box className={classes.wrapper}>
       <Container maxWidth='lg' className={classes.root}>
         <Zoom in={!loading && !error}>
-          <Fab color='primary' aria-label={t('agreementNew')} className={classes.fab} onClick={toggleModal}>
+          <Fab
+            color='primary'
+            aria-label={t('agreementNew')}
+            className={classes.fab}
+            onClick={toggleModal}
+          >
             <AddIcon />
           </Fab>
         </Zoom>
@@ -197,7 +203,7 @@ export const AgreementOverview: FC = () => {
             </Hidden>
           </Grid>
           {loading ? (
-            [ ...Array(12) ].map((_, index: number) => (
+            [...Array(12)].map((_, index: number) => (
               <Grid key={index} item xs={12} sm={6} lg={4}>
                 <AgreementCardMock />
               </Grid>
@@ -206,7 +212,10 @@ export const AgreementOverview: FC = () => {
             <div>{error.message}</div>
           ) : !data.Agreement.length ? (
             <Grid item={true} xs={12}>
-              <EmptyState title={t('agreementsNotFound')} image={<Illustration type={IllustrationType.Empty} />} />
+              <EmptyState
+                title={t('agreementsNotFound')}
+                image={<Illustration type={IllustrationType.Empty} />}
+              />
             </Grid>
           ) : (
             data.Agreement.filter(createFilter(...filters)).map((agreement: IAgreement) => (
@@ -227,7 +236,7 @@ export const AgreementOverview: FC = () => {
         </Grid>
       </Container>
       <Drawer
-        variant={[ 'xs', 'sm' ].indexOf(width) > -1 ? 'temporary' : 'permanent'}
+        variant={['xs', 'sm'].indexOf(width) > -1 ? 'temporary' : 'permanent'}
         anchor='right'
         open={drawerOpen}
         className={classes.drawer}
@@ -239,11 +248,11 @@ export const AgreementOverview: FC = () => {
         <ToolbarSpacer smDown />
         <Grid container justify='space-between' alignItems='center'>
           <Typography variant='h5'>Filter</Typography>
-          {!loading &&
-          !error &&
-          data.Agreement.length && (
+          {!loading && !error && data.Agreement.length && (
             <Tooltip title={`Amount of agreements left after applying filters`}>
-              <Typography variant='caption'>{data.Agreement.filter(createFilter(...filters)).length}</Typography>
+              <Typography variant='caption'>
+                {data.Agreement.filter(createFilter(...filters)).length}
+              </Typography>
             </Tooltip>
           )}
         </Grid>
@@ -273,7 +282,12 @@ export const AgreementOverview: FC = () => {
                   defaultValue='-1'
                   onChange={handleTypeFilter}
                 >
-                  <FormControlLabel inputRef={register} value={`-1`} control={<Radio />} label='All' />
+                  <FormControlLabel
+                    inputRef={register}
+                    value={`-1`}
+                    control={<Radio />}
+                    label='All'
+                  />
                   <FormControlLabel
                     inputRef={register}
                     value={`${AgreementType.ATTITUDE}`}

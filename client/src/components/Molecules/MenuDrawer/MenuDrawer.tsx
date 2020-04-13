@@ -1,4 +1,13 @@
-import { Divider, Drawer, Icon, List, ListItem, ListItemIcon, ListItemText, Tooltip } from '@material-ui/core'
+import {
+  Divider,
+  Drawer,
+  Icon,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Tooltip,
+} from '@material-ui/core'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import clsx from 'clsx'
@@ -8,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { LinkProps, NavLink } from 'react-router-dom'
 import { useWidth } from 'src/common/hooks'
 import { useAuth } from 'src/common/providers'
-import { DispatchAction, GlobalActions, IRootReducer } from 'src/common/redux'
+import { DispatchAction, GlobalActions, IRootReducer, IGlobalState } from 'src/common/redux'
 import { routes, ToolbarSpacer } from 'src/components'
 import { useStyles } from './style'
 
@@ -25,34 +34,30 @@ export const MenuDrawer: FC = () => {
 
   const dispatch = useDispatch<DispatchAction>()
 
-  const globalState = useSelector((state: IRootReducer) => state.global)
+  const globalState = useSelector<IRootReducer, IGlobalState>((state: IRootReducer) => state.global)
 
   const { menuOpen } = globalState
 
-  const toggleMenuDrawer = () => {
+  const toggleMenuDrawer = (): void =>
     dispatch({
       type: GlobalActions.setMenuOpen,
       payload: !menuOpen,
     })
-  }
 
-  useEffect(
-    () => {
-      if (width !== 'xs') return
+  useEffect((): void => {
+    if (width !== 'xs') return
 
-      dispatch({
-        type: GlobalActions.setMenuOpen,
-        payload: false,
-      })
-    },
-    [ width, dispatch ]
-  )
+    dispatch({
+      type: GlobalActions.setMenuOpen,
+      payload: false,
+    })
+  }, [width, dispatch])
 
   if (!session) return null
 
   return (
     <Drawer
-      variant={[ 'xs' ].indexOf(width) > -1 ? 'temporary' : 'permanent'}
+      variant={['xs'].indexOf(width) > -1 ? 'temporary' : 'permanent'}
       anchor='left'
       open={menuOpen}
       onClose={toggleMenuDrawer}
@@ -70,16 +75,29 @@ export const MenuDrawer: FC = () => {
       <ToolbarSpacer xsDown />
       <section className={classes.flex}>
         <List className={classes.flexList}>
-          {routes.filter((route) => route.showInMenu).map((route) => (
-            <Tooltip title={t(route.name)} key={route.path} placement='right' enterDelay={!menuOpen ? 350 : 1000 * 60}>
-              <ListItem button key={route.path} component={AdapterLink} to={route.path} className={classes.navLink}>
-                <ListItemIcon className={classes.ListItemIcon}>
-                  <Icon component={route.icon} />
-                </ListItemIcon>
-                <ListItemText primary={t(route.name)} />
-              </ListItem>
-            </Tooltip>
-          ))}
+          {routes
+            .filter((route) => route.showInMenu)
+            .map((route) => (
+              <Tooltip
+                title={t(route.name)}
+                key={route.path}
+                placement='right'
+                enterDelay={!menuOpen ? 350 : 1000 * 60}
+              >
+                <ListItem
+                  button
+                  key={route.path}
+                  component={AdapterLink}
+                  to={route.path}
+                  className={classes.navLink}
+                >
+                  <ListItemIcon className={classes.ListItemIcon}>
+                    <Icon component={route.icon} />
+                  </ListItemIcon>
+                  <ListItemText primary={t(route.name)} />
+                </ListItem>
+              </Tooltip>
+            ))}
         </List>
       </section>
       <Divider />

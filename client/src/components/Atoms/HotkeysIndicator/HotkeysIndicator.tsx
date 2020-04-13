@@ -18,7 +18,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const HotkeysIndicator: FC = () => {
   const classes = useStyles()
 
-  const hotkeysEnabled = useSelector((state: IRootReducer) => state.global.hotkeysEnabled)
+  const hotkeysEnabled = useSelector<IRootReducer, boolean>(
+    (state: IRootReducer) => state.global.hotkeysEnabled
+  )
 
   return (
     <Hidden smDown>

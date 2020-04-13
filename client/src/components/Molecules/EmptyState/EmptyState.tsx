@@ -8,7 +8,7 @@ interface IEmptyState {
   image?: any
 }
 
-const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles((_: Theme) => {
   return {
     root: {
       display: 'flex',
@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) => {
 
 export const EmptyState: FC<IEmptyState> = ({ title, subtitle, image }) => {
   const classes = useStyles()
+
   return (
     <section className={classes.root}>
       {image && image}

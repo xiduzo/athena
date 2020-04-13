@@ -7,12 +7,10 @@ interface ISquadCard extends IClickableCard {
   squad: ISquad
 }
 
-export const SquadCard: FC<ISquadCard> = ({ squad, onLeftClick, onRightClickItems }) => {
-  return (
-    <ClickableCard
-      onLeftClick={onLeftClick}
-      onRightClickItems={onRightClickItems}
-      cardContent={<CardHeader avatar={'T'} title={`${squad.name}`} />}
-    />
-  )
-}
+export const SquadCard: FC<ISquadCard> = ({ squad, onLeftClick, onRightClickItems }) => (
+  <ClickableCard
+    onLeftClick={onLeftClick}
+    onRightClickItems={onRightClickItems}
+    cardContent={<CardHeader avatar={'T'} title={`${squad.name}`} />}
+  />
+)

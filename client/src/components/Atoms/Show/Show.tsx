@@ -10,25 +10,22 @@ interface IShow {
 }
 export const Show: FC<IShow> = ({ forGroups, forUsers, children }) => {
   const { session, userInfo } = useAuth()
-  const [ showElement, setShowElement ] = useState(false)
+  const [showElement, setShowElement] = useState(false)
 
-  useEffect(
-    () => {
-      if (!session) return
-      if (!userInfo) return
-      if (forGroups) {
-        const userGroups: string[] = session.getAccessToken().payload['cognito:groups']
-        const isAuthorized = hasMatchesWith<string>(forGroups, userGroups)
-        setShowElement(isAuthorized)
-      }
+  useEffect((): void => {
+    if (!session) return
+    if (!userInfo) return
+    if (forGroups) {
+      const userGroups: string[] = session.getAccessToken().payload['cognito:groups']
+      const isAuthorized = hasMatchesWith<string>(forGroups, userGroups)
+      setShowElement(isAuthorized)
+    }
 
-      if (forUsers) {
-        const isAuthorized = forUsers.some((user) => userInfo.id)
-        setShowElement(isAuthorized)
-      }
-    },
-    [ session, forGroups, forUsers, userInfo ]
-  )
+    if (forUsers) {
+      const isAuthorized = forUsers.some((user) => user === userInfo.id)
+      setShowElement(isAuthorized)
+    }
+  }, [session, forGroups, forUsers, userInfo])
 
   if (!showElement) return null
   return <Fragment>{children}</Fragment>

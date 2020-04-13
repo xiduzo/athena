@@ -18,21 +18,18 @@ export const Home: FC = () => {
   const history = useHistory()
   const { session } = useAuth()
 
-  useEffect(
-    () => {
-      if (!session) return
-      const userGroups: string[] = session ? getUserGroups(session) : []
-      const isRoot = hasMatchesWith<string>([ UserRole.Root ], userGroups)
-      const isAdmin = hasMatchesWith<string>([ UserRole.Admin ], userGroups)
-      const isLeader = hasMatchesWith<string>([ UserRole.Leader ], userGroups)
-      const isUser = hasMatchesWith<string>([ UserRole.Member ], userGroups)
-      console.log(isRoot, isAdmin, isLeader, isUser)
+  useEffect((): void => {
+    if (!session) return
+    const userGroups: string[] = session ? getUserGroups(session) : []
+    const isRoot = hasMatchesWith<string>([UserRole.Root], userGroups)
+    const isAdmin = hasMatchesWith<string>([UserRole.Admin], userGroups)
+    const isLeader = hasMatchesWith<string>([UserRole.Leader], userGroups)
+    const isUser = hasMatchesWith<string>([UserRole.Member], userGroups)
+    console.log(isRoot, isAdmin, isLeader, isUser)
 
-      if (isAdmin) return history.push(`/member/dashboard`)
-      if (isUser) return history.push(`/member/dashboard`)
-    },
-    [ session, history ]
-  )
+    if (isAdmin) return history.push(`/member/dashboard`)
+    if (isUser) return history.push(`/member/dashboard`)
+  }, [session, history])
 
   return (
     <section className={classes.root}>

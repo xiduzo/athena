@@ -29,10 +29,10 @@ export const SquadOverview: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const [ modalOpen, setModalOpen ] = useState(false)
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
 
   const { loading, error, data, refetch } = useQuery(gql`
-    query {
+    query GetSquads {
       Squad {
         id
         name
@@ -43,9 +43,9 @@ export const SquadOverview: FC = () => {
   const location = useLocation()
   const history = useHistory()
 
-  const navigateToSquad = (id: string) => history.push(`${location.pathname}/${id}`)
+  const navigateToSquad = (id: string): void => history.push(`${location.pathname}/${id}`)
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     refetch()
     setModalOpen(!modalOpen)
   }
@@ -77,7 +77,10 @@ export const SquadOverview: FC = () => {
           <div>{error.message}</div>
         ) : !data.Squad.length ? (
           <Grid item xs={12}>
-            <EmptyState title={t('squadsNotFound')} image={<Illustration type={IllustrationType.Empty} />} />
+            <EmptyState
+              title={t('squadsNotFound')}
+              image={<Illustration type={IllustrationType.Empty} />}
+            />
           </Grid>
         ) : (
           data.Squad.map((squad: ISquad) => (

@@ -13,7 +13,12 @@ import {
   REMOVE_SQUAD_AGREEMENT,
   REMOVE_SQUAD_MEMBER,
 } from 'src/common/services'
-import { asyncForEach, generalCatchHandler, getTranslation, snackbarWrapper } from 'src/common/utils'
+import {
+  asyncForEach,
+  generalCatchHandler,
+  getTranslation,
+  snackbarWrapper,
+} from 'src/common/utils'
 import { AddCard, AgreementCard, AgreementSelector, UserCard, UserSelector } from 'src/components'
 import { IAgreement, ITranslation, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
@@ -36,8 +41,8 @@ export const SquadDetail: FC = () => {
   const classes = useStyles()
   const history = useHistory()
 
-  const [ agreementsModalOpen, setAgreementsModalOpen ] = useState(false)
-  const [ usersModalOpen, setUsersModalOpen ] = useState(false)
+  const [agreementsModalOpen, setAgreementsModalOpen] = useState(false)
+  const [usersModalOpen, setUsersModalOpen] = useState(false)
 
   const { loading, error, data, refetch } = useQuery(
     gql`
@@ -71,17 +76,17 @@ export const SquadDetail: FC = () => {
     }
   )
 
-  const [ AddSquadAgreements ] = useMutation(ADD_SQUAD_AGREEMENT)
-  const [ RemoveSquadAgreements ] = useMutation(REMOVE_SQUAD_AGREEMENT)
-  const [ AddAgreementTranslations ] = useMutation(ADD_AGREEMENT_TRANSLATION)
-  const [ CreateAgreement ] = useMutation(CREATE_AGREEMENT)
-  const [ AddAgreementParent ] = useMutation(ADD_AGREEMENT_PARENT)
-  const [ AddSquadMembers ] = useMutation(ADD_SQUAD_MEMBER)
-  const [ RemoveSquadMembers ] = useMutation(REMOVE_SQUAD_MEMBER)
+  const [AddSquadAgreements] = useMutation(ADD_SQUAD_AGREEMENT)
+  const [RemoveSquadAgreements] = useMutation(REMOVE_SQUAD_AGREEMENT)
+  const [AddAgreementTranslations] = useMutation(ADD_AGREEMENT_TRANSLATION)
+  const [CreateAgreement] = useMutation(CREATE_AGREEMENT)
+  const [AddAgreementParent] = useMutation(ADD_AGREEMENT_PARENT)
+  const [AddSquadMembers] = useMutation(ADD_SQUAD_MEMBER)
+  const [RemoveSquadMembers] = useMutation(REMOVE_SQUAD_MEMBER)
 
   const toggleUsersModal = () => setUsersModalOpen(!usersModalOpen)
 
-  const onUserModalCloseHandler = async (users?: IUser[]) => {
+  const onUserModalCloseHandler = async (users?: IUser[]): Promise<void> => {
     toggleUsersModal()
 
     if (!users) return
@@ -111,7 +116,7 @@ export const SquadDetail: FC = () => {
     refetch()
   }
 
-  const removeSquadMemberHandler = async (user: IUser) => {
+  const removeSquadMemberHandler = async (user: IUser): Promise<void> => {
     await RemoveSquadMembers({
       variables: {
         from: { id: user.id },
@@ -124,82 +129,93 @@ export const SquadDetail: FC = () => {
     refetch()
   }
 
-  const navigateToUser = (user: IUser) => history.push(`/user/${user.id}`)
+  const navigateToUser = (user: IUser): void => history.push(`/user/${user.id}`)
 
-  const toggleAgreementsModal = () => setAgreementsModalOpen(!agreementsModalOpen)
+  const toggleAgreementsModal = (): void => setAgreementsModalOpen(!agreementsModalOpen)
 
-  const onAgreementsModalCloseHandler = async (agreements?: IAgreement[]) => {
+  const onAgreementsModalCloseHandler = async (agreements?: IAgreement[]): Promise<void> => {
     toggleAgreementsModal()
 
     if (!agreements) return
 
-    await asyncForEach(agreements, async (agreement: IAgreement) => {
-      let hasError = false
-      const originalId = agreement.id
-      // Overwrite agreement object
-      agreement = {
-        ...agreement,
-        id: uuid(),
-        isBase: false,
-      }
-
-      const catchError = (error: ApolloError) => {
-        hasError = !hasError
-        generalCatchHandler(error)
-      }
-
-      // Create new agreement object
-      await CreateAgreement({
-        variables: {
+    await asyncForEach(
+      agreements,
+      async (agreement: IAgreement): Promise<void> => {
+        let hasError = false
+        const originalId = agreement.id
+        // Overwrite agreement object
+        agreement = {
           ...agreement,
-          type: parseInt(`${agreement.type}`, 10),
-        },
-      }).catch(catchError)
+          id: uuid(),
+          isBase: false,
+        }
 
-      // Make sure we link it to its parent
-      await AddAgreementParent({
-        variables: {
-          from: { id: agreement.id },
-          to: { id: originalId },
-        },
-      }).catch(catchError)
+        const catchError = (error: ApolloError): void => {
+          hasError = !hasError
+          generalCatchHandler(error)
+        }
 
-      if (!hasError) {
-        // Add the translation
-        await asyncForEach(agreement.translations || [], async (translation: ITranslation) => {
-          await AddAgreementTranslations({
-            variables: {
-              id: uuid(),
-              from: { id: agreement.id },
-              to: { id: translation.id },
-            },
-          }).catch(catchError)
-        })
-      }
-
-      if (!hasError) {
-        await AddSquadAgreements({
+        // Create new agreement object
+        await CreateAgreement({
           variables: {
-            from: { id: id },
-            to: { id: agreement.id },
+            ...agreement,
+            type: parseInt(`${agreement.type}`, 10),
           },
-        })
-          .then((_) => snackbarWrapper.success(`${getTranslation(agreement.translations)}->${data.Squad[0].name}`))
-          .catch(generalCatchHandler)
+        }).catch(catchError)
+
+        // Make sure we link it to its parent
+        await AddAgreementParent({
+          variables: {
+            from: { id: agreement.id },
+            to: { id: originalId },
+          },
+        }).catch(catchError)
+
+        if (!hasError) {
+          // Add the translation
+          await asyncForEach(agreement.translations || [], async (translation: ITranslation) => {
+            await AddAgreementTranslations({
+              variables: {
+                id: uuid(),
+                from: { id: agreement.id },
+                to: { id: translation.id },
+              },
+            }).catch(catchError)
+          })
+        }
+
+        if (!hasError) {
+          await AddSquadAgreements({
+            variables: {
+              from: { id: id },
+              to: { id: agreement.id },
+            },
+          })
+            .then((_) =>
+              snackbarWrapper.success(
+                `${getTranslation(agreement.translations)}->${data.Squad[0].name}`
+              )
+            )
+            .catch(generalCatchHandler)
+        }
       }
-    })
+    )
 
     refetch()
   }
 
-  const removeAgreementHandler = async (agreement: IAgreement) => {
+  const removeAgreementHandler = async (agreement: IAgreement): Promise<void> => {
     await RemoveSquadAgreements({
       variables: {
         from: { id: id },
         to: { id: agreement.id },
       },
     })
-      .then((_) => snackbarWrapper.success(`Removed ${getTranslation(agreement.translations)}->${data.Squad[0].name}`))
+      .then((_) =>
+        snackbarWrapper.success(
+          `Removed ${getTranslation(agreement.translations)}->${data.Squad[0].name}`
+        )
+      )
       .catch(generalCatchHandler)
 
     refetch()

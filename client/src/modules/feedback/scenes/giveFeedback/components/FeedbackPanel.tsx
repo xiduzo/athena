@@ -66,7 +66,11 @@ export const FeedbackPanel: FC<IFeedbackPanel> = ({
     callback(myFeedback, value, user, agreement)
   }
 
-  const feedbackGivenThisWeek = getFeedbackGivenThisWeek(agreement, userInfo.id, selectedWeek)
+  const feedbackGivenThisWeek: number = getFeedbackGivenThisWeek(
+    agreement,
+    userInfo.id,
+    selectedWeek
+  )
 
   return (
     <ExpansionPanel>

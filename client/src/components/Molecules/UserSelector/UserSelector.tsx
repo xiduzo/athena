@@ -1,5 +1,12 @@
 import { useQuery } from '@apollo/react-hooks'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import gql from 'graphql-tag'
 import React, { FC, useState } from 'react'
@@ -16,10 +23,10 @@ interface IUserSelector {
 export const UserSelector: FC<IUserSelector> = ({ title, isOpen, onClose, without }) => {
   const width = useWidth()
 
-  const [ usersToAdd, setUsersToAdd ] = useState<IUser[]>([])
+  const [usersToAdd, setUsersToAdd] = useState<IUser[]>([])
 
-  const [ pageQuery ] = useState(gql`
-    query {
+  const [pageQuery] = useState(gql`
+    query GetUser {
       User {
         id
         displayName
@@ -29,27 +36,34 @@ export const UserSelector: FC<IUserSelector> = ({ title, isOpen, onClose, withou
 
   const { loading, error, data } = useQuery(pageQuery)
 
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     clearSquadsToAdd()
     onClose(usersToAdd)
   }
 
-  const clearSquadsToAdd = () => setUsersToAdd([])
+  const clearSquadsToAdd = (): void => setUsersToAdd([])
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     clearSquadsToAdd()
     onClose()
   }
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} aria-labelledby='user selector' fullScreen={width === 'xs'}>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      aria-labelledby='user selector'
+      fullScreen={width === 'xs'}
+    >
       <DialogTitle id='user selector'>{title}</DialogTitle>
       <DialogContent>
         {/* {subtitle && <DialogContentText>{subtitle}</DialogContentText>} */}
         <Autocomplete
           id='disabled-options-demo'
           options={
-            loading || error ? [] : data.User.filter((user: IUser) => !without.map((u) => u.id).includes(user.id))
+            loading || error
+              ? []
+              : data.User.filter((user: IUser) => !without.map((u) => u.id).includes(user.id))
           }
           clearOnEscape
           multiple
@@ -57,8 +71,12 @@ export const UserSelector: FC<IUserSelector> = ({ title, isOpen, onClose, withou
             if (users) setUsersToAdd(users)
           }}
           getOptionLabel={(user: IUser) => user.displayName}
-          getOptionDisabled={(user: IUser) => (usersToAdd.find((u) => u.id === user.id) ? true : false)}
-          renderInput={(params) => <TextField label='Users to add' {...params} autoFocus name='user' fullWidth />}
+          getOptionDisabled={(user: IUser) =>
+            usersToAdd.find((u) => u.id === user.id) ? true : false
+          }
+          renderInput={(params) => (
+            <TextField label='Users to add' {...params} autoFocus name='user' fullWidth />
+          )}
           clearText='[Clear text]'
           closeText='[Close text]'
           noOptionsText='[No options text]'

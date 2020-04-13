@@ -9,8 +9,12 @@ export interface IClickableCard {
   cardContent?: JSX.Element
 }
 
-export const ClickableCard: FC<IClickableCard> = ({ onLeftClick, onRightClickItems, cardContent }) => {
-  const [ mousePos, setMousePos ] = useState<IMousePosition>({
+export const ClickableCard: FC<IClickableCard> = ({
+  onLeftClick,
+  onRightClickItems,
+  cardContent,
+}) => {
+  const [mousePos, setMousePos] = useState<IMousePosition>({
     x: null,
     y: null,
   })
@@ -19,9 +23,9 @@ export const ClickableCard: FC<IClickableCard> = ({ onLeftClick, onRightClickIte
     setMousePos({ x, y })
   }
 
-  const clearMousePos = () => setMousePosValues(null, null)
+  const clearMousePos = (): void => setMousePosValues(null, null)
 
-  const handleContextMenuClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleContextMenuClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     event.preventDefault()
     if (mousePos.x || mousePos.y) return clearMousePos()
 
@@ -30,11 +34,9 @@ export const ClickableCard: FC<IClickableCard> = ({ onLeftClick, onRightClickIte
     setMousePosValues(clientX, clientY)
   }
 
-  const onLeftClickHandler = () => onLeftClick && onLeftClick()
+  const onLeftClickHandler = (): void => onLeftClick && onLeftClick()
 
-  const onRightClickHandler = () => {
-    clearMousePos()
-  }
+  const onRightClickHandler = (): void => clearMousePos()
 
   const renderRightClick = (): JSX.Element => {
     return (
@@ -43,7 +45,11 @@ export const ClickableCard: FC<IClickableCard> = ({ onLeftClick, onRightClickIte
         open={mousePos.y !== null}
         onClose={onRightClickHandler}
         anchorReference='anchorPosition'
-        anchorPosition={mousePos.y !== null && mousePos.x !== null ? { top: mousePos.y, left: mousePos.x } : undefined}
+        anchorPosition={
+          mousePos.y !== null && mousePos.x !== null
+            ? { top: mousePos.y, left: mousePos.x }
+            : undefined
+        }
       >
         {onRightClickItems}
       </Menu>
@@ -52,7 +58,11 @@ export const ClickableCard: FC<IClickableCard> = ({ onLeftClick, onRightClickIte
 
   const renderOnlyRightClick = (): JSX.Element => {
     return (
-      <CardActionArea disableRipple disableTouchRipple onContextMenu={onRightClickItems && handleContextMenuClick}>
+      <CardActionArea
+        disableRipple
+        disableTouchRipple
+        onContextMenu={onRightClickItems && handleContextMenuClick}
+      >
         {onRightClickItems && renderRightClick()}
         {cardContent}
       </CardActionArea>
@@ -60,7 +70,9 @@ export const ClickableCard: FC<IClickableCard> = ({ onLeftClick, onRightClickIte
   }
 
   const renderOnlyLeftClick = (): JSX.Element => {
-    return <CardActionArea onClick={onLeftClick && onLeftClickHandler}>{cardContent}</CardActionArea>
+    return (
+      <CardActionArea onClick={onLeftClick && onLeftClickHandler}>{cardContent}</CardActionArea>
+    )
   }
 
   const renderBothClicks = (): JSX.Element => {

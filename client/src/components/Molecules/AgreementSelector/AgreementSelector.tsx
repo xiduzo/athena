@@ -39,14 +39,14 @@ export const AgreementSelector: FC<IAgreementSelectorModal> = ({
 
   const [agreementsToAdd, setAgreementsToAdd] = useState<IAgreement[]>([])
 
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     clearAgreementsToAdd()
     onClose(agreementsToAdd)
   }
 
-  const clearAgreementsToAdd = () => setAgreementsToAdd([])
+  const clearAgreementsToAdd = (): void => setAgreementsToAdd([])
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     clearAgreementsToAdd()
     onClose()
   }

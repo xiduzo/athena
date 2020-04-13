@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const ToolbarSpacer: FC<HiddenProps> = (props) => {
   const classes = useStyles()
+
   return (
     <Hidden {...props}>
       <div className={classes.toolbar} />

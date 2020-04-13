@@ -36,16 +36,15 @@ export const NewSquadModal: FC<INewSquadModal> = ({ isOpen, onClose }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const [ isSubmitting, setIsSubmitting ] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
   const { register, handleSubmit, errors } = useForm()
 
-  const [ CreateSquad ] = useMutation(CREATE_SQUAD)
+  const [CreateSquad] = useMutation(CREATE_SQUAD)
 
-  const handleClose = () => {
-    onClose && onClose<undefined>()
-  }
-  const onSubmit = async (data: Partial<ISquad>) => {
+  const handleClose = (): void => onClose && onClose<undefined>()
+
+  const onSubmit = async (data: Partial<ISquad>): Promise<void> => {
     setIsSubmitting(true)
 
     let hasError = false
@@ -55,7 +54,7 @@ export const NewSquadModal: FC<INewSquadModal> = ({ isOpen, onClose }) => {
       id: uuid(),
     }
 
-    const catchError = (error: ApolloError) => {
+    const catchError = (error: ApolloError): void => {
       hasError = !hasError
       generalCatchHandler(error)
     }
@@ -77,13 +76,24 @@ export const NewSquadModal: FC<INewSquadModal> = ({ isOpen, onClose }) => {
       <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
         <AppBar position={`relative`}>
           <Toolbar>
-            <IconButton edge='start' autoFocus color='inherit' onClick={handleClose} aria-label='close'>
+            <IconButton
+              edge='start'
+              autoFocus
+              color='inherit'
+              onClick={handleClose}
+              aria-label='close'
+            >
               <CloseIcon />
             </IconButton>
             <Typography variant='h6' className={classes.title}>
               {t(`squadNew`)}
             </Typography>
-            <Button type='submit' disabled={isSubmitting} color='inherit' onClick={handleSubmit(onSubmit)}>
+            <Button
+              type='submit'
+              disabled={isSubmitting}
+              color='inherit'
+              onClick={handleSubmit(onSubmit)}
+            >
               save
             </Button>
           </Toolbar>

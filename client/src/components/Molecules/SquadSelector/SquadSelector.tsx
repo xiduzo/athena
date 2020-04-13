@@ -1,5 +1,12 @@
 import { useQuery } from '@apollo/react-hooks'
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import gql from 'graphql-tag'
 import React, { FC, useState } from 'react'
@@ -16,10 +23,10 @@ interface ISquadSelector {
 export const SquadSelector: FC<ISquadSelector> = ({ title, isOpen, onClose, without }) => {
   const width = useWidth()
 
-  const [ squadsToAdd, setSquadsToAdd ] = useState<ISquad[]>([])
+  const [squadsToAdd, setSquadsToAdd] = useState<ISquad[]>([])
 
-  const [ pageQuery ] = useState(gql`
-    query {
+  const [pageQuery] = useState(gql`
+    query GetSquads {
       Squad {
         id
         name
@@ -29,27 +36,34 @@ export const SquadSelector: FC<ISquadSelector> = ({ title, isOpen, onClose, with
 
   const { loading, error, data } = useQuery(pageQuery)
 
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     clearSquadsToAdd()
     onClose(squadsToAdd)
   }
 
-  const clearSquadsToAdd = () => setSquadsToAdd([])
+  const clearSquadsToAdd = (): void => setSquadsToAdd([])
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     clearSquadsToAdd()
     onClose()
   }
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} aria-labelledby='squad selector' fullScreen={width === 'xs'}>
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      aria-labelledby='squad selector'
+      fullScreen={width === 'xs'}
+    >
       <DialogTitle id='squad selector'>{title}</DialogTitle>
       <DialogContent>
         {/* {subtitle && <DialogContentText>{subtitle}</DialogContentText>} */}
         <Autocomplete
           id='disabled-options-demo'
           options={
-            loading || error ? [] : data.Squad.filter((squad: ISquad) => !without.map((s) => s.id).includes(squad.id))
+            loading || error
+              ? []
+              : data.Squad.filter((squad: ISquad) => !without.map((s) => s.id).includes(squad.id))
           }
           clearOnEscape
           multiple
@@ -57,8 +71,12 @@ export const SquadSelector: FC<ISquadSelector> = ({ title, isOpen, onClose, with
             if (squads) setSquadsToAdd(squads)
           }}
           getOptionLabel={(squad: ISquad) => squad.name}
-          getOptionDisabled={(squad: ISquad) => (squadsToAdd.find((s) => s.id === squad.id) ? true : false)}
-          renderInput={(params) => <TextField label='Squads to add' {...params} id='tribe' name='tribe' fullWidth />}
+          getOptionDisabled={(squad: ISquad) =>
+            squadsToAdd.find((s) => s.id === squad.id) ? true : false
+          }
+          renderInput={(params) => (
+            <TextField label='Squads to add' {...params} id='tribe' name='tribe' fullWidth />
+          )}
           clearText='[Clear text]'
           closeText='[Close text]'
           noOptionsText='[No options text]'

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useWidth } from 'src/common/hooks'
 import { useAuth } from 'src/common/providers'
-import { IRootReducer } from 'src/common/redux'
+import { IRootReducer, IGlobalState } from 'src/common/redux'
 import { IGiveFeedbackData, IGiveFeedbackDataVariables, USER_FEEDBACK } from 'src/common/services'
 import { GIVE_FEEDBACK, IGiveFeedbackToUserVariables } from 'src/common/services/feedbackService'
 import { IAgreement, IFeedback, IUser } from 'src/lib/interfaces'
@@ -33,10 +33,10 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
   const { t } = useTranslation()
   const { userInfo } = useAuth()
 
-  const globalState = useSelector((state: IRootReducer) => state.global)
+  const globalState = useSelector<IRootReducer, IGlobalState>((state: IRootReducer) => state.global)
 
-  const [currentWeek] = useState(8)
-  const [selectedWeek, setSelectedWeek] = useState(currentWeek)
+  const [currentWeek] = useState<number>(8)
+  const [selectedWeek, setSelectedWeek] = useState<number>(currentWeek)
 
   const { data, error, loading, refetch } = useQuery<IGiveFeedbackData, IGiveFeedbackDataVariables>(
     USER_FEEDBACK,

@@ -66,12 +66,12 @@ export const AvatarCreator: FC<IAvatarCreator> = ({ user, isOpen, onClose }) => 
   const classes = useStyles()
   const width = useWidth()
 
-  const [ style, setStyle ] = useState<IAvataaar>({} as IAvataaar)
-  const [ previousStyle, setPreviousStyle ] = useState<IAvataaar | null>(null)
-  const [ selectedPage, setSelectedPage ] = useState(1)
-  const [ amountToRender, setAmountToRender ] = useState(0)
-  const [ pagesToRender, setPagesToRender ] = useState(0)
-  const [ types ] = useState<{ type: Object; name: string }[]>([
+  const [style, setStyle] = useState<IAvataaar>({} as IAvataaar)
+  const [previousStyle, setPreviousStyle] = useState<IAvataaar | null>(null)
+  const [selectedPage, setSelectedPage] = useState(1)
+  const [amountToRender, setAmountToRender] = useState(0)
+  const [pagesToRender, setPagesToRender] = useState(0)
+  const [types] = useState<{ type: Object; name: string }[]>([
     {
       type: SkinColor,
       name: 'skinColor',
@@ -121,8 +121,8 @@ export const AvatarCreator: FC<IAvatarCreator> = ({ user, isOpen, onClose }) => 
       name: 'mouthType',
     },
   ])
-  const [ selectedType, setSelectedType ] = useState<string>(types[0].name)
-  const [ MergeUser ] = useMutation(MERGE_USER)
+  const [selectedType, setSelectedType] = useState<string>(types[0].name)
+  const [MergeUser] = useMutation(MERGE_USER)
 
   const handleClose = async () => {
     setPreviousStyle(null)
@@ -165,14 +165,14 @@ export const AvatarCreator: FC<IAvatarCreator> = ({ user, isOpen, onClose }) => 
       name?: string | undefined
       value: unknown
     }>
-  ) => {
+  ): void => {
     const { value } = event.target
     const type = value as string
     setSelectedType(type)
     setSelectedPage(1)
   }
 
-  const createRandomAvatar = () => {
+  const createRandomAvatar = (): void => {
     const randomAvatar = generateRandomAvatar()
     const newStyle = {
       ...style,
@@ -188,108 +188,104 @@ export const AvatarCreator: FC<IAvatarCreator> = ({ user, isOpen, onClose }) => 
     }, 0)
   }
 
-  const renderAvatarPreviews = () => {
+  const renderAvatarPreviews = (): JSX.Element => {
     const typeToRender = types.find((type) => type.name === selectedType)
 
     // if (!typeToRender) return null
     return (
       <Grid container spacing={2}>
-        {!typeToRender ? (
-          Array.from({ length: amountToRender }).map((_: any, index: number) => (
-            <Grid key={index} item xs={4} md={3} lg={2} component={Button} disabled>
-              <Skeleton variant='circle' width={100} height={100} />
-            </Grid>
-          ))
-        ) : (
-          Object.keys(typeToRender.type)
-            .slice((selectedPage - 1) * amountToRender, selectedPage * amountToRender)
-            .map((type) => {
-              const isSelected = style[typeToRender.name] === type
-              return (
-                <Grid
-                  className={clsx({
-                    [classes.isNotSelected]: !isSelected,
-                  })}
-                  component={Button}
-                  variant={isSelected ? 'outlined' : 'text'}
-                  color={`primary`}
-                  key={type}
-                  item
-                  xs={4}
-                  md={3}
-                  lg={2}
-                  onClick={() => changeStyle(typeToRender.name, type)}
-                  onMouseEnter={() => previewStyle(typeToRender.name, type)}
-                  onMouseLeave={resetPreview}
-                >
-                  <Avataaar
+        {!typeToRender
+          ? Array.from({ length: amountToRender }).map((_: any, index: number) => (
+              <Grid key={index} item xs={4} md={3} lg={2} component={Button} disabled>
+                <Skeleton variant='circle' width={100} height={100} />
+              </Grid>
+            ))
+          : Object.keys(typeToRender.type)
+              .slice((selectedPage - 1) * amountToRender, selectedPage * amountToRender)
+              .map((type) => {
+                const isSelected = style[typeToRender.name] === type
+                return (
+                  <Grid
+                    className={clsx({
+                      [classes.isNotSelected]: !isSelected,
+                    })}
+                    component={Button}
+                    variant={isSelected ? 'outlined' : 'text'}
+                    color={`primary`}
                     key={type}
-                    avatar={{
-                      ...style,
-                      style: { width: '100px', height: '100px' },
-                      [typeToRender.name]: type,
-                    }}
-                  />
-                </Grid>
-              )
-            })
-        )}
+                    item
+                    xs={4}
+                    md={3}
+                    lg={2}
+                    onClick={() => changeStyle(typeToRender.name, type)}
+                    onMouseEnter={() => previewStyle(typeToRender.name, type)}
+                    onMouseLeave={resetPreview}
+                  >
+                    <Avataaar
+                      key={type}
+                      avatar={{
+                        ...style,
+                        style: { width: '100px', height: '100px' },
+                        [typeToRender.name]: type,
+                      }}
+                    />
+                  </Grid>
+                )
+              })}
       </Grid>
     )
   }
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => setSelectedPage(page)
+  const handlePageChange = (_: React.ChangeEvent<unknown>, page: number): void =>
+    setSelectedPage(page)
 
-  useEffect(
-    () => {
-      if (!user) return
-      try {
-        const userStyle = JSON.parse(user.avatarStyle)
-        setStyle({
-          ...userStyle,
-        })
-      } catch (e) {
-        console.log(true)
-      }
-    },
-    [ user, isOpen ]
-  )
+  useEffect((): void => {
+    if (!user) return
+    try {
+      const userStyle = JSON.parse(user.avatarStyle)
+      setStyle({
+        ...userStyle,
+      })
+    } catch (e) {
+      console.log(true)
+    }
+  }, [user, isOpen])
 
-  useEffect(
-    () => {
-      if (!width) return
-      switch (width) {
-        case 'xs':
-        case 'sm':
-          setAmountToRender(9)
-          return
-        case 'md':
-          setAmountToRender(12)
-          return
-        case 'lg':
-        case 'xl':
-          setAmountToRender(6)
-          return
-      }
-    },
-    [ width ]
-  )
+  useEffect((): void => {
+    if (!width) return
+    switch (width) {
+      case 'xs':
+      case 'sm':
+        setAmountToRender(9)
+        return
+      case 'md':
+        setAmountToRender(12)
+        return
+      case 'lg':
+      case 'xl':
+        setAmountToRender(6)
+        return
+    }
+  }, [width])
 
-  useEffect(
-    () => {
-      const typeToRender = types.find((type) => type.name === selectedType)
+  useEffect((): void => {
+    const typeToRender = types.find((type) => type.name === selectedType)
 
-      if (!typeToRender) return
-      setPagesToRender(Math.ceil(Object.keys(typeToRender.type).length / amountToRender))
-    },
-    [ amountToRender, types, selectedType ]
-  )
+    if (!typeToRender) return
+    setPagesToRender(Math.ceil(Object.keys(typeToRender.type).length / amountToRender))
+  }, [amountToRender, types, selectedType])
 
   return (
     <Dialog fullScreen open={isOpen} onClose={handleClose} TransitionComponent={SlideUp}>
       <AppBar position={`relative`}>
         <Toolbar>
-          <IconButton edge='start' autoFocus color='inherit' onClick={handleClose} aria-label='close'>
+          <IconButton
+            edge='start'
+            autoFocus
+            color='inherit'
+            onClick={handleClose}
+            aria-label='close'
+          >
             <CloseIcon />
           </IconButton>
           <Typography variant='h6' className={classes.title}>
@@ -329,7 +325,10 @@ export const AvatarCreator: FC<IAvatarCreator> = ({ user, isOpen, onClose }) => 
                     <Select value={selectedType} onChange={handleTypeChange}>
                       {types.map((option) => {
                         const noType = option.name.replace('Type', '')
-                        const text = noType.split(/(?=[A-Z])/).map((s) => s.toLowerCase()).join(' ')
+                        const text = noType
+                          .split(/(?=[A-Z])/)
+                          .map((s) => s.toLowerCase())
+                          .join(' ')
                         return (
                           <MenuItem key={option.name} value={option.name}>
                             {text ? text : option.name}

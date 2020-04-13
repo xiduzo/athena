@@ -12,15 +12,16 @@ export const useStyles = makeStyles((theme: Theme) => {
 
 export const SquadCardMock: FC = () => {
   const classes = useStyles()
+
   return (
     <Card>
       <CardHeader
         avatar={
           <Avatar className={classes.avatar}>
-            <Skeleton variant="circle" />
+            <Skeleton variant='circle' />
           </Avatar>
         }
-        title={<Skeleton variant="text" />}
+        title={<Skeleton variant='text' />}
       />
     </Card>
   )

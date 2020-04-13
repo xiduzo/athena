@@ -97,18 +97,18 @@ export const AppBar: FC = () => {
 
   const dispatch = useDispatch<DispatchAction>()
 
-  const toggleMenuDrawer = () => {
+  const toggleMenuDrawer = (): void => {
     dispatch({
       type: GlobalActions.setMenuOpen,
       payload: !globalState.menuOpen,
     })
   }
 
-  const openUserMenu = (event: any) => setAnchorEl(event.currentTarget)
+  const openUserMenu = (event: any): void => setAnchorEl(event.currentTarget)
 
-  const closeUserMenu = () => setAnchorEl(null)
+  const closeUserMenu = (): void => setAnchorEl(null)
 
-  const logout = async () => {
+  const logout = async (): Promise<void> => {
     closeUserMenu()
     await Auth.signOut()
     // Clear all user details from auth provider and state manager
@@ -122,7 +122,7 @@ export const AppBar: FC = () => {
     history.push('/')
   }
 
-  const gotoRoute = (route: string) => {
+  const gotoRoute = (route: string): void => {
     closeUserMenu()
     history.push(route)
   }
@@ -132,8 +132,8 @@ export const AppBar: FC = () => {
       name?: string | undefined
       value: unknown
     }>,
-    child: React.ReactNode
-  ) => {
+    _: React.ReactNode
+  ): void => {
     const { value } = event.target
 
     dispatch({
@@ -147,8 +147,8 @@ export const AppBar: FC = () => {
       name?: string | undefined
       value: unknown
     }>,
-    child: React.ReactNode
-  ) => {
+    _: React.ReactNode
+  ): void => {
     const { value } = event.target
 
     dispatch({
@@ -157,7 +157,7 @@ export const AppBar: FC = () => {
     })
   }
 
-  useEffect(() => {
+  useEffect((): void => {
     // Hack to force query to run again
     // Sorry, not sorry
   }, [userInfo])

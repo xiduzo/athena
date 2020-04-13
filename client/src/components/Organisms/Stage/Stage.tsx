@@ -24,13 +24,10 @@ export const Stage: FC = () => {
 
   const history = useHistory()
 
-  useEffect(
-    () => {
-      if (!session) return
-      if (!credentials) return
-    },
-    [ session, credentials, history ]
-  )
+  useEffect((): void => {
+    if (!session) return
+    if (!credentials) return
+  }, [session, credentials, history])
 
   return (
     <Container maxWidth={false} className={classes.root}>

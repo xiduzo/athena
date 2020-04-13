@@ -8,9 +8,7 @@ export interface ITribeCard {
 }
 
 export const TribeCard: FC<ITribeCard> = ({ tribe, onClick }) => {
-  const onClickHandler = () => {
-    onClick && onClick()
-  }
+  const onClickHandler = (): void => onClick && onClick()
 
   return (
     <Card>

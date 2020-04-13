@@ -21,7 +21,7 @@ interface IUserAverageRating {
 export const UserAverageRating: FC<IUserAverageRating> = ({ user, agreements, currentWeek }) => {
   const classes = useStyles()
 
-  const getAveragePoints = () => {
+  const getAveragePoints = (): number => {
     let totalPoints = 0
 
     agreements.forEach((agreement) => {
@@ -35,7 +35,8 @@ export const UserAverageRating: FC<IUserAverageRating> = ({ user, agreements, cu
     return totalPoints / (agreements.length * currentWeek)
   }
 
-  const averagePoints = Math.round((getAveragePoints() + Number.EPSILON) * 100) / 100
+  const averagePoints: number = Math.round((getAveragePoints() + Number.EPSILON) * 100) / 100
+
   return (
     <Tooltip key={user.id} title={averagePoints}>
       <Grid item xs={12} sm={6} md={4} lg={3} className={classes.center}>
