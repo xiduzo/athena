@@ -73,7 +73,7 @@ export const FeedbackPanel: FC<IFeedbackPanel> = ({
   )
 
   return (
-    <ExpansionPanel>
+    <ExpansionPanel defaultExpanded={feedbackGivenThisWeek < members.length}>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
         <Grid container alignItems='center'>
           <Tooltip title={`Feedback to give ${members.length - feedbackGivenThisWeek}`}>

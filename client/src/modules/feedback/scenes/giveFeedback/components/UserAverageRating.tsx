@@ -38,7 +38,7 @@ export const UserAverageRating: FC<IUserAverageRating> = ({ user, agreements, cu
   const averagePoints: number = Math.round((getAveragePoints() + Number.EPSILON) * 100) / 100
 
   return (
-    <Tooltip key={user.id} title={averagePoints}>
+    <Tooltip key={user.id} title={`Average: ${averagePoints}`}>
       <Grid item xs={12} sm={6} md={4} lg={3} className={classes.center}>
         <Avataaar
           user={user}
@@ -47,7 +47,7 @@ export const UserAverageRating: FC<IUserAverageRating> = ({ user, agreements, cu
           }}
         />
         <Typography variant='subtitle1'>{user.displayName}</Typography>
-        <Rating max={4} size='large' value={averagePoints} readOnly precision={0.25} />
+        <Rating max={4} size='large' value={averagePoints} readOnly precision={0.1} />
       </Grid>
     </Tooltip>
   )
