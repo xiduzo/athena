@@ -1,6 +1,10 @@
-import { IAgreement, IUser } from 'src/lib/interfaces'
+import { IAgreement, IUser, IFeedback } from 'src/lib/interfaces'
 
-export const getMyFeedback = (agreement: IAgreement, weekNum: number, toUser: IUser) =>
+export const getMyFeedback = (
+  agreement: IAgreement,
+  weekNum: number,
+  toUser: IUser
+): IFeedback | undefined =>
   agreement.feedback.find(
     (feedback) =>
       feedback.to.id === toUser.id &&

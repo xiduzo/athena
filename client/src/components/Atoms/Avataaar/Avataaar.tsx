@@ -28,19 +28,44 @@ export const generateRandomAvatar = (): IAvataaar => {
     style: { width: '50px', height: '50px' },
     topType: TopType[Object.keys(TopType)[Math.floor(Math.random() * Object.keys(TopType).length)]],
     accessoriesType:
-      AccessoriesType[Object.keys(AccessoriesType)[Math.floor(Math.random() * Object.keys(AccessoriesType).length)]],
-    hairColor: HairColor[Object.keys(HairColor)[Math.floor(Math.random() * Object.keys(HairColor).length)]],
+      AccessoriesType[
+        Object.keys(AccessoriesType)[
+          Math.floor(Math.random() * Object.keys(AccessoriesType).length)
+        ]
+      ],
+    hairColor:
+      HairColor[Object.keys(HairColor)[Math.floor(Math.random() * Object.keys(HairColor).length)]],
     facialHairType:
-      FacialHairType[Object.keys(FacialHairType)[Math.floor(Math.random() * Object.keys(FacialHairType).length)]],
+      FacialHairType[
+        Object.keys(FacialHairType)[Math.floor(Math.random() * Object.keys(FacialHairType).length)]
+      ],
     facialHairColor:
-      FacialHairColor[Object.keys(FacialHairColor)[Math.floor(Math.random() * Object.keys(FacialHairColor).length)]],
-    clotheType: ClotheType[Object.keys(ClotheType)[Math.floor(Math.random() * Object.keys(ClotheType).length)]],
-    clotheColor: ClotheColor[Object.keys(ClotheColor)[Math.floor(Math.random() * Object.keys(ClotheColor).length)]],
-    graphicType: GraphicType[Object.keys(GraphicType)[Math.floor(Math.random() * Object.keys(GraphicType).length)]],
+      FacialHairColor[
+        Object.keys(FacialHairColor)[
+          Math.floor(Math.random() * Object.keys(FacialHairColor).length)
+        ]
+      ],
+    clotheType:
+      ClotheType[
+        Object.keys(ClotheType)[Math.floor(Math.random() * Object.keys(ClotheType).length)]
+      ],
+    clotheColor:
+      ClotheColor[
+        Object.keys(ClotheColor)[Math.floor(Math.random() * Object.keys(ClotheColor).length)]
+      ],
+    graphicType:
+      GraphicType[
+        Object.keys(GraphicType)[Math.floor(Math.random() * Object.keys(GraphicType).length)]
+      ],
     eyeType: EyeType[Object.keys(EyeType)[Math.floor(Math.random() * Object.keys(EyeType).length)]],
-    eyebrowType: EyebrowType[Object.keys(EyebrowType)[Math.floor(Math.random() * Object.keys(EyebrowType).length)]],
-    mouthType: MouthType[Object.keys(MouthType)[Math.floor(Math.random() * Object.keys(MouthType).length)]],
-    skinColor: SkinColor[Object.keys(SkinColor)[Math.floor(Math.random() * Object.keys(SkinColor).length)]],
+    eyebrowType:
+      EyebrowType[
+        Object.keys(EyebrowType)[Math.floor(Math.random() * Object.keys(EyebrowType).length)]
+      ],
+    mouthType:
+      MouthType[Object.keys(MouthType)[Math.floor(Math.random() * Object.keys(MouthType).length)]],
+    skinColor:
+      SkinColor[Object.keys(SkinColor)[Math.floor(Math.random() * Object.keys(SkinColor).length)]],
   }
 }
 
@@ -68,15 +93,15 @@ interface IAvataaarComponent {
 export const Avataaar: FC<IAvataaarComponent> = ({ avatar, user }) => {
   const classes = useStyles()
 
-  const [ style, setStyle ] = useState<IAvataaar>({
-    ...generateRandomAvatar() as IAvataaar,
+  const [style, setStyle] = useState<IAvataaar>({
+    ...(generateRandomAvatar() as IAvataaar),
     ...avatar,
   })
 
-  const [ MergeUser ] = useMutation(MERGE_USER)
+  const [MergeUser] = useMutation(MERGE_USER)
 
   useEffect(
-    () => {
+    (): void => {
       if (!user) return
 
       try {
@@ -98,7 +123,7 @@ export const Avataaar: FC<IAvataaarComponent> = ({ avatar, user }) => {
     },
     // TODO add `style` to deps
     // eslint-disable-next-line
-    [ user, MergeUser, avatar ]
+    [user, MergeUser, avatar]
   )
 
   return (

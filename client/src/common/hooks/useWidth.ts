@@ -7,13 +7,14 @@ import { Breakpoint } from '@material-ui/core/styles/createBreakpoints'
  * breakpoints in theme is static. It will break once you change the number of
  * breakpoints. See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
  */
-export const useWidth = () => {
+export const useWidth = (): Breakpoint => {
   const theme = useTheme()
-  const keys = [ ...theme.breakpoints.keys ].reverse()
+  const keys: Breakpoint[] = [...theme.breakpoints.keys].reverse()
+
   return (
     keys.reduce((output: Breakpoint | null, key: Breakpoint) => {
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      const matches = useMediaQuery(theme.breakpoints.up(key))
+      const matches: boolean = useMediaQuery(theme.breakpoints.up(key))
       return !output && matches ? key : output
     }, null) || 'xs'
   )

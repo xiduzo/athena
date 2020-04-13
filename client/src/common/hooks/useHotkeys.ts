@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { KeyTypes } from '../../lib/enums'
+import { ReturnFunction } from 'src/lib/types'
 
 let sequenceBuffer: number[] = []
 let lastKeyTime: number = Date.now()
@@ -11,7 +12,7 @@ export const or = (props: boolean[]): boolean => props.includes(true)
 export const not = (isTrue: boolean): boolean => !isTrue
 
 export const xor = (keyOne: boolean, keyTwo: boolean): boolean =>
-  and([ not(and([ keyOne, keyTwo ])), or([ keyOne, keyTwo ]) ])
+  and([not(and([keyOne, keyTwo])), or([keyOne, keyTwo])])
 
 export const sequence = (keyCodes: number[], canExecute: boolean) => {
   const joiner = '>'
@@ -27,14 +28,14 @@ export const sequence = (keyCodes: number[], canExecute: boolean) => {
   return match && canExecute
 }
 
-export const useHotkeys = (key: number, keyType: KeyTypes = KeyTypes.KeyDown) => {
-  const [ pressed, setPressed ] = useState<boolean>(false)
+export const useHotkeys = (key: number, keyType: KeyTypes = KeyTypes.KeyDown): boolean => {
+  const [pressed, setPressed] = useState<boolean>(false)
 
-  const match = (event: KeyboardEvent) => key === event.which
+  const match = (event: KeyboardEvent): boolean => key === event.which
 
-  const matchKeyTypes = (event: KeyboardEvent) => event.type.toLowerCase() === keyType
+  const matchKeyTypes = (event: KeyboardEvent): boolean => event.type.toLowerCase() === keyType
 
-  const addEventToSequenceBuffer = (event: KeyboardEvent) => {
+  const addEventToSequenceBuffer = (event: KeyboardEvent): void => {
     const currentTime = Date.now()
     if (currentTime - lastKeyTime > 500) {
       sequenceBuffer = []
@@ -44,25 +45,27 @@ export const useHotkeys = (key: number, keyType: KeyTypes = KeyTypes.KeyDown) =>
     lastKeyTime = currentTime
   }
 
-  const onDown = (event: KeyboardEvent) => {
+  const onDown = (event: KeyboardEvent): void => {
     if (match(event)) setPressed(matchKeyTypes(event))
     addEventToSequenceBuffer(event)
   }
 
-  const onUp = (event: KeyboardEvent) => {
+  const onUp = (event: KeyboardEvent): void => {
     if (match(event)) setPressed(matchKeyTypes(event))
     addEventToSequenceBuffer(event)
   }
 
-  useEffect(() => {
-    window.addEventListener('keydown', onDown)
-    window.addEventListener('keyup', onUp)
+  useEffect(
+    (): ReturnFunction<void> => {
+      window.addEventListener('keydown', onDown)
+      window.addEventListener('keyup', onUp)
 
-    return () => {
-      window.removeEventListener('keydown', onDown)
-      window.removeEventListener('keyup', onUp)
+      return (): void => {
+        window.removeEventListener('keydown', onDown)
+        window.removeEventListener('keyup', onUp)
+      }
     }
-  })
+  )
 
   return pressed
 }

@@ -50,36 +50,34 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
 
   const [GiveFeedbackToUser] = useMutation<any, IGiveFeedbackToUserVariables>(GIVE_FEEDBACK)
 
-  const handleWeekChange = (_: any, value: number) => {
+  const handleWeekChange = (_: any, value: number): void => {
     if (!value) return
 
     setSelectedWeek(value)
   }
 
-  const pagination = () => {
-    return (
-      <Pagination
-        onChange={handleWeekChange}
-        color={'primary'}
-        count={10}
-        siblingCount={width === 'xs' ? 0 : 1}
-        boundaryCount={1}
-        defaultPage={currentWeek}
-        page={selectedWeek}
-        showFirstButton={width !== 'xs'}
-        showLastButton={width !== 'xs'}
-      />
-    )
-  }
+  const pagination = (): JSX.Element => (
+    <Pagination
+      onChange={handleWeekChange}
+      color={'primary'}
+      count={10}
+      siblingCount={width === 'xs' ? 0 : 1}
+      boundaryCount={1}
+      defaultPage={currentWeek}
+      page={selectedWeek}
+      showFirstButton={width !== 'xs'}
+      showLastButton={width !== 'xs'}
+    />
+  )
 
-  // TODO move to utils layer?
   const giveFeedback = async (
     myFeedback: IFeedback | undefined,
     value: number | null,
     user: IUser,
     agreement: IAgreement
-  ) => {
+  ): Promise<void> => {
     if (!value) return
+
     await GiveFeedbackToUser({
       variables: {
         toUserId: user.id,

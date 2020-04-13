@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-errors'
 import { snackbarWrapper } from 'src/common/utils'
 
-export const generalCatchHandler = (error: ApolloError) => {
+export const generalCatchHandler = (error: ApolloError): void => {
   const { message } = error
 
   // TODO: add logging to cloud watch
