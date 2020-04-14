@@ -78,7 +78,7 @@ export const UserSettings: FC = () => {
         </Grid>
         <Grid item xs={12}>
           <Paper>
-            <FeedbackPointsGraph />
+            <FeedbackPointsGraph agreements={[]} />
           </Paper>
         </Grid>
       </Grid>
