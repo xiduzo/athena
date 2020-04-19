@@ -42,7 +42,6 @@ const useAuthHandler = () => {
     const mergeUserToDatabase = async () => {
       // Lets upgrade our user in the database
       const userInfo = await Auth.currentUserInfo()
-      setUserInfo(userInfo)
 
       const { attributes } = userInfo
       const user: Partial<IUser> = {
@@ -63,6 +62,8 @@ const useAuthHandler = () => {
           ...user,
         },
       })
+
+      setUserInfo(user)
     }
 
     mergeUserToDatabase()

@@ -103,7 +103,6 @@ export const MemberDashboard: FC = () => {
       },
     }
   )
-  // console.log(data)
 
   return (
     <Container maxWidth='lg' className={classes.root}>
@@ -146,7 +145,7 @@ export const MemberDashboard: FC = () => {
           ) : !data || (data && !data.User.length) ? (
             <div>empty</div>
           ) : (
-            <FeedbackPointsGraph agreements={data.User[0].squads[0].agreements} />
+            <FeedbackPointsGraph showAll agreements={data.User[0].squads[0].agreements} />
           )}
         </Grid>
         <Grid item xs={12} md={4}>
