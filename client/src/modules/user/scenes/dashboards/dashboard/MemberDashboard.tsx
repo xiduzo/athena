@@ -18,6 +18,7 @@ import { IRootReducer } from 'src/common/redux'
 import { FeedbackPointsGraph, FeedbackSpiderGraph, ProgressCard } from 'src/components'
 import { FeedbackPointsGraphMock } from 'src/components/Atoms/graphs/FeedbackPointsGraphMock'
 import { IUser } from 'src/lib/interfaces'
+import { Skeleton, Alert } from '@material-ui/lab'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -79,6 +80,7 @@ export const MemberDashboard: FC = () => {
       query MembersDashboardQuery($userId: String!, $squadId: String!) {
         User(filter: { id: $userId }) {
           squads(filter: { id: $squadId }) {
+            name
             agreements {
               id
               points
@@ -110,7 +112,15 @@ export const MemberDashboard: FC = () => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant='h4' component='h2'>
-            Team name
+            {loading ? (
+              <Skeleton />
+            ) : error ? (
+              `Something went wrong`
+            ) : !data?.User[0]?.squads.length ? (
+              `No tribe found`
+            ) : (
+              data.User[0].squads[0].name
+            )}
           </Typography>
         </Grid>
         {infoCards.map((item) => {
@@ -142,8 +152,10 @@ export const MemberDashboard: FC = () => {
           {loading ? (
             <FeedbackPointsGraphMock />
           ) : error ? (
-            <div>error</div>
-          ) : !data || (data && !data.User.length) ? (
+            <Alert variant='filled' severity='error'>
+              {error.message}
+            </Alert>
+          ) : !data || (data && !data.User[0]?.squads.length) ? (
             <FeedbackPointsGraphMock />
           ) : (
             <FeedbackPointsGraph showAll agreements={data.User[0].squads[0].agreements} />
@@ -153,14 +165,16 @@ export const MemberDashboard: FC = () => {
           {loading ? (
             <div>loading</div>
           ) : error ? (
-            <div>error</div>
-          ) : !data || (data && !data.User.length) ? (
+            <Alert variant='filled' severity='error'>
+              {error.message}
+            </Alert>
+          ) : !data?.User.length ? (
             <div>empty</div>
           ) : (
             <FeedbackSpiderGraph agreements={data.User[0].squads[0].agreements} />
           )}
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Typography variant='h6' component='h2'>
             Cards due [select day / week / month]
           </Typography>
@@ -169,9 +183,8 @@ export const MemberDashboard: FC = () => {
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33, 44, 55, 66, 77, 88, 99].map((card: number) => (
             <ListItem key={card}>card {card}</ListItem>
           ))}
-        </List>
+        </List> */}
       </Grid>
-      student dashboard
     </Container>
   )
 }
