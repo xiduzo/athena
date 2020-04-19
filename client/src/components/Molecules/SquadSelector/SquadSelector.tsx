@@ -26,7 +26,7 @@ export const SquadSelector: FC<ISquadSelector> = ({ title, isOpen, onClose, with
   const [squadsToAdd, setSquadsToAdd] = useState<ISquad[]>([])
 
   const [pageQuery] = useState(gql`
-    query GetSquads {
+    query GetAllSquads {
       Squad {
         id
         name

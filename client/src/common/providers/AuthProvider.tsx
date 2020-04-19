@@ -26,50 +26,47 @@ const AuthContext = createContext<IAuthContext>({
 })
 
 const useAuthHandler = () => {
-  const [ credentials, setUserCredentials ] = useState<ICredentials | null>(null)
+  const [credentials, setUserCredentials] = useState<ICredentials | null>(null)
 
-  const [ session, setUserSession ] = useState<CognitoUserSession | null>(null)
-  const [ userInfo, setUserInfo ] = useState<any>(null)
+  const [session, setUserSession] = useState<CognitoUserSession | null>(null)
+  const [userInfo, setUserInfo] = useState<any>(null)
 
-  const [ MergeUser ] = useMutation(MERGE_USER)
+  const [MergeUser] = useMutation(MERGE_USER)
 
   const setCredentials = (credentials: ICredentials | null) => setUserCredentials(credentials)
 
   const setSession = (session: CognitoUserSession | null) => setUserSession(session)
 
-  useEffect(
-    () => {
-      if (!session || !credentials) return
-      const mergeUserToDatabase = async () => {
-        // Lets upgrade our user in the database
-        const userInfo = await Auth.currentUserInfo()
-        setUserInfo(userInfo)
+  useEffect(() => {
+    if (!session || !credentials) return
+    const mergeUserToDatabase = async () => {
+      // Lets upgrade our user in the database
+      const userInfo = await Auth.currentUserInfo()
+      setUserInfo(userInfo)
 
-        const { attributes } = userInfo
-        const user: Partial<IUser> = {
-          ...userInfo,
-          email: attributes['email'], // TODO Need to add email to users when sign up
-          identityProviderReference: attributes['custom:ipReferenceNumber'] || null, // TODO Need to add ipReferenceNumber to users when sign up
-          displayName: attributes['custom:displayName'] || attributes['email'], // TODO Need to add displayName to users when sign up
-          // TODO if users first time login, set random avatar
-          // Probably want to do this at sign-up => show avatar creator
-          // avatarStyle: JSON.stringify(generateRandomAvatar()),
-        }
-        if (false) {
-          console.log(generateRandomAvatar())
-        }
-
-        await MergeUser({
-          variables: {
-            ...user,
-          },
-        })
+      const { attributes } = userInfo
+      const user: Partial<IUser> = {
+        ...userInfo,
+        email: attributes['email'],
+        identityProviderReference: attributes['custom:ipReferenceNumber'] || null, // TODO Need to add ipReferenceNumber to users when sign up
+        displayName: attributes['custom:displayName'] || attributes['email'], // TODO Need to add displayName to users when sign up
+        // TODO if users first time login, set random avatar
+        // Probably want to do this at sign-up => show avatar creator
+        // avatarStyle: JSON.stringify(generateRandomAvatar()),
+      }
+      if (false) {
+        console.log(generateRandomAvatar())
       }
 
-      mergeUserToDatabase()
-    },
-    [ session, credentials, MergeUser ]
-  )
+      await MergeUser({
+        variables: {
+          ...user,
+        },
+      })
+    }
+
+    mergeUserToDatabase()
+  }, [session, credentials, MergeUser])
 
   return { credentials, setCredentials, session, setSession, userInfo, setUserInfo }
 }
@@ -77,26 +74,29 @@ const useAuthHandler = () => {
 const { Provider } = AuthContext
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const { credentials, setCredentials, session, setSession, userInfo, setUserInfo } = useAuthHandler()
+  const {
+    credentials,
+    setCredentials,
+    session,
+    setSession,
+    userInfo,
+    setUserInfo,
+  } = useAuthHandler()
 
-  useEffect(
-    () => {
-      if (session) return
-      Auth.currentSession().then(setSession).catch(console.log)
-    },
-    [ session, setSession ]
-  )
+  useEffect(() => {
+    if (session) return
+    Auth.currentSession().then(setSession).catch(console.log)
+  }, [session, setSession])
 
-  useEffect(
-    () => {
-      if (credentials) return
-      Auth.currentCredentials().then(setCredentials).catch(console.log)
-    },
-    [ credentials, setCredentials ]
-  )
+  useEffect(() => {
+    if (credentials) return
+    Auth.currentCredentials().then(setCredentials).catch(console.log)
+  }, [credentials, setCredentials])
 
   return (
-    <Provider value={{ credentials, setCredentials, session, setSession, userInfo, setUserInfo }}>{children}</Provider>
+    <Provider value={{ credentials, setCredentials, session, setSession, userInfo, setUserInfo }}>
+      {children}
+    </Provider>
   )
 }
 

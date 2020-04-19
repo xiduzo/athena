@@ -13,7 +13,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import StarIcon from '@material-ui/icons/Star'
 import StarBorderIcon from '@material-ui/icons/StarBorder'
 import { Rating } from '@material-ui/lab'
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { getTranslation, getFeedbackGivenThisWeek, getMyFeedback } from 'src/common/utils'
 import { Avataaar } from 'src/components'
 import { IAgreement, IFeedback, IUser } from 'src/lib/interfaces'
@@ -56,6 +56,8 @@ export const FeedbackPanel: FC<IFeedbackPanel> = ({
   const classes = useStyles()
   const { userInfo } = useAuth()
 
+  const [isExpanded, setIsExpanded] = useState<boolean>(true)
+
   const giveFeedback = async (
     myFeedback: IFeedback | undefined,
     value: number | null,
@@ -72,8 +74,12 @@ export const FeedbackPanel: FC<IFeedbackPanel> = ({
     selectedWeek
   )
 
+  useEffect(() => {
+    setIsExpanded(feedbackGivenThisWeek < members.length)
+  }, [feedbackGivenThisWeek])
+
   return (
-    <ExpansionPanel defaultExpanded={feedbackGivenThisWeek < members.length}>
+    <ExpansionPanel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
         <Grid container alignItems='center'>
           <Tooltip title={`Feedback to give ${members.length - feedbackGivenThisWeek}`}>

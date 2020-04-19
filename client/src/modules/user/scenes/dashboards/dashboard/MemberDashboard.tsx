@@ -1,3 +1,4 @@
+import { useQuery } from '@apollo/react-hooks'
 import {
   CardContent,
   Container,
@@ -9,13 +10,12 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core'
-import React, { FC } from 'react'
-import { FeedbackPointsGraph, FeedbackSpiderGraph, ProgressCard } from 'src/components'
-import { useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
+import React, { FC } from 'react'
 import { useSelector } from 'react-redux'
-import { IRootReducer, IGlobalState } from 'src/common/redux'
 import { useAuth } from 'src/common/providers'
+import { IRootReducer } from 'src/common/redux'
+import { FeedbackPointsGraph, FeedbackSpiderGraph, ProgressCard } from 'src/components'
 import { IUser } from 'src/lib/interfaces'
 
 const useStyles = makeStyles((theme: Theme) => ({

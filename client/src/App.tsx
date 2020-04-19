@@ -1,10 +1,10 @@
 import { CssBaseline } from '@material-ui/core'
 import { SnackbarProvider } from 'notistack'
 import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { ApolloProvider, AuthProvider, ThemeProvider } from 'src/common/providers'
 import { SnackbarUtilsConfiguration } from 'src/common/utils'
 import { Stage } from './components'
-import { BrowserRouter as Router } from 'react-router-dom'
 
 const App: React.FC = () => {
   return (

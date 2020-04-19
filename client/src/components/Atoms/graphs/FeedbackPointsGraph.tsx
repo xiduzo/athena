@@ -5,7 +5,7 @@ import HighchartsReact from 'highcharts-react-official'
 import React, { FC, useState } from 'react'
 import { IAgreement, IFeedback } from 'src/lib/interfaces'
 import { useAuth } from 'src/common/providers'
-import { groupBy } from 'src/common/utils'
+import { groupBy, sumArrays } from 'src/common/utils'
 
 interface IFeedbackPointsGraph {
   agreements: IAgreement[]
@@ -16,11 +16,10 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
   const { userInfo } = useAuth()
 
   const theme = useTheme()
-  const [series, setSeries] = useState<any[]>([])
 
-  const createLineData = (feedback: IFeedback[], points: number): number[] => {
-    const maxWeek = Math.max(...feedback.map((f) => f.weekNum))
-    const feedbackLine: number[] = Array.from<number>({ length: maxWeek }).fill(0)
+  // TODO move this to utils layer
+  const createLineData = (feedback: IFeedback[], points: number, currentWeek: number): number[] => {
+    const feedbackLine: number[] = Array.from<number>({ length: currentWeek }).fill(0)
 
     const pointsToGive = points === 0 ? 10 : points // todo make sure this can not be 0
 
@@ -32,7 +31,7 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
   }
 
   const generateLineChart = () => {
-    const rawData = []
+    const usersFeedbackLine: number[][] = []
 
     agreements.forEach((agreement) => {
       const usersFeedback = groupBy<IFeedback, string>(
@@ -41,15 +40,25 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
       )
 
       usersFeedback.forEach((feedback, userId) => {
-        console.log(userId, feedback)
-        createLineData(feedback, agreement.points)
-        rawData.push({
-          user: userId,
-          feedback: feedback,
-        })
+        const lineData = createLineData(
+          feedback,
+          agreement.points,
+          Math.max(...feedback.map((f) => f.weekNum))
+        )
+        const currentLine = usersFeedbackLine[userId]
+        usersFeedbackLine[userId] = !currentLine ? lineData : sumArrays(currentLine, lineData)
+        console.log(`-----`)
+        console.log(currentLine, lineData, usersFeedbackLine[userId])
+        console.log(`-----`)
       })
     })
+
+    // console.log(usersFeedbackLine)
+    for (let line in usersFeedbackLine) {
+      console.log(line, usersFeedbackLine[line])
+    }
   }
+
   generateLineChart()
 
   const options = {

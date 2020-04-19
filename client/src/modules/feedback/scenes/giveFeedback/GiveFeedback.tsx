@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { Box, Container, Grid, makeStyles, Theme, Typography } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab'
-import React, { FC, Fragment, useState } from 'react'
+import React, { FC, Fragment, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { useWidth } from 'src/common/hooks'
+import { useWidth, useHotkeys } from 'src/common/hooks'
 import { useAuth } from 'src/common/providers'
 import { IRootReducer, IGlobalState } from 'src/common/redux'
 import { IGiveFeedbackData, IGiveFeedbackDataVariables, USER_FEEDBACK } from 'src/common/services'
@@ -13,6 +13,8 @@ import { IAgreement, IFeedback, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { UserAverageRating } from './components/UserAverageRating'
+import { snackbarWrapper, getTranslation } from 'src/common/utils'
+import { Key } from 'src/lib/enums'
 
 interface IGiveFeedbackRoute {}
 
@@ -35,7 +37,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
 
   const globalState = useSelector<IRootReducer, IGlobalState>((state: IRootReducer) => state.global)
 
-  const [currentWeek] = useState<number>(8)
+  const [currentWeek] = useState<number>(8) // TODO: use tribe current week
   const [selectedWeek, setSelectedWeek] = useState<number>(currentWeek)
 
   const { data, error, loading, refetch } = useQuery<IGiveFeedbackData, IGiveFeedbackDataVariables>(
@@ -49,6 +51,11 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
   )
 
   const [GiveFeedbackToUser] = useMutation<any, IGiveFeedbackToUserVariables>(GIVE_FEEDBACK)
+
+  const nextWeek = useHotkeys(Key.N)
+  const previousWeek = useHotkeys(Key.P)
+  const firstWeek = useHotkeys(Key.Home)
+  const lastWeek = useHotkeys(Key.End)
 
   const handleWeekChange = (_: any, value: number): void => {
     if (!value) return
@@ -89,8 +96,40 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
       },
     })
 
+    snackbarWrapper.success(`Gave feedback to ${user.displayName}`)
+
     refetch()
   }
+
+  useEffect(() => {
+    if (!nextWeek) return
+    if (selectedWeek === 10) return // TODO: check for tribes max week
+    if (loading || error) return
+
+    setSelectedWeek(selectedWeek + 1)
+  }, [nextWeek])
+
+  useEffect(() => {
+    if (!previousWeek) return
+    if (selectedWeek === 1) return
+    if (loading || error) return
+
+    setSelectedWeek(selectedWeek - 1)
+  }, [previousWeek])
+
+  useEffect(() => {
+    if (!firstWeek) return
+    if (loading || error) return
+
+    setSelectedWeek(1)
+  }, [firstWeek])
+
+  useEffect(() => {
+    if (!lastWeek) return
+    if (loading || error) return
+
+    setSelectedWeek(10) // TODO: use tribes last week
+  }, [lastWeek])
 
   return (
     <Container maxWidth='lg' className={classes.root}>
@@ -111,14 +150,16 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
           <Fragment>
             {data.User[0] &&
               data.User[0].squads[0] &&
-              data.User[0].squads[0].members.map((user: IUser) => (
-                <UserAverageRating
-                  key={user.id}
-                  user={user}
-                  currentWeek={currentWeek}
-                  agreements={data.User[0].squads[0].agreements}
-                />
-              ))}
+              data.User[0].squads[0].members
+                .filter((u) => u.id !== userInfo.id)
+                .map((user: IUser) => (
+                  <UserAverageRating
+                    key={user.id}
+                    user={user}
+                    currentWeek={currentWeek}
+                    agreements={data.User[0].squads[0].agreements}
+                  />
+                ))}
             <Grid
               item
               container
