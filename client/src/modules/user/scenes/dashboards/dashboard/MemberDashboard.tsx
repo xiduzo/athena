@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux'
 import { useAuth } from 'src/common/providers'
 import { IRootReducer } from 'src/common/redux'
 import { FeedbackPointsGraph, FeedbackSpiderGraph, ProgressCard } from 'src/components'
+import { FeedbackPointsGraphMock } from 'src/components/Atoms/graphs/FeedbackPointsGraphMock'
 import { IUser } from 'src/lib/interfaces'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -139,17 +140,25 @@ export const MemberDashboard: FC = () => {
         </Grid>
         <Grid item xs={12} md={8}>
           {loading ? (
+            <FeedbackPointsGraphMock />
+          ) : error ? (
+            <div>error</div>
+          ) : !data || (data && !data.User.length) ? (
+            <FeedbackPointsGraphMock />
+          ) : (
+            <FeedbackPointsGraph showAll agreements={data.User[0].squads[0].agreements} />
+          )}
+        </Grid>
+        <Grid item xs={12} md={4}>
+          {loading ? (
             <div>loading</div>
           ) : error ? (
             <div>error</div>
           ) : !data || (data && !data.User.length) ? (
             <div>empty</div>
           ) : (
-            <FeedbackPointsGraph showAll agreements={data.User[0].squads[0].agreements} />
+            <FeedbackSpiderGraph agreements={data.User[0].squads[0].agreements} />
           )}
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <FeedbackSpiderGraph />
         </Grid>
         <Grid item xs={12}>
           <Typography variant='h6' component='h2'>

@@ -1,41 +1,33 @@
 import { Paper } from '@material-ui/core'
-import { useTheme } from '@material-ui/core/styles'
 import * as Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import React, { FC, useMemo, useState } from 'react'
+import regression from 'regression'
 import { useAuth } from 'src/common/providers'
 import {
-  getUsersLineData,
-  sumArrays,
-  getMaxPointsPerWeek,
   getAverageLineData,
+  getMaxPointsPerWeek,
+  getPercentage,
+  getUsersLineData,
 } from 'src/common/utils'
 import { IAgreement } from 'src/lib/interfaces'
-import { grey } from '@material-ui/core/colors'
-import regression from 'regression'
+import { getFeedbackPointsOptions, ILineData } from './feedbackPointsOptions'
 
 interface IFeedbackPointsGraph {
   agreements: IAgreement[]
   showAll?: boolean
 }
 
-interface ILineData {
-  id: string
-  name: string
-  data: number[]
-  zones: unknown[]
-}
-
 export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
   const { agreements, showAll = true } = props
   const { userInfo } = useAuth()
 
-  const [lineData, setLineData] = useState<ILineData[]>([])
+  const [options, setOptions] = useState<any>()
 
   useMemo(() => {
     const usersLineData = getUsersLineData(agreements)
 
-    const normalizedData: ILineData[] = []
+    const lineData: ILineData[] = []
 
     for (let user in usersLineData) {
       const userData = usersLineData[user]
@@ -54,7 +46,7 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
         userData.push(regressionLine.predict(dataLength)[1])
       }
 
-      normalizedData.push({
+      lineData.push({
         id: user,
         name: user === userInfo.id ? userInfo.displayName : user,
         data: usersLineData[user],
@@ -67,52 +59,22 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
       })
     }
 
-    setLineData(normalizedData)
-  }, [agreements])
+    const maxPointsPerWeek = getMaxPointsPerWeek(agreements, lineData.length)
+    const averageScores = getAverageLineData(lineData).map((x) =>
+      getPercentage(x, maxPointsPerWeek)
+    )
 
-  const asPercentage = (x: number, max: number) => (x * 100) / max
+    // const options: Highcharts.Options = {
+    const graphOptions = getFeedbackPointsOptions(
+      averageScores,
+      lineData,
+      showAll,
+      userInfo,
+      maxPointsPerWeek
+    )
 
-  const maxPointsPerWeek = getMaxPointsPerWeek(agreements, lineData.length)
-  const averageScores = getAverageLineData(lineData).map((x) => asPercentage(x, maxPointsPerWeek))
-
-  // TODO: : Highcharts.Options
-  // const options: Highcharts.Options = {
-  const options = {
-    title: {
-      text: 'Feedback',
-    },
-    xAxis: {
-      visible: false,
-    },
-    yAxis: [
-      {
-        visible: false,
-        // title: { text: '%' },
-        min: 0,
-        max: 100,
-      },
-    ],
-    tooltip: {
-      headerFormat: `Sprint {point.key}<br/>`,
-      pointFormat: '{series.name} <strong>{point.y:,.0f}%</strong><br>',
-    },
-    series: [
-      {
-        name: 'Average',
-        color: grey[600],
-        data: averageScores,
-      },
-      ...lineData
-        ?.filter((line) => showAll || line.id === userInfo.id)
-        ?.map((line) => ({
-          name: line.name,
-          zoneAxis: 'x',
-          zones: line.zones,
-          dashStyle: 'Dot',
-          data: [...line.data.map((x) => asPercentage(x, maxPointsPerWeek))],
-        })),
-    ],
-  }
+    setOptions(graphOptions)
+  }, [agreements, userInfo, showAll])
 
   return (
     <Paper>
