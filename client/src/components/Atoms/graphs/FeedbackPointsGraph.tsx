@@ -2,64 +2,29 @@ import { Paper } from '@material-ui/core'
 import { useTheme } from '@material-ui/core/styles'
 import * as Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import React, { FC, useState } from 'react'
-import { IAgreement, IFeedback } from 'src/lib/interfaces'
+import React, { FC, useMemo } from 'react'
 import { useAuth } from 'src/common/providers'
-import { groupBy, sumArrays } from 'src/common/utils'
+import { getUsersLineData } from 'src/common/utils'
+import { IAgreement } from 'src/lib/interfaces'
 
 interface IFeedbackPointsGraph {
   agreements: IAgreement[]
+  showSelf?: boolean
 }
 
 export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
-  const { agreements } = props
+  const { agreements, showSelf = true } = props
   const { userInfo } = useAuth()
 
   const theme = useTheme()
 
-  // TODO move this to utils layer
-  const createLineData = (feedback: IFeedback[], points: number, currentWeek: number): number[] => {
-    const feedbackLine: number[] = Array.from<number>({ length: currentWeek }).fill(0)
+  useMemo(() => {
+    const usersLineData = getUsersLineData(agreements)
 
-    const pointsToGive = points === 0 ? 10 : points // todo make sure this can not be 0
-
-    feedback.forEach(
-      (f) => (feedbackLine[f.weekNum - 1] += (f.rating * pointsToGive * 100) / (pointsToGive * 4))
-    )
-
-    return feedbackLine
-  }
-
-  const generateLineChart = () => {
-    const usersFeedbackLine: number[][] = []
-
-    agreements.forEach((agreement) => {
-      const usersFeedback = groupBy<IFeedback, string>(
-        agreement.feedback,
-        (feedback) => feedback.to.id
-      )
-
-      usersFeedback.forEach((feedback, userId) => {
-        const lineData = createLineData(
-          feedback,
-          agreement.points,
-          Math.max(...feedback.map((f) => f.weekNum))
-        )
-        const currentLine = usersFeedbackLine[userId]
-        usersFeedbackLine[userId] = !currentLine ? lineData : sumArrays(currentLine, lineData)
-        console.log(`-----`)
-        console.log(currentLine, lineData, usersFeedbackLine[userId])
-        console.log(`-----`)
-      })
-    })
-
-    // console.log(usersFeedbackLine)
-    for (let line in usersFeedbackLine) {
-      console.log(line, usersFeedbackLine[line])
+    for (let user in usersLineData) {
+      console.log(usersLineData[user])
     }
-  }
-
-  generateLineChart()
+  }, [agreements])
 
   const options = {
     title: { text: 'Feedback' },

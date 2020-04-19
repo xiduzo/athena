@@ -76,7 +76,7 @@ export const FeedbackPanel: FC<IFeedbackPanel> = ({
 
   useEffect(() => {
     setIsExpanded(feedbackGivenThisWeek < members.length)
-  }, [feedbackGivenThisWeek])
+  }, [feedbackGivenThisWeek, members.length])
 
   return (
     <ExpansionPanel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>

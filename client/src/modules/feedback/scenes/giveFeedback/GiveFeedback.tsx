@@ -1,20 +1,20 @@
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { Box, Container, Grid, makeStyles, Theme, Typography } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab'
-import React, { FC, Fragment, useState, useEffect } from 'react'
+import React, { FC, Fragment, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { useWidth, useHotkeys } from 'src/common/hooks'
+import { useHotkeys, useWidth } from 'src/common/hooks'
 import { useAuth } from 'src/common/providers'
-import { IRootReducer, IGlobalState } from 'src/common/redux'
+import { IGlobalState, IRootReducer } from 'src/common/redux'
 import { IGiveFeedbackData, IGiveFeedbackDataVariables, USER_FEEDBACK } from 'src/common/services'
 import { GIVE_FEEDBACK, IGiveFeedbackToUserVariables } from 'src/common/services/feedbackService'
+import { snackbarWrapper } from 'src/common/utils'
+import { Key } from 'src/lib/enums'
 import { IAgreement, IFeedback, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { UserAverageRating } from './components/UserAverageRating'
-import { snackbarWrapper, getTranslation } from 'src/common/utils'
-import { Key } from 'src/lib/enums'
 
 interface IGiveFeedbackRoute {}
 
@@ -107,7 +107,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
     if (loading || error) return
 
     setSelectedWeek(selectedWeek + 1)
-  }, [nextWeek])
+  }, [nextWeek, selectedWeek, loading, error])
 
   useEffect(() => {
     if (!previousWeek) return
@@ -115,21 +115,21 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
     if (loading || error) return
 
     setSelectedWeek(selectedWeek - 1)
-  }, [previousWeek])
+  }, [previousWeek, selectedWeek, loading, error])
 
   useEffect(() => {
     if (!firstWeek) return
     if (loading || error) return
 
     setSelectedWeek(1)
-  }, [firstWeek])
+  }, [firstWeek, loading, error])
 
   useEffect(() => {
     if (!lastWeek) return
     if (loading || error) return
 
     setSelectedWeek(10) // TODO: use tribes last week
-  }, [lastWeek])
+  }, [lastWeek, loading, error])
 
   return (
     <Container maxWidth='lg' className={classes.root}>
