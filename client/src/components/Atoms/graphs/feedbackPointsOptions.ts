@@ -55,7 +55,7 @@ export const getFeedbackPointsOptions = (
       ...lineData
         ?.filter((line) => showAll || (userInfo.id && line.id === userInfo.id))
         ?.map((line) => ({
-          name: line.name,
+          name: showAll ? line.name : `You`,
           zones: line.zones,
           data: [...line.data.map((x) => getPercentage(x, maxPointsPerWeek))],
         })),

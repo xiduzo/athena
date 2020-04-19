@@ -36,7 +36,7 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
       const dataLength = userData.length
       // Add some basic prediction
       if (dataLength >= minPredictionLength) {
-        const regressionLine = regression.exponential(
+        const regressionLine = regression.linear(
           userData
             // Predict based on the last minPredictionLength
             .slice(dataLength - minPredictionLength, dataLength)

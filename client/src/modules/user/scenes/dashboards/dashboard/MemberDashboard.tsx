@@ -3,14 +3,12 @@ import {
   CardContent,
   Container,
   Grid,
-  List,
-  ListItem,
   makeStyles,
   Theme,
   Tooltip,
   Typography,
 } from '@material-ui/core'
-import gql from 'graphql-tag'
+import { Alert, Skeleton } from '@material-ui/lab'
 import React, { FC } from 'react'
 import { useSelector } from 'react-redux'
 import { useAuth } from 'src/common/providers'
@@ -18,7 +16,7 @@ import { IRootReducer } from 'src/common/redux'
 import { FeedbackPointsGraph, FeedbackSpiderGraph, ProgressCard } from 'src/components'
 import { FeedbackPointsGraphMock } from 'src/components/Atoms/graphs/FeedbackPointsGraphMock'
 import { IUser } from 'src/lib/interfaces'
-import { Skeleton, Alert } from '@material-ui/lab'
+import { MEMBER_DASHBOARD_QUERY } from './query'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -66,6 +64,15 @@ interface IInfoCard {
   inverse: boolean
 }
 
+interface IQueryData {
+  User: IUser[]
+}
+
+interface IQueryParams {
+  userId: string
+  squadId: string
+}
+
 export const MemberDashboard: FC = () => {
   const classes = useStyles()
 
@@ -75,37 +82,12 @@ export const MemberDashboard: FC = () => {
     (state: IRootReducer) => state.global.selectedSquad
   )
 
-  const { data, loading, error } = useQuery<{ User: IUser[] }>(
-    gql`
-      query MembersDashboardQuery($userId: String!, $squadId: String!) {
-        User(filter: { id: $userId }) {
-          squads(filter: { id: $squadId }) {
-            name
-            agreements {
-              id
-              points
-              feedback {
-                from {
-                  id
-                }
-                to {
-                  id
-                }
-                rating
-                weekNum
-              }
-            }
-          }
-        }
-      }
-    `,
-    {
-      variables: {
-        userId: userInfo ? userInfo.id : '',
-        squadId: selectedSquad,
-      },
-    }
-  )
+  const { data, loading, error } = useQuery<IQueryData, IQueryParams>(MEMBER_DASHBOARD_QUERY, {
+    variables: {
+      userId: userInfo ? userInfo.id : '',
+      squadId: selectedSquad,
+    },
+  })
 
   return (
     <Container maxWidth='lg' className={classes.root}>
@@ -155,10 +137,10 @@ export const MemberDashboard: FC = () => {
             <Alert variant='filled' severity='error'>
               {error.message}
             </Alert>
-          ) : !data || (data && !data.User[0]?.squads.length) ? (
+          ) : !data?.User[0]?.squads.length ? (
             <FeedbackPointsGraphMock />
           ) : (
-            <FeedbackPointsGraph showAll agreements={data.User[0].squads[0].agreements} />
+            <FeedbackPointsGraph showAll={false} agreements={data.User[0].squads[0].agreements} />
           )}
         </Grid>
         <Grid item xs={12} md={4}>
@@ -168,7 +150,7 @@ export const MemberDashboard: FC = () => {
             <Alert variant='filled' severity='error'>
               {error.message}
             </Alert>
-          ) : !data?.User.length ? (
+          ) : !data?.User[0]?.squads[0]?.agreements.length ? (
             <div>empty</div>
           ) : (
             <FeedbackSpiderGraph agreements={data.User[0].squads[0].agreements} />
