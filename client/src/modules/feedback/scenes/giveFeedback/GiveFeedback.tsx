@@ -1,16 +1,15 @@
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { Box, Container, Grid, makeStyles, Theme, Typography } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab'
-import React, { FC, Fragment, useEffect, useState } from 'react'
+import React, { FC, Fragment, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { useHotkeys, useWidth } from 'src/common/hooks'
+import { useWidth } from 'src/common/hooks'
 import { useAuth } from 'src/common/providers'
 import { IGlobalState, IRootReducer } from 'src/common/redux'
 import { IGiveFeedbackData, IGiveFeedbackDataVariables, USER_FEEDBACK } from 'src/common/services'
 import { GIVE_FEEDBACK, IGiveFeedbackToUserVariables } from 'src/common/services/feedbackService'
 import { snackbarWrapper } from 'src/common/utils'
-import { Key } from 'src/lib/enums'
 import { IAgreement, IFeedback, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
 import { FeedbackPanel } from './components/FeedbackPanel'
@@ -37,7 +36,8 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
 
   const globalState = useSelector<IRootReducer, IGlobalState>((state: IRootReducer) => state.global)
 
-  const [currentWeek] = useState<number>(8) // TODO: use tribe current week
+  const maxWeek = 10
+  const [currentWeek] = useState<number>(maxWeek) // TODO: use tribe current week
   const [selectedWeek, setSelectedWeek] = useState<number>(currentWeek)
 
   const { data, error, loading, refetch } = useQuery<IGiveFeedbackData, IGiveFeedbackDataVariables>(
@@ -51,11 +51,6 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
   )
 
   const [GiveFeedbackToUser] = useMutation<any, IGiveFeedbackToUserVariables>(GIVE_FEEDBACK)
-
-  const nextWeek = useHotkeys(Key.N)
-  const previousWeek = useHotkeys(Key.P)
-  const firstWeek = useHotkeys(Key.Home)
-  const lastWeek = useHotkeys(Key.End)
 
   const handleWeekChange = (_: any, value: number): void => {
     if (!value) return
@@ -100,36 +95,6 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
 
     refetch()
   }
-
-  useEffect(() => {
-    if (!nextWeek) return
-    if (selectedWeek === 10) return // TODO: check for tribes max week
-    if (loading || error) return
-
-    setSelectedWeek(selectedWeek + 1)
-  }, [nextWeek, selectedWeek, loading, error])
-
-  useEffect(() => {
-    if (!previousWeek) return
-    if (selectedWeek === 1) return
-    if (loading || error) return
-
-    setSelectedWeek(selectedWeek - 1)
-  }, [previousWeek, selectedWeek, loading, error])
-
-  useEffect(() => {
-    if (!firstWeek) return
-    if (loading || error) return
-
-    setSelectedWeek(1)
-  }, [firstWeek, loading, error])
-
-  useEffect(() => {
-    if (!lastWeek) return
-    if (loading || error) return
-
-    setSelectedWeek(10) // TODO: use tribes last week
-  }, [lastWeek, loading, error])
 
   return (
     <Container maxWidth='lg' className={classes.root}>
