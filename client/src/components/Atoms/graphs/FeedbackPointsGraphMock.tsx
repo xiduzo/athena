@@ -4,14 +4,19 @@ import HighchartsReact from 'highcharts-react-official'
 import Highcharts from 'highcharts'
 import { getFeedbackPointsOptions } from './feedbackPointsOptions'
 
-export const FeedbackPointsGraphMock: FC = () => {
+interface IFeedbackPointsGraphMock {
+  loading?: boolean
+}
+export const FeedbackPointsGraphMock: FC<IFeedbackPointsGraphMock> = (props) => {
+  const { loading = true } = props
+
   const options = getFeedbackPointsOptions(
-    [50, 43, 67, 43, 23, 55],
+    loading ? [50, 43, 67, 43, 23, 55] : [],
     [
       {
         id: '1234',
-        name: 'loading',
-        data: [43, 56, 32, 56, 45, 36],
+        name: loading ? `loading` : `No data found`,
+        data: loading ? [43, 56, 32, 56, 45, 36] : [],
         zones: [
           {
             value: 4,
