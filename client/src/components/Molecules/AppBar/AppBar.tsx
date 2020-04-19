@@ -171,7 +171,7 @@ export const AppBar: FC = () => {
           </IconButton>
         ) : (
           <Fragment>
-            <IconButton className={classes.icon} onClick={() => gotoRoute(`/`)}>
+            <IconButton name={`Goto home`} className={classes.icon} onClick={() => gotoRoute(`/`)}>
               <Icon component={AthenaIcon} />
             </IconButton>
             <Typography variant='h6' className={classes.title}>
