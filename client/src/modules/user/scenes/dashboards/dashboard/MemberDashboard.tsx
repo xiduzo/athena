@@ -131,14 +131,12 @@ export const MemberDashboard: FC = () => {
           </Typography>
         </Grid>
         <Grid item xs={12} md={8}>
-          {loading ? (
-            <FeedbackPointsGraphMock />
-          ) : error ? (
+          {error ? (
             <Alert variant='filled' severity='error'>
               {error.message}
             </Alert>
-          ) : !data?.User[0]?.squads.length ? (
-            <FeedbackPointsGraphMock />
+          ) : loading || !data?.User[0]?.squads.length ? (
+            <FeedbackPointsGraphMock loading={loading} />
           ) : (
             <FeedbackPointsGraph showAll={false} agreements={data.User[0].squads[0].agreements} />
           )}
