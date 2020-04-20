@@ -8,6 +8,7 @@ export const MEMBER_DASHBOARD_QUERY = gql`
         agreements {
           id
           points
+          type
           feedback {
             from {
               id

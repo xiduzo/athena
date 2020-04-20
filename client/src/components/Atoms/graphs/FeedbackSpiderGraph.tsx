@@ -1,15 +1,28 @@
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import { Paper } from '@material-ui/core'
 import * as Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { IAgreement } from 'src/lib/interfaces'
+import { groupBy } from 'src/common/utils'
 
 interface IFeedbackSpiderGraph {
-  agreements?: IAgreement[]
+  agreements: IAgreement[]
 }
 
 export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
-  // const { agreements } = props
+  const { agreements } = props
+
+  useMemo(() => {
+    console.log(agreements)
+    const usersFeedbackLine: number[][] = []
+
+    const data: any[] = []
+
+    const agreementTypes = groupBy(agreements, (a) => a.type)
+    console.log(agreementTypes)
+
+    console.log(data)
+  }, [agreements])
 
   const options = {
     chart: {
@@ -23,7 +36,7 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
     },
 
     xAxis: {
-      categories: [ 'Development', 'Customer Support', 'Information Technology', 'Administration' ],
+      categories: ['Development', 'Customer Support', 'Information Technology', 'Administration'],
       tickmarkPlacement: 'on',
       lineWidth: 0,
     },
@@ -42,17 +55,17 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
     series: [
       {
         name: 'Allocated Budget',
-        data: [ 60, 35, 17, 10 ],
+        data: [60, 35, 17, 10],
         pointPlacement: 'on',
       },
       {
         name: 'Actual Spending',
-        data: [ 42, 31, 26, 14 ],
+        data: [42, 31, 26, 14],
         pointPlacement: 'on',
       },
       {
         name: 'Actual Spending',
-        data: [ 12, 87, 45, 8 ],
+        data: [12, 87, 45, 8],
         pointPlacement: 'on',
       },
     ],

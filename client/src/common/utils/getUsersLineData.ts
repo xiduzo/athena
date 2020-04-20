@@ -5,10 +5,7 @@ export const getUsersLineData = (agreements: IAgreement[]): number[][] => {
   const usersFeedbackLine: number[][] = []
 
   agreements.forEach((agreement) => {
-    const usersFeedback = groupBy<IFeedback, string>(
-      agreement.feedback,
-      (feedback) => feedback.to.id
-    )
+    const usersFeedback = groupBy(agreement.feedback, (feedback) => feedback.to.id)
 
     usersFeedback.forEach((feedback, userId) => {
       const lineData = getLineData(
