@@ -1,11 +1,19 @@
-import React, { FC, useMemo } from 'react'
+import React, { FC, useMemo, useState } from 'react'
 import { Paper } from '@material-ui/core'
 import * as Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { IAgreement } from 'src/lib/interfaces'
-import { groupBy, getPointsEarned } from 'src/common/utils'
+import {
+  groupBy,
+  getPointsEarned,
+  getAverageLineData,
+  getPercentage,
+  getMaxPointsPerWeek,
+} from 'src/common/utils'
 import { ILineData } from './feedbackPointsOptions'
 import { useAuth } from 'src/common/providers'
+import { grey } from '@material-ui/core/colors'
+import { AgreementType } from 'src/lib/enums'
 
 interface IFeedbackSpiderGraph {
   agreements: IAgreement[]
@@ -15,17 +23,20 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
   const { agreements } = props
   const { userInfo } = useAuth()
 
+  const [options, setOptions] = useState<any>()
+
   useMemo(() => {
     // console.log(agreements)
     const lineData: ILineData[] = []
 
     const usersFeedbackLine: number[][] = []
 
-    const data: any[] = []
-
     const agreementTypes = groupBy(agreements, (a) => a.type)
+    const typesUsed: AgreementType[] = []
 
     agreementTypes.forEach((agreements, type) => {
+      typesUsed.push(type)
+
       agreements.forEach((agreement) => {
         const userFeedback = groupBy(agreement.feedback, (f) => f.to.id)
         userFeedback.forEach((feedback, userId) => {
@@ -50,57 +61,64 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
       })
     }
 
-    console.log(lineData)
+    // TODO get max points per category per week
+    const maxPointsPerWeek = getMaxPointsPerWeek(agreements, lineData.length) * 4 // TODO max week of tribe
+    const averageScores = getAverageLineData(lineData).map((x) => {
+      if (x < 0) return null
+      return getPercentage(x, maxPointsPerWeek)
+    })
 
-    // console.log(data)
+    console.log(typesUsed)
+
+    const graphOptions = {
+      chart: {
+        polar: true,
+        type: 'spline',
+      },
+
+      pane: {
+        size: '80%',
+        startAngle: 45,
+      },
+
+      xAxis: {
+        categories: typesUsed.map((type) => AgreementType[type]),
+        tickmarkPlacement: 'on',
+        lineWidth: 0,
+      },
+
+      yAxis: {
+        gridLineInterpolation: 'polygon',
+        visible: false,
+        min: 0,
+        max: 100,
+      },
+
+      tooltip: {
+        shared: true,
+        pointFormat: '{series.name} <strong>{point.y:,.0f}%</strong><br>',
+      },
+      series: [
+        {
+          name: 'Average',
+          data: averageScores.filter((x) => x !== null),
+          color: grey[600],
+          pointPlacement: 'on',
+        },
+        ...lineData?.map((line) => {
+          return {
+            name: line.name,
+            zones: line.zones,
+            data: line.data
+              .filter((x) => x !== null)
+              .map((x) => getPercentage(x, maxPointsPerWeek)),
+          }
+        }),
+      ],
+    }
+
+    setOptions(graphOptions)
   }, [agreements])
-
-  const options = {
-    chart: {
-      polar: true,
-      type: 'spline',
-    },
-
-    pane: {
-      size: '80%',
-      startAngle: 45,
-    },
-
-    xAxis: {
-      categories: ['Development', 'Customer Support', 'Information Technology', 'Administration'],
-      tickmarkPlacement: 'on',
-      lineWidth: 0,
-    },
-
-    yAxis: {
-      gridLineInterpolation: 'polygon',
-      visible: false,
-      min: 0,
-      max: 100,
-    },
-
-    tooltip: {
-      shared: true,
-      pointFormat: `<span style="color:{series.color}">{series.name}: <b>\${point.y:,.0f}</b><br/>`,
-    },
-    series: [
-      {
-        name: 'Allocated Budget',
-        data: [60, 35, 17, 10],
-        pointPlacement: 'on',
-      },
-      {
-        name: 'Actual Spending',
-        data: [42, 31, 26, 14],
-        pointPlacement: 'on',
-      },
-      {
-        name: 'Actual Spending',
-        data: [12, 87, 45, 8],
-        pointPlacement: 'on',
-      },
-    ],
-  }
 
   return (
     <Paper>
