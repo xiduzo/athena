@@ -56,7 +56,7 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
       lineData.push({
         id: user,
         name: user === userInfo.id ? userInfo.displayName : user,
-        data: usersFeedbackLine[user].filter((x) => x >= 0), // When we only have types 0,1,3 the lineData will be [x, x, empty, x]
+        data: usersFeedbackLine[user], //.filter((x) => x >= 0), // When we only have types 0,1,3 the lineData will be [x, x, empty, x]
         zones: [],
       })
     }
@@ -74,12 +74,17 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
       },
 
       pane: {
-        size: '80%',
-        startAngle: 45,
+        size: '90%',
       },
 
       xAxis: {
-        categories: typesUsed.map((type) => AgreementType[type]),
+        categories: typesUsed,
+        labels: {
+          formatter: function (): any {
+            const type = AgreementType[(this as any).value]
+            return type
+          },
+        },
         tickmarkPlacement: 'on',
         lineWidth: 0,
       },
@@ -93,6 +98,7 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
 
       tooltip: {
         shared: true,
+        headerFormat: '',
         pointFormat: '{series.name} <strong>{point.y:,.0f}%</strong><br>',
       },
       series: [
@@ -102,13 +108,16 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
           color: grey[600],
           pointPlacement: 'on',
         },
-        ...lineData?.map((line) => {
-          return {
-            name: line.name,
-            zones: line.zones,
-            data: line.data.map((x) => getPercentage(x, maxPointsPerWeek)),
-          }
-        }),
+        ...lineData
+          ?.filter((line) => userInfo.id && line.id === userInfo.id)
+
+          ?.map((line) => {
+            return {
+              name: line.name,
+              zones: line.zones,
+              data: line.data.map((x) => getPercentage(x, maxPointsPerWeek)),
+            }
+          }),
       ],
     }
 
