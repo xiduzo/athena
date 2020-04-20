@@ -27,7 +27,8 @@ export const FeedbackPointsGraphMock: FC<IFeedbackPointsGraphMock> = (props) => 
     ],
     true,
     '',
-    100
+    100,
+    4
   )
 
   return (

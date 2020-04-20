@@ -13,8 +13,10 @@ export const getFeedbackPointsOptions = (
   lineData: ILineData[],
   showAll: boolean,
   userInfo: any,
-  maxPointsPerWeek: number
+  maxPointsPerWeek: number,
+  minLengthNeededForPrediction: number
 ) => {
+  const hasPrediction = averageScores.length >= minLengthNeededForPrediction
   return {
     title: {
       text: 'Feedback',
@@ -31,8 +33,22 @@ export const getFeedbackPointsOptions = (
       },
     ],
     tooltip: {
-      headerFormat: `Sprint {point.key}<br/>`,
-      pointFormat: '{series.name} <strong>{point.y:,.0f}%</strong><br>',
+      formatter: function (): any {
+        let header = `<strong>Sprint ${(this as any).x}</strong>`
+
+        if (hasPrediction && (this as any).x >= averageScores.length - 1) {
+          header += ` <italic>(prediction)<italic>`
+        }
+
+        return (this as any).points.reduce((curr: string, point: any) => {
+          curr += `<br/>`
+          curr += `${point.series.name}: `
+          curr += `<strong>${(point.y as number).toFixed(2)}%</strong>`
+
+          return curr
+        }, header)
+      },
+      shared: true,
     },
     plotOptions: {
       series: {
@@ -46,7 +62,7 @@ export const getFeedbackPointsOptions = (
         color: grey[600],
         zones: [
           {
-            value: averageScores.length >= 4 ? averageScores.length - 2 : averageScores.length,
+            value: hasPrediction ? averageScores.length - 2 : averageScores.length,
             dashStyle: 'Solid',
           },
         ],

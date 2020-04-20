@@ -25,21 +25,24 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
   const [options, setOptions] = useState<any>()
 
   useMemo(() => {
+    const minLengthNeededForPrediction = 2
+    const maxPredictionLookBack = 4
+
     const usersLineData = getUsersLineData(agreements)
 
     const lineData: ILineData[] = []
 
     for (let user in usersLineData) {
       const userData = usersLineData[user]
-      const minPredictionLength = 4
 
       const dataLength = userData.length
       // Add some basic prediction
-      if (dataLength >= minPredictionLength) {
+      if (dataLength >= minLengthNeededForPrediction) {
+        const predictionSliceSize = Math.min(maxPredictionLookBack, dataLength)
         const regressionLine = regression.linear(
           userData
             // Predict based on the last minPredictionLength
-            .slice(dataLength - minPredictionLength, dataLength)
+            .slice(dataLength - predictionSliceSize, dataLength)
             .map((val, index) => [index, val])
         )
         // TODO: make this different than rest off line
@@ -52,7 +55,7 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
         data: usersLineData[user],
         zones: [
           {
-            value: dataLength - 1,
+            value: dataLength >= minLengthNeededForPrediction ? dataLength - 1 : dataLength,
             dashStyle: 'Solid',
           },
         ],
@@ -70,7 +73,8 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
       lineData,
       showAll,
       userInfo,
-      maxPointsPerWeek
+      maxPointsPerWeek,
+      minLengthNeededForPrediction
     )
 
     setOptions(graphOptions)
