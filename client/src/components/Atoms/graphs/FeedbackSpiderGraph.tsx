@@ -3,7 +3,9 @@ import { Paper } from '@material-ui/core'
 import * as Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { IAgreement } from 'src/lib/interfaces'
-import { groupBy } from 'src/common/utils'
+import { groupBy, getPointsEarned } from 'src/common/utils'
+import { ILineData } from './feedbackPointsOptions'
+import { useAuth } from 'src/common/providers'
 
 interface IFeedbackSpiderGraph {
   agreements: IAgreement[]
@@ -11,17 +13,46 @@ interface IFeedbackSpiderGraph {
 
 export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
   const { agreements } = props
+  const { userInfo } = useAuth()
 
   useMemo(() => {
-    console.log(agreements)
+    // console.log(agreements)
+    const lineData: ILineData[] = []
+
     const usersFeedbackLine: number[][] = []
 
     const data: any[] = []
 
     const agreementTypes = groupBy(agreements, (a) => a.type)
-    console.log(agreementTypes)
 
-    console.log(data)
+    agreementTypes.forEach((agreements, type) => {
+      agreements.forEach((agreement) => {
+        const userFeedback = groupBy(agreement.feedback, (f) => f.to.id)
+        userFeedback.forEach((feedback, userId) => {
+          // console.log(feedback, userId, type)
+          if (!usersFeedbackLine[userId]) usersFeedbackLine[userId] = []
+
+          usersFeedbackLine[userId][type] = feedback.reduce(
+            (curr, next) => (curr += getPointsEarned(agreement.points, next.rating)),
+            0
+          )
+        })
+      })
+    })
+
+    for (let user in usersFeedbackLine) {
+      // console.log(user, usersFeedbackLine[user])
+      lineData.push({
+        id: user,
+        name: user === userInfo.id ? userInfo.displayName : user,
+        data: usersFeedbackLine[user],
+        zones: [],
+      })
+    }
+
+    console.log(lineData)
+
+    // console.log(data)
   }, [agreements])
 
   const options = {
