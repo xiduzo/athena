@@ -56,19 +56,16 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
       lineData.push({
         id: user,
         name: user === userInfo.id ? userInfo.displayName : user,
-        data: usersFeedbackLine[user],
+        data: usersFeedbackLine[user].filter((x) => x >= 0), // When we only have types 0,1,3 the lineData will be [x, x, empty, x]
         zones: [],
       })
     }
 
     // TODO get max points per category per week
     const maxPointsPerWeek = getMaxPointsPerWeek(agreements, lineData.length) * 4 // TODO max week of tribe
-    const averageScores = getAverageLineData(lineData).map((x) => {
-      if (x < 0) return null
-      return getPercentage(x, maxPointsPerWeek)
-    })
-
-    console.log(typesUsed)
+    const averageScores: number[] = getAverageLineData(lineData).map((x) =>
+      getPercentage(x, maxPointsPerWeek)
+    )
 
     const graphOptions = {
       chart: {
@@ -101,7 +98,7 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
       series: [
         {
           name: 'Average',
-          data: averageScores.filter((x) => x !== null),
+          data: averageScores,
           color: grey[600],
           pointPlacement: 'on',
         },
@@ -109,9 +106,7 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
           return {
             name: line.name,
             zones: line.zones,
-            data: line.data
-              .filter((x) => x !== null)
-              .map((x) => getPercentage(x, maxPointsPerWeek)),
+            data: line.data.map((x) => getPercentage(x, maxPointsPerWeek)),
           }
         }),
       ],
