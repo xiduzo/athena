@@ -19,9 +19,19 @@ import {
   getTranslation,
   snackbarWrapper,
 } from 'src/common/utils'
-import { AddCard, AgreementCard, AgreementSelector, UserCard, UserSelector } from 'src/components'
+import {
+  AddCard,
+  AgreementCard,
+  AgreementSelector,
+  UserCard,
+  UserSelector,
+  Show,
+  FeedbackPointsGraph,
+  FeedbackSpiderGraph,
+} from 'src/components'
 import { IAgreement, ITranslation, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
+import { UserRole } from 'src/lib/enums'
 
 interface ISquadDetailParams {
   id: string
@@ -57,7 +67,18 @@ export const SquadDetail: FC = () => {
           }
           agreements {
             id
+            points
             type
+            feedback {
+              from {
+                id
+              }
+              to {
+                id
+              }
+              rating
+              weekNum
+            }
             parent {
               id
             }
@@ -297,6 +318,19 @@ export const SquadDetail: FC = () => {
               />
               <AddCard onClick={toggleAgreementsModal} />
             </Grid>
+            <Show forGroups={[UserRole.Admin, UserRole.Leader]}>
+              <Grid item xs={12}>
+                <Typography variant='h6' component='h2'>
+                  Feedback
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={8}>
+                <FeedbackPointsGraph agreements={data.Squad[0].agreements} />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <FeedbackSpiderGraph agreements={data.Squad[0].agreements} />
+              </Grid>
+            </Show>
           </Grid>
         )}
       </Container>

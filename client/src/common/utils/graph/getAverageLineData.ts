@@ -1,4 +1,4 @@
-import { sumArrays } from './sumArrays'
+import { sumArrays } from 'src/common/utils'
 
 export const getAverageLineData = (lineData: { id: string; data: number[] }[]): number[] => {
   return (

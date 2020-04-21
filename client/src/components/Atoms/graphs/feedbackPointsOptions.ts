@@ -1,5 +1,5 @@
 import { grey } from '@material-ui/core/colors'
-import { getPercentage } from 'src/common/utils'
+import { asPercentage } from 'src/common/utils'
 
 export interface ILineData {
   id: string
@@ -34,7 +34,7 @@ export const getFeedbackPointsOptions = (
     ],
     tooltip: {
       formatter: function (): any {
-        let header = `<strong>Sprint ${(this as any).x}</strong>`
+        let header = `<strong>Sprint ${(this as any).x + 1}</strong>`
 
         if (hasPrediction && (this as any).x >= averageScores.length - 1) {
           header += ` <italic>(prediction)<italic>`
@@ -73,7 +73,7 @@ export const getFeedbackPointsOptions = (
         ?.map((line) => ({
           name: showAll ? line.name : `You`,
           zones: line.zones,
-          data: line.data.map((x) => getPercentage(x, maxPointsPerWeek)),
+          data: line.data.map((x) => asPercentage(x, maxPointsPerWeek)),
         })),
     ],
   }

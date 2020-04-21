@@ -1,5 +1,5 @@
-import { IAgreement, IFeedback } from 'src/lib/interfaces'
-import { groupBy, getLineData, sumArrays } from '.'
+import { IAgreement } from 'src/lib/interfaces'
+import { groupBy, getLineData, sumArrays } from 'src/common/utils'
 
 export const getUsersLineData = (agreements: IAgreement[]): number[][] => {
   const usersFeedbackLine: number[][] = []

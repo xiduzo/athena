@@ -7,7 +7,7 @@ import { useAuth } from 'src/common/providers'
 import {
   getAverageLineData,
   getMaxPointsPerWeek,
-  getPercentage,
+  asPercentage,
   getUsersLineData,
 } from 'src/common/utils'
 import { IAgreement } from 'src/lib/interfaces'
@@ -63,9 +63,7 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
     }
 
     const maxPointsPerWeek = getMaxPointsPerWeek(agreements, lineData.length)
-    const averageScores = getAverageLineData(lineData).map((x) =>
-      getPercentage(x, maxPointsPerWeek)
-    )
+    const averageScores = getAverageLineData(lineData).map((x) => asPercentage(x, maxPointsPerWeek))
 
     // const options: Highcharts.Options = {
     const graphOptions = getFeedbackPointsOptions(

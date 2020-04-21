@@ -1,5 +1,5 @@
 import { v4 } from 'uuid'
-import { isArray } from './isOfType'
+import { isArray } from 'src/common/utils'
 
 interface ILocalStorageItem {
   id: number
@@ -48,7 +48,7 @@ export const setLocalItem = <T>(key: string, item: T): T => {
 export const addLocalItem = <T>(key: string, item: T): T => {
   let localItem: any = getLocalItem<T>(key)
 
-  localItem = isArray(localItem) ? [ ...localItem, item ] : item
+  localItem = isArray(localItem) ? [...localItem, item] : item
 
   setLocalItem<T>(key, localItem)
 
@@ -66,9 +66,11 @@ export const updateLocalItem = <T>(key: string, item: T, id?: string | number): 
 
   localItem =
     id && isArray(localItem)
-      ? localItem.map((i: Partial<ILocalStorageItem>): Partial<ILocalStorageItem> => {
-          return i.id === parseInt(id as string, 10) ? item : i
-        })
+      ? localItem.map(
+          (i: Partial<ILocalStorageItem>): Partial<ILocalStorageItem> => {
+            return i.id === parseInt(id as string, 10) ? item : i
+          }
+        )
       : item
 
   setLocalItem<T>(key, localItem)
@@ -101,7 +103,7 @@ export const addOfflineEvent = (name: string, ...args: any): void => {
   const event: IOfflineEvent = {
     id: v4(),
     name,
-    args: [ ...args ],
+    args: [...args],
   }
 
   addLocalItem<IOfflineEvent>('offlineEvents', event)

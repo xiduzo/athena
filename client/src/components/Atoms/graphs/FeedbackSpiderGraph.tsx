@@ -7,7 +7,7 @@ import {
   groupBy,
   getPointsEarned,
   getAverageLineData,
-  getPercentage,
+  asPercentage,
   getMaxPointsPerWeek,
   normalizeArray,
 } from 'src/common/utils'
@@ -65,9 +65,9 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
     }
 
     // TODO get max points per category per week
-    const maxPointsPerWeek = getMaxPointsPerWeek(agreements, lineData.length) * 4 // TODO max week of tribe
+    const maxPointsPerWeek = getMaxPointsPerWeek(agreements, lineData.length) * 10 // TODO max week of tribe
     const averageScores: number[] = getAverageLineData(lineData).map((x) =>
-      getPercentage(x, maxPointsPerWeek)
+      asPercentage(x, maxPointsPerWeek)
     )
 
     const graphOptions = {
@@ -96,7 +96,7 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
         gridLineInterpolation: 'polygon',
         visible: false,
         min: 0,
-        max: 100,
+        // max: 100,
       },
 
       tooltip: {
@@ -118,7 +118,7 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
             return {
               name: line.name,
               zones: line.zones,
-              data: line.data.map((x) => getPercentage(x, maxPointsPerWeek)),
+              data: line.data.map((x) => asPercentage(x, maxPointsPerWeek)),
             }
           }),
       ],
