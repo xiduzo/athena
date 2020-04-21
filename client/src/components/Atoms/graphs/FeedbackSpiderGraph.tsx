@@ -125,7 +125,7 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
     }
 
     setOptions(graphOptions)
-  }, [agreements])
+  }, [agreements, userInfo])
 
   return (
     <Paper>
