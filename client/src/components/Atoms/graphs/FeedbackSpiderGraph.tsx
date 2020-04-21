@@ -9,6 +9,7 @@ import {
   getAverageLineData,
   getPercentage,
   getMaxPointsPerWeek,
+  normalizeArray,
 } from 'src/common/utils'
 import { ILineData } from './feedbackPointsOptions'
 import { useAuth } from 'src/common/providers'
@@ -52,11 +53,13 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
     })
 
     for (let user in usersFeedbackLine) {
-      // console.log(user, usersFeedbackLine[user])
+      // Normalize the `empty` indexes to `null`
+      const normalizedArray = normalizeArray(usersFeedbackLine[user])
+
       lineData.push({
         id: user,
         name: user === userInfo.id ? userInfo.displayName : user,
-        data: usersFeedbackLine[user], //.filter((x) => x >= 0), // When we only have types 0,1,3 the lineData will be [x, x, empty, x]
+        data: normalizedArray,
         zones: [],
       })
     }
@@ -109,7 +112,7 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
           pointPlacement: 'on',
         },
         ...lineData
-          ?.filter((line) => userInfo.id && line.id === userInfo.id)
+          // ?.filter((line) => userInfo.id && line.id === userInfo.id)
 
           ?.map((line) => {
             return {
