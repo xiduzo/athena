@@ -41,11 +41,10 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
         const predictionSliceSize = Math.min(maxPredictionLookBack, dataLength)
         const regressionLine = regression.linear(
           userData
-            // Predict based on the last minPredictionLength
+            // Predict based on the last predictionSliceSize
             .slice(dataLength - predictionSliceSize, dataLength)
             .map((val, index) => [index, val])
         )
-        // TODO: make this different than rest off line
         userData.push(regressionLine.predict(dataLength)[1])
       }
 
