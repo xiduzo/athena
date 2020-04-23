@@ -7,7 +7,9 @@ export const getFeedbackSpiderOptions = (
   typesUsed: AgreementType[],
   averageScores: number[],
   lineData: ILineData[],
-  maxPointsPerWeek: number
+  maxPointsPerWeek: number[],
+  showAll: boolean,
+  userInfo: any
 ) => {
   return {
     chart: {
@@ -35,7 +37,7 @@ export const getFeedbackSpiderOptions = (
       gridLineInterpolation: 'polygon',
       visible: false,
       min: 0,
-      // max: 100,
+      max: 100,
     },
 
     tooltip: {
@@ -51,13 +53,12 @@ export const getFeedbackSpiderOptions = (
         pointPlacement: 'on',
       },
       ...lineData
-        // ?.filter((line) => userInfo.id && line.id === userInfo.id)
-
+        ?.filter((line) => showAll || (userInfo.id && line.id === userInfo.id))
         ?.map((line) => {
           return {
-            name: line.name,
+            name: showAll ? line.name : `You`,
             zones: line.zones,
-            data: line.data.map((x) => asPercentage(x, maxPointsPerWeek)),
+            data: line.data.map((x, index) => asPercentage(x, maxPointsPerWeek[index])),
           }
         }),
     ],

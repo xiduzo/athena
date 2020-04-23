@@ -16,10 +16,12 @@ import { getFeedbackSpiderOptions } from './feedbackSpiderOptions'
 
 interface IFeedbackSpiderGraph {
   agreements: IAgreement[]
+  showAll?: boolean
 }
 
 export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
-  const { agreements } = props
+  const { agreements, showAll = true } = props
+
   const { userInfo } = useAuth()
 
   const [options, setOptions] = useState<any>()
@@ -42,17 +44,33 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
       })
     }
 
-    // TODO get max points per category per week
-    const maxPointsPerWeek = getMaxPointsPerWeek(agreements, lineData.length) * 10 // TODO max week of tribe
-    const averageScores: number[] = getAverageLineData(lineData).map((x) =>
-      asPercentage(x, maxPointsPerWeek)
+    // TODO check test max points per week
+    const maxPointsPerWeek = [
+      ...typesUsed.map((type) => {
+        console.log(
+          type,
+          agreements.filter((a) => a.type === type)
+        )
+        return (
+          getMaxPointsPerWeek(
+            agreements.filter((a) => a.type === type),
+            lineData.length
+          ) * 10
+        ) // Todo get max week of tribe
+      }),
+    ]
+    console.log(lineData, maxPointsPerWeek)
+    const averageScores: number[] = getAverageLineData(lineData).map((x, index) =>
+      asPercentage(x, maxPointsPerWeek[index])
     )
 
     const graphOptions = getFeedbackSpiderOptions(
       typesUsed,
       averageScores,
       lineData,
-      maxPointsPerWeek
+      maxPointsPerWeek,
+      showAll,
+      userInfo
     )
 
     setOptions(graphOptions)

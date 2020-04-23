@@ -151,7 +151,7 @@ export const MemberDashboard: FC = () => {
           ) : !data?.User[0]?.squads[0]?.agreements.length ? (
             <div>empty</div>
           ) : (
-            <FeedbackSpiderGraph agreements={data.User[0].squads[0].agreements} />
+            <FeedbackSpiderGraph showAll={false} agreements={data.User[0].squads[0].agreements} />
           )}
         </Grid>
         {/* <Grid item xs={12}>
