@@ -59,26 +59,25 @@ export const UserLogin: FC = () => {
   const classes = useStyles()
   const history = useHistory()
 
-  const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null)
-  const [ loginButtonEnabled, setLoginButtonEnabled ] = useState(true)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [loginButtonEnabled, setLoginButtonEnabled] = useState(true)
 
   const { session, setCredentials, setSession } = useAuth()
 
   const { register, handleSubmit, errors } = useForm()
 
-  useEffect(
-    () => {
-      if (!session) return
+  useEffect(() => {
+    if (!session) return
 
-      const previousRoute = history.location.state
-      if (previousRoute && previousRoute.referer) {
-        return history.push(history.location.state.referer.pathname)
-      }
+    const previousRoute = history.location.state
+    console.log(previousRoute)
+    // TODO use the preferer pathnam to go back to the route you just came from
+    // if (previousRoute?.) {
+    //   return history.push(history.location.state.referer.pathname)
+    // }
 
-      history.push('/') // for safety
-    },
-    [ session, history ]
-  )
+    history.push('/') // for safety
+  }, [session, history])
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -88,7 +87,10 @@ export const UserLogin: FC = () => {
     setAnchorEl(null)
   }
 
-  const onLoginSubmit = (data: any, event: React.BaseSyntheticEvent<object, any, any> | undefined) => {
+  const onLoginSubmit = (
+    data: any,
+    event: React.BaseSyntheticEvent<object, any, any> | undefined
+  ) => {
     if (event) event.preventDefault()
     const { username, password } = data
     setLoginButtonEnabled(false)
@@ -134,7 +136,8 @@ export const UserLogin: FC = () => {
     clotheColor: ClotheColor.White,
   }
 
-  const avatarToUse = Math.random() > 0.5 ? baseAvataaar : Math.random() > 0.5 ? fancyAvataaar : casualAvataaar
+  const avatarToUse =
+    Math.random() > 0.5 ? baseAvataaar : Math.random() > 0.5 ? fancyAvataaar : casualAvataaar
 
   const handleOpen = () => {
     console.log(`EASTER EGG FOUND, NOICEEEE`)
@@ -147,7 +150,13 @@ export const UserLogin: FC = () => {
           <Card>
             <CardHeader
               avatar={
-                <Tooltip title={`greeting`} enterDelay={5000} arrow placement='top' onOpen={handleOpen}>
+                <Tooltip
+                  title={`greeting`}
+                  enterDelay={5000}
+                  arrow
+                  placement='top'
+                  onOpen={handleOpen}
+                >
                   <div>
                     <Avataaar avatar={avatarToUse} />
                   </div>
@@ -159,8 +168,13 @@ export const UserLogin: FC = () => {
                   <IconButton aria-label='settings' onClick={handleClick}>
                     <LanguageIcon />
                   </IconButton>
-                  <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-                    {[ 'NL', 'ENG' ].map((option) => (
+                  <Menu
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    {['NL', 'ENG'].map((option) => (
                       <MenuItem key={option} selected={option === 'ENG'} onClick={handleClose}>
                         {option}
                       </MenuItem>

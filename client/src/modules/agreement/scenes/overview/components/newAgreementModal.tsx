@@ -23,7 +23,11 @@ import { ApolloError } from 'apollo-errors'
 import React, { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ADD_AGREEMENT_TRANSLATION, CREATE_AGREEMENT, CREATE_TRANSLATION } from 'src/common/services'
+import {
+  ADD_AGREEMENT_TRANSLATION,
+  CREATE_AGREEMENT,
+  CREATE_TRANSLATION,
+} from 'src/common/services'
 import { asyncForEach, generalCatchHandler, snackbarWrapper } from 'src/common/utils'
 import { SlideUp } from 'src/components'
 import { supportedLanguages } from 'src/i18n'
@@ -44,14 +48,14 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const [ sliderValue, setSliderValue ] = useState(0)
-  const [ isSubmitting, setIsSubmitting ] = useState(false)
+  const [sliderValue, setSliderValue] = useState(0)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const { register, handleSubmit, errors } = useForm()
 
-  const [ CreateTranslation ] = useMutation(CREATE_TRANSLATION)
-  const [ AddAgreementTranslations ] = useMutation(ADD_AGREEMENT_TRANSLATION)
-  const [ CreateAgreement ] = useMutation(CREATE_AGREEMENT)
+  const [CreateTranslation] = useMutation(CREATE_TRANSLATION)
+  const [AddAgreementTranslations] = useMutation(ADD_AGREEMENT_TRANSLATION)
+  const [CreateAgreement] = useMutation(CREATE_AGREEMENT)
 
   const handleClose = () => {
     onClose && onClose<undefined>()
@@ -118,13 +122,24 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
       <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
         <AppBar position={`relative`}>
           <Toolbar>
-            <IconButton edge='start' autoFocus color='inherit' onClick={handleClose} aria-label='close'>
+            <IconButton
+              edge='start'
+              autoFocus
+              color='inherit'
+              onClick={handleClose}
+              aria-label='close'
+            >
               <CloseIcon />
             </IconButton>
             <Typography variant='h6' className={classes.title}>
               New agreement
             </Typography>
-            <Button disabled={isSubmitting} type='submit' color='inherit' onClick={handleSubmit(onSubmit)}>
+            <Button
+              disabled={isSubmitting}
+              type='submit'
+              color='inherit'
+              onClick={handleSubmit(onSubmit)}
+            >
               save
             </Button>
           </Toolbar>
@@ -144,7 +159,9 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
                         // maxLength: { value: 20, message: 'Max 20 charaters' },
                       })}
                       placeholder='komt altijd optijd'
-                      error={errors[`translations`] && errors[`translations`][language] ? true : false}
+                      error={
+                        errors[`translations`] && errors[`translations`][language] ? true : false
+                      }
                       helperText={
                         errors[`translations`] &&
                         errors[`translations`][language] &&

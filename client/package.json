@@ -54,7 +54,6 @@
     "@types/regression": "^2.0.0",
     "@types/superagent": "^4.1.7",
     "@types/uuid": "^7.0.2",
-    "jest": "^25.4.0",
     "json-server": "^0.16.1",
     "react-scripts": "^3.4.1",
     "typescript": "^3.8.3"

@@ -36,11 +36,11 @@ export const NewTribeModal: FC<INewTribeModal> = ({ isOpen, onClose }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const [ isSubmitting, setIsSubmitting ] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const { register, handleSubmit, errors } = useForm()
 
-  const [ CreateTribe ] = useMutation(CREATE_TRIBE)
+  const [CreateTribe] = useMutation(CREATE_TRIBE)
 
   const handleClose = () => {
     onClose && onClose<undefined>()
@@ -76,13 +76,24 @@ export const NewTribeModal: FC<INewTribeModal> = ({ isOpen, onClose }) => {
       <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
         <AppBar position={`relative`}>
           <Toolbar>
-            <IconButton edge='start' autoFocus color='inherit' onClick={handleClose} aria-label='close'>
+            <IconButton
+              edge='start'
+              autoFocus
+              color='inherit'
+              onClick={handleClose}
+              aria-label='close'
+            >
               <CloseIcon />
             </IconButton>
             <Typography variant='h6' className={classes.title}>
               {t(`tribeNew`)}
             </Typography>
-            <Button type='submit' disabled={isSubmitting} color='inherit' onClick={handleSubmit(onSubmit)}>
+            <Button
+              type='submit'
+              disabled={isSubmitting}
+              color='inherit'
+              onClick={handleSubmit(onSubmit)}
+            >
               save
             </Button>
           </Toolbar>

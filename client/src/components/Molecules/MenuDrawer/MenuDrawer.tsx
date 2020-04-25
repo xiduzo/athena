@@ -79,7 +79,7 @@ export const MenuDrawer: FC = () => {
             .filter((route) => route.showInMenu)
             .map((route) => (
               <Tooltip
-                title={t(route.name)}
+                title={t<string>(route.name)}
                 key={route.path}
                 placement='right'
                 enterDelay={!menuOpen ? 350 : 1000 * 60}
