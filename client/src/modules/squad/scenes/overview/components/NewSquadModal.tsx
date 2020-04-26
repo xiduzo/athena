@@ -19,7 +19,6 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { CREATE_SQUAD } from 'src/common/services'
 import { generalCatchHandler, snackbarWrapper } from 'src/common/utils'
-import { SlideUp } from 'src/components'
 import { IModalBase, ISquad } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
 
@@ -72,7 +71,7 @@ export const NewSquadModal: FC<INewSquadModal> = ({ isOpen, onClose }) => {
   }
 
   return (
-    <Dialog fullScreen open={isOpen} onClose={handleClose} TransitionComponent={SlideUp}>
+    <Dialog fullScreen open={isOpen} onClose={handleClose}>
       <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
         <AppBar position={`relative`}>
           <Toolbar>

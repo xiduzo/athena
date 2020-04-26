@@ -20,7 +20,7 @@ import clsx from 'clsx'
 import React, { FC, useEffect, useState } from 'react'
 import { useWidth } from 'src/common/hooks'
 import { MERGE_USER } from 'src/common/services'
-import { Avataaar, generateRandomAvatar, SlideUp } from 'src/components/Atoms'
+import { Avataaar, generateRandomAvatar } from 'src/components'
 import {
   AccessoriesType,
   ClotheColor,
@@ -276,7 +276,7 @@ export const AvatarCreator: FC<IAvatarCreator> = ({ user, isOpen, onClose }) => 
   }, [amountToRender, types, selectedType])
 
   return (
-    <Dialog fullScreen open={isOpen} onClose={handleClose} TransitionComponent={SlideUp}>
+    <Dialog fullScreen open={isOpen} onClose={handleClose}>
       <AppBar position={`relative`}>
         <Toolbar>
           <IconButton

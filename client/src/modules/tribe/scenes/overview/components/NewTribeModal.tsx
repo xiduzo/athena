@@ -19,7 +19,6 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { CREATE_TRIBE } from 'src/common/services'
 import { generalCatchHandler, snackbarWrapper } from 'src/common/utils'
-import { SlideUp } from 'src/components'
 import { IModalBase, ITribe } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
 
@@ -72,7 +71,7 @@ export const NewTribeModal: FC<INewTribeModal> = ({ isOpen, onClose }) => {
     handleClose()
   }
   return (
-    <Dialog fullScreen open={isOpen} onClose={handleClose} TransitionComponent={SlideUp}>
+    <Dialog fullScreen open={isOpen} onClose={handleClose}>
       <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
         <AppBar position={`relative`}>
           <Toolbar>
