@@ -29,11 +29,11 @@ import {
   CREATE_TRANSLATION,
 } from 'src/common/services'
 import { asyncForEach, generalCatchHandler, snackbarWrapper } from 'src/common/utils'
-import { SlideUp } from 'src/components'
 import { supportedLanguages } from 'src/i18n'
 import { AgreementType } from 'src/lib/enums'
 import { IAgreement, IModalBase, ITranslation } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
+import { SlideUp } from 'src/components'
 
 interface INewAgreementModal extends IModalBase {}
 
