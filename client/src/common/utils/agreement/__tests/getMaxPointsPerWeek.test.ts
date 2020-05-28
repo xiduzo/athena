@@ -8,7 +8,25 @@
 //   ReactDOM.unmountComponentAtNode(div)
 // })
 import { getMaxPointsPerWeek } from '../'
+import { IAgreement } from 'src/lib/interfaces'
 
+const agreements: IAgreement[] = [
+  {
+    id: '1',
+    agreementType: AgreementType.ATTITUDE,
+    isBase: false,
+    points: 10,
+    transLations: [],
+    feedBack: [],
+  },
+]
 it('should get the max points per week', () => {
-  expect(1 + 2).toBe(3)
+  // Arrange
+  const expected = 10
+
+  // Act
+  const result = getMaxPointsPerWeek(agreements)
+
+  // Assert
+  expect(expected).toBe(result)
 })
