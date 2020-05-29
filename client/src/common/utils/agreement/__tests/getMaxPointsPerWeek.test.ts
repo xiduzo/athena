@@ -1,32 +1,93 @@
-// import React from 'react'
-// import ReactDOM from 'react-dom'
-// import App from './App'
-
-// it('renders without crashing', () => {
-//   const div = document.createElement('div')
-//   ReactDOM.render(<App />, div)
-//   ReactDOM.unmountComponentAtNode(div)
-// })
 import { getMaxPointsPerWeek } from '../'
-import { IAgreement } from 'src/lib/interfaces'
+import { IAgreement, ITranslation, IFeedback } from 'src/lib/interfaces'
+import { AgreementType } from 'src/lib/enums'
 
 const agreements: IAgreement[] = [
   {
     id: '1',
-    agreementType: AgreementType.ATTITUDE,
+    type: AgreementType.ATTITUDE,
     isBase: false,
     points: 10,
-    transLations: [],
-    feedBack: [],
+    transLations: [] as ITranslation[],
+    feedBack: [] as IFeedback[],
+  },
+  {
+    id: '1',
+    type: AgreementType.ATTITUDE,
+    isBase: false,
+    points: 10,
+    transLations: [] as ITranslation[],
+    feedBack: [] as IFeedback[],
   },
 ]
-it('should get the max points per week', () => {
-  // Arrange
-  const expected = 10
 
-  // Act
-  const result = getMaxPointsPerWeek(agreements)
+describe('Having 0 agreements', () => {
+  it('it should get 0 points', () => {
+    // Arrange
+    const expected = 0
 
-  // Assert
-  expect(expected).toBe(result)
+    // Act
+    const received = getMaxPointsPerWeek([], 0)
+
+    // Assert
+    expect(received).toBe(expected)
+  })
+})
+
+describe('Having 1 agreement of 10 points', () => {
+  it('should give 0 points with 1 team member', () => {
+    // Arrange
+    const expected = 0
+
+    const members = 1
+    const singleAgreement: IAgreement[] = [agreements[0]]
+
+    // Act
+    const received = getMaxPointsPerWeek(singleAgreement, members)
+
+    // Assert
+    expect(received).toBe(expected)
+  })
+
+  it('should give 40 points with 2 team members', () => {
+    // Arrange
+    const expected = 40
+
+    const members = 2
+    const singleAgreement: IAgreement[] = [agreements[0]]
+
+    // Act
+    const received = getMaxPointsPerWeek(singleAgreement, members)
+
+    // Assert
+    expect(received).toBe(expected)
+  })
+})
+
+describe('Having 2 agreements of 10 points each', () => {
+  it('should give 0 points with 1 team member', () => {
+    // Arrange
+    const expected = 0
+
+    const members = 1
+
+    // Act
+    const received = getMaxPointsPerWeek(agreements, members)
+
+    // Assert
+    expect(received).toBe(expected)
+  })
+
+  it('should give 80 points with 2 team members', () => {
+    // Arrange
+    const expected = 80
+
+    const members = 2
+
+    // Act
+    const received = getMaxPointsPerWeek(agreements, members)
+
+    // Assert
+    expect(received).toBe(expected)
+  })
 })

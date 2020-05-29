@@ -1,11 +1,17 @@
-export const sumArrays = (arrayOne: number[], arrayTwo: number[]): number[] => {
-  const summedArray: number[] = Array.from<number>({ length: arrayOne.length }).fill(0)
+export const sumArrays = (
+  arrayOne: (number | undefined)[],
+  arrayTwo: (number | undefined)[]
+): number[] => {
+  const biggestArray = Math.max(arrayOne.length, arrayTwo.length)
 
-  arrayOne.forEach((value, index) => {
-    if (arrayTwo[index]) {
-      summedArray[index] = value + arrayTwo[index]
-    }
-  })
+  const summedArray: number[] = Array.from<number>({ length: biggestArray })
+    .fill(0)
+    .map((value, index) => {
+      const arrayOneValue = arrayOne[index] ?? value
+      const arrayTwoValue = arrayTwo[index] ?? value
+
+      return arrayOneValue + arrayTwoValue
+    })
 
   return summedArray
 }
