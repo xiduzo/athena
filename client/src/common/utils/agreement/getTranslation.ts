@@ -2,11 +2,14 @@ import { ITranslation } from 'src/lib/interfaces'
 
 import i18n from 'src/i18n'
 
-export const getTranslation = (translations: ITranslation[]): string => {
+// TODO get default translations for each supported language
+const defaultText: string = 'something went wrong'
+
+export const getTranslation = (translations: ITranslation[], language?: string): string => {
   const translation: ITranslation | undefined = translations.find(
-    (translation) => translation.language === i18n.language
+    (translation) => translation.language === language ?? i18n.language
   )
 
   if (translation) return translation.text
-  return 'something went wrong'
+  return defaultText
 }

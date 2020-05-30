@@ -1,5 +1,13 @@
-export const hasMatchesWith = <T>(arrayOne: T[], arrayTwo: T[]): boolean => {
-  if (!arrayOne || !arrayTwo) return false
+type comparer = <T>(array: T[], item: T) => boolean
 
-  return arrayOne.some((item: T) => arrayTwo.indexOf(item) !== -1)
+const defaultComparer = <T>(array: T[], item: T): boolean => array.indexOf(item) !== -1
+
+export const hasMatchesWith = <T>(
+  arrayOne: T[],
+  arrayTwo: T[],
+  comparer: comparer = defaultComparer
+): boolean => {
+  if (!arrayOne.length || !arrayTwo.length) return false
+
+  return arrayOne.some((item: T) => comparer(arrayTwo, item))
 }
