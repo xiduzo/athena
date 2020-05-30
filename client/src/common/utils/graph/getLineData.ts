@@ -1,28 +1,17 @@
 import { IFeedback } from 'src/lib/interfaces'
 
-// TODO move these types to its own files
-type Percentage = number
-type Points = number
+const maxRating: number = 4.0 // TODO: make global const
 
-type Double = number
-type Rating = Double
-
-const maxRating: Rating = 4.0 // TODO: make global const
-
-export const getPointsEarned = (agreementPoints: Points, rating: Rating): Points =>
+export const getPointsEarned = (agreementPoints: number, rating: number): number =>
   (rating * (agreementPoints * maxRating)) / maxRating
 
-export const getPercentageEarned = (rating: Rating): Percentage => (rating * 100) / maxRating
-
-export const getLineData = (
-  feedback: IFeedback[],
-  agreementPoints: Points,
-  maxWeek: number
-): number[] => {
-  const feedbackLine: number[] = Array.from<number>({ length: maxWeek }).fill(0)
+export const getLineData = (feedback: IFeedback[]): number[] => {
+  const feedbackLine: number[] = Array.from<number>({
+    length: Math.max(...feedback.map((f) => f.weekNum)) + 1, // We start at week 0
+  }).fill(0)
 
   feedback.forEach(
-    (f) => (feedbackLine[f.weekNum - 1] += getPointsEarned(agreementPoints, f.rating))
+    (f) => (feedbackLine[f.weekNum] += getPointsEarned(f.agreement.points, f.rating))
   )
 
   return feedbackLine

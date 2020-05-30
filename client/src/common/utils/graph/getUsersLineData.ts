@@ -8,11 +8,7 @@ export const getUsersLineData = (agreements: IAgreement[]): number[][] => {
     const usersFeedback = groupBy(agreement.feedback, (feedback) => feedback.to.id)
 
     usersFeedback.forEach((feedback, userId) => {
-      const lineData = getLineData(
-        feedback,
-        agreement.points,
-        Math.max(...feedback.map((f) => f.weekNum))
-      )
+      const lineData = getLineData(feedback)
       const currentLine = usersFeedbackLine[userId]
       usersFeedbackLine[userId] = !currentLine ? lineData : sumArrays(currentLine, lineData)
     })
