@@ -15,7 +15,7 @@ describe('Given no feedback', () => {
 })
 
 describe('Given feedback', () => {
-  it('should give an empty array when no week is passed', () => {
+  it('order the feedback per week, filling in the empty weeks with 0', () => {
     // Arrange
     const expected = [40]
     const feedback: Partial<IFeedback>[] = [
