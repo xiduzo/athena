@@ -33,7 +33,6 @@ import { supportedLanguages } from 'src/i18n'
 import { AgreementType } from 'src/lib/enums'
 import { IAgreement, IModalBase, ITranslation } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
-import { SlideUp } from 'src/components'
 
 interface INewAgreementModal extends IModalBase {}
 
@@ -118,7 +117,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
   }
 
   return (
-    <Dialog fullScreen open={isOpen} onClose={handleClose} TransitionComponent={SlideUp}>
+    <Dialog fullScreen open={isOpen} onClose={handleClose}>
       <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
         <AppBar position={`relative`}>
           <Toolbar>

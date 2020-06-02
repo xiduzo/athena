@@ -4,5 +4,6 @@
     "Avataaar",
     "LDAP",
     "avataaars"
-  ]
+  ],
+  "i18n-ally.localesPaths": "public/assets/i18n"
 }
