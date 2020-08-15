@@ -60,18 +60,15 @@ export const useStyles = makeStyles((theme: Theme) => {
     },
     drawerToggleButton: {
       display: 'flex',
-      justifyContent: 'flex-start',
+      justifyContent: 'flex-end',
     },
     drawerToggleButtonIcon: {
       minWidth: 0,
       transform: 'rotate(-90deg)',
     },
-    drawerToggleButtonOpen: {
-      justifyContent: 'flex-end',
-    },
     navLink: {
       borderRight: '2px solid transparent',
-      transition: theme.transitions.create([ 'borderColor', 'background' ], {
+      transition: theme.transitions.create(['borderColor', 'background'], {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),

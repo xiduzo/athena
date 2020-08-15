@@ -11,7 +11,7 @@ export const getLineData = (feedback: IFeedback[]): number[] => {
   }).fill(0)
 
   feedback.forEach(
-    (f) => (feedbackLine[f.weekNum] += getPointsEarned(f.agreement.points, f.rating))
+    (f) => (feedbackLine[f.weekNum] += getPointsEarned(f.agreement?.points ?? 0, f.rating))
   )
 
   return feedbackLine

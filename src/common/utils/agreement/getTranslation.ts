@@ -6,10 +6,7 @@ import i18n from 'src/i18n'
 const defaultText: string = 'something went wrong'
 
 export const getTranslation = (translations: ITranslation[], language?: string): string => {
-  const translation: ITranslation | undefined = translations.find(
-    (translation) => translation.language === language ?? i18n.language
-  )
+  const translation = translations.find((t) => t.language === (language ?? i18n.language))
 
-  if (translation) return translation.text
-  return defaultText
+  return translation?.text ?? defaultText
 }

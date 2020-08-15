@@ -102,14 +102,8 @@ export const MenuDrawer: FC = () => {
       </section>
       <Divider />
       <List>
-        <ListItem
-          button
-          onClick={toggleMenuDrawer}
-          className={clsx(classes.drawerToggleButton, {
-            [classes.drawerToggleButtonOpen]: menuOpen,
-          })}
-        >
-          <ListItemIcon className={clsx(classes.drawerToggleButtonIcon)}>
+        <ListItem button onClick={toggleMenuDrawer} className={classes.drawerToggleButton}>
+          <ListItemIcon className={classes.drawerToggleButtonIcon}>
             {menuOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItemIcon>
         </ListItem>
