@@ -10,9 +10,10 @@ import {
 } from '@material-ui/core'
 import gql from 'graphql-tag'
 import React, { FC, Fragment, useState } from 'react'
-import { useParams } from 'react-router'
-import { Avataaar, AvatarCreator } from 'src/components'
+import { useParams, useHistory } from 'react-router'
+import { Avataaar, AvatarCreator, SquadCard } from 'src/components'
 import { useAuth } from 'src/common/providers'
+import { ISquad } from 'src/lib/interfaces'
 
 interface IUserDetailRouteParams {
   id: string
@@ -38,6 +39,7 @@ export const useStyles = makeStyles((theme: Theme) => {
 export const UserDetailRoute: FC = () => {
   const { id } = useParams<IUserDetailRouteParams>()
   const { userInfo } = useAuth()
+  const history = useHistory()
 
   const classes = useStyles()
 
@@ -50,6 +52,10 @@ export const UserDetailRoute: FC = () => {
           id
           displayName
           avatarStyle
+          squads {
+            id
+            name
+          }
         }
       }
     `,
@@ -64,6 +70,8 @@ export const UserDetailRoute: FC = () => {
     setAvatarCreatorOpen(!avatarCreatorOpen)
     refetch()
   }
+
+  const navigateToSquad = (squadId: string) => history.push(`/squad/${squadId}`)
 
   return (
     <Container maxWidth={'lg'} className={classes.root}>
@@ -105,6 +113,11 @@ export const UserDetailRoute: FC = () => {
             <Grid item xs={12}>
               <Typography variant='h6'>Squads</Typography>
             </Grid>
+            {data.User[0]?.squads.map((squad: ISquad) => (
+              <Grid key={squad.id} item xs={12} sm={6} md={4} lg={3}>
+                <SquadCard squad={squad} onLeftClick={() => navigateToSquad(squad.id)} />
+              </Grid>
+            ))}
           </Fragment>
         )}
       </Grid>
