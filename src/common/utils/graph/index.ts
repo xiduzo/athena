@@ -1,4 +1,4 @@
 export * from './getAverageLineData'
 export * from './getLineData'
-export * from './getUsersLineData'
+export * from './getFeedbackByUser'
 export * from './getUsersSpiderData'

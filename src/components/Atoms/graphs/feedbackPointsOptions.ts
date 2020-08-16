@@ -73,10 +73,7 @@ export const getFeedbackPointsOptions = (
         ?.map((line) => ({
           name: showAll ? line.name : `You`,
           zones: line.zones,
-          data: line.data.map((x) => {
-            console.log(x)
-            return asPercentage(x ?? 0, maxPointsPerWeek)
-          }),
+          data: line.data.map((x) => asPercentage(x ?? 0, maxPointsPerWeek)),
         })),
     ],
   }

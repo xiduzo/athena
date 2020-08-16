@@ -8,8 +8,9 @@ import {
   getAverageLineData,
   getMaxPointsPerWeek,
   asPercentage,
-  getUsersLineData,
+  getFeedbackByUser,
   sumArrays,
+  groupBy,
 } from 'src/common/utils'
 import { IAgreement } from 'src/lib/interfaces'
 import { getFeedbackPointsOptions, ILineData } from './feedbackPointsOptions'
@@ -30,40 +31,59 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
     const minLengthNeededForPrediction = 2
     const maxPredictionLookBack = 4
 
-    const usersLineData = getUsersLineData(agreements)
     const lineData: ILineData[] = []
 
-    console.log(usersLineData)
-    const dataSize = usersLineData.size
-    for (var userId in usersLineData) {
-      console.log(userId, usersLineData[userId])
-      const _lineData = usersLineData[userId] as number[]
+    const data = Array.from(getFeedbackByUser(agreements).entries()).map(([userId, feedback]) => ({
+      userId: userId,
+      feedbackByWeek: groupBy(feedback, (f) => f.weekNum),
+    }))
 
-      if (dataSize >= minLengthNeededForPrediction) {
-        const predictionSliceSize = Math.min(maxPredictionLookBack, dataSize)
-        const regressionLine = regression.linear(
-          _lineData
-            .slice(dataSize - predictionSliceSize, dataSize)
-            .map((val, index) => [index, val])
-        )
-
-        _lineData.push(regressionLine.predict(dataSize)[1])
-      }
-
+    data.forEach((line) => {
+      console.log(line.userId, line.feedbackByWeek.entries())
       lineData.push({
-        id: userId,
-        name: userId === userInfo.id ? userInfo.displayName : userId,
-        data: sumArrays(Array.from({ length: 35 }).fill(0) as number[], _lineData),
+        id: line.userId,
+        name: line.userId === userInfo.id ? userInfo.displayName : line.userId,
+        data: [1, 3, 4, 5, 6, 7, 8, 9],
         zones: [
           {
-            value: dataSize >= minLengthNeededForPrediction ? dataSize - 1 : dataSize,
+            value: 5 >= minLengthNeededForPrediction ? 5 - 1 : 5,
             dashStyle: 'Solid',
           },
         ],
       })
-    }
+    })
 
-    console.log(lineData)
+    // const dataSize = usersLineData.size
+    // console.log(dataSize)
+    // for (var userId in usersLineData) {
+    //   console.log(userId, usersLineData[userId])
+    //   const _lineData = usersLineData[userId] as number[]
+
+    //   if (dataSize >= minLengthNeededForPrediction) {
+    //     const predictionSliceSize = Math.min(maxPredictionLookBack, dataSize)
+    //     const regressionLine = regression.linear(
+    //       _lineData
+    //         .slice(dataSize - predictionSliceSize, dataSize)
+    //         .map((val, index) => [index, val])
+    //     )
+
+    //     _lineData.push(regressionLine.predict(dataSize)[1])
+    //   }
+
+    // lineData.push({
+    //   id: userId,
+    //   name: userId === userInfo.id ? userInfo.displayName : userId,
+    //   data: sumArrays(Array.from({ length: 53 }).fill(0) as number[], _lineData),
+    //   zones: [
+    //     {
+    //       value: dataSize >= minLengthNeededForPrediction ? dataSize - 1 : dataSize,
+    //       dashStyle: 'Solid',
+    //     },
+    //   ],
+    // })
+    // }
+
+    // console.log(lineData)
 
     const maxPointsPerWeek = getMaxPointsPerWeek(agreements, lineData.length)
     const averageScores = getAverageLineData(lineData).map((x) => asPercentage(x, maxPointsPerWeek))
