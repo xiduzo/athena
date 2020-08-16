@@ -47,10 +47,6 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
     // TODO check test max points per week
     const maxPointsPerWeek = [
       ...typesUsed.map((type) => {
-        console.log(
-          type,
-          agreements.filter((a) => a.type === type)
-        )
         return (
           getMaxPointsPerWeek(
             agreements.filter((a) => a.type === type),

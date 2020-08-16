@@ -79,7 +79,6 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
     agreement: IAgreement
   ): Promise<void> => {
     if (!value) return
-
     await GiveFeedbackToUser({
       variables: {
         toUserId: user.id,

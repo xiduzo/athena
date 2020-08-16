@@ -69,12 +69,9 @@ export const UserLogin: FC = () => {
   useEffect(() => {
     if (!session) return
 
-    const previousRoute = history.location.state
-    console.log(previousRoute)
-    // TODO use the preferer pathnam to go back to the route you just came from
-    // if (previousRoute?.) {
-    //   return history.push(history.location.state.referer.pathname)
-    // }
+    const previousRoute = history?.location?.state as { referer?: string }
+
+    if (previousRoute?.referer) return history.push(previousRoute.referer)
 
     history.push('/') // for safety
   }, [session, history])

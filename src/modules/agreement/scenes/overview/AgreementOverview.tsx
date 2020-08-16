@@ -144,8 +144,6 @@ export const AgreementOverview: FC = () => {
     setModalOpen(true)
   }, [newAgreementHotkey, hotkeysEnabled])
 
-  console.log(AgreementType, Object.values(AgreementType))
-
   return (
     <WithSidebar
       title={t('agreements')}

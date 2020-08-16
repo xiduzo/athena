@@ -9,9 +9,11 @@ import {
   getMaxPointsPerWeek,
   asPercentage,
   getUsersLineData,
+  sumArrays,
 } from 'src/common/utils'
 import { IAgreement } from 'src/lib/interfaces'
 import { getFeedbackPointsOptions, ILineData } from './feedbackPointsOptions'
+import { getWeek } from 'src/common/utils/helpers/getWeek'
 
 interface IFeedbackPointsGraph {
   agreements: IAgreement[]
@@ -29,37 +31,39 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
     const maxPredictionLookBack = 4
 
     const usersLineData = getUsersLineData(agreements)
-
     const lineData: ILineData[] = []
 
-    for (let user in usersLineData) {
-      const userData = usersLineData[user]
+    console.log(usersLineData)
+    const dataSize = usersLineData.size
+    for (var userId in usersLineData) {
+      console.log(userId, usersLineData[userId])
+      const _lineData = usersLineData[userId] as number[]
 
-      const dataLength = userData.length
-      // Add some basic prediction
-      if (dataLength >= minLengthNeededForPrediction) {
-        const predictionSliceSize = Math.min(maxPredictionLookBack, dataLength)
+      if (dataSize >= minLengthNeededForPrediction) {
+        const predictionSliceSize = Math.min(maxPredictionLookBack, dataSize)
         const regressionLine = regression.linear(
-          userData
-            // Predict based on the last predictionSliceSize
-            .slice(dataLength - predictionSliceSize, dataLength)
+          _lineData
+            .slice(dataSize - predictionSliceSize, dataSize)
             .map((val, index) => [index, val])
         )
-        userData.push(regressionLine.predict(dataLength)[1])
+
+        _lineData.push(regressionLine.predict(dataSize)[1])
       }
 
       lineData.push({
-        id: user,
-        name: user === userInfo.id ? userInfo.displayName : user,
-        data: usersLineData[user],
+        id: userId,
+        name: userId === userInfo.id ? userInfo.displayName : userId,
+        data: sumArrays(Array.from({ length: 35 }).fill(0) as number[], _lineData),
         zones: [
           {
-            value: dataLength >= minLengthNeededForPrediction ? dataLength - 1 : dataLength,
+            value: dataSize >= minLengthNeededForPrediction ? dataSize - 1 : dataSize,
             dashStyle: 'Solid',
           },
         ],
       })
     }
+
+    console.log(lineData)
 
     const maxPointsPerWeek = getMaxPointsPerWeek(agreements, lineData.length)
     const averageScores = getAverageLineData(lineData).map((x) => asPercentage(x, maxPointsPerWeek))

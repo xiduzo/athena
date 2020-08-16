@@ -1,7 +1,6 @@
-import { IAgreement } from 'src/lib/interfaces'
 import { AgreementType } from 'src/lib/enums'
+import { IAgreement } from 'src/lib/interfaces'
 import { groupBy } from '..'
-import { getPointsEarned } from '.'
 
 export const getUsersSpiderData = (
   agreements: IAgreement[]
@@ -21,7 +20,7 @@ export const getUsersSpiderData = (
         if (!usersFeedbackLine[userId]) usersFeedbackLine[userId] = []
 
         usersFeedbackLine[userId][type] = feedback.reduce(
-          (curr, next) => (curr += getPointsEarned(agreement.points, next.rating)),
+          (curr, next) => (curr += agreement.points * next.rating),
           0
         )
       })
