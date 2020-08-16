@@ -23,7 +23,7 @@ import React, { ChangeEvent, FC, Fragment, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { and, useHotkeys, useWidth } from 'src/common/hooks'
+import { and, useHotkeys } from 'src/common/hooks'
 import { IRootReducer } from 'src/common/redux'
 import { DELETE_AGREEMENT } from 'src/common/services'
 import { createFilter, generalCatchHandler, snackbarWrapper } from 'src/common/utils'
@@ -70,10 +70,8 @@ const initFilters = [
 export const AgreementOverview: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
-  const width = useWidth()
 
   const [modalOpen, setModalOpen] = useState(false)
-  const [drawerOpen, setDrawerOpen] = useState(false)
   const [filters, setFilters] = useState(initFilters)
 
   const { loading, error, data, refetch } = useQuery(
@@ -119,15 +117,14 @@ export const AgreementOverview: FC = () => {
     )
   }
 
-  const toggleDrawer = () => setDrawerOpen(!drawerOpen)
   const toggleModal = () => setModalOpen(!modalOpen)
 
-  const closeNewAgreementModalHandle = (): void => {
+  const closeNewAgreementModalHandle = () => {
     refetch()
     toggleModal()
   }
 
-  const removeAgreementHandler = (agreement: IAgreement): void => {
+  const removeAgreementHandler = (agreement: IAgreement) => {
     DeleteAgreement({
       variables: {
         id: agreement.id,
@@ -146,10 +143,6 @@ export const AgreementOverview: FC = () => {
 
     setModalOpen(true)
   }, [newAgreementHotkey, hotkeysEnabled])
-
-  useEffect(() => {
-    if (['xs', 'sm'].indexOf(width) === -1) setDrawerOpen(false)
-  }, [width])
 
   console.log(AgreementType, Object.values(AgreementType))
 
@@ -210,7 +203,7 @@ export const AgreementOverview: FC = () => {
             {!loading && !error && data.Agreement.length && (
               <Tooltip title={`Amount of agreements left after applying filters`}>
                 <Typography variant='caption'>
-                  {data.Agreement.filter(createFilter(...filters)).length}
+                  {data.Agreement.filter(createFilter(...filters)).length}/{data.Agreement.length}
                 </Typography>
               </Tooltip>
             )}
@@ -247,13 +240,18 @@ export const AgreementOverview: FC = () => {
                       control={<Radio />}
                       label='All'
                     />
-                    {Object.values(AgreementType).map((type) => (
+                    {[
+                      AgreementType.ACCOUNTABILITY,
+                      AgreementType.ATTITUDE,
+                      AgreementType.FUNCTIONING_WITHIN_TEAM,
+                      AgreementType.KNOWLEDGE_DEVELOPMENT,
+                    ].map((type) => (
                       <FormControlLabel
                         key={type}
                         inputRef={register}
                         value={`${type}`}
                         control={<Radio />}
-                        label={AgreementType[type]}
+                        label={t(AgreementType[type])}
                       />
                     ))}
                   </RadioGroup>

@@ -10,7 +10,7 @@ import notAuthorized from 'src/illustrations/notAuthorized.png'
 
 import { IllustrationType } from 'src/lib/enums'
 
-const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles((_: Theme) => {
   return {
     root: {
       maxHeight: '30vh',
@@ -35,7 +35,9 @@ export const Illustration: FC<IIllustration> = ({ type }) => {
       {type === IllustrationType.Empty && <img src={empty} alt={'empty'} />}
       {type === IllustrationType.EmptyTwo && <img src={emptyTwo} alt={'empty'} />}
       {type === IllustrationType.NotFound && <img src={notFound} alt={'not found'} />}
-      {type === IllustrationType.NotAuthorized && <img src={notAuthorized} alt={'not authorized'} />}
+      {type === IllustrationType.NotAuthorized && (
+        <img src={notAuthorized} alt={'not authorized'} />
+      )}
     </Box>
   )
 }

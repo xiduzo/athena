@@ -12,6 +12,7 @@ import gql from 'graphql-tag'
 import React, { FC, useState } from 'react'
 import { useWidth } from 'src/common/hooks/useWidth'
 import { IUser } from 'src/lib/interfaces'
+import { useTranslation } from 'react-i18next'
 
 interface IUserSelector {
   title: string
@@ -22,6 +23,7 @@ interface IUserSelector {
 
 export const UserSelector: FC<IUserSelector> = ({ title, isOpen, onClose, without }) => {
   const width = useWidth()
+  const { t } = useTranslation()
 
   const [usersToAdd, setUsersToAdd] = useState<IUser[]>([])
 
@@ -52,10 +54,10 @@ export const UserSelector: FC<IUserSelector> = ({ title, isOpen, onClose, withou
     <Dialog
       open={isOpen}
       onClose={handleClose}
-      aria-labelledby='user selector'
+      aria-labelledby={t('user')}
       fullScreen={width === 'xs'}
     >
-      <DialogTitle id='user selector'>{title}</DialogTitle>
+      <DialogTitle id={t('user')}>{title}</DialogTitle>
       <DialogContent>
         {/* {subtitle && <DialogContentText>{subtitle}</DialogContentText>} */}
         <Autocomplete
@@ -77,17 +79,17 @@ export const UserSelector: FC<IUserSelector> = ({ title, isOpen, onClose, withou
           renderInput={(params) => (
             <TextField label='Users to add' {...params} autoFocus name='user' fullWidth />
           )}
-          clearText='[Clear text]'
-          closeText='[Close text]'
-          noOptionsText='[No options text]'
-          loadingText='[Loading text'
-          openText='[Open text]'
+          clearText={t('clear')}
+          closeText={t('close')}
+          noOptionsText={t('noOptions')}
+          loadingText={t('loading')}
+          openText={t('open')}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleClose}>{t('cancel')}</Button>
         <Button onClick={handleSubmit} color='primary'>
-          Add
+          {t('add')}
         </Button>
       </DialogActions>
     </Dialog>

@@ -14,7 +14,7 @@ export const AgreementIcon: FC<IAgreementIcon> = ({ type }) => {
   return (
     <Fragment>
       {type === AgreementType.ATTITUDE && <GroupWorkIcon />}
-      {type === AgreementType.FUNCTIONING_WITHING_TEAM && <EmojiObjectsIcon />}
+      {type === AgreementType.FUNCTIONING_WITHIN_TEAM && <EmojiObjectsIcon />}
       {type === AgreementType.KNOWLEDGE_DEVELOPMENT && <DescriptionIcon />}
       {type === AgreementType.ACCOUNTABILITY && <WorkIcon />}
     </Fragment>

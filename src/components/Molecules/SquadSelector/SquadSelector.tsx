@@ -12,6 +12,7 @@ import gql from 'graphql-tag'
 import React, { FC, useState } from 'react'
 import { useWidth } from 'src/common/hooks/useWidth'
 import { ISquad } from 'src/lib/interfaces'
+import { useTranslation } from 'react-i18next'
 
 interface ISquadSelector {
   title: string
@@ -22,6 +23,7 @@ interface ISquadSelector {
 
 export const SquadSelector: FC<ISquadSelector> = ({ title, isOpen, onClose, without }) => {
   const width = useWidth()
+  const { t } = useTranslation()
 
   const [squadsToAdd, setSquadsToAdd] = useState<ISquad[]>([])
 
@@ -52,10 +54,10 @@ export const SquadSelector: FC<ISquadSelector> = ({ title, isOpen, onClose, with
     <Dialog
       open={isOpen}
       onClose={handleClose}
-      aria-labelledby='squad selector'
+      aria-labelledby={t('squad')}
       fullScreen={width === 'xs'}
     >
-      <DialogTitle id='squad selector'>{title}</DialogTitle>
+      <DialogTitle id={t('squad')}>{title}</DialogTitle>
       <DialogContent>
         {/* {subtitle && <DialogContentText>{subtitle}</DialogContentText>} */}
         <Autocomplete
@@ -75,19 +77,19 @@ export const SquadSelector: FC<ISquadSelector> = ({ title, isOpen, onClose, with
             squadsToAdd.find((s) => s.id === squad.id) ? true : false
           }
           renderInput={(params) => (
-            <TextField label='Squads to add' {...params} id='tribe' name='tribe' fullWidth />
+            <TextField label={t('squads')} {...params} id='squads' name='squads' fullWidth />
           )}
-          clearText='[Clear text]'
-          closeText='[Close text]'
-          noOptionsText='[No options text]'
-          loadingText='[Loading text'
-          openText='[Open text]'
+          clearText={t('clear')}
+          closeText={t('close')}
+          noOptionsText={t('noOptions')}
+          loadingText={t('loading')}
+          openText={t('open')}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleClose}>{t('cancel')}</Button>
         <Button onClick={handleSubmit} color='primary'>
-          Add
+          {t('add')}
         </Button>
       </DialogActions>
     </Dialog>

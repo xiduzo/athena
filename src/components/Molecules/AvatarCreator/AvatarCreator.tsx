@@ -37,6 +37,7 @@ import {
 } from 'src/lib/enums'
 import { IAvataaar, IModalBase, IUser } from 'src/lib/interfaces'
 import ShuffleIcon from '@material-ui/icons/Shuffle'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -65,6 +66,7 @@ interface IAvatarCreator extends IModalBase {
 export const AvatarCreator: FC<IAvatarCreator> = ({ user, isOpen, onClose }) => {
   const classes = useStyles()
   const width = useWidth()
+  const { t } = useTranslation()
 
   const [style, setStyle] = useState<IAvataaar>({} as IAvataaar)
   const [previousStyle, setPreviousStyle] = useState<IAvataaar | null>(null)
@@ -284,15 +286,15 @@ export const AvatarCreator: FC<IAvatarCreator> = ({ user, isOpen, onClose }) => 
             autoFocus
             color='inherit'
             onClick={handleClose}
-            aria-label='close'
+            aria-label={t('close')}
           >
             <CloseIcon />
           </IconButton>
           <Typography variant='h6' className={classes.title}>
-            Change avatar
+            {t('changeAvatar')}
           </Typography>
           <Button color='inherit' onClick={saveNewAvatar}>
-            save
+            {t('save')}
           </Button>
         </Toolbar>
       </AppBar>

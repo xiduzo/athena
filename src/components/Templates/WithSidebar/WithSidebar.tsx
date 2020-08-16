@@ -1,18 +1,17 @@
-import React, { FC, useState } from 'react'
 import {
   Box,
-  makeStyles,
-  Theme,
   Container,
   Drawer,
   Grid,
-  Typography,
   Hidden,
   IconButton,
+  makeStyles,
+  Theme,
+  Typography,
 } from '@material-ui/core'
+import React, { FC, useEffect, useState } from 'react'
 import { useWidth } from 'src/common/hooks'
 import { ToolbarSpacer } from 'src/components'
-import FilterListIcon from '@material-ui/icons/FilterList'
 
 const drawerWidth = 20
 const useStyles = makeStyles((theme: Theme) => ({
@@ -70,6 +69,10 @@ export const WithSidebar: FC<WithSidebarProps> = (props) => {
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   const toggleDrawer = () => setDrawerOpen(!drawerOpen)
+
+  useEffect(() => {
+    if (['xs', 'sm'].indexOf(width) === -1) setDrawerOpen(false)
+  }, [width])
 
   return (
     <Box className={classes.wrapper}>

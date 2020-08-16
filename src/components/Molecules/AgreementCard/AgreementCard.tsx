@@ -1,5 +1,6 @@
 import { Avatar, CardContent, CardHeader, makeStyles, Theme, Typography } from '@material-ui/core'
 import React, { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import { getTranslation } from 'src/common/utils'
 import { AgreementIcon, ClickableCard, IClickableCard } from 'src/components'
 import { IAgreement } from 'src/lib/interfaces'
@@ -43,8 +44,13 @@ export const AgreementCardClasses = makeStyles((theme: Theme) => ({
   },
 }))
 
-export const AgreementCard: FC<IAgreementCard> = ({ agreement, onLeftClick, onRightClickItems }) => {
+export const AgreementCard: FC<IAgreementCard> = ({
+  agreement,
+  onLeftClick,
+  onRightClickItems,
+}) => {
   const classes = AgreementCardClasses()
+  const { t } = useTranslation()
 
   return (
     <ClickableCard
@@ -62,7 +68,7 @@ export const AgreementCard: FC<IAgreementCard> = ({ agreement, onLeftClick, onRi
           />
           <CardContent className={classes.cardContent}>
             <Typography variant='caption' color='textSecondary' gutterBottom>
-              The student
+              {t('theStudent')}
             </Typography>
             <Typography variant='subtitle1'>{getTranslation(agreement.translations)}</Typography>
           </CardContent>

@@ -188,7 +188,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
                       />
                       <FormControlLabel
                         inputRef={register}
-                        value={`${AgreementType.FUNCTIONING_WITHING_TEAM}`}
+                        value={`${AgreementType.FUNCTIONING_WITHIN_TEAM}`}
                         control={<Radio />}
                         label='Functioning'
                       />

@@ -29,6 +29,7 @@ import { DispatchAction, GlobalActions, IRootReducer } from 'src/common/redux'
 import { Avataaar } from 'src/components'
 import { AthenaIcon } from 'src/lib/icons'
 import { ISquad, ITribe } from 'src/lib/interfaces'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -64,6 +65,7 @@ export const AppBar: FC = () => {
   const classes = useStyles()
   const width = useWidth()
   const history = useHistory()
+  const { t } = useTranslation()
   const { setCredentials, setSession, userInfo, setUserInfo } = useAuth()
 
   const [anchorEl, setAnchorEl] = useState(null)
@@ -171,7 +173,7 @@ export const AppBar: FC = () => {
           </IconButton>
         ) : (
           <Fragment>
-            <IconButton name={`Goto home`} className={classes.icon} onClick={() => gotoRoute(`/`)}>
+            <IconButton name={`Home`} className={classes.icon} onClick={() => gotoRoute(`/`)}>
               <Icon component={AthenaIcon} />
             </IconButton>
             <Typography variant='h6' className={classes.title}>
@@ -254,13 +256,13 @@ export const AppBar: FC = () => {
                 <Typography>{data.User[0].displayName}</Typography>
               </MenuItem>
               <MenuItem onClick={() => gotoRoute(`/user/${userInfo.id}`)}>
-                <Typography>Profile</Typography>
+                <Typography>{t('profile')}</Typography>
               </MenuItem>
               <MenuItem onClick={() => gotoRoute('/settings')}>
-                <Typography>Settings</Typography>
+                <Typography>{t('settings')}</Typography>
               </MenuItem>
               <MenuItem onClick={logout}>
-                <Typography color='error'>Logout</Typography>
+                <Typography color='error'>{t('signOut')}</Typography>
               </MenuItem>
             </Menu>
           </Fragment>

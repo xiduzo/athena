@@ -13,6 +13,7 @@ import { useWidth } from 'src/common/hooks'
 import { GET_AGREEMENTS } from 'src/common/services'
 import { getTranslation } from 'src/common/utils'
 import { IAgreement } from 'src/lib/interfaces'
+import { useTranslation } from 'react-i18next'
 
 interface IAgreementSelectorModal {
   title: string
@@ -27,6 +28,7 @@ export const AgreementSelector: FC<IAgreementSelectorModal> = ({
   onClose,
   without,
 }) => {
+  const { t } = useTranslation()
   const width = useWidth()
 
   const { loading, error, data } = useQuery(GET_AGREEMENTS, {
@@ -55,10 +57,10 @@ export const AgreementSelector: FC<IAgreementSelectorModal> = ({
     <Dialog
       open={isOpen}
       onClose={handleClose}
-      aria-labelledby='agreements selector'
+      aria-labelledby={t('agreements')}
       fullScreen={width === 'xs'}
     >
-      <DialogTitle id='agreements selector'>{title}</DialogTitle>
+      <DialogTitle id={t('agreements')}>{title}</DialogTitle>
       <DialogContent>
         {/* {subtitle && <DialogContentText>{subtitle}</DialogContentText>} */}
         <Autocomplete
@@ -81,25 +83,25 @@ export const AgreementSelector: FC<IAgreementSelectorModal> = ({
           }
           renderInput={(params) => (
             <TextField
-              label='Agreements to add'
+              label={t('agreements')}
               {...params}
               autoFocus
               id='agreement'
-              name='agreement'
+              name={t('agreement')}
               fullWidth
             />
           )}
-          clearText='[Clear text]'
-          closeText='[Close text]'
-          noOptionsText='[No options text]'
-          loadingText='[Loading text]'
-          openText='[Open text]'
+          clearText={t('clear')}
+          closeText={t('close')}
+          noOptionsText={t('noOptions')}
+          loadingText={t('cleloadingar')}
+          openText={t('open')}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleClose}>{t('cancel')}</Button>
         <Button onClick={handleSubmit} color='primary'>
-          Add
+          {t('add')}
         </Button>
       </DialogActions>
     </Dialog>
