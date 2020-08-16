@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  DialogContentText,
 } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import React, { FC, useState } from 'react'
@@ -17,6 +18,7 @@ import { useTranslation } from 'react-i18next'
 
 interface IAgreementSelectorModal {
   title: string
+  subtitle?: string
   isOpen: boolean
   without: IAgreement[]
   onClose: (agreements?: IAgreement[]) => void
@@ -24,6 +26,7 @@ interface IAgreementSelectorModal {
 
 export const AgreementSelector: FC<IAgreementSelectorModal> = ({
   title,
+  subtitle,
   isOpen,
   onClose,
   without,
@@ -59,10 +62,12 @@ export const AgreementSelector: FC<IAgreementSelectorModal> = ({
       onClose={handleClose}
       aria-labelledby={t('agreements')}
       fullScreen={width === 'xs'}
+      fullWidth
+      maxWidth={'sm'}
     >
       <DialogTitle id={t('agreements')}>{title}</DialogTitle>
       <DialogContent>
-        {/* {subtitle && <DialogContentText>{subtitle}</DialogContentText>} */}
+        {subtitle && <DialogContentText>{subtitle}</DialogContentText>}
         <Autocomplete
           id='disabled-options-demo'
           options={

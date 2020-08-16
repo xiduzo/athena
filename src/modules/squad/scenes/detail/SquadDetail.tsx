@@ -32,6 +32,7 @@ import {
 import { IAgreement, ITranslation, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
 import { UserRole } from 'src/lib/enums'
+import { useTranslation } from 'react-i18next'
 
 interface ISquadDetailParams {
   id: string
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) => {
 
 export const SquadDetail: FC = () => {
   const { id } = useParams<ISquadDetailParams>()
+  const { t } = useTranslation()
 
   const classes = useStyles()
   const history = useHistory()
@@ -267,7 +269,7 @@ export const SquadDetail: FC = () => {
                   onRightClickItems={
                     <Box>
                       <MenuItem onClick={() => removeSquadMemberHandler(user)}>
-                        <Typography color='error'>Remove member</Typography>
+                        <Typography color='error'>{t('remove')}</Typography>
                       </MenuItem>
                     </Box>
                   }
@@ -276,12 +278,15 @@ export const SquadDetail: FC = () => {
             ))}
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <UserSelector
-                title={`user modal ${data.Squad[0].name}`}
+                title={t('users')}
+                subtitle={data.Squad[0].name}
                 without={data.Squad[0].members}
                 isOpen={usersModalOpen}
                 onClose={onUserModalCloseHandler}
               />
-              <AddCard onClick={toggleUsersModal} />
+              <Show forGroups={[UserRole.Admin, UserRole.Leader]}>
+                <AddCard onClick={toggleUsersModal} />
+              </Show>
             </Grid>
             <Grid item xs={12}>
               <Typography variant={`h5`}>{`Agreements`}</Typography>
@@ -293,7 +298,7 @@ export const SquadDetail: FC = () => {
                   onRightClickItems={
                     <Box>
                       <MenuItem onClick={() => removeAgreementHandler(agreement)}>
-                        <Typography color='error'>Remove agreement</Typography>
+                        <Typography color='error'>{t('remove')}</Typography>
                       </MenuItem>
                     </Box>
                   }
@@ -302,7 +307,8 @@ export const SquadDetail: FC = () => {
             ))}
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <AgreementSelector
-                title={`Select agreements to add to ${data.Squad[0].name}`}
+                title={t('agreements')}
+                subtitle={data.Squad[0].name}
                 without={
                   data.Squad[0].agreements
                     .filter((agreement: IAgreement) => agreement.parent !== null)
@@ -316,7 +322,9 @@ export const SquadDetail: FC = () => {
                 isOpen={agreementsModalOpen}
                 onClose={onAgreementsModalCloseHandler}
               />
-              <AddCard onClick={toggleAgreementsModal} />
+              <Show forGroups={[UserRole.Admin, UserRole.Leader]}>
+                <AddCard onClick={toggleAgreementsModal} />
+              </Show>
             </Grid>
             <Show forGroups={[UserRole.Admin, UserRole.Leader]}>
               <Grid item xs={12}>

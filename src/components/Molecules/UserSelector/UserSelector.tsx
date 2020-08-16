@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  DialogContentText,
 } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import gql from 'graphql-tag'
@@ -16,12 +17,13 @@ import { useTranslation } from 'react-i18next'
 
 interface IUserSelector {
   title: string
+  subtitle?: string
   isOpen: boolean
   without: IUser[]
   onClose: (users?: IUser[]) => void
 }
 
-export const UserSelector: FC<IUserSelector> = ({ title, isOpen, onClose, without }) => {
+export const UserSelector: FC<IUserSelector> = ({ title, subtitle, isOpen, onClose, without }) => {
   const width = useWidth()
   const { t } = useTranslation()
 
@@ -56,10 +58,12 @@ export const UserSelector: FC<IUserSelector> = ({ title, isOpen, onClose, withou
       onClose={handleClose}
       aria-labelledby={t('user')}
       fullScreen={width === 'xs'}
+      fullWidth
+      maxWidth={'sm'}
     >
       <DialogTitle id={t('user')}>{title}</DialogTitle>
       <DialogContent>
-        {/* {subtitle && <DialogContentText>{subtitle}</DialogContentText>} */}
+        {subtitle && <DialogContentText>{subtitle}</DialogContentText>}
         <Autocomplete
           id='disabled-options-demo'
           options={
@@ -77,7 +81,7 @@ export const UserSelector: FC<IUserSelector> = ({ title, isOpen, onClose, withou
             usersToAdd.find((u) => u.id === user.id) ? true : false
           }
           renderInput={(params) => (
-            <TextField label='Users to add' {...params} autoFocus name='user' fullWidth />
+            <TextField label={t('users')} {...params} autoFocus name='user' fullWidth />
           )}
           clearText={t('clear')}
           closeText={t('close')}
