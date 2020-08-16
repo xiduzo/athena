@@ -1,19 +1,30 @@
-import { Card, CardActionArea, Menu } from '@material-ui/core'
+import { Card, CardActionArea, Menu, CardProps, makeStyles, Theme } from '@material-ui/core'
 import React, { FC, useState } from 'react'
 import { NumberOrNull } from 'src/lib/types'
 import { IMousePosition } from 'src/lib/interfaces'
+import clsx from 'clsx'
 
-export interface IClickableCard {
+export interface IClickableCard extends CardProps {
   onLeftClick?: () => void
   onRightClickItems?: React.ReactElement
   cardContent?: JSX.Element
 }
+
+const useStyles = makeStyles((theme: Theme) => ({
+  noLeftClick: {
+    '& .MuiCardActionArea-focusHighlight': {
+      background: `${theme.palette.background.paper} !important`,
+    },
+  },
+}))
 
 export const ClickableCard: FC<IClickableCard> = ({
   onLeftClick,
   onRightClickItems,
   cardContent,
 }) => {
+  const classes = useStyles()
+
   const [mousePos, setMousePos] = useState<IMousePosition>({
     x: null,
     y: null,
@@ -94,5 +105,13 @@ export const ClickableCard: FC<IClickableCard> = ({
     return renderBothClicks()
   }
 
-  return <Card>{onLeftClick || onRightClickItems ? renderWithAction() : cardContent}</Card>
+  return (
+    <Card
+      className={clsx({
+        [classes.noLeftClick]: !onLeftClick,
+      })}
+    >
+      {onLeftClick || onRightClickItems ? renderWithAction() : cardContent}
+    </Card>
+  )
 }

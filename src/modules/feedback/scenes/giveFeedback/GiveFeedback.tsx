@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { Box, Container, Grid, makeStyles, Theme, Typography } from '@material-ui/core'
 import { Pagination } from '@material-ui/lab'
-import React, { FC, Fragment, useState } from 'react'
+import React, { FC, Fragment, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { useWidth } from 'src/common/hooks'
@@ -14,6 +14,7 @@ import { IAgreement, IFeedback, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { UserAverageRating } from './components/UserAverageRating'
+import { getWeek } from 'src/common/utils/helpers/getWeek'
 
 interface IGiveFeedbackRoute {}
 
@@ -36,15 +37,14 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
 
   const globalState = useSelector<IRootReducer, IGlobalState>((state: IRootReducer) => state.global)
 
-  const maxWeek = 10
-  const [currentWeek] = useState<number>(maxWeek) // TODO: use tribe current week
-  const [selectedWeek, setSelectedWeek] = useState<number>(currentWeek)
+  const currentWeek = useRef(getWeek())
+  const [selectedWeek, setSelectedWeek] = useState<number>(currentWeek.current)
 
   const { data, error, loading, refetch } = useQuery<IGiveFeedbackData, IGiveFeedbackDataVariables>(
     USER_FEEDBACK,
     {
       variables: {
-        userId: userInfo ? userInfo.id : '', // todo, add user info to global state instead of auth?
+        userId: userInfo?.id ?? '',
         squadId: globalState.selectedSquad,
       },
     }
@@ -62,10 +62,10 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
     <Pagination
       onChange={handleWeekChange}
       color={'primary'}
-      count={10}
+      count={54}
       siblingCount={width === 'xs' ? 0 : 1}
       boundaryCount={1}
-      defaultPage={currentWeek}
+      defaultPage={currentWeek.current}
       page={selectedWeek}
       showFirstButton={width !== 'xs'}
       showLastButton={width !== 'xs'}
@@ -85,7 +85,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
         toUserId: user.id,
         fromUserId: userInfo.id,
         agreementId: agreement.id,
-        feedbackId: myFeedback ? myFeedback.id : uuid(),
+        feedbackId: myFeedback?.id ?? uuid(),
         rating: value,
         weekNum: selectedWeek,
       },
@@ -121,8 +121,8 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
                   <UserAverageRating
                     key={user.id}
                     user={user}
-                    currentWeek={currentWeek}
-                    agreements={data.User[0].squads[0].agreements}
+                    currentWeek={currentWeek.current}
+                    agreements={data.User[0]?.squads[0]?.agreements ?? []}
                   />
                 ))}
             <Grid
@@ -151,9 +151,11 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
                   <FeedbackPanel
                     key={agreement.id}
                     agreement={agreement}
-                    isCurrentWeek={selectedWeek === currentWeek}
+                    isCurrentWeek={selectedWeek === currentWeek.current}
                     selectedWeek={selectedWeek}
-                    members={data.User[0].squads[0].members.filter((m) => m.id !== userInfo.id)}
+                    members={
+                      data.User[0]?.squads[0]?.members.filter((m) => m.id !== userInfo.id) ?? []
+                    }
                     callback={giveFeedback}
                   />
                 ))}

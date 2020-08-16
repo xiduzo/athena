@@ -13,7 +13,7 @@ export const AgreementCardClasses = makeStyles((theme: Theme) => ({
   agreementAvatar: {
     background: 'none',
     '& svg': {
-      fill: theme.palette.secondary.contrastText,
+      fill: theme.palette.primary.contrastText,
     },
   },
   card: {
@@ -26,7 +26,7 @@ export const AgreementCardClasses = makeStyles((theme: Theme) => ({
   },
   cardHeader: {
     padding: theme.spacing(3.5, 1),
-    background: theme.palette.secondary.main,
+    background: theme.palette.primary.main,
     '& > *': {
       margin: '0',
     },

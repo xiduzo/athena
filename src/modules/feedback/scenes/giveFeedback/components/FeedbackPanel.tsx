@@ -68,11 +68,7 @@ export const FeedbackPanel: FC<IFeedbackPanel> = ({
     callback(myFeedback, value, user, agreement)
   }
 
-  const feedbackGivenThisWeek: number = getFeedbackGivenThisWeek(
-    agreement,
-    userInfo.id,
-    selectedWeek
-  )
+  const feedbackGivenThisWeek = getFeedbackGivenThisWeek(agreement, userInfo.id)
 
   useEffect(() => {
     setIsExpanded(feedbackGivenThisWeek < members.length)
@@ -95,7 +91,7 @@ export const FeedbackPanel: FC<IFeedbackPanel> = ({
       <ExpansionPanelDetails>
         <Grid container spacing={2}>
           {members.map((user: IUser) => {
-            const myFeedback = getMyFeedback(agreement, selectedWeek, user)
+            const myFeedback = getMyFeedback(agreement, user, selectedWeek)
 
             return (
               <Grid
@@ -119,7 +115,7 @@ export const FeedbackPanel: FC<IFeedbackPanel> = ({
                   max={4}
                   name={`${user.id}-${agreement.id}`}
                   size='large'
-                  value={myFeedback ? myFeedback.rating : null}
+                  value={myFeedback?.rating ?? null}
                   precision={0.5}
                   onChange={(_: React.ChangeEvent<{}>, value: number | null) =>
                     giveFeedback(myFeedback, value, user, agreement)

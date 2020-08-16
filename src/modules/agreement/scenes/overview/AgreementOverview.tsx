@@ -185,7 +185,7 @@ export const AgreementOverview: FC = () => {
                   onRightClickItems={
                     <Box>
                       <MenuItem onClick={() => removeAgreementHandler(agreement)}>
-                        <Typography color='error'>Remove agreement</Typography>
+                        <Typography color='error'>{t('remove')}</Typography>
                       </MenuItem>
                     </Box>
                   }
