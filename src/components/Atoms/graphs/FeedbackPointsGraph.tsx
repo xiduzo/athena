@@ -38,6 +38,7 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
       feedbackByWeek: groupBy(feedback, (f) => f.weekNum),
     }))
 
+    // todo: this foreach should be put into util function
     data.forEach((line) => {
       const feedbackArray = Array.from(line.feedbackByWeek.entries())
 
