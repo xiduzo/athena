@@ -39,51 +39,44 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
     }))
 
     data.forEach((line) => {
-      console.log(line.userId, line.feedbackByWeek.entries())
+      const feedbackArray = Array.from(line.feedbackByWeek.entries())
+
+      const data = feedbackArray.reduce((total, [weekNum, feedback]) => {
+        total[weekNum] = feedback.reduce((sum, f) => sum + f.rating * f.agreement.points, 0)
+        return total
+      }, [] as number[])
+
+      const normalizedData = sumArrays(
+        Array.from({ length: data.length }).map((x) => 0),
+        data
+      )
+      console.log(normalizedData)
+      if (normalizedData.length >= minLengthNeededForPrediction) {
+        const predictionSliceSize = Math.min(maxPredictionLookBack, normalizedData.length)
+        const regressionLine = regression.linear(
+          normalizedData
+            .slice(normalizedData.length - predictionSliceSize, normalizedData.length)
+            .map((val, index) => [index, val])
+        )
+        const prediction = regressionLine.predict(normalizedData.length)
+        normalizedData.push(prediction[1])
+      }
+
       lineData.push({
         id: line.userId,
         name: line.userId === userInfo.id ? userInfo.displayName : line.userId,
-        data: [1, 3, 4, 5, 6, 7, 8, 9],
+        data: normalizedData,
         zones: [
           {
-            value: 5 >= minLengthNeededForPrediction ? 5 - 1 : 5,
+            value:
+              normalizedData.length >= minLengthNeededForPrediction
+                ? normalizedData.length - 2
+                : normalizedData.length,
             dashStyle: 'Solid',
           },
         ],
       })
     })
-
-    // const dataSize = usersLineData.size
-    // console.log(dataSize)
-    // for (var userId in usersLineData) {
-    //   console.log(userId, usersLineData[userId])
-    //   const _lineData = usersLineData[userId] as number[]
-
-    //   if (dataSize >= minLengthNeededForPrediction) {
-    //     const predictionSliceSize = Math.min(maxPredictionLookBack, dataSize)
-    //     const regressionLine = regression.linear(
-    //       _lineData
-    //         .slice(dataSize - predictionSliceSize, dataSize)
-    //         .map((val, index) => [index, val])
-    //     )
-
-    //     _lineData.push(regressionLine.predict(dataSize)[1])
-    //   }
-
-    // lineData.push({
-    //   id: userId,
-    //   name: userId === userInfo.id ? userInfo.displayName : userId,
-    //   data: sumArrays(Array.from({ length: 53 }).fill(0) as number[], _lineData),
-    //   zones: [
-    //     {
-    //       value: dataSize >= minLengthNeededForPrediction ? dataSize - 1 : dataSize,
-    //       dashStyle: 'Solid',
-    //     },
-    //   ],
-    // })
-    // }
-
-    // console.log(lineData)
 
     const maxPointsPerWeek = getMaxPointsPerWeek(agreements, lineData.length)
     const averageScores = getAverageLineData(lineData).map((x) => asPercentage(x, maxPointsPerWeek))
@@ -92,7 +85,7 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
     const graphOptions = getFeedbackPointsOptions(
       averageScores,
       lineData,
-      showAll,
+      true,
       userInfo,
       maxPointsPerWeek,
       minLengthNeededForPrediction

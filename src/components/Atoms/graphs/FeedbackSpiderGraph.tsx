@@ -55,7 +55,6 @@ export const FeedbackSpiderGraph: FC<IFeedbackSpiderGraph> = (props) => {
         ) // Todo get max week of tribe
       }),
     ]
-    console.log(lineData, maxPointsPerWeek)
     const averageScores: number[] = getAverageLineData(lineData).map((x, index) =>
       asPercentage(x, maxPointsPerWeek[index])
     )

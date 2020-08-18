@@ -34,7 +34,7 @@ export const getFeedbackPointsOptions = (
     ],
     tooltip: {
       formatter: function (): any {
-        let header = `<strong>Sprint ${(this as any).x + 1}</strong>`
+        let header = `<strong>Week ${(this as any).x}</strong>`
 
         if (hasPrediction && (this as any).x >= averageScores.length - 1) {
           header += ` <italic>(prediction)<italic>`
