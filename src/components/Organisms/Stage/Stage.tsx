@@ -1,18 +1,22 @@
-import { Container, makeStyles, Theme } from '@material-ui/core'
+import { Box, makeStyles, Theme } from '@material-ui/core'
+import { blue } from '@material-ui/core/colors'
 import React, { FC, Suspense, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAuth } from 'src/common/providers'
-import { AppBar, MenuDrawer, Routes, ToolbarSpacer } from 'src/components'
+import { MenuDrawer, Routes, ToolbarSpacer } from 'src/components'
 
-const useStyles = makeStyles((_: Theme) => {
+const useStyles = makeStyles((theme: Theme) => {
   return {
-    content: {
+    main: {
       flexGrow: 1,
-      minHeight: `100vh`,
+      height: `100vh`,
+      borderRadius: theme.spacing(3, 0, 0, 3),
+      background: blue[50],
+      boxShadow: theme.shadows[4],
+      zIndex: theme.zIndex.drawer + 1,
     },
     root: {
       display: 'flex',
-      padding: 0,
     },
   }
 })
@@ -30,17 +34,14 @@ export const Stage: FC = () => {
   }, [session, credentials, history])
 
   return (
-    <Container maxWidth={false} className={classes.root}>
+    <Box className={classes.root}>
       <Suspense fallback={'loading'}>
-        <AppBar />
         {session && credentials && <MenuDrawer />}
-        <main className={classes.content}>
-          {/* TODO: add breadcrumbs? */}
-          <ToolbarSpacer xsDown />
+        <main className={classes.main}>
           <Routes />
           <ToolbarSpacer smUp />
         </main>
       </Suspense>
-    </Container>
+    </Box>
   )
 }

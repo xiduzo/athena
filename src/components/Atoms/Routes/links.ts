@@ -1,10 +1,10 @@
-import BubbleChartIcon from '@material-ui/icons/BubbleChart'
-import DashboardIcon from '@material-ui/icons/Dashboard'
-import DialpadIcon from '@material-ui/icons/Dialpad'
+import BubbleChartOutlinedIcon from '@material-ui/icons/BubbleChartOutlined'
+import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined'
+import DialpadOutlinedIcon from '@material-ui/icons/DialpadOutlined'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import FeedbackIcon from '@material-ui/icons/Feedback'
-import MenuBookIcon from '@material-ui/icons/MenuBook'
-import PeopleIcon from '@material-ui/icons/People'
+import FeedbackOutlinedIcon from '@material-ui/icons/FeedbackOutlined'
+import MenuBookOutlinedIcon from '@material-ui/icons/MenuBookOutlined'
+import GroupOutlinedIcon from '@material-ui/icons/GroupOutlined'
 import { UserRole } from 'src/lib/enums'
 import { IRoute } from 'src/lib/interfaces'
 import { AgreementOverview } from 'src/modules/agreement/scenes/overview'
@@ -24,7 +24,7 @@ export const routes: IRoute[] = [
   {
     name: 'home',
     path: '/',
-    icon: FeedbackIcon,
+    icon: FeedbackOutlinedIcon,
     component: Home,
     private: true,
     exact: true,
@@ -54,7 +54,7 @@ export const routes: IRoute[] = [
   {
     name: 'agreements',
     path: '/agreement',
-    icon: MenuBookIcon,
+    icon: MenuBookOutlinedIcon,
     component: AgreementOverview,
     private: true,
     exact: true,
@@ -64,7 +64,7 @@ export const routes: IRoute[] = [
   {
     name: 'users',
     path: '/user',
-    icon: PeopleIcon,
+    icon: GroupOutlinedIcon,
     component: UserOverview,
     private: true,
     exact: true,
@@ -74,7 +74,7 @@ export const routes: IRoute[] = [
   {
     name: 'userDetail',
     path: '/user/:id',
-    icon: PeopleIcon,
+    icon: GroupOutlinedIcon,
     component: UserDetailRoute,
     private: true,
     exact: false,
@@ -84,7 +84,7 @@ export const routes: IRoute[] = [
   {
     name: 'dashboard',
     path: '/member/dashboard',
-    icon: DashboardIcon,
+    icon: DashboardOutlinedIcon,
     component: MemberDashboard,
     private: true,
     exact: true,
@@ -94,7 +94,7 @@ export const routes: IRoute[] = [
   {
     name: 'feedback',
     path: '/member/feedback',
-    icon: FeedbackIcon,
+    icon: FeedbackOutlinedIcon,
     component: GiveFeedback,
     private: true,
     exact: true,
@@ -104,7 +104,7 @@ export const routes: IRoute[] = [
   {
     name: 'tribes',
     path: '/tribe',
-    icon: DialpadIcon,
+    icon: DialpadOutlinedIcon,
     component: TribeOverview,
     private: true,
     exact: true,
@@ -114,7 +114,7 @@ export const routes: IRoute[] = [
   {
     name: 'tribeDetail',
     path: '/tribe/:id',
-    icon: DialpadIcon,
+    icon: DialpadOutlinedIcon,
     component: TribeDetail,
     private: true,
     exact: false,
@@ -124,7 +124,7 @@ export const routes: IRoute[] = [
   {
     name: 'squads',
     path: '/squad',
-    icon: BubbleChartIcon,
+    icon: BubbleChartOutlinedIcon,
     component: SquadOverview,
     private: true,
     exact: true,
@@ -134,7 +134,7 @@ export const routes: IRoute[] = [
   {
     name: 'squadDetail',
     path: '/squad/:id',
-    icon: BubbleChartIcon,
+    icon: BubbleChartOutlinedIcon,
     component: SquadDetail,
     private: true,
     exact: false,

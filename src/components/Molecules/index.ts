@@ -1,6 +1,6 @@
 export * from './AgreementCard'
 export * from './AgreementSelector'
-export * from './AppBar'
+export * from './ContentHeader'
 export * from './ClickableCard'
 export * from './EmptyState'
 export * from './MenuDrawer'

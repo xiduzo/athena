@@ -1,80 +1,38 @@
 import { makeStyles } from '@material-ui/styles'
 
 import { Theme } from '@material-ui/core'
-import { fade } from '@material-ui/core/styles'
-
-const drawerWidth = 240
 
 export const useStyles = makeStyles((theme: Theme) => {
   return {
     drawer: {
-      width: drawerWidth,
+      width: `66px`,
+      border: `none`,
       flexShrink: 0,
       whiteSpace: 'nowrap',
       [theme.breakpoints.only('xs')]: {
         width: `75vw`,
       },
     },
-    drawerOpen: {
-      width: drawerWidth,
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+    paper: {
+      border: `none`,
+      width: `inherit`,
+      overflow: `hidden`,
       [theme.breakpoints.only('xs')]: {
-        width: `75vw`,
-      },
-    },
-    drawerClose: {
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      overflowX: 'hidden',
-      width: theme.spacing(7) + 1,
-      [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9) + 1,
-      },
-    },
-    ListItemIcon: {
-      paddingLeft: theme.spacing(1),
-    },
-    flex: {
-      flexGrow: 1,
-      overflow: 'hidden',
-      overflowY: 'scroll',
-      overflowX: 'hidden',
-      height: 'inherit',
-      maxHeight: '100vh',
-      '&::-webkit-scrollbar': {
-        display: 'none',
-      },
-    },
-    flexList: {
-      height: 'inherit',
-      display: 'flex',
-      flexDirection: 'column',
-      [theme.breakpoints.only('xs')]: {
-        justifyContent: 'flex-end',
+        justifyContent: `flex-end`,
       },
     },
     drawerToggleButton: {
       display: 'flex',
       justifyContent: 'flex-end',
     },
-    drawerToggleButtonIcon: {
-      minWidth: 0,
-      transform: 'rotate(-90deg)',
-    },
     navLink: {
-      borderRight: '2px solid transparent',
+      borderLeft: '4px solid transparent',
       transition: theme.transitions.create(['borderColor', 'background'], {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
       '&.active': {
         borderColor: theme.palette.primary.main,
-        background: fade(theme.palette.primary.main, 0.25),
       },
       '&:not(.active):hover': {
         borderColor: theme.palette.grey[300],

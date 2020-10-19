@@ -2,44 +2,41 @@ import {
   Box,
   Container,
   Drawer,
-  Grid,
+  Fab,
   Hidden,
   IconButton,
   makeStyles,
   Theme,
   Typography,
+  Zoom,
 } from '@material-ui/core'
 import React, { FC, useEffect, useState } from 'react'
 import { useWidth } from 'src/common/hooks'
-import { ToolbarSpacer } from 'src/components'
+import { ContentHeader } from 'src/components'
 
 const drawerWidth = 20
 const useStyles = makeStyles((theme: Theme) => ({
   drawer: {
     width: `${drawerWidth}vw`,
     padding: theme.spacing(2),
+    border: 'none',
+    borderRadius: theme.spacing(3, 0, 0, 3),
+    boxShadow: theme.shadows[2],
     [theme.breakpoints.only('sm')]: {
-      width: `${drawerWidth * 2}vw`,
+      width: `40vw`,
     },
     [theme.breakpoints.only('xs')]: {
-      width: `${drawerWidth * 3.5}vw`,
+      width: `75vw`,
     },
+  },
+  mainContent: {
+    flexGrow: 1,
   },
   fab: {
     position: 'fixed',
     bottom: 0,
     right: 0,
     margin: theme.spacing(2),
-    zIndex: theme.zIndex.mobileStepper,
-    [theme.breakpoints.up('md')]: {
-      right: drawerWidth,
-    },
-    [theme.breakpoints.down('xs')]: {
-      marginBottom: (theme.mixins.toolbar.minHeight as number) + theme.spacing(2),
-    },
-  },
-  root: {
-    padding: theme.spacing(2, 3),
   },
   toolbar: {
     ...theme.mixins.toolbar,
@@ -58,13 +55,18 @@ interface WithSidebarProps {
   mainContent: JSX.Element
   drawerIcon: JSX.Element
   title: string
+  action?: {
+    title: string
+    event: () => void
+    icon: JSX.Element
+  }
 }
 
 export const WithSidebar: FC<WithSidebarProps> = (props) => {
   const classes = useStyles()
   const width = useWidth()
 
-  const { drawerContent, mainContent, title, drawerIcon } = props
+  const { drawerContent, mainContent, title, drawerIcon, action } = props
 
   const [drawerOpen, setDrawerOpen] = useState(false)
 
@@ -76,19 +78,29 @@ export const WithSidebar: FC<WithSidebarProps> = (props) => {
 
   return (
     <Box className={classes.wrapper}>
-      <Container maxWidth='lg' className={classes.root}>
-        <Grid container spacing={2}>
-          <Grid item container justify={`space-between`} alignItems={`center`} xs={12}>
+      {action && (
+        <Hidden mdUp={true}>
+          <Zoom in>
+            <Fab color='primary' onClick={action.event} className={classes.fab}>
+              {action.icon}
+            </Fab>
+          </Zoom>
+        </Hidden>
+      )}
+      <Box className={classes.mainContent}>
+        <ContentHeader />
+        <Container maxWidth='lg'>
+          <Box display={'flex'} justifyContent={`space-between`} pb={3}>
             <Typography variant='h4'>{title}</Typography>
             <Hidden mdUp={true}>
               <IconButton aria-label='filter' onClick={toggleDrawer}>
                 {drawerIcon}
               </IconButton>
             </Hidden>
-          </Grid>
+          </Box>
           {mainContent}
-        </Grid>
-      </Container>
+        </Container>
+      </Box>
       <Drawer
         variant={['xs', 'sm'].indexOf(width) > -1 ? 'temporary' : 'permanent'}
         anchor='right'
@@ -99,7 +111,6 @@ export const WithSidebar: FC<WithSidebarProps> = (props) => {
         }}
         onClose={toggleDrawer}
       >
-        <ToolbarSpacer smDown />
         {drawerContent}
       </Drawer>
     </Box>

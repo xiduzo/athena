@@ -1,10 +1,32 @@
 import { getLocalItem, formatDate } from 'src/common/utils'
 import { useMediaQuery } from '@material-ui/core'
-import { amber as primaryColor, deepPurple, grey as secondaryColor, lime, pink, teal } from '@material-ui/core/colors'
-import { createMuiTheme, darken, fade, lighten, MuiThemeProvider, Theme } from '@material-ui/core/styles'
+import {
+  deepPurple as primaryColor,
+  deepPurple,
+  grey as secondaryColor,
+  lime,
+  pink,
+  teal,
+} from '@material-ui/core/colors'
+import {
+  createMuiTheme,
+  darken,
+  fade,
+  lighten,
+  MuiThemeProvider,
+  Theme,
+} from '@material-ui/core/styles'
 import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
 import * as Highcharts from 'highcharts'
-import React, { createContext, FC, ReactNode, useCallback, useContext, useEffect, useState } from 'react'
+import React, {
+  createContext,
+  FC,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { useDispatch } from 'react-redux'
 import { DispatchAction, GlobalActions, IGlobalState } from 'src/common/redux'
 import { isNull } from 'util'
@@ -16,7 +38,7 @@ interface IThemeContext {
 
 type ThemeType = 'dark' | 'light'
 const localValue = getLocalItem<IGlobalState>(`IGlobalState`)
-const localThemeType = !isNull(localValue) ? localValue.themeType as ThemeType : undefined
+const localThemeType = !isNull(localValue) ? (localValue.themeType as ThemeType) : undefined
 
 const initialTheme: ThemeOptions = {
   palette: {
@@ -266,7 +288,7 @@ const generateHighchartsTheme = (theme: Theme): Highcharts.Options => {
 }
 
 const useThemeHandler = () => {
-  const [ theme, setNewTheme ] = useState<ThemeOptions>(initialTheme)
+  const [theme, setNewTheme] = useState<ThemeOptions>(initialTheme)
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
@@ -287,7 +309,7 @@ const useThemeHandler = () => {
       // Highcharts
       setHighChart(generateTheme(newTheme))
     },
-    [ dispatch ]
+    [dispatch]
   )
 
   const setHighChart = (generatedTheme: Theme) => {
@@ -307,7 +329,7 @@ const useThemeHandler = () => {
       })
     },
     // eslint-disable-next-line
-    [ prefersDarkMode, setTheme ] // TODO fix the inclusion of theme.palette
+    [prefersDarkMode, setTheme] // TODO fix the inclusion of theme.palette
   )
 
   return { theme, setTheme, setHighChart }

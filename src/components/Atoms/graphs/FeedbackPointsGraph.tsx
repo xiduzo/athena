@@ -5,16 +5,15 @@ import React, { FC, useMemo, useState } from 'react'
 import regression from 'regression'
 import { useAuth } from 'src/common/providers'
 import {
-  getAverageLineData,
-  getMaxPointsPerWeek,
   asPercentage,
+  getAverageLineData,
   getFeedbackByUser,
-  sumArrays,
+  getMaxPointsPerWeek,
   groupBy,
+  sumArrays,
 } from 'src/common/utils'
 import { IAgreement } from 'src/lib/interfaces'
 import { getFeedbackPointsOptions, ILineData } from './feedbackPointsOptions'
-import { getWeek } from 'src/common/utils/helpers/getWeek'
 
 interface IFeedbackPointsGraph {
   agreements: IAgreement[]
@@ -86,7 +85,7 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
     const graphOptions = getFeedbackPointsOptions(
       averageScores,
       lineData,
-      true,
+      showAll,
       userInfo,
       maxPointsPerWeek,
       minLengthNeededForPrediction

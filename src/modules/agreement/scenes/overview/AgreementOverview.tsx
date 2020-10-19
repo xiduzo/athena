@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
+  Hidden,
   makeStyles,
   MenuItem,
   Radio,
@@ -147,18 +148,13 @@ export const AgreementOverview: FC = () => {
   return (
     <WithSidebar
       title={t('agreements')}
+      action={{
+        icon: <AddIcon />,
+        event: toggleModal,
+        title: t('agreementNew'),
+      }}
       mainContent={
-        <Fragment>
-          <Zoom in={!loading && !error}>
-            <Fab
-              color='primary'
-              aria-label={t('agreementNew')}
-              className={classes.fab}
-              onClick={toggleModal}
-            >
-              <AddIcon />
-            </Fab>
-          </Zoom>
+        <Grid container spacing={2}>
           <NewAgreementModal isOpen={modalOpen} onClose={closeNewAgreementModalHandle} />
           {loading ? (
             [...Array(12)].map((_, index: number) => (
@@ -169,7 +165,7 @@ export const AgreementOverview: FC = () => {
           ) : error ? (
             <div>{error.message}</div>
           ) : !data.Agreement.length ? (
-            <Grid item={true} xs={12}>
+            <Grid item xs={12}>
               <EmptyState
                 title={t('agreementsNotFound')}
                 image={<Illustration type={IllustrationType.Empty} />}
@@ -191,7 +187,7 @@ export const AgreementOverview: FC = () => {
               </Grid>
             ))
           )}
-        </Fragment>
+        </Grid>
       }
       drawerIcon={<FilterListIcon />}
       drawerContent={
