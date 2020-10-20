@@ -1,9 +1,9 @@
 import { getLocalItem, formatDate } from 'src/common/utils'
 import { useMediaQuery } from '@material-ui/core'
 import {
-  amber as primaryColor,
+  deepPurple as primaryColor,
   deepPurple,
-  grey as secondaryColor,
+  amber as secondaryColor,
   lime,
   pink,
   teal,

@@ -18,9 +18,16 @@ import React, { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { CREATE_TRIBE } from 'src/common/services'
-import { generalCatchHandler, snackbarWrapper } from 'src/common/utils'
+import {
+  formatDate,
+  generalCatchHandler,
+  getNeo4jDateObject,
+  snackbarWrapper,
+} from 'src/common/utils'
 import { IModalBase, ITribe } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
+import { KeyboardDatePicker } from '@material-ui/pickers'
+import { DateTime } from 'luxon'
 
 interface INewTribeModal extends IModalBase {}
 
@@ -36,7 +43,7 @@ export const NewTribeModal: FC<INewTribeModal> = ({ isOpen, onClose }) => {
   const { t } = useTranslation()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-
+  const [selectedDate, handleDateChange] = useState(new Date())
   const { register, handleSubmit, errors } = useForm()
 
   const [CreateTribe] = useMutation(CREATE_TRIBE)
@@ -52,7 +59,9 @@ export const NewTribeModal: FC<INewTribeModal> = ({ isOpen, onClose }) => {
     const tribe = {
       ...data,
       id: uuid(),
-    }
+      start: getNeo4jDateObject(),
+      end: getNeo4jDateObject(),
+    } as Partial<ITribe>
 
     const catchError = (error: ApolloError) => {
       hasError = !hasError
@@ -109,6 +118,17 @@ export const NewTribeModal: FC<INewTribeModal> = ({ isOpen, onClose }) => {
                 inputProps={{
                   'aria-label': 'name',
                 }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <KeyboardDatePicker
+                autoOk
+                label='Start of tribe'
+                value={selectedDate}
+                minDate={new Date()}
+                onChange={(date) => handleDateChange(date?.toJSDate() ?? new Date())}
+                format='DD/MM/YYYY'
+                orientation={'landscape'}
               />
             </Grid>
           </Grid>

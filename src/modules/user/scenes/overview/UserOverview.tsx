@@ -61,7 +61,7 @@ export const UserOverview: FC = () => {
             <Grid item xs={12}>
               <EmptyState
                 title={t('usersNotFound')}
-                image={<Illustration type={IllustrationType.Empty} />}
+                image={<Illustration type={IllustrationType.NoAgreement} />}
               />
             </Grid>
           ) : (

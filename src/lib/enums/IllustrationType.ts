@@ -1,5 +1,7 @@
 export enum IllustrationType {
-  Empty = 'Empty',
+  NoAgreement = 'NoAgreement',
+  NoTribe = 'NoTribe',
+  NoSquad = 'NoSquad',
   EmptyTwo = 'EmptyTwo',
   NotFound = 'NotFound',
   NotAuthorized = 'NotAuthorized',

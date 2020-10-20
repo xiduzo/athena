@@ -10,3 +10,16 @@ export const formatDate = (date: Date, format: string): string => {
     return jsonDate['ymdhisM'.indexOf(letter)]
   })
 }
+
+export interface neo4jDateObject {
+  year: number
+  month: number
+  day: number
+  formatted?: string
+}
+
+export const getNeo4jDateObject = (date: Date = new Date()): neo4jDateObject => ({
+  year: date.getUTCFullYear(),
+  month: date.getMonth(),
+  day: date.getDay(),
+})

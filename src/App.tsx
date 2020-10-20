@@ -1,10 +1,12 @@
 import { CssBaseline } from '@material-ui/core'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { SnackbarProvider } from 'notistack'
 import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { ApolloProvider, AuthProvider, ThemeProvider } from 'src/common/providers'
 import { SnackbarUtilsConfiguration } from 'src/common/utils'
 import { Stage } from './components'
+import LuxonUtils from '@date-io/luxon'
 
 const App: React.FC = () => {
   return (
@@ -22,7 +24,9 @@ const App: React.FC = () => {
             <SnackbarUtilsConfiguration />
             <CssBaseline />
             <Router>
-              <Stage />
+              <MuiPickersUtilsProvider utils={LuxonUtils}>
+                <Stage />
+              </MuiPickersUtilsProvider>
             </Router>
           </SnackbarProvider>
         </ThemeProvider>

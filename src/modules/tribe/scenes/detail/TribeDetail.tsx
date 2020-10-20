@@ -3,8 +3,7 @@ import { Box, Container, Grid, makeStyles, MenuItem, Theme, Typography } from '@
 import gql from 'graphql-tag'
 import React, { FC, Fragment, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import {
   ADD_TRIBE_LEADER,
   ADD_TRIBE_SQUAD,
@@ -22,8 +21,8 @@ import {
   UserCard,
   UserSelector,
 } from 'src/components'
-import { ISquad, IUser } from 'src/lib/interfaces'
 import { IllustrationType } from 'src/lib/enums'
+import { ISquad, IUser } from 'src/lib/interfaces'
 
 interface ITribeDetailParams {
   id: string

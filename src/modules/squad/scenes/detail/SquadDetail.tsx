@@ -3,7 +3,7 @@ import { Box, Container, Grid, makeStyles, MenuItem, Theme, Typography } from '@
 import { ApolloError } from 'apollo-errors'
 import gql from 'graphql-tag'
 import React, { FC, useState } from 'react'
-import { useParams, useHistory } from 'react-router'
+import { useParams, useHistory } from 'react-router-dom'
 import {
   ADD_AGREEMENT_PARENT,
   ADD_AGREEMENT_TRANSLATION,

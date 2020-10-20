@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme: Theme) => {
       flexGrow: 1,
       display: 'flex',
       justifyContent: 'flex-end',
+      alignItems: 'center',
       '& >div': {
         display: 'flex',
         alignItems: 'center',
@@ -170,7 +171,7 @@ export const ContentHeader: FC = () => {
 
   useEffect(() => {
     if (globalState.selectedSquad) return
-    if (!data?.User[0]?.squads[0].id) return
+    if (!data?.User[0]?.squads[0]?.id) return
 
     dispatch({
       type: GlobalActions.setSelectedSquad,
@@ -180,7 +181,7 @@ export const ContentHeader: FC = () => {
 
   useEffect(() => {
     if (globalState.selectedTribe) return
-    if (!data?.User[0]?.tribes[0].id) return
+    if (!data?.User[0]?.tribes[0]?.id) return
 
     dispatch({
       type: GlobalActions.setSelectedTribe,
@@ -223,47 +224,49 @@ export const ContentHeader: FC = () => {
       ) : (
         <Box className={classes.rightContent}>
           {/* // TODO make components of this selectors */}
-          {data.User[0].tribes.length && (
-            <Box px={2}>
-              <Select
-                disabled={data.User[0].tribes.length <= 1}
-                id='tribe-select'
-                onChange={selectTribe}
-                value={globalState.selectedTribe}
-                startAdornment={
-                  <InputAdornment position='start'>
-                    <DialpadIcon />
-                  </InputAdornment>
-                }
-              >
-                {data.User[0].tribes.map((tribe: ITribe) => (
-                  <MenuItem key={tribe.id} value={tribe.id}>
-                    {tribe.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Box>
+          {data.User[0]?.tribes?.length ? (
+            <Select
+              disabled={data.User[0].tribes.length <= 1}
+              id='tribe-select'
+              onChange={selectTribe}
+              value={globalState.selectedTribe}
+              startAdornment={
+                <InputAdornment position='start'>
+                  <DialpadIcon />
+                </InputAdornment>
+              }
+            >
+              {data.User[0].tribes.map((tribe: ITribe) => (
+                <MenuItem key={tribe.id} value={tribe.id}>
+                  {tribe.name}
+                </MenuItem>
+              ))}
+            </Select>
+          ) : (
+            // empty
+            <Typography>{t('tribesNotfound')}</Typography>
           )}
-          {data.User[0].squads.length && (
-            <Box px={2}>
-              <Select
-                disabled={data.User[0].squads.length <= 1}
-                id='squad-select'
-                onChange={selectSquad}
-                value={globalState.selectedSquad}
-                startAdornment={
-                  <InputAdornment position='start'>
-                    <BubbleChartIcon />
-                  </InputAdornment>
-                }
-              >
-                {data.User[0].squads.map((squad: ISquad) => (
-                  <MenuItem key={squad.id} value={squad.id}>
-                    {squad.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Box>
+          {data.User[0]?.squads?.length ? (
+            <Select
+              disabled={data.User[0].squads.length <= 1}
+              id='squad-select'
+              onChange={selectSquad}
+              value={globalState.selectedSquad}
+              startAdornment={
+                <InputAdornment position='start'>
+                  <BubbleChartIcon />
+                </InputAdornment>
+              }
+            >
+              {data.User[0].squads.map((squad: ISquad) => (
+                <MenuItem key={squad.id} value={squad.id}>
+                  {squad.name}
+                </MenuItem>
+              ))}
+            </Select>
+          ) : (
+            // empty
+            <Typography>{t('squadsNotFound')}</Typography>
           )}
           <Button onClick={openUserMenu} className={classes.menuButton}>
             <Typography className={classes.menuButtonText}>{data.User[0].displayName}</Typography>

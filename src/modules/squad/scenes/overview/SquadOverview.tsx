@@ -79,7 +79,7 @@ export const SquadOverview: FC = () => {
           <Grid item xs={12}>
             <EmptyState
               title={t('squadsNotFound')}
-              image={<Illustration type={IllustrationType.Empty} />}
+              image={<Illustration type={IllustrationType.NoSquad} />}
             />
           </Grid>
         ) : (

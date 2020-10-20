@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core'
 import gql from 'graphql-tag'
 import React, { FC, Fragment, useState } from 'react'
-import { useParams, useHistory } from 'react-router'
+import { useParams, useHistory } from 'react-router-dom'
 import { Avataaar, AvatarCreator, SquadCard } from 'src/components'
 import { useAuth } from 'src/common/providers'
 import { ISquad } from 'src/lib/interfaces'

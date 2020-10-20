@@ -138,6 +138,23 @@ export const AgreementOverview: FC = () => {
       .catch(generalCatchHandler)
   }
 
+  const mainAction = {
+    icon: <AddIcon />,
+    event: toggleModal,
+    title: t('agreementNew'),
+  }
+
+  const showEmptyState = () => (
+    <Grid item xs={12}>
+      <EmptyState
+        title={t('agreementsNotFound')}
+        subtitle={t('agreementsNotFoundSubtitle')}
+        image={<Illustration type={IllustrationType.NoAgreement} />}
+        action={mainAction}
+      />
+    </Grid>
+  )
+
   useEffect(() => {
     if (!hotkeysEnabled) return
     if (!newAgreementHotkey) return
@@ -145,14 +162,11 @@ export const AgreementOverview: FC = () => {
     setModalOpen(true)
   }, [newAgreementHotkey, hotkeysEnabled])
 
+  const filtered = data?.Agreement?.filter(createFilter(...filters)) as IAgreement[]
   return (
     <WithSidebar
       title={t('agreements')}
-      action={{
-        icon: <AddIcon />,
-        event: toggleModal,
-        title: t('agreementNew'),
-      }}
+      action={mainAction}
       mainContent={
         <Grid container spacing={2}>
           <NewAgreementModal isOpen={modalOpen} onClose={closeNewAgreementModalHandle} />
@@ -165,14 +179,9 @@ export const AgreementOverview: FC = () => {
           ) : error ? (
             <div>{error.message}</div>
           ) : !data.Agreement.length ? (
-            <Grid item xs={12}>
-              <EmptyState
-                title={t('agreementsNotFound')}
-                image={<Illustration type={IllustrationType.Empty} />}
-              />
-            </Grid>
-          ) : (
-            data.Agreement.filter(createFilter(...filters)).map((agreement: IAgreement) => (
+            showEmptyState()
+          ) : filtered.length ? (
+            filtered.map((agreement: IAgreement) => (
               <Grid key={agreement.id} item xs={12} sm={6} lg={4}>
                 <AgreementCard
                   agreement={agreement}
@@ -186,6 +195,8 @@ export const AgreementOverview: FC = () => {
                 />
               </Grid>
             ))
+          ) : (
+            showEmptyState()
           )}
         </Grid>
       }
@@ -197,7 +208,7 @@ export const AgreementOverview: FC = () => {
             {!loading && !error && data.Agreement.length && (
               <Tooltip title={`Amount of agreements left after applying filters`}>
                 <Typography variant='caption'>
-                  {data.Agreement.filter(createFilter(...filters)).length}/{data.Agreement.length}
+                  {filtered.length}/{data.Agreement.length}
                 </Typography>
               </Tooltip>
             )}

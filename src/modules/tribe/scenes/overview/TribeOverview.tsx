@@ -31,10 +31,10 @@ export const TribeOverview: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 
-  const [ modalOpen, setModalOpen ] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
 
   const hotkeysEnabled = useSelector((state: IRootReducer) => state.global.hotkeysEnabled)
-  const newTribeHotkey = and([ useHotkeys(Key.Alt), useHotkeys(Key.N) ])
+  const newTribeHotkey = and([useHotkeys(Key.Alt), useHotkeys(Key.N)])
 
   const { loading, error, data, refetch } = useQuery(gql`
     query {
@@ -50,24 +50,40 @@ export const TribeOverview: FC = () => {
 
   const navigateToTribe = (id: string) => history.push(`${location.pathname}/${id}`)
 
+  const toggleModal = () => setModalOpen(!modalOpen)
+
   const handleClose = () => {
     refetch()
     setModalOpen(!modalOpen)
   }
 
-  useEffect(
-    () => {
-      if (!hotkeysEnabled) return
-      if (!newTribeHotkey) return
+  const mainAction = {
+    icon: <AddIcon />,
+    event: toggleModal,
+    title: t('tribeNew'),
+  }
 
-      setModalOpen(true)
-    },
-    [ newTribeHotkey, hotkeysEnabled ]
+  const showEmptyState = () => (
+    <Grid item xs={12}>
+      <EmptyState
+        title={t('tribesNotfound')}
+        subtitle={t('tribesNotfoundSubtitle')}
+        image={<Illustration type={IllustrationType.NoTribe} />}
+        action={mainAction}
+      />
+    </Grid>
   )
+
+  useEffect(() => {
+    if (!hotkeysEnabled) return
+    if (!newTribeHotkey) return
+
+    setModalOpen(true)
+  }, [newTribeHotkey, hotkeysEnabled])
 
   return (
     <Container maxWidth='lg' className={classes.root}>
-      <Show forGroups={[ UserRole.Root, UserRole.Admin ]}>
+      <Show forGroups={[UserRole.Root, UserRole.Admin]}>
         <Zoom in={!loading && !error}>
           <Fab
             color='primary'
@@ -93,9 +109,7 @@ export const TribeOverview: FC = () => {
         ) : error ? (
           <div>{error.message}</div>
         ) : !data.Tribe.length ? (
-          <Grid item xs={12}>
-            <EmptyState title={t('tribesNotfound')} image={<Illustration type={IllustrationType.Empty} />} />
-          </Grid>
+          showEmptyState()
         ) : (
           data.Tribe.map((tribe: ITribe) => (
             <Grid key={tribe.id} item xs={12} sm={6} md={4} lg={3}>
