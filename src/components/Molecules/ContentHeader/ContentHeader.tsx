@@ -38,6 +38,10 @@ const useStyles = makeStyles((theme: Theme) => {
     root: {
       display: 'flex',
       padding: theme.spacing(0, 2),
+      marginBottom: theme.spacing(2),
+      position: 'sticky',
+      top: 0,
+      zIndex: theme.zIndex.appBar,
       [theme.breakpoints.down('xs')]: {
         justifyContent: 'space-between',
       },

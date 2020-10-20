@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Container,
   Drawer,
   Fab,
@@ -7,6 +8,7 @@ import {
   IconButton,
   makeStyles,
   Theme,
+  Tooltip,
   Typography,
   Zoom,
 } from '@material-ui/core'
@@ -18,16 +20,13 @@ const drawerWidth = 20
 const useStyles = makeStyles((theme: Theme) => ({
   drawer: {
     width: `${drawerWidth}vw`,
-    padding: theme.spacing(2),
+  },
+  paper: {
     border: 'none',
     borderRadius: theme.spacing(3, 0, 0, 3),
+    padding: theme.spacing(2),
+    width: `${drawerWidth}vw`,
     boxShadow: theme.shadows[2],
-    [theme.breakpoints.only('sm')]: {
-      width: `40vw`,
-    },
-    [theme.breakpoints.only('xs')]: {
-      width: `75vw`,
-    },
   },
   mainContent: {
     flexGrow: 1,
@@ -47,6 +46,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   wrapper: {
     display: 'flex',
+  },
+  title: {
+    fontWeight: theme.typography.fontWeightLight,
   },
 }))
 
@@ -81,17 +83,33 @@ export const WithSidebar: FC<WithSidebarProps> = (props) => {
       {action && (
         <Hidden mdUp={true}>
           <Zoom in>
-            <Fab color='primary' onClick={action.event} className={classes.fab}>
-              {action.icon}
-            </Fab>
+            <Tooltip title={action.title}>
+              <Fab color='primary' onClick={action.event} className={classes.fab}>
+                {action.icon}
+              </Fab>
+            </Tooltip>
           </Zoom>
         </Hidden>
       )}
       <Box className={classes.mainContent}>
         <ContentHeader />
         <Container maxWidth='lg'>
-          <Box display={'flex'} justifyContent={`space-between`} pb={3}>
-            <Typography variant='h4'>{title}</Typography>
+          <Box display={'flex'} justifyContent={`space-between`} alignItems={'center'} pb={3}>
+            <Typography variant='h5' className={classes.title}>
+              {title}
+            </Typography>
+            {action && (
+              <Hidden smDown={true}>
+                <Button
+                  color={'primary'}
+                  variant={'contained'}
+                  onClick={action.event}
+                  startIcon={action.icon}
+                >
+                  {action.title}
+                </Button>
+              </Hidden>
+            )}
             <Hidden mdUp={true}>
               <IconButton aria-label='filter' onClick={toggleDrawer}>
                 {drawerIcon}
@@ -107,7 +125,7 @@ export const WithSidebar: FC<WithSidebarProps> = (props) => {
         open={drawerOpen}
         className={classes.drawer}
         classes={{
-          paper: classes.drawer,
+          paper: classes.paper,
         }}
         onClose={toggleDrawer}
       >

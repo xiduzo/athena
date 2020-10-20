@@ -15,6 +15,7 @@ import { v4 as uuid } from 'uuid'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { UserAverageRating } from './components/UserAverageRating'
 import { getWeek } from 'src/common/utils/helpers/getWeek'
+import { ContentHeader } from 'src/components'
 
 interface IGiveFeedbackRoute {}
 
@@ -97,6 +98,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
 
   return (
     <Container maxWidth='lg' className={classes.root}>
+      <ContentHeader />
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography variant='h4'>{t(`feedback`)}</Typography>

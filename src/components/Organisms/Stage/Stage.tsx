@@ -14,9 +14,11 @@ const useStyles = makeStyles((theme: Theme) => {
       background: blue[50],
       boxShadow: theme.shadows[4],
       zIndex: theme.zIndex.drawer + 1,
+      overflowY: 'scroll',
     },
     root: {
       display: 'flex',
+      background: 'white',
     },
   }
 })
