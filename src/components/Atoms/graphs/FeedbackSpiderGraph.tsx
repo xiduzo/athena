@@ -10,12 +10,12 @@ import {
   getUsersSpiderData,
   normalizeArray,
 } from 'src/common/utils'
-import { IAgreement } from 'src/lib/interfaces'
+import { Agreement } from 'src/lib/interfaces'
 import { ILineData } from './feedbackPointsOptions'
 import { getFeedbackSpiderOptions } from './feedbackSpiderOptions'
 
 interface IFeedbackSpiderGraph {
-  agreements: IAgreement[]
+  agreements: Agreement[]
   showAll?: boolean
 }
 

@@ -5,7 +5,6 @@ export interface IGiveFeedbackToUserVariables {
   agreementId: string
   fromUserId: string
   toUserId: string
-  weekNum: number
   rating: number
 }
 
@@ -15,10 +14,9 @@ export const GIVE_FEEDBACK = gql`
     $agreementId: String!
     $fromUserId: String!
     $toUserId: String!
-    $weekNum: Int!
     $rating: Float!
   ) {
-    MergeFeedback(id: $feedbackId, rating: $rating, weekNum: $weekNum) {
+    MergeFeedback(id: $feedbackId, rating: $rating) {
       id
     }
     MergeFeedbackAgreement(from: { id: $feedbackId }, to: { id: $agreementId }) {

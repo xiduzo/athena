@@ -29,7 +29,7 @@ import {
   FeedbackPointsGraph,
   FeedbackSpiderGraph,
 } from 'src/components'
-import { IAgreement, ITranslation, IUser } from 'src/lib/interfaces'
+import { Agreement, Translation, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
 import { UserRole } from 'src/lib/enums'
 import { useTranslation } from 'react-i18next'
@@ -79,7 +79,9 @@ export const SquadDetail: FC = () => {
                 id
               }
               rating
-              weekNum
+              weekStart {
+                formatted
+              }
             }
             parent {
               id
@@ -156,14 +158,14 @@ export const SquadDetail: FC = () => {
 
   const toggleAgreementsModal = (): void => setAgreementsModalOpen(!agreementsModalOpen)
 
-  const onAgreementsModalCloseHandler = async (agreements?: IAgreement[]): Promise<void> => {
+  const onAgreementsModalCloseHandler = async (agreements?: Agreement[]): Promise<void> => {
     toggleAgreementsModal()
 
     if (!agreements) return
 
     await asyncForEach(
       agreements,
-      async (agreement: IAgreement): Promise<void> => {
+      async (agreement: Agreement): Promise<void> => {
         let hasError = false
         const originalId = agreement.id
         // Overwrite agreement object
@@ -196,7 +198,7 @@ export const SquadDetail: FC = () => {
 
         if (!hasError) {
           // Add the translation
-          await asyncForEach(agreement.translations || [], async (translation: ITranslation) => {
+          await asyncForEach(agreement.translations || [], async (translation: Translation) => {
             await AddAgreementTranslations({
               variables: {
                 id: uuid(),
@@ -227,7 +229,7 @@ export const SquadDetail: FC = () => {
     refetch()
   }
 
-  const removeAgreementHandler = async (agreement: IAgreement): Promise<void> => {
+  const removeAgreementHandler = async (agreement: Agreement): Promise<void> => {
     await RemoveSquadAgreements({
       variables: {
         from: { id: id },
@@ -291,7 +293,7 @@ export const SquadDetail: FC = () => {
             <Grid item xs={12}>
               <Typography variant={`h5`}>{`Agreements`}</Typography>
             </Grid>
-            {data.Squad[0].agreements.map((agreement: IAgreement) => (
+            {data.Squad[0].agreements.map((agreement: Agreement) => (
               <Grid key={agreement.id} item xs={12} sm={6} md={4} lg={3}>
                 <AgreementCard
                   agreement={agreement}
@@ -311,7 +313,7 @@ export const SquadDetail: FC = () => {
                 subtitle={data.Squad[0].name}
                 without={
                   data.Squad[0].agreements
-                    .filter((agreement: IAgreement) => agreement.parent !== null)
+                    .filter((agreement: Agreement) => agreement.parent !== null)
                     .map((agreement: any) => {
                       return {
                         ...agreement,

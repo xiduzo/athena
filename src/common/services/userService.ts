@@ -50,7 +50,9 @@ export const USER_FEEDBACK = gql`
           }
           feedback(filter: { from: { id: $userId } }) {
             id
-            weekNum
+            weekStart {
+              formatted
+            }
             from {
               id
             }

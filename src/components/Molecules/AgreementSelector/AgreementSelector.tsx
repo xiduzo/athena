@@ -13,15 +13,15 @@ import React, { FC, useState } from 'react'
 import { useWidth } from 'src/common/hooks'
 import { GET_AGREEMENTS } from 'src/common/services'
 import { getTranslation } from 'src/common/utils'
-import { IAgreement } from 'src/lib/interfaces'
+import { Agreement } from 'src/lib/interfaces'
 import { useTranslation } from 'react-i18next'
 
 interface IAgreementSelectorModal {
   title: string
   subtitle?: string
   isOpen: boolean
-  without: IAgreement[]
-  onClose: (agreements?: IAgreement[]) => void
+  without: Agreement[]
+  onClose: (agreements?: Agreement[]) => void
 }
 
 export const AgreementSelector: FC<IAgreementSelectorModal> = ({
@@ -42,7 +42,7 @@ export const AgreementSelector: FC<IAgreementSelectorModal> = ({
     },
   })
 
-  const [agreementsToAdd, setAgreementsToAdd] = useState<IAgreement[]>([])
+  const [agreementsToAdd, setAgreementsToAdd] = useState<Agreement[]>([])
 
   const handleSubmit = (): void => {
     clearAgreementsToAdd()
@@ -74,16 +74,16 @@ export const AgreementSelector: FC<IAgreementSelectorModal> = ({
             loading || error
               ? []
               : data.Agreement.filter(
-                  (agreements: IAgreement) => !without.map((a) => a.id).includes(agreements.id)
+                  (agreements: Agreement) => !without.map((a) => a.id).includes(agreements.id)
                 )
           }
           clearOnEscape
           multiple
-          onChange={(_: any, agreements: IAgreement[] | null) => {
+          onChange={(_: any, agreements: Agreement[] | null) => {
             if (agreements) setAgreementsToAdd(agreements)
           }}
-          getOptionLabel={(agreement: IAgreement) => getTranslation(agreement.translations)}
-          getOptionDisabled={(agreement: IAgreement) =>
+          getOptionLabel={(agreement: Agreement) => getTranslation(agreement.translations)}
+          getOptionDisabled={(agreement: Agreement) =>
             Boolean(agreementsToAdd.find((a) => a.id === agreement.id))
           }
           renderInput={(params) => (

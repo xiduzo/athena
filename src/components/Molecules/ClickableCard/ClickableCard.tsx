@@ -1,7 +1,7 @@
 import { Card, CardActionArea, Menu, CardProps, makeStyles, Theme } from '@material-ui/core'
 import React, { FC, useState } from 'react'
 import { NumberOrNull } from 'src/lib/types'
-import { IMousePosition } from 'src/lib/interfaces'
+import { Position2d } from 'src/lib/interfaces'
 import clsx from 'clsx'
 
 export interface IClickableCard extends CardProps {
@@ -25,7 +25,7 @@ export const ClickableCard: FC<IClickableCard> = ({
 }) => {
   const classes = useStyles()
 
-  const [mousePos, setMousePos] = useState<IMousePosition>({
+  const [mousePos, setMousePos] = useState<Position2d>({
     x: null,
     y: null,
   })

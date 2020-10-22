@@ -5,10 +5,13 @@ import gql from 'graphql-tag'
 import React, { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useLocation } from 'react-router-dom'
-import { EmptyState, Illustration, SquadCard, SquadCardMock } from 'src/components'
+import { ContentHeader, EmptyState, Illustration, SquadCard, SquadCardMock } from 'src/components'
 import { ISquad } from 'src/lib/interfaces'
 import { NewSquadModal } from './components'
 import { IllustrationType } from 'src/lib/enums'
+import { userInfo } from 'os'
+import { useSelector } from 'react-redux'
+import { IRootReducer } from 'src/common/redux'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -29,16 +32,25 @@ export const SquadOverview: FC = () => {
   const classes = useStyles()
   const { t } = useTranslation()
 
+  const _selectedTribe = useSelector((state: IRootReducer) => state.global.selectedTribe)
+
   const [modalOpen, setModalOpen] = useState<boolean>(false)
 
-  const { loading, error, data, refetch } = useQuery(gql`
-    query GetSquads {
-      Squad {
-        id
-        name
+  const { loading, error, data, refetch } = useQuery(
+    gql`
+      query GetSquads($selectedTribeId: String!) {
+        Squad(filter: { tribe: { id: $selectedTribeId } }) {
+          id
+          name
+        }
       }
+    `,
+    {
+      variables: {
+        selectedTribeId: _selectedTribe,
+      },
     }
-  `)
+  )
 
   const location = useLocation()
   const history = useHistory()
@@ -52,6 +64,8 @@ export const SquadOverview: FC = () => {
 
   return (
     <Container maxWidth={`lg`} className={classes.root}>
+      <ContentHeader />
+
       <Zoom in={!loading && !error}>
         <Fab
           color='primary'

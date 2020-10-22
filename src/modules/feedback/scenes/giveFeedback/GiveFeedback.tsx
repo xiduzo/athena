@@ -10,7 +10,7 @@ import { IGlobalState, IRootReducer } from 'src/common/redux'
 import { IGiveFeedbackData, IGiveFeedbackDataVariables, USER_FEEDBACK } from 'src/common/services'
 import { GIVE_FEEDBACK, IGiveFeedbackToUserVariables } from 'src/common/services/feedbackService'
 import { snackbarWrapper } from 'src/common/utils'
-import { IAgreement, IFeedback, IUser } from 'src/lib/interfaces'
+import { Agreement, Feedback, IUser } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
 import { FeedbackPanel } from './components/FeedbackPanel'
 import { UserAverageRating } from './components/UserAverageRating'
@@ -74,10 +74,10 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
   )
 
   const giveFeedback = async (
-    myFeedback: IFeedback | undefined,
+    myFeedback: Feedback | undefined,
     value: number | null,
     user: IUser,
-    agreement: IAgreement
+    agreement: Agreement
   ): Promise<void> => {
     if (!value) return
     await GiveFeedbackToUser({
@@ -87,7 +87,6 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
         agreementId: agreement.id,
         feedbackId: myFeedback?.id ?? uuid(),
         rating: value,
-        weekNum: selectedWeek,
       },
     })
 
@@ -148,7 +147,7 @@ export const GiveFeedback: FC<IGiveFeedbackRoute> = () => {
             <Grid item xs={12}>
               {data.User[0] &&
                 data.User[0].squads[0] &&
-                data.User[0].squads[0].agreements.map((agreement: IAgreement) => (
+                data.User[0].squads[0].agreements.map((agreement: Agreement) => (
                   <FeedbackPanel
                     key={agreement.id}
                     agreement={agreement}

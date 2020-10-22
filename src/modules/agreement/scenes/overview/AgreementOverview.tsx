@@ -31,7 +31,7 @@ import { createFilter, generalCatchHandler, snackbarWrapper } from 'src/common/u
 import { AgreementCard, AgreementCardMock, EmptyState, Illustration } from 'src/components'
 import { WithSidebar } from 'src/components/Templates'
 import { AgreementType, IllustrationType, Key } from 'src/lib/enums'
-import { IAgreement } from 'src/lib/interfaces'
+import { Agreement } from 'src/lib/interfaces'
 import { NewAgreementModal } from './components/NewAgreementModal'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -125,7 +125,7 @@ export const AgreementOverview: FC = () => {
     toggleModal()
   }
 
-  const removeAgreementHandler = (agreement: IAgreement) => {
+  const removeAgreementHandler = (agreement: Agreement) => {
     DeleteAgreement({
       variables: {
         id: agreement.id,
@@ -162,7 +162,7 @@ export const AgreementOverview: FC = () => {
     setModalOpen(true)
   }, [newAgreementHotkey, hotkeysEnabled])
 
-  const filtered = data?.Agreement?.filter(createFilter(...filters)) as IAgreement[]
+  const filtered = data?.Agreement?.filter(createFilter(...filters)) as Agreement[]
   return (
     <WithSidebar
       title={t('agreements')}
@@ -181,7 +181,7 @@ export const AgreementOverview: FC = () => {
           ) : !data.Agreement.length ? (
             showEmptyState()
           ) : filtered.length ? (
-            filtered.map((agreement: IAgreement) => (
+            filtered.map((agreement: Agreement) => (
               <Grid key={agreement.id} item xs={12} sm={6} lg={4}>
                 <AgreementCard
                   agreement={agreement}

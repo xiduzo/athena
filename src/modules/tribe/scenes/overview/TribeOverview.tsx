@@ -37,7 +37,7 @@ export const TribeOverview: FC = () => {
   const newTribeHotkey = and([useHotkeys(Key.Alt), useHotkeys(Key.N)])
 
   const { loading, error, data, refetch } = useQuery(gql`
-    query {
+    query GetTribes {
       Tribe {
         id
         name

@@ -1,4 +1,4 @@
-export enum KeyTypes {
+export enum KeyType {
   KeyUp = 'keyup',
   KeyDown = 'keydown',
 }

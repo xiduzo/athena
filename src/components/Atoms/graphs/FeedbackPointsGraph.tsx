@@ -12,11 +12,11 @@ import {
   groupBy,
   sumArrays,
 } from 'src/common/utils'
-import { IAgreement } from 'src/lib/interfaces'
+import { Agreement } from 'src/lib/interfaces'
 import { getFeedbackPointsOptions, ILineData } from './feedbackPointsOptions'
 
 interface IFeedbackPointsGraph {
-  agreements: IAgreement[]
+  agreements: Agreement[]
   showAll?: boolean
 }
 
@@ -34,7 +34,7 @@ export const FeedbackPointsGraph: FC<IFeedbackPointsGraph> = (props) => {
 
     const data = Array.from(getFeedbackByUser(agreements).entries()).map(([userId, feedback]) => ({
       userId: userId,
-      feedbackByWeek: groupBy(feedback, (f) => f.weekNum),
+      feedbackByWeek: groupBy(feedback, (f) => f.weekStart.formatted),
     }))
 
     // todo: this foreach should be put into util function

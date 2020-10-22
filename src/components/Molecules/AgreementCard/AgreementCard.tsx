@@ -3,10 +3,10 @@ import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getTranslation } from 'src/common/utils'
 import { AgreementIcon, ClickableCard, IClickableCard } from 'src/components'
-import { IAgreement } from 'src/lib/interfaces'
+import { Agreement } from 'src/lib/interfaces'
 
 interface IAgreementCard extends IClickableCard {
-  agreement: IAgreement
+  agreement: Agreement
 }
 
 export const AgreementCardClasses = makeStyles((theme: Theme) => ({

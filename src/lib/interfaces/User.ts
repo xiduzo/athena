@@ -1,7 +1,7 @@
-import { IEntityBase } from './IEntityBase'
-import { ISquad } from './ISquad'
+import { EntityBase } from './EntityBase'
+import { ISquad } from './Squad'
 
-export interface IUser extends IEntityBase {
+export interface IUser extends EntityBase {
   email: string
   displayName: string
   avatarStyle: string

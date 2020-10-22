@@ -1,13 +1,14 @@
-import { IAgreement, IUser, IFeedback } from 'src/lib/interfaces'
+import { Agreement, IUser, Feedback } from 'src/lib/interfaces'
+import { getWeek } from '../helpers/getWeek'
 
 export const getMyFeedback = (
-  agreement: IAgreement,
+  agreement: Agreement,
   toUser: IUser,
   selectedWeek: number
-): IFeedback | undefined =>
+): Feedback | undefined =>
   agreement.feedback.find(
     (feedback) =>
       feedback.to.id === toUser.id &&
-      feedback.weekNum === selectedWeek &&
+      getWeek(new Date(feedback.weekStart.formatted)) === selectedWeek &&
       feedback.agreement.id === agreement.id
   )

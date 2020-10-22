@@ -1,9 +1,9 @@
-import { IFeedback } from 'src/lib/interfaces'
+import { Feedback } from 'src/lib/interfaces'
 
-export const getLineData = (feedback: IFeedback[]): number[] => {
+export const getLineData = (feedback: Feedback[]): number[] => {
   const feedbackLine = feedback.reduce((sum, f) => {
-    if (!sum[f.weekNum]) sum[f.weekNum] = 0
-    sum[f.weekNum] += f.rating * f.agreement.points
+    if (!sum[f.weekStart.formatted]) sum[f.weekStart.formatted] = 0
+    sum[f.weekStart.formatted] += f.rating * f.agreement.points
     return sum
   }, [] as number[])
 

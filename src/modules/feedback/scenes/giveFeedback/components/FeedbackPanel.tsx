@@ -16,7 +16,7 @@ import { Rating } from '@material-ui/lab'
 import React, { FC, useState, useEffect } from 'react'
 import { getTranslation, getFeedbackGivenThisWeek, getMyFeedback } from 'src/common/utils'
 import { Avataaar } from 'src/components'
-import { IAgreement, IFeedback, IUser } from 'src/lib/interfaces'
+import { Agreement, Feedback, IUser } from 'src/lib/interfaces'
 import { ItemsToGoIcon } from './ItemsToGoIcon'
 import { useAuth } from 'src/common/providers'
 
@@ -35,15 +35,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 interface IFeedbackPanel {
-  agreement: IAgreement
+  agreement: Agreement
   isCurrentWeek: boolean
   selectedWeek: number
   members: IUser[]
   callback: (
-    myFeedback: IFeedback | undefined,
+    myFeedback: Feedback | undefined,
     value: number | null,
     user: IUser,
-    agreement: IAgreement
+    agreement: Agreement
   ) => void
 }
 export const FeedbackPanel: FC<IFeedbackPanel> = ({
@@ -59,10 +59,10 @@ export const FeedbackPanel: FC<IFeedbackPanel> = ({
   const [isExpanded, setIsExpanded] = useState<boolean>(true)
 
   const giveFeedback = async (
-    myFeedback: IFeedback | undefined,
+    myFeedback: Feedback | undefined,
     value: number | null,
     user: IUser,
-    agreement: IAgreement
+    agreement: Agreement
   ): Promise<void> => {
     if (!value) return
     callback(myFeedback, value, user, agreement)

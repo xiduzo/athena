@@ -15,11 +15,12 @@ export interface neo4jDateObject {
   year: number
   month: number
   day: number
-  formatted?: string
+  formatted: string
 }
 
 export const getNeo4jDateObject = (date: Date = new Date()): neo4jDateObject => ({
   year: date.getUTCFullYear(),
   month: date.getMonth(),
   day: date.getDay(),
+  formatted: formatDate(date, 'y-m-d'),
 })

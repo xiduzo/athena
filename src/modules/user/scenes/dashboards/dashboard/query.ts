@@ -17,7 +17,9 @@ export const MEMBER_DASHBOARD_QUERY = gql`
               id
             }
             rating
-            weekNum
+            weekStart {
+              formatted
+            }
           }
         }
       }

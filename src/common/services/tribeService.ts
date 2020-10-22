@@ -18,8 +18,13 @@ export const GET_TRIBES = gql`
 `
 
 export const CREATE_TRIBE = gql`
-  mutation CreateTribe($id: String!, $name: String!) {
-    CreateTribe(id: $id, name: $name) {
+  mutation CreateTribe(
+    $id: String!
+    $name: String!
+    $start: _Neo4jDateInput!
+    $end: _Neo4jDateInput!
+  ) {
+    CreateTribe(id: $id, name: $name, start: $start, end: $end) {
       id
     }
   }

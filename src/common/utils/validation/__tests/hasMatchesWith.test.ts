@@ -1,5 +1,5 @@
 import { hasMatchesWith } from '../hasMatchesWith'
-import { IAgreement, ITranslation } from 'src/lib/interfaces'
+import { Agreement, Translation } from 'src/lib/interfaces'
 
 describe('Having empty arrays', () => {
   describe('while both arrays are empty', () => {
@@ -89,12 +89,12 @@ describe('Having two arrays of the same type', () => {
     it('should not give a match if no data overlaps', () => {
       // Arrange
       const expected: boolean = false
-      const translation: ITranslation = {
+      const translation: Translation = {
         id: '123',
         language: 'nl',
         text: 'dit is een text',
       }
-      const translationCompare: ITranslation = {
+      const translationCompare: Translation = {
         ...translation,
         text: 'dit is een andere text',
       }
@@ -108,7 +108,7 @@ describe('Having two arrays of the same type', () => {
     it('should give a match if data overlaps', () => {
       // Arrange
       const expected: boolean = true
-      const translation: ITranslation = {
+      const translation: Translation = {
         id: '123',
         language: 'nl',
         text: 'dit is een text',

@@ -1,4 +1,4 @@
-import { ITranslation } from 'src/lib/interfaces'
+import { Translation } from 'src/lib/interfaces'
 import { getTranslation } from '../getTranslation'
 
 describe('Given an translations array', () => {
@@ -6,7 +6,7 @@ describe('Given an translations array', () => {
     it('should give a warning text', () => {
       // Arrange
       const expected = 'something went wrong'
-      const translations: ITranslation[] = []
+      const translations: Translation[] = []
 
       // Act
       const received = getTranslation(translations)
@@ -19,7 +19,7 @@ describe('Given an translations array', () => {
     it('should give to error text while not in browser', () => {
       // Arrange
       const expected = 'something went wrong'
-      const translations: ITranslation[] = [
+      const translations: Translation[] = [
         {
           id: '1234',
           language: 'en',
@@ -36,7 +36,7 @@ describe('Given an translations array', () => {
     it('should give to correct translation for the given language', () => {
       // Arrange
       const expected = 'this is a sample text'
-      const translations: ITranslation[] = [
+      const translations: Translation[] = [
         {
           id: '1234',
           language: 'en',

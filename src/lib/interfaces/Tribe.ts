@@ -1,8 +1,8 @@
 import { neo4jDateObject } from 'src/common/utils'
-import { IEntityBase } from './IEntityBase'
-import { ISquad } from './ISquad'
+import { EntityBase } from './EntityBase'
+import { ISquad } from './Squad'
 
-export interface ITribe extends IEntityBase {
+export interface ITribe extends EntityBase {
   name: string
   squads: ISquad[]
   leaders: any[]

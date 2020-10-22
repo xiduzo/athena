@@ -5,8 +5,8 @@ import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useLocation } from 'react-router-dom'
 import { ContentHeader, EmptyState, Illustration, UserCard, UserCardMock } from 'src/components'
-import { IUser } from 'src/lib/interfaces'
 import { IllustrationType } from 'src/lib/enums'
+import { IUser } from 'src/lib/interfaces'
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -23,24 +23,41 @@ const useStyles = makeStyles((theme: Theme) => {
 })
 
 export const UserOverview: FC = () => {
+  /*
+   * State
+   */
+  const { loading, error, data } = useQuery(
+    gql`
+      query GetUsers {
+        User {
+          id
+          displayName
+          avatarStyle
+        }
+      }
+    `
+  )
+
+  /*
+   * Hooks
+   */
   const classes = useStyles()
   const { t } = useTranslation()
-
-  const { loading, error, data } = useQuery(gql`
-    query {
-      User {
-        id
-        displayName
-        avatarStyle
-      }
-    }
-  `)
-
   const location = useLocation()
   const history = useHistory()
 
+  /*
+   * Methods
+   */
   const navigateToUser = (user: IUser) => history.push(`${location.pathname}/${user.id}`)
 
+  /*
+   * Side effects
+   */
+
+  /*
+   * Render
+   */
   return (
     <Box>
       <ContentHeader />

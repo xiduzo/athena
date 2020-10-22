@@ -31,7 +31,7 @@ import {
 import { asyncForEach, generalCatchHandler, snackbarWrapper } from 'src/common/utils'
 import { supportedLanguages } from 'src/i18n'
 import { AgreementType } from 'src/lib/enums'
-import { IAgreement, IModalBase, ITranslation } from 'src/lib/interfaces'
+import { Agreement, IModalBase, Translation } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
 
 interface INewAgreementModal extends IModalBase {}
@@ -60,13 +60,13 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
     onClose && onClose<undefined>()
   }
 
-  const onSubmit = async (data: Partial<IAgreement>) => {
+  const onSubmit = async (data: Partial<Agreement>) => {
     if (!data.translations) return // TODO alert
     setIsSubmitting(true)
 
     let hasError = false
 
-    const agreement: IAgreement = {
+    const agreement: Agreement = {
       ...data,
       id: uuid(),
       isBase: true,
@@ -93,7 +93,7 @@ export const NewAgreementModal: FC<INewAgreementModal> = ({ isOpen, onClose }) =
     }).catch(catchError)
 
     if (!hasError) {
-      await asyncForEach(agreement.translations || [], async (translation: ITranslation) => {
+      await asyncForEach(agreement.translations || [], async (translation: Translation) => {
         await CreateTranslation({
           variables: {
             ...translation,

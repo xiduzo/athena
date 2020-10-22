@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { IUser, IAgreement } from 'src/lib/interfaces'
+import { IUser, Agreement } from 'src/lib/interfaces'
 import { makeStyles, Theme, Tooltip, Grid, Typography } from '@material-ui/core'
 import { Avataaar } from 'src/components'
 import { Rating } from '@material-ui/lab'
@@ -14,7 +14,7 @@ const useStyles = makeStyles((_: Theme) => ({
 
 interface IUserAverageRating {
   user: IUser
-  agreements: IAgreement[]
+  agreements: Agreement[]
   currentWeek: number
 }
 

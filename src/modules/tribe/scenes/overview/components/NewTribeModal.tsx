@@ -13,23 +13,15 @@ import {
   Typography,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
+import { KeyboardDatePicker } from '@material-ui/pickers'
 import { ApolloError } from 'apollo-errors'
 import React, { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { CREATE_TRIBE } from 'src/common/services'
-import {
-  formatDate,
-  generalCatchHandler,
-  getNeo4jDateObject,
-  snackbarWrapper,
-} from 'src/common/utils'
+import { generalCatchHandler, getNeo4jDateObject, snackbarWrapper } from 'src/common/utils'
 import { IModalBase, ITribe } from 'src/lib/interfaces'
 import { v4 as uuid } from 'uuid'
-import { KeyboardDatePicker } from '@material-ui/pickers'
-import { DateTime } from 'luxon'
-
-interface INewTribeModal extends IModalBase {}
 
 const useStyles = makeStyles((theme: Theme) => ({
   title: {
@@ -38,30 +30,31 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-export const NewTribeModal: FC<INewTribeModal> = ({ isOpen, onClose }) => {
+interface INewTribeModal extends IModalBase {}
+
+export const NewTribeModal: FC<INewTribeModal> = (props) => {
+  /*
+   * State
+   */
+  const { isOpen, onClose } = props
+
+  const [selectedDate, handleDateChange] = useState(new Date())
+
+  /*
+   * Hooks
+   */
   const classes = useStyles()
   const { t } = useTranslation()
-
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [selectedDate, handleDateChange] = useState(new Date())
-  const { register, handleSubmit, errors } = useForm()
+  const { register, handleSubmit, errors, formState } = useForm()
 
   const [CreateTribe] = useMutation(CREATE_TRIBE)
+  /*
+   * Methods
+   */
+  const handleClose = () => onClose && onClose<undefined>()
 
-  const handleClose = () => {
-    onClose && onClose<undefined>()
-  }
   const onSubmit = async (data: Partial<ITribe>) => {
-    setIsSubmitting(true)
-
     let hasError = false
-
-    const tribe = {
-      ...data,
-      id: uuid(),
-      start: getNeo4jDateObject(),
-      end: getNeo4jDateObject(),
-    } as Partial<ITribe>
 
     const catchError = (error: ApolloError) => {
       hasError = !hasError
@@ -70,15 +63,25 @@ export const NewTribeModal: FC<INewTribeModal> = ({ isOpen, onClose }) => {
 
     await CreateTribe({
       variables: {
-        ...tribe,
+        ...data,
+        id: uuid(),
+        start: getNeo4jDateObject(),
+        end: getNeo4jDateObject(),
       },
     }).catch(catchError)
 
     if (!hasError) snackbarWrapper.success(`${t(`tribe`)} created`)
 
-    setIsSubmitting(false)
     handleClose()
   }
+
+  /*
+   * Side effects
+   */
+
+  /*
+   * Render
+   */
   return (
     <Dialog fullScreen open={isOpen} onClose={handleClose}>
       <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
@@ -98,7 +101,7 @@ export const NewTribeModal: FC<INewTribeModal> = ({ isOpen, onClose }) => {
             </Typography>
             <Button
               type='submit'
-              disabled={isSubmitting}
+              disabled={formState.isSubmitting}
               color='inherit'
               onClick={handleSubmit(onSubmit)}
             >
@@ -110,20 +113,22 @@ export const NewTribeModal: FC<INewTribeModal> = ({ isOpen, onClose }) => {
           <Grid container>
             <Grid item xs={12}>
               <TextField
-                name='name'
-                inputRef={register({ required: { value: true, message: 'Dit veld is verplicht' } })}
-                placeholder='Name'
+                name={t('name')}
+                inputRef={register({
+                  required: { value: true, message: t('thisFieldIsRequired') },
+                })}
+                placeholder={t('name')}
                 error={errors.name ? true : false}
                 helperText={errors.name && (errors.name as any).message}
                 inputProps={{
-                  'aria-label': 'name',
+                  'aria-label': t('name'),
                 }}
               />
             </Grid>
             <Grid item xs={12}>
               <KeyboardDatePicker
                 autoOk
-                label='Start of tribe'
+                label={t('startDate')}
                 value={selectedDate}
                 minDate={new Date()}
                 onChange={(date) => handleDateChange(date?.toJSDate() ?? new Date())}

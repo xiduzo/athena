@@ -1,9 +1,9 @@
 import { AgreementType } from 'src/lib/enums'
-import { IAgreement } from 'src/lib/interfaces'
+import { Agreement } from 'src/lib/interfaces'
 import { groupBy } from '..'
 
 export const getUsersSpiderData = (
-  agreements: IAgreement[]
+  agreements: Agreement[]
 ): { usersFeedbackLine: number[][]; typesUsed: AgreementType[] } => {
   const usersFeedbackLine: number[][] = []
 
@@ -16,7 +16,6 @@ export const getUsersSpiderData = (
     agreements.forEach((agreement) => {
       const userFeedback = groupBy(agreement.feedback, (f) => f.to.id)
       userFeedback.forEach((feedback, userId) => {
-        // console.log(feedback, userId, type)
         if (!usersFeedbackLine[userId]) usersFeedbackLine[userId] = []
 
         usersFeedbackLine[userId][type] = feedback.reduce(

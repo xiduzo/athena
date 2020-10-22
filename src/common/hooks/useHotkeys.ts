@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { KeyTypes } from '../../lib/enums'
+import { KeyType } from '../../lib/enums'
 import { ReturnFunction } from 'src/lib/types'
 
 let sequenceBuffer: number[] = []
@@ -28,7 +28,7 @@ export const sequence = (keyCodes: number[], canExecute: boolean) => {
   return match && canExecute
 }
 
-export const useHotkeys = (key: number, keyType: KeyTypes = KeyTypes.KeyDown): boolean => {
+export const useHotkeys = (key: number, keyType: KeyType = KeyType.KeyDown): boolean => {
   const [pressed, setPressed] = useState<boolean>(false)
 
   const match = (event: KeyboardEvent): boolean => key === event.which

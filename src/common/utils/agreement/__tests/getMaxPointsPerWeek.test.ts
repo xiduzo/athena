@@ -1,23 +1,23 @@
 import { getMaxPointsPerWeek } from '../'
-import { IAgreement, ITranslation, IFeedback } from 'src/lib/interfaces'
+import { Agreement, Translation, Feedback } from 'src/lib/interfaces'
 import { AgreementType } from 'src/lib/enums'
 
-const agreements: IAgreement[] = [
+const agreements: Agreement[] = [
   {
     id: '1',
     type: AgreementType.ATTITUDE,
     isBase: false,
     points: 10,
-    transLations: [] as ITranslation[],
-    feedBack: [] as IFeedback[],
+    transLations: [] as Translation[],
+    feedBack: [] as Feedback[],
   },
   {
     id: '1',
     type: AgreementType.ATTITUDE,
     isBase: false,
     points: 10,
-    transLations: [] as ITranslation[],
-    feedBack: [] as IFeedback[],
+    transLations: [] as Translation[],
+    feedBack: [] as Feedback[],
   },
 ]
 
@@ -40,7 +40,7 @@ describe('Having 1 agreement of 10 points', () => {
     const expected = 0
 
     const members = 1
-    const singleAgreement: IAgreement[] = [agreements[0]]
+    const singleAgreement: Agreement[] = [agreements[0]]
 
     // Act
     const received = getMaxPointsPerWeek(singleAgreement, members)
@@ -54,7 +54,7 @@ describe('Having 1 agreement of 10 points', () => {
     const expected = 40
 
     const members = 2
-    const singleAgreement: IAgreement[] = [agreements[0]]
+    const singleAgreement: Agreement[] = [agreements[0]]
 
     // Act
     const received = getMaxPointsPerWeek(singleAgreement, members)
